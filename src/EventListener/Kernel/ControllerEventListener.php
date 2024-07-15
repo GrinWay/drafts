@@ -7,8 +7,9 @@ use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
+use App\Contract\EventListener\KernelEventListenerInterface;
 
-class ControllerEventListener
+class ControllerEventListener implements KernelEventListenerInterface
 {
     public function __construct()
     {
@@ -21,6 +22,7 @@ class ControllerEventListener
 
         $controller = $event->getController();
         $attributes = $event->getAttributes();
+		\dd($attributes);
         $reflector = $event->getControllerReflector();
         $request = $event->getRequest();
 

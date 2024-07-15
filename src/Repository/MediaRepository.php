@@ -20,6 +20,21 @@ class MediaRepository extends ServiceEntityRepository
     {
         return $this->createQueryBuilder('m');
     }
+	
+    public function findOneByPath(?string $filepath): ?Media
+    {
+		if (null === $filepath) {
+			return null;
+		}
+		
+        return $this->createQueryBuilder('m')
+			->andWhere('m.filepath = :filepath')
+			->setParameter('filepath', $filepath)
+			->setMaxResults(1)
+			->getQuery()
+			->getOneOrNullResult()
+		;
+    }
 
 //    /**
 //     * @return Media[] Returns an array of Media objects

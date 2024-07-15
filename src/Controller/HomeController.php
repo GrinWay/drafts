@@ -3,7 +3,10 @@
 namespace App\Controller;
 
 use function Symfony\component\string\u;
+use function Symfony\component\string\b;
 
+use Symfony\Component\String\ByteString;
+use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use App\Validation\Compound\AllTypes;
 use Symfony\Component\Finder\SplFileInfo;
 use App\Constraint\User\PasswordConstraint;
@@ -665,7 +668,7 @@ class HomeController extends AbstractController
     }
 
     #[Template('product/_product_types_form.html.twig')]
-    #[Route('product/types/{id?5}',
+    #[Route('product/types/{id?27}',
 		requirements: [
 			//'id' => '[0-9a-fA-F\-]{8}\-[0-9a-fA-F\-]{4}\-[0-9a-fA-F\-]{4}\-[0-9a-fA-F\-]{4}\-[0-9a-fA-F\-]{12}',
 			'id' => '[0-9]+',
@@ -686,10 +689,46 @@ class HomeController extends AbstractController
 		$dispatcher,
 		PropertyAccessorInterface $pa,
 		ValidatorInterface $v,
+		UploaderHelper $vichService,
+		#[Autowire('@kernel')]
+		$kernel,
 	) {
-		//$id = Uuid::fromString($id);
+		$result = (string) u('String ~Reg~ witht conteinntdne')
+			->ignoreCase()
+			->replace('~reg~', '')
+			->append('!')
+		;
+		$result = u('лодвыфао')->ignoreCase()->indexOf('л').'';
+		$result = ''.u('a certain pattern::phone')->before('::');
+
+		\dd($result);
+//$id = Uuid::fromString($id);
 		$obj = $imageRepo->find($id);
 		
+		/*
+		\dd(
+			$vichService->asset($obj),
+		);
+		\dd(
+			'guessExtension: '. $obj->getFile()->guessExtension(),
+			'getMimeType: '. $obj->getFile()->getMimeType(),
+			//'getContent: '. $obj->getFile()->getContent(),
+			
+			'getBasename: '. $obj->getFile()->getBasename('.jpg'),
+			'getFilename: '. $obj->getFile()->getFilename(),
+			'getPath: '. $obj->getFile()->getPath(),
+			'getPathname: '. $obj->getFile()->getPathname(),
+			'getRealPath: '. $obj->getFile()->getRealPath(),
+			'getSize: '. $obj->getFile()->getSize(),
+			'getType: '. $obj->getFile()->getType(),
+			'isDir: '. $obj->getFile()->isDir(),
+			'isExecutable: '. $obj->getFile()->isExecutable(),
+			'isFile: '. $obj->getFile()->isFile(),
+			'isLink: '. $obj->getFile()->isLink(),
+			'isReadable: '. $obj->getFile()->isReadable(),
+			'isWritable: '. $obj->getFile()->isWritable(),
+		);
+		*/
 		//$data = '';
 		//$form = $this->createForm(TaskFormType::class, $obj, options: [
 		$form = $this->createForm(ImageFormType::class, $obj, options: [
@@ -700,20 +739,6 @@ class HomeController extends AbstractController
 			//],
 			//'forbid_modify_props_feature' => false,
 		]);
-        
-		if ($r->isMethod('POST')) {
-			//###> FormState -> OBJ
-			$form->handleRequest($r);
-			//\dd($form->get('rubric')->getData());
-			if ($form->isSubmitted() && $form->isValid()) {
-				/*
-				\dd($obj);
-				*/
-				\dd($form->getData());
-				$em->flush();
-				return $this->redirectToRoute('app_home_producttypes');
-			}
-		}
         
 		if ($r->isMethod('PATCH')) {
 			$request = $r->getPayload()->all();
@@ -733,26 +758,32 @@ class HomeController extends AbstractController
 				\dd($payload, \mb_strlen($form->get('product')->getData()?->getName()));
 				*/
 				
-				// TODO: current
 				$obj = $form->getData();
+					/*
 				\dd(
 					$payload,
-					$form->get('file')->get('delete')->getData(),
 					$obj,
+					
 					$obj->getFileSize(),
 					$obj->getFileMimeType(),
 					$obj->getFileOriginalName(),
 					$obj->getFileDimensions(),
+					$form->get('file')->get('delete')->getData(),
+					$form->get('file')->getData(),
+					$obj->getVichFile(),
 				);
 				$em->persist($obj);
+				$em->remove($obj);
+					*/
 				$em->flush();
 				//\dd($payload, $data);
-				return $this->redirectToRoute('app_home_producttypes');
+				return $this->redirectToRoute('app_home_producttypes', $r->attributes->get('_route_params', []));
 			}
 		}
 		
         return [
             'form' => $form,
+            'obj' => $obj,
         ];
     }
 }

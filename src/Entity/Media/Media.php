@@ -12,6 +12,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Vich\UploaderBundle\Mapping\Annotation\UploadableField;
 use GrinWay\WebApp\Trait\Doctrine\CreatedAt;
 use GrinWay\WebApp\Trait\Doctrine\UpdatedAt;
+use Vich\UploaderBundle\Entity\File as VichFile;
 
 #[Vich\Uploadable]
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
@@ -20,6 +21,7 @@ use GrinWay\WebApp\Trait\Doctrine\UpdatedAt;
 #[ORM\DiscriminatorMap([
     'base_media'            => Media::class,
     MediaType::IMAGE        => Image::class,
+    MediaType::AVATAR       => Avatar::class,
 ])]
 class Media
 {
@@ -34,20 +36,19 @@ class Media
 	#[UploadableField(
 		mapping: 'media',
 		fileNameProperty: 'filepath',
-		size: 'fileSize',
-		mimeType: 'fileMimeType',
+		
 		originalName: 'fileOriginalName',
-		dimensions: 'fileDimensions',
 	)]
 	protected ?File $file = null;
-	protected ?int $fileSize = null;
-	protected ?string $fileMimeType = null;
-	protected ?string $fileOriginalName = null;
-	protected ?array $fileDimensions = null;
+
+	//#[ORM\Embedded(class: VichFile::class)]
+	protected ?VichFile $vichFile = null;
 
 	public function __construct(
 		#[ORM\Column(length: 255)]
 		protected ?string $filepath = null,
+		#[ORM\Column(length: 255)]
+		protected ?string $fileOriginalName = null,
 	) {}
 
     public function getId(): ?int
@@ -60,6 +61,18 @@ class Media
         $this->id = $id;
 		
 		return $this;
+    }
+
+    public function getVichFile(): ?VichFile
+    {
+        return $this->vichFile;
+    }
+
+    public function setVichFile(?VichFile $vichFile): static
+    {
+        $this->vichFile = $vichFile;
+
+        return $this;
     }
 
     public function getFilepath(): ?string
@@ -107,11 +120,6 @@ class Media
 		return $this;
 	}
 	
-	public function setFileDimensions(?array $fileDimensions): static {
-		$this->fileDimensions = $fileDimensions;
-		return $this;
-	}
-	
 	public function getFileSize(): ?int {
 		return $this->fileSize;
 	}
@@ -124,8 +132,7 @@ class Media
 		return $this->fileOriginalName;
 	}
 	
-	public function getFileDimensions(): ?array {
-		return $this->fileDimensions;
+	public function getMd5(): string {
+		return md5($this->id);
 	}
-	
 }

@@ -16,6 +16,7 @@ SYMFONY HTTP FOUNDATION
 	как в request УСТАНОВИТЬ не скалярное значение (можно)
 SYMFONY DOCTRINE
 	?
+	Что конкретно делает ORM\Embedded
 	как изменить тип записи datetime в базу данных (dbal:doctrine.dbal.types.datetime_immutable.MyClass)
 	setHint(Query::HINT_REFRESH, true) вообще работает?
 	бекап базы данных
@@ -202,7 +203,10 @@ SYMFONY VALIDATOR
 	*назначить Traverse на класс коллекции, а в классе, который использует коллекцию не указывать Valid или Cascade
 	 будет ли проверка элеметов коллекции
 SYMFONY UPLOAD FILES
-	https://github.com/dustin10/VichUploaderBundle/blob/master/docs/index.md
+	***
+	NEXT: https://github.com/dustin10/VichUploaderBundle/blob/master/docs/namers.md#directory-namer
+	NEXT: https://github.com/dustin10/VichUploaderBundle/blob/master/docs/file_namer/howto/create_a_custom_file_namer.md
+	
 	https://github.com/dustin10/VichUploaderBundle/blob/master/docs/other_usages/replacing_file.md
 	?
 	*Как загрузить папку
@@ -210,9 +214,9 @@ SYMFONY UPLOAD FILES
 	*Как request->files обрабатывается при form::submit
 	*Как валидировать сущность с UniqueEntity по полю типа File (когда форма отправляет файл)
 	Если в Request::payload не попадают загружаемые файлы тогда как обработать только поле файла FormFile::submit (добавь в payload данные из Request::files)
-***
 SYMFONY HTTP COMPONENT https://symfony.com/doc/current/components/http_kernel.html
-SYMFONY STRING
+SYMFONY STRING https://symfony.com/doc/current/string.html#methods-to-pad-and-trim
+***
 SYMFONY CLOCK COMPONENT
 SYMFONY CONFIG COMPONENT https://symfony.com/doc/current/components/config.html
 SYMFONY OPTIONS RESOLVER
@@ -396,4 +400,5 @@ TODO
 		//TODO: ExpressionLanguageStaticFunctions
 		// TODO: AllTypes
 		
+https://symfony.com/doc/current/create_framework/introduction.html
 Банда 4-х

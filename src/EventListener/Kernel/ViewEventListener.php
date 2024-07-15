@@ -3,7 +3,6 @@
 namespace App\EventListener\Kernel;
 
 use App\Attribute\Twig\MyTemplate;
-use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ViewEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -14,8 +13,10 @@ use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use App\Response\AbstractResponse;
 use Twig\Environment;
+use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
-class ViewEventListener implements KernelEventListenerInterface
+#[AsEventListener(priority: -129)]
+class ViewEventListener// implements KernelEventListenerInterface
 {
     public function __construct(
         private readonly Environment $twig,
@@ -26,6 +27,7 @@ class ViewEventListener implements KernelEventListenerInterface
         ViewEvent $event,
     ): void {
         return;
+		\dd('VIEW');
         $result = $event->getControllerResult();
 
         $controllerMethodCallable = $event->getRequest()->attributes->get('_controller');

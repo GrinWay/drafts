@@ -20,6 +20,7 @@ parameters:
     app.fixture.product.task:   5
     app.fixture.product.task_food_topic:   2
     app.fixture.product.image:   5
+    app.fixture.product.avatar:   5
     ###< Fixture ###
 
     ###> PATHS ###
@@ -34,6 +35,11 @@ parameters:
     app.public_img_dir: '%app.public_media_dir%/image'
     app.abs_img_dir: '%app.abs_public_dir%/%app.public_img_dir%'
     ###< img ###
+    
+    ###> avatar ###
+    app.public_avatar_dir: '%app.public_img_dir%/avatar'
+    app.abs_avatar_dir: '%app.abs_public_dir%/%app.public_avatar_dir%'
+    ###< avatar ###
     
     ###< PATHS ###
 

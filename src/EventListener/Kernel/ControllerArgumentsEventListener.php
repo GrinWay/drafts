@@ -16,20 +16,13 @@ class ControllerArgumentsEventListener implements KernelEventListenerInterface
     public function __invoke(
         ControllerArgumentsEvent $event,
     ): void {
-        return;
-        $pa = PropertyAccess::createPropertyAccessor();
 
+        return;
+        $attributes = $event->getAttributes();
         $arguments = $event->getArguments();
         $namedArguments = $event->getNamedArguments();
-        $attributes = $event->getAttributes();
-        //\dd();
-
-        $namedArguments['now'] = $namedArguments['now']->add(4, 'days');
+        \dd($namedArguments);
         $event->setArguments(\array_values($namedArguments));
-
-        //\dd($namedArguments);
-
-        return;
 
 
         return;

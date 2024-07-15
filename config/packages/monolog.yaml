@@ -8,7 +8,7 @@ when@dev:
         handlers:
             main:
                 type: stream
-                path: "%kernel.logrin_way_dir%/%kernel.environment%.log"
+                path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
                 channels: ["!event"]
             # uncomment to get logging in your browser
@@ -26,7 +26,7 @@ when@dev:
             messenger.email:
                 channels: ["messenger.email"]
                 type: 'rotating_file'
-                path:  '%kernel.logrin_way_dir%/messenger_email_%kernel.environment%.log'
+                path:  '%kernel.logs_dir%/messenger_email_%kernel.environment%.log'
                 level: 'info'
                 max_files: 1
                 
@@ -41,7 +41,7 @@ when@test:
                 channels: ["!event"]
             nested:
                 type: stream
-                path: "%kernel.logrin_way_dir%/%kernel.environment%.log"
+                path: "%kernel.logs_dir%/%kernel.environment%.log"
                 level: debug
 
 when@prod:

@@ -2,12 +2,16 @@
 
 {% block body %}
 	
-	{{ dump(form) }}
-	<div class="container">
-		{{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
-			{{ form_errors(form) }}
-			<twig:grinway:btn autofocus="autofocus" class="btn-outline-success" type="submit"></twig:grinway:btn>
-		{{ form_end(form, { render_rest: true }) }}
-	</div>
+	{% if form is defined %}
+		{% if obj is defined and not (obj is null) %}
+			<a href="{{ vich_uploader_asset(obj, 'file') }}" class="">IMAGE</a>
+		{% endif %}
+		<div class="container">
+			{{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+				{{ form_errors(form) }}
+				<twig:grinway:btn autofocus="autofocus" class="btn-outline-success" type="submit"></twig:grinway:btn>
+			{{ form_end(form, { render_rest: true }) }}
+		</div>
+	{% endif %}
 	
 {% endblock body %}

@@ -114,3 +114,4 @@ services:
             - '../src/Service/SomeService.php'
             - '../src/Service/SomeService2.php'
             - '../src/Extension/ExpressionLanguage/Decorator/ValidatorExpLangFunctionProvider.php'
+            - '../src/Service/Naming/SlugNamer.php'

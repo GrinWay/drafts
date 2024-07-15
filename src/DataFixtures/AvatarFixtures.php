@@ -9,17 +9,17 @@ use Doctrine\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use App\Entity\Media\Image;
+use App\Entity\Media\Avatar;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use App\Service\Doctrine\TaskEntityUtils;
 use App\Service\StringService;
 use Vich\UploaderBundle\Entity\File as VichFile;
 
-class ImageFixtures extends AbstractProductFixtures implements FixtureGroupInterface//, DependentFixtureInterface
+class AvatarFixtures extends AbstractProductFixtures implements FixtureGroupInterface//, DependentFixtureInterface
 {
     public function __construct(
         $faker,
-        #[Autowire('%app.fixture.product.image%')]
+        #[Autowire('%app.fixture.product.avatar%')]
         private readonly int $count,
         private StringService $stringService,
     ) {
@@ -32,13 +32,13 @@ class ImageFixtures extends AbstractProductFixtures implements FixtureGroupInter
         ObjectManager $manager
     ): void {
         for ($i = 0; $i < $this->count; ++$i) {
-            $filepath = $this->stringService->getPath(
-				$this->faker->unique()->numberBetween(1, 5).'.jpg',
+			$filepath = $this->stringService->getPath(
+				$this->faker->numberBetween(1, 5).'.jpg',
 			);
 			$vichFile = new VichFile();
 			$vichFile->setName($filepath);
 			
-            $obj = new Image(
+            $obj = new Avatar(
 				filepath: $filepath,
 				fileOriginalName: $filepath,
 				//vichFile: $vichFile,
