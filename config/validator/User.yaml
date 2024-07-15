@@ -1,0 +1,7 @@
+App\Entity\User:
+
+    constraints:
+    
+    properties:
+        
+    getters:

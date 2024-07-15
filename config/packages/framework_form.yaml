@@ -1,0 +1,13 @@
+framework:
+    form:
+    
+        csrf_protection:
+            enabled: true
+            field_name: '_csrf_token'
+            
+when@dev:
+    framework:
+        form:
+            csrf_protection:
+                enabled: false
+            

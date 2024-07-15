@@ -1,0 +1,8 @@
+App\Entity\Media:
+
+    constraints:
+    -   Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity: webPath
+    
+    properties:
+    
+    getters:

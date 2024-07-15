@@ -1,0 +1,116 @@
+imports:    
+    -   resource: 'services_yaml/'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        
+        bind:
+            
+            ###> SERVICES ###
+            $t:                 '@Symfony\Contracts\Translation\TranslatorInterface'
+            ###< SERVICES ###
+            
+            
+            ###> grinway ###
+            $ru12Carbon:  '@app.ru_12_carbon'
+            $enUtcCarbon: '@app.en_utc_carbon'
+            $faker:             '@grin_way_service.faker'
+            ###< grinway ###
+            
+            
+            ###> PARAMS ###
+            $kernelProjectDir:  '%kernel.project_dir%'
+            $adminEmail:        '%env(APP_ADMIN_EMAIL)%'
+            ###< PARAMS ###
+            
+            
+            ###> MESSENGER ###
+            $adminSendEmailMessage: '@app.messenger.notifier.admin_send_email'
+            
+            $get: '@grin_way_web_app.messenger.query'
+            
+            $messengerServiceLocator: '@app.messenger.service_locator'
+            ###< MESSENGER ###
+            
+            
+            ###> PROMOCODE ###
+            $promocodes: !tagged_locator
+                tag: 'app.promocode'
+            ###< PROMOCODE ###
+            
+            
+            #//TODO (NewClosureDefinitionWithTagPass) USAGE:
+            ###> HASH ###
+            $callableHashLocator: !tagged_locator
+                tag: !php/const 'App\Type\Hash\HashType::TAG'
+                index_by: index
+            ###< HASH ###
+            
+            
+            ###> PATHS ###
+            $absPublicDir: '%app.abs_public_dir%'
+            ###< PATHS ###
+            
+            
+    _instanceof:
+        
+        ###> MESSENGER ###
+        App\Contract\Messenger\CommandBusHandlerInterface:
+            tags:
+            -   name:   'messenger.message_handler'
+                bus:    'command.bus'
+            -   name:   'app.command_bus_handler'
+
+        App\Contract\Messenger\EventBusHandlerInterface:
+            tags:
+            -   name:   'messenger.message_handler'
+                bus:    'event.bus'
+            -   name:   'app.event_bus_handler'
+        ###< MESSENGER ###
+        
+        
+        ###> PROMOCODE ###
+        App\Contract\Doctrine\Promocode\PromocodeInterface:
+            tags:
+            -   name: 'app.promocode'
+            -   name: 'app.messenger'
+        ###< PROMOCODE ###
+        
+        
+        ###> DTO ###
+        App\Contract\Dto\DtoInterface:
+            tags:
+            -   name: app.dto
+            -   name: 'app.messenger'
+        ###< DTO ###
+        
+        
+        ###> EVENT LISTENER ###
+        
+        App\Contract\EventListener\KernelEventListenerInterface:
+            tags:
+            -   name: kernel.event_listener
+        
+        ###< EVENT LISTENER ###
+
+        
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Attribute/'
+            - '../src/Entity/'
+            - '../src/Contract/'
+            - '../src/EventSubscriber/'
+            - '../src/Kernel.php'
+            - '../src/Service/Anonymous/'
+            - '../src/Service/Validator/TextValidatorNormalizer.php'
+            - '../src/Messenger/MessengerManager.php'
+            - '../src/Messenger/Notifier/NotifierHandlers.php'
+            - '../src/Service/Router/AttributeRouterReader.php'
+            - '../src/Service/Doctrine/PurgerTruncateFactory.php'
+            - '../src/Service/SomeService.php'
+            - '../src/Service/SomeService2.php'
+            - '../src/Extension/ExpressionLanguage/Decorator/ValidatorExpLangFunctionProvider.php'

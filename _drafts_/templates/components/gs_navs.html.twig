@@ -1,0 +1,115 @@
+{#
+	Renders links or forms
+
+	{{ component('grin_way_navs', { options: [
+		{
+			route:						'',
+			#url:						'',
+			name:						'',
+			form:						{
+				type:	'if empty dont form',
+			},
+			
+			oneClick:					true,
+			
+			confirm:		{
+				message:				'if empty dont confirm',
+				text:					'',
+				icon:					'success',
+				showCancelButton:		true,
+			},
+			
+			attributes:					{},
+			query:						{ id: <> },
+			show:						true,
+			role:						'PUBLIC_ACCESS',
+			class:						'btn btn-outline-success',
+		},
+	]}) }}
+#}
+
+{% set dataActionEvents = '
+	click->confirm#onLink:prevent
+
+	click->one-click#lock
+	turbo:before-cache@document->one-click#unlock
+	load@document->one-click#unlock
+
+' %}
+
+{% for option in options %}
+	{% if is_granted(option.role) and option.show is defined and option.show %}
+
+		{# Modal #}
+		<span
+			
+			{% if option.confirm is defined and option.confirm.message is defined and option.confirm.message %}
+				{{ stimulus_controller('confirm', {
+					url:							option.url ? option.url : url(option.route, option.query),
+					message:						option.confirm.message,
+				}) }}
+				{% if option.confirm.successMessage is defined %}
+					data-confirm-success-message-value="{{ option.confirm.successMessage }}"
+				{% endif %}
+				{% if option.confirm.failureMessage is defined %}
+					data-confirm-failure-message-value="{{ option.confirm.failureMessage }}"
+				{% endif %}
+				{% if option.confirm.text is defined %}
+					data-confirm-text-value="{{ option.confirm.text }}"
+				{% endif %}
+				{% if option.confirm.icon is defined %}
+					data-confirm-icon-value="{{ option.confirm.icon }}"
+				{% endif %}
+				{% if option.confirm.successIcon is defined %}
+					data-confirm-success-icon-value="{{ option.confirm.successIcon }}"
+				{% endif %}
+				{% if option.confirm.failureIcon is defined %}
+					data-confirm-failure-icon-value="{{ option.confirm.failureIcon }}"
+				{% endif %}
+				{% if option.confirm.showCancelButton is defined %}
+					data-confirm-show-cancel-button-value="{{ option.confirm.showCancelButton }}"
+				{% endif %}
+			{% endif %}
+		
+		>
+			{# >>> _FORM_ >>> #}
+			
+			{% set name = option.name %}
+			
+			{% if option.form.type is defined and option.form.type %}
+				
+				{% set form = grin_way_create_form(option.form.type, option.form.data, option.form.options) %}
+					{{ form_start(form, { unique_id: true, attr: {
+						action:			option.url ? option.url : url(option.route, option.query),
+					}|merge(option.attributes) }) }}
+						{{ form_rest(form) }}
+						<button
+							{% if option.oneClick is defined and option.oneClick %}
+								{{ stimulus_controller('one-click') }}
+							{% endif %}
+							type="submit"
+							class="{{ option.class }}"
+							data-action="{{ dataActionEvents }}"
+						>
+							{{- name|raw -}}
+						</button>
+					{{ form_end(form) }}
+
+			{# >>> _A_ >>> #}
+			{% else %}
+				<a
+					{% if option.oneClick is defined and option.oneClick %}
+						{{ stimulus_controller('one-click') }}
+					{% endif %}
+					class="{{ option.class }}"
+					href="{{ option.url ? option.url : url(option.route, option.query) }}"
+					data-action="{{ dataActionEvents }}"
+					{{ option.attributes|grin_way_array_to_attribute }}
+				>
+					{{- name|raw -}}
+				</a>
+			{% endif %}
+		</span>
+
+	{% endif %}
+{% endfor %}

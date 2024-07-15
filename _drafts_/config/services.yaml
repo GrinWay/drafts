@@ -1,0 +1,169 @@
+parameters:
+    #grin_way_generic_parts.timezone:                          'UTC'
+    #grin_way_generic_parts.locale:                            'ru_RU'
+    
+    ###> DEFAULT ###
+    grin_way_generic_parts.timezone_session_name:             'grin_way_generic_parts.tz_session_name'
+    ###< DEFAULT ###
+    
+    ###> KERNEL ###
+    grin_way_generic_parts.project_dir:                       '%kernel.project_dir%'
+    ###< KERNEL ###
+    
+    ###> REGEX ###
+    grin_way_generic_parts.regex_locale:                      '(?:\w{2,5})?'
+    ###< REGEX ###
+    
+services:
+    _defaults:
+        public:             false
+        autowire:           false
+        autoconfigure:      false
+        bind:
+            ###> PARAMETERS ###
+            $timezone:          '%grin_way_generic_parts.timezone%'
+            $locale:            '%grin_way_generic_parts.locale%'
+            $tzSessionName:     '%grin_way_generic_parts.timezone_session_name%'
+            
+            ###> SERVICES ###
+            $debugLogger:           '@monolog.logger.grin_way_generic_parts.debug'
+            $carFacImm:             '@grin_way_generic_parts.carbon_factory'
+            $bus:                   '@grin_way_generic_parts.messenger.bus'
+            #$carFacImm:         ''
+            $faker:                 '@grin_way_generic_parts.faker'
+            #$faker:             ''
+            $formFactory:           '@Symfony\Component\Form\FormFactoryInterface'
+
+    ###> TEST SERVICE ###
+    grin_way_generic_parts.test_service:
+        class:                  GrinWay\GenericParts\Service\TestService
+    ###< TEST SERVICE ###
+    
+    
+    ###> CONTROLLERS ###
+    grin_way_generic_parts.abstract_controller:
+        abstract:               true
+        public:                 true
+        class:                  GrinWay\GenericParts\Controller\GSAbstractController
+        autowire:               true
+        calls:
+        -   setContainer:
+            -   '@service_container'
+            
+    GrinWay\GenericParts\Controller\ApiUtcDtController:
+        parent:                 grin_way_generic_parts.abstract_controller
+        class:                  GrinWay\GenericParts\Controller\ApiUtcDtController
+        tags:
+        -   'controller.service_arguments'
+        
+    GrinWay\GenericParts\Controller\ApiSetTimezoneController:
+        parent:                 grin_way_generic_parts.abstract_controller
+        class:                  GrinWay\GenericParts\Controller\ApiSetTimezoneController
+        tags:
+        -   'controller.service_arguments'
+    ###< CONTROLLERS ###
+    
+    
+    ###> API SERVICES ###
+    ###> CARBON ###
+    #grin_way_generic_parts.carbon_factory:
+    #    public:                 true
+    #    class:                  Carbon\FactoryImmutable
+    #    arguments:
+    #        $settings:
+    #            strictMode:               true
+    #            timezone:                 '%grin_way_generic_parts.timezone%'
+    #            toStringFormat:           'd.m.Y H:i:s P'
+    #            monthOverflow:            true # addXXX add(<>, <>)
+    #            yearOverflow:             true        
+    ###< CARBON ###
+    
+    ###> FAKER ###
+    #grin_way_generic_parts.faker:
+    #    public:                 true
+    #    class:                  Faker\Factory
+    #    factory:                ['Faker\Factory', 'create']
+    #    arguments:
+    #        - '%grin_way_generic_parts.locale%'
+    ###< FAKER ###
+    
+    ###> MESSENGER ###
+    ###> A handy way to get result of a sync message | $result = $thisService(new Message) ###
+    grin_way_generic_parts.sync_message:
+        autoconfigure:          true
+        public:                 true
+        class:                  GrinWay\GenericParts\Messenger\SyncMessage
+        arguments:
+            $messageBus: '@grin_way_generic_parts.messenger.bus'
+    ###< MESSENGER ###
+    ###< API SERVICES ###
+
+    
+    ###> SERVICES ###
+    grin_way_generic_parts.conf_service:
+        class:      GrinWay\GenericParts\Service\GSConfService
+        arguments:
+            $projectDir:    '%grin_way_generic_parts.project_dir%'
+    ###< SERVICES ###
+    
+    
+    ###> KERNEL SUBSCRIBER ###
+    grin_way_generic_parts.json_response_subscriber:
+        autoconfigure:          true
+        class:                  GrinWay\GenericParts\EventSubscriber\GSJsonResponseSubscriber
+        arguments:
+            $t: '@translator.default'
+        
+    grin_way_generic_parts.init_subscriber:
+        autoconfigure:          true
+        autowire:               true
+        class:                  GrinWay\GenericParts\EventSubscriber\InitSubscriber
+    ###< KERNEL SUBSCRIBER ###
+    
+    
+    ###> TWIG ###
+    ###> COMPONENT ###  
+    GrinWay\GenericParts\Twig\Component\GSAlertComponent:
+        class:                  GrinWay\GenericParts\Twig\Component\GSAlertComponent
+        autoconfigure:          true
+    GrinWay\GenericParts\Twig\Component\GSDtComponent:
+        class:                  GrinWay\GenericParts\Twig\Component\GSDtComponent
+        autoconfigure:          true
+    GrinWay\GenericParts\Twig\Component\GSNavsComponent:
+        class:                  GrinWay\GenericParts\Twig\Component\GSNavsComponent
+        autoconfigure:          true
+    GrinWay\GenericParts\Twig\Component\GSSpriteComponent:
+        class:                  GrinWay\GenericParts\Twig\Component\GSSpriteComponent
+        autoconfigure:          true
+    GrinWay\GenericParts\Twig\Component\GSSubmitButtonComponent:
+        class:                  GrinWay\GenericParts\Twig\Component\GSSubmitButtonComponent
+        autoconfigure:          true
+    GrinWay\GenericParts\Twig\Component\GSWatchComponent:
+        class:                  GrinWay\GenericParts\Twig\Component\GSWatchComponent
+        autoconfigure:          true
+    GrinWay\GenericParts\Twig\Component\GSFlashBag:
+        class:                  GrinWay\GenericParts\Twig\Component\GSFlashBag
+        autoconfigure:          true
+    
+    ###> EXTENSION ###
+    GrinWay\GenericParts\Twig\Extension\ByteForHumansExtension:
+        class:                  GrinWay\GenericParts\Twig\Extension\ByteForHumansExtension
+        autoconfigure:          true
+    GrinWay\GenericParts\Twig\Extension\DefaultExtension:
+        class:                  GrinWay\GenericParts\Twig\Extension\DefaultExtension
+        autoconfigure:          true
+    ###< TWIG ###
+    
+    
+    ###> MESSENGER ###
+    ###> HANDLERS ###
+    grin_way_generic_parts.init_carbon_handler:
+        class:                  GrinWay\GenericParts\Messenger\KernelBootstrap\Command\Handler\InitCarbonHandler
+        autoconfigure:          true
+    
+    GrinWay\GenericParts\Messenger\KernelBootstrap\Command\Handler\SetDefaultDateTimeZoneHandler:
+        class:                  GrinWay\GenericParts\Messenger\KernelBootstrap\Command\Handler\SetDefaultDateTimeZoneHandler
+        autoconfigure:          true
+    ###< HANDLERS ###
+    ###< MESSENGER ###
+    

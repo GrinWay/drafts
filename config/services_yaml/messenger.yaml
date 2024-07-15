@@ -1,0 +1,24 @@
+services:
+
+    App\Messenger\MessengerManager:
+        class: App\Messenger\MessengerManager
+        arguments:
+            $commandBusHandlers: !tagged_locator
+                tag: app.command_bus_handler
+            $eventBusHandlers: !tagged_locator
+                tag: app.event_bus_handler
+
+    app.messenger.notifier.admin_send_email:
+        class: App\Messenger\Notifier\ToAdminSendEmail
+        shared: false
+        arguments:
+            $toEmail: '%env(APP_ADMIN_EMAIL)%'
+    
+    app.messenger.middleware.add_handler_argument_from:
+        abstract: true
+        class: App\Messenger\Middleware\AddHandlerArgumentFrom
+        
+    app.notifier_handlers:
+        class: App\Messenger\Notifier\NotifierHandlers
+    App\Messenger\Notifier\NotifierHandlers: '@app.notifier_handlers'
+    

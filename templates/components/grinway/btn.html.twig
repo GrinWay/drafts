@@ -1,0 +1,7 @@
+<button {{ attributes.defaults({ class: "btn" }) }}>
+	<span {{ attributes.nested('span').defaults({ class: 'w-100 h-100' }) }}>
+		{%- block content -%}
+			Button
+		{%- endblock -%}
+	</span>
+</button>

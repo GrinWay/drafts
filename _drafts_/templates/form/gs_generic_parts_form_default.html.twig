@@ -1,0 +1,104 @@
+{% use 'bootstrap_5_layout.html.twig' %}
+
+
+{# ###> PASSWORD VISIBILITY ###}
+
+{%- block password_widget -%}
+	{%- set type = type|default('password') -%}
+	{%- set grin_way_input_password_wgt_attrigutes = {
+		'name':									full_name,
+		'type':									type,
+		'class':								'form-control',
+		'data-password-visibility-target':		'input',
+		'spellcheck':							false,
+	} -%}
+	{% if required is defined and required %}
+		{% set grin_way_input_password_wgt_attrigutes = grin_way_input_password_wgt_attrigutes|merge({
+			'required':								'required',
+		}) %}
+	{% endif %}
+	{%- set row_attr = grin_way_input_password_wgt_attrigutes|merge(row_attr|default([])) -%}
+	
+	<div
+		{{ stimulus_controller('password-visibility') }}
+		class="position-relative"
+	>
+		<input
+			{{ row_attr|grin_way_array_to_attribute }}
+		/>
+
+		<button
+			tabindex="-1"
+			style="width: 35px;"
+			class="me-1 position-absolute end-0 top-0 h-100 bg-transparent border-0"
+			type="button"
+			data-action="password-visibility#toggle"
+		>
+		   
+			<span
+				data-password-visibility-target="icon"
+				class=""
+			>
+				{{ component('grin_way_sprite', { id: 'eye' }) }}
+			</span>
+			
+			<span
+				data-password-visibility-target="icon"
+				class="hidden"
+			>
+				{{ component('grin_way_sprite', { id: 'eye-close' }) }}
+			</span>
+		
+		</button>
+	</div>
+{%- endblock password_widget -%}
+
+{# ###< PASSWORD VISIBILITY ###}
+
+
+{# ###> INPUT TYPE NUMBER + Symfony\Component\Form\Extension\Core\Type\MoneyType = LOCAL MONEY ###}
+
+{% block money_widget -%}
+	{%- set attr = attr|merge({
+		'data-controller':											'gs-local-money',
+		'data-gs-local-money-locale-value':							app.request.locale,
+		
+	}) -%}
+		{# ###> HAS DEFAULT VALUE IN CONTROLLER ###
+		
+		'data-gs-local-money-change-speed-value':					700,
+		
+		###< HAS DEFAULT VALUE IN CONTROLLER ### #}
+    {{- parent() -}}
+{%- endblock money_widget %}
+
+{# ###< INPUT TYPE NUMBER + Symfony\Component\Form\Extension\Core\Type\MoneyType = LOCAL MONEY ###}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

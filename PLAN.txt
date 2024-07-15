@@ -1,0 +1,399 @@
+ALWAYS SYMFONY BIN/CONSOLE TOOLS
+|
+SYMFONY ROUTE
+	?
+	зачем options в route и можно ли их модифицировать в ControllerEventListener
+	RequestStack or Request
+	use Session in stateless route
+SYMFONY SECRETS
+SYMFONY CONTROLLER
+	?
+	#[MapUploadedFile] UploadedFile $filename
+SYMFONY COOKIE
+SYMFONY SESSION
+SYMFONY HTTP FOUNDATION
+	?
+	как в request УСТАНОВИТЬ не скалярное значение (можно)
+SYMFONY DOCTRINE
+	?
+	как изменить тип записи datetime в базу данных (dbal:doctrine.dbal.types.datetime_immutable.MyClass)
+	setHint(Query::HINT_REFRESH, true) вообще работает?
+	бекап базы данных
+	получить запись из db по uuid
+	https://habr.com/ru/companies/wunderfund/articles/685894/
+	https://symfony.com/doc/current/session.html#migrating-between-session-handlers
+	toIterable https://symfony.com/doc/current/components/http_foundation.html#streaming-a-json-response
+	разница ObjectManager EntityManager #[MapEntity(objectManager: '')]
+	гидротация только одного объекта
+	разница Query::execute Query::getResult
+	https://github.com/stof/StofDoctrineExtensionsBundle
+	сдеалть своего purger
+	doctrine add hint (download from db)
+	make:fixtures
+SYMFONY MESSENGER
+	?
+	Прервать вызов MessageHandler по SomeStamp, когда был вызван особый обработчик (после которого других обработчиков вызывать не нужно)
+	bin/console messenger:stats Transport implements MessageCountAwareInterface
+	MyTransport implements QueueReceiverInterface bin/console messenger:consume —all —queues=h
+	есть или нет транзакиии в handlers
+	custom serializer for messenger
+	Как в BatchHandler отправить Acknowledger
+	обязательно ли оставлять doctrine_ping_connection middleware после handle_message
+	почему middleware вызывается дважды от GET, и от WORKER
+	ещё не разу не смог отправить сообщение при исключении в command handler
+	https://github.com/sroze/messenger-enqueue-transport
+SYMFONY PROPERTY ACCESS COMPONENT
+	?
+	key]1 (закрывающая квадр. скобка) не парсит
+SYMFONY PROPERTY INFO COMPONENT
+	?
+	реализовать PropertyDocBlockExtractorInterface и передать в descriptionExtractors of PropertyInfoExtractor
+SYMFONY ENV PROCESSOR
+SYMFONY YAML PARSER (TAGS)
+	?
+	kernel.default_locale от чего зависит
+SYMFONY SERVICE CONTAINER
+	?
+	Запросить в extension сервис, который ещё не успел попасть в контейнер
+	реализовать проход компилятора для тега (app.set_callable_result, method, args) чтоб был найден метод (SetCallableResultInterface) класса для снабжения данными тегированного
+	разница в проходах компилятора PassConfig::TYPE_BEFORE_OPTIMIZATION PassConfig::TYPE_AFTER_REMOVING
+	удалить env переменную в бандле, чтоб не торчал
+	что фактически делает запись service_id: ~
+	как работает опция services: #prototype#: (from_callable:)
+	register extension https://symfony.com/doc/current/doctrine/custom_dql_functions.html
+	NOTE Как лениво провести сервис:
+		lazy: true #[Lazy] #[Autoconfigure(lazy: true)]
+		!tagged_locator !tagged_iterator
+		!service_locator new ServiceLocator in yaml
+		!service_closure #[AutowireServiceClosure]
+		!closure #[AutowireMethodOf]
+	add yaml custom tag
+		!tagged_locator !tagged_iterator !service_closure !closure !service_locator !service !returns_clone !abstract
+		!php/const !php/env !php/object
+		!!str !!float !!binary
+	удалить сервис в зависимости от APP_ENV
+	провести абстрактный аргумент в compiller pass
+	Expressions can be used in arguments, properties, as arguments with configurator, as arguments to calls (method calls) and in factories
+	services.yaml можно ли в factory: сослаться на сервис который создаёшь?
+	как правильно импортировать файлы конфигурации services.yaml (есть проблемы)
+	Что делает: AutowireDecorated
+	как _defaults: bind в бандле? (Definition::setBindings ?)
+	!!! Как добавить тег к Psr\Log\LoggerInterface
+	по неизвестной причине некоторые сервисы не могут попасть в коллекцию по тегу
+		но #[AutowireLocator] лениво подтягивает сервисы успешно
+		Psr\Log\LoggerInterface тегирую, а получить в коллекцию !tagged_locator не могу, а через !service_locator могу
+	services.yaml namespace-path не назначает теги как следует, нужно использовать _instanceof
+	как по Definition получить DEFINITION_SERVICE_ID из container
+	Как изменить Definition так, чтобы возвращался Closure определённого метода
+		И ВЫЗВАТЬ ЕГО МОЖНО БЫЛО НЕСТАТИЧЕСКИ (new Reference)
+	decorator pattern https://symfony.com/doc/current/service_container/service_decoration.html
+	!!! КАК В COMPILER PASS ПЕРЕДАТЬ \Closure например от метода сервиса в аргумент у Definition (создать Definition(Closure))
+SYMFONY DependencyInjection Component https://symfony.com/doc/current/components/dependency_injection.html
+SYMFONY CONFIGURING SYMFONY https://symfony.com/doc/current/configuration.html
+	?
+	извлечь используя extractor docBlock @return
+SYMFONY EXPRESSION LANGUAGE
+SYMFONY EVENTS
+	?
+	??? слушатель зарегестрирован в dispatcher, а при отправке события не вызывается
+		form events ("form.pre_submit") не обрабатываются сервисами слушателей
+	как узнать список всех диспетчеров
+	реализовать в dockBlock: controllerArgumentsMethodDbEventListener: METHOD(RESULT_OF_REPOSITORY, ...REST_ARGrinWay_OF_METHOD)
+	addDopInfoForControllerArgumentResolvers: сделать свой AppEventDispatcher, app.event_listener #[AppEventListener(TARGET_CLASS | TARGET_METHOD)] собрать все Closure слушателей и вызвать при событии
+The EventDispatcher Component https://symfony.com/doc/current/components/event_dispatcher.html
+TWIG
+	1) https://twig.symfony.com/doc/3.x/functions/language_names.html
+	2) https://twig.symfony.com/doc/3.x/advanced.html#globals
+	https://symfony.com/doc/current/templates.html
+	?
+	Как вызвать Closure в шаблоне
+	The TwigBundle registers an ErrorListener that forwards the Request to a given controller defined by the exception_listener.controller parameter
+SYMFONY TWIG COMPONENTS https://symfony.com/bundles/ux-twig-component/current/index.html
+	?
+	attributes.defaults можно перезаписать, а класс добавится
+	cva(compoundVariants) зачем class (странное название, не имеет отношение к выбираемому аттрибуту, просто значение, которое вернётся)
+	как каждый раз вызвать метод а не получать computed, который по умолчанию (вызов через this)
+SYMFONY FORMS
+	***
+	NEXT FORM TYPE: https://symfony.com/doc/current/reference/forms/types/search.html
+	CollectionType: https://symfony.com/doc/current/form/form_collections.html#handling-the-new-tags-in-php
+	?
+	не получилось задать empty_data в виде массива compoundFormType
+		$resolver
+            ->setDefaults([
+				'empty_data' => [
+					'address' => '',
+					'car' => '',
+					'house_number' => '',
+					'descriptionForOld' => '',
+				],
+            ])
+			->setAllowedTypes('address_list', ['array', 'null'])
+        ;
+	Не знаю какой, но есть критерий по которому form::submit(payload)|form::handleRequest(request)
+		может не передать данные формы в исходные данные(объект)
+		есть тип формы и я в ручную добавляю в payload данные, которых не было до этого (request->files в request->request)
+		при этом тип формы содержит поле, которое я добавляю в payload
+		но свойство объекта не назначается значением из формы
+	как установить значение в поле, после возникновения ошибки (валидации например)
+	? The label_format option is evaluated in the form theme. Make sure to update your templates in case you customized form theming.
+	реализовать FormTypeGuesser для maxlen=3 pattern="^\b100\b|\b[0-9]{1,2}\b$" свойства с именем percent
+	NOTE вся валидация проиходит после событий
+	при создании формы пользователя возникает ошибка
+		Cannot assign string to property App\Entity\Product\Product::$createdAt of type ?DateTimeInterface
+	*Не могу понять из-за чего встроенный тип формы не может попасть в Request::getPayload
+	Как переопределить maxlength в типе формы без создания угадывателя типа
+	Как выводить форму редактирования пользователя если у него есть абстрактный вид продукта (сделать не абстрактным, а для формы добавить трансформер чтобы нужный тип объекта с формы делал)
+	как bootstrap определяет темы (block form_label например)
+	почему при использовании CallbackTransformer мне не приходит параметр, который нужно трансформировать
+	CollectionType allow_delete=true не вызывает удаление элемента коллекции
+		Каким образом результирующий объект содержит переданное кол-во collection
+	как отобразить сообщение об ошибке над конкретным полем (false === compound)
+	каждый элемент с label, кроме самого наружнего, это _row()
+	не уверен, но кажется form_start() содержит в себе form_errors()
+	для типа uuid нужен похоже свой трансформер
+	как определить имя блока коллекции
+	даже если указан класс data_class как запретить создавать объект от него (например потому что он абстрактный)
+	вывести Id но запретить его изменение на уровне backend
+	как запретить вывод всех полей типа формы: только form.name, form.age (без определённых полей)
+	почему не переопределяет элемент формы по пользовательскому типу [app_test_large_form]_[widget]
+	как отрисовать только определённую часть всех типов форм, но [form]_label() как буд-то не все типы
+		почему не переопределяет каждый тип [form]_[widget]
+	как убрать легенду из формы
+	что за методы $form->getParent() $form->getConfig()
+	как не включать form_widget element
+		заменить input csrf_token не включаяя его, а используя render_hinclude когда страница закеширована
+	make:form
+	? зачем PUT, PATCH or DELETE
+	проверить что в $form не передаются hidden поля из POST
+		не получается из формы получить поле _token $form->get('_token')->getData() хотя getPayload справляется
+	когда узнаю _token id и научусь переопределять input _token widget попробовать динамический csrf_token с IsCsrfTokenValid(new Expression)
+	как добавлять ошибки в form_errors
+		если произошло исключение при трансформации (TransformationFailedException)
+		в errors формы добавляются ошибки
+	реализовать DataTransformer для CollectionType
+		неужели DataTransformer не может работать с коллекцией
+			Пустые элементы коллекции создаются PRE_SET_DATA ResizeFormListener
+			А заполняются позже после нормализации
+	Имеет ли смысл DataTransformer для ChoiceType (похоже нет: Data transformers change the representation of a single value)
+	реализовать DateTime разбить на разные поля Год Месяц Дата Время
+	как использовать empty_data с \Closure
+	реализовать тему для YearMonthDayHourMinuteSecondType
+		{%- block app_year_month_day_hour_minute_second_widget -%}{%- endblock -%}
+	? если использовать DataMapper может ли значение после mapFormsToData быть null
+	слушая событие формы например "onPostSetData" как модифицировать элемент формы, а не просто удалить (удалить старый и добавить новый)
+	как управлять последовательностью полей типа формы
+	не понимаю есть ли преимущества у form.submit или form.post_submit в отличии от form.pre_submit (есть, в используемых трансформерах)
+	почему иногда unset($payload['key']); $form->submit($payload, clearMissing: true) очищает поля сущностей, а иногда нет
+	не получается в root form type configureOptions для определённого поля указать constraints (?фича удалена)
+SYMFONY VALIDATOR
+	?
+	+ Возможно ли ограничить способы валидации (-Attributes, -loadMethod, +addYamlMappings) (естественно, просто настрой framework.validation)
+	ExpressionSyntax constraint имеет косяк, даже когда моя функция добавлена через provider
+		ExpressionSyntax всё равно не видит её
+	что за property options: cascadeStrategy, autoMappingStrategy, traversalStrategy
+	+ не проходит RU-ru, только ru_RU https://symfony.com/doc/current/reference/constraints/Locale.html не работает canonicalize (создал свой FormTypeExtension и установил для него data transformator)
+	непонятное ограничение https://symfony.com/doc/current/reference/constraints/Cidr.html#basic-usage
+	Constraints\Valid работает ли на Collection
+	Length or Range используются формой для аттрибута html5 maxlenght
+	Как заставить читать ограничения коллекции
+	Как включить ограничение EnableAutoMapping глобально
+	достать ClassMetadata определённого класса и добавить ограничение Callback
+	*назначить Traverse на класс коллекции, а в классе, который использует коллекцию не указывать Valid или Cascade
+	 будет ли проверка элеметов коллекции
+SYMFONY UPLOAD FILES
+	https://github.com/dustin10/VichUploaderBundle/blob/master/docs/index.md
+	https://github.com/dustin10/VichUploaderBundle/blob/master/docs/other_usages/replacing_file.md
+	?
+	*Как загрузить папку
+		еще момент If a directory was uploaded, getClientOriginalPath() will contain the webkitRelativePath as provided by the browser. Otherwise this value will be identical to getClientOriginalName().
+	*Как request->files обрабатывается при form::submit
+	*Как валидировать сущность с UniqueEntity по полю типа File (когда форма отправляет файл)
+	Если в Request::payload не попадают загружаемые файлы тогда как обработать только поле файла FormFile::submit (добавь в payload данные из Request::files)
+***
+SYMFONY HTTP COMPONENT https://symfony.com/doc/current/components/http_kernel.html
+SYMFONY STRING
+SYMFONY CLOCK COMPONENT
+SYMFONY CONFIG COMPONENT https://symfony.com/doc/current/components/config.html
+SYMFONY OPTIONS RESOLVER
+	?
+	не передавать массив значений в callback только чтобы установить по умолчанию $resolver->setIgnoreUndefined(true);
+	определить разрешённый набор ЗНАЧЕНИЙ choices => [ anyKey => stringValue, anyKey2 => stringValue2 ] Как прототип НО с ключевыми значениями
+SYMFONY EXTENTIONS
+	?
+	add doctrine functions
+SYMFONY SECURITY
+	https://symfony.com/doc/current/reference/configuration/security.html
+	?
+	назначать группы login, register в зависимости от состояния объекта с помощью своего sequence provider UserGroupProvider 
+	как в сервисе получить _token csrf защиты
+	(The security system uses an event dispatcher per firewall: php bin/console debug:event-dispatcher --dispatcher=security.event_dispatcher.main)
+	Autowiring: [ #[CurrentUser] User $user / User $user ]
+	Какая разница между User and SecurityToken (UserValueResolver, SecurityTokenValueResolver)
+	security-http/Attribute/CurrentUser.php
+	https://symfony.com/doc/current/doctrine/registration_form.html
+	https://symfony.com/doc/current/reference/formats/expression_language.html#built-in-objects-and-variables
+	make:registration-form
+	https://symfony.com/doc/current/reference/forms/types/password.html#hash-property-path
+	https://symfony.com/doc/current/reference/constraints/UserPassword.html
+SYMFONY UX TURBO https://symfony.com/bundles/ux-turbo/current/index.html
+	HOTWIRE: STIMULUS
+	?
+	реализовать https://symfony.com/doc/current/form/form_collections.html#allowing-new-tags-with-the-prototype
+		посмотреть после реализации
+		https://symfony.com/doc/current/form/form_collections.html#javascript-with-stimulus
+	есть ли разница между зафейленой обработанной формой (422) и необработанной формой для UX TURBO
+SYMFONY STIMULUS https://symfony.com/bundles/StimulusBundle/current/index.html
+	HOTWIRE: TURBO
+SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/index.html
+	https://ux.symfony.com/demos/live-component/form-collection-type/2299
+	https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
+	?
+	вызывается или нет PreCreateForRenderEvent при обновлении re-render
+HOTWIRE: STRADA
+SYMFONY TESTS https://symfony.com/doc/current/testing.html
+	https://symfony.com/doc/current/translation.html#locale-switcher
+	?
+	определи mount и не устанавливай в класс значение параметра https://symfony.com/bundles/ux-twig-component/current/index.html#test-helpers
+	Don't add the void return type to methods in tests;
+	https://symfony.com/doc/current/components/http_foundation.html#simulating-a-request
+	https://symfony.com/doc/current/controller/error_pages.html#testing-error-pages-during-development
+	https://symfony.com/doc/current/components/clock.html
+	https://symfony.com/doc/current/testing/database.html
+	https://symfony.com/doc/current/messenger.html#in-memory-transport
+	($twig->getLoader()->exists('home/index.html.twig'))
+	https://symfony.com/doc/current/service_container/service_subscribers_locators.html#testing-a-service-subscriber
+	https://symfony.com/doc/current/form/unit_testing.html
+	https://symfony.com/doc/current/validation/custom_constraint.html#testing-custom-constraints
+SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
+SYMFONY TRANSLATION COMPONENT https://symfony.com/doc/current/translation.html
+SYMFONY CACHE
+	?
+	$request->getETags()
+	создать cache адаптер для ExpressionLanguage($adapter)
+SYMFONY SERIALIZER
+	?
+	добавляет новые поля в json при serialize
+	grin_way_env_csv_multiline parse with serializer
+SYMFONY FILESYSTEM
+SYMFONY LOCK
+	?
+	Lock factory для Schedule
+SYMFONY INTL COMPONENT https://symfony.com/doc/current/components/intl.html
+SYMFONY CONTAINER BUILDER
+	?
+	https://github.com/violet-php/class-scanner
+	Yaml::PARSE_CONSTANT add into grin_way_service to allow !const 'GrinWay\WebApp\Type\Messenger\BusTypes::QUERY_BUS' into C:\Рабочий стол\PHP SYMFONY\__SANDBOX__\SYMFONY 7\bundles\grinway\web-app-bundle\config\services.yaml
+SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
+	?
+	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
+SYMFONY Process Component https://symfony.com/doc/current/components/process.html
+SYMFONY MONOLOG
+###> EXCERPTS TO ANSWER ###
+By default, the URLs generated for web assets use the same default_uri value, but you can change it with the asset.request_context.base_path and asset.request_context.secure container parameters.
+###< EXCERPTS TO ANSWER ###
+SYMFONY BUNDLES
+	?
+	Configuration addDefaultChildrenIfNoneSet
+SYMFONY MAILER https://symfony.com/doc/current/mailer.html
+SYMFONY WORKFLOW
+SYMFONY PROFILER
+	?
+	Почему сервис @Psr\Container\ContainerInterface не доступен из services.yaml
+https://symfony.com/doc/current/reference/dic_tags.html
+SYMFONY REDIS BUNDLE
+SYMFONY MY ADMIN
+SYMFONY WebLink
+SYMFONY WEBPACK ENCORE
+	https://symfony.com/doc/current/frontend.html
+    ?
+	The asset() function supports various cache busting techniques
+		https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-assets-version
+		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-version-format
+		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-json-manifest-path
+Framework Configuration Reference https://symfony.com/doc/current/reference/configuration/framework.html#reference-cache-prefix-seed
+SYMFONY BUNDLE FOSJsRoutingBundle (route -> uri in js)
+SYMFONY BUNDLE FOSHttpCacheBundle (invalidate cache)
+SYMFONY Dotenv class
+SYMFONY COMMAND class
+	?
+	command --param --param: InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY
+	Autowire RequestStack -> RequestStack::getCurrentRequest() === null
+SYMFONY COMPONENTS: https://symfony.com/components
+https://symfony.com/doc/current/reference/index.html
+AMQP
+	?
+	https://habr.com/ru/articles/62502/
+	https://www.rabbitmq.com/tutorials/tutorial-one-php
+	https://symfony.com/doc/current/messenger.html#amqp-transport
+	https://github.com/cloudamqp/amqproxy
+Beanstalkd Transport https://habr.com/ru/companies/shopozzcom/articles/240483/
+The Runtime Component https://symfony.com/doc/current/components/runtime.html
+REFERENCE https://symfony.com/doc/current/reference/index.html
+BOOTSTRAP (not deep)
+	?
+	опираясь на пример темы ".\vendor\symfony\twig-bridge\Resources\views\Form\form_div_layout.html.twig"
+		сделать свою тему на bootstrap (form/theme/grinway/index.html.twig)
+CHART JS
+CROP JS
+	?
+	https://symfony.com/doc/current/form/bootstrap5.html
+	реализовать полностью свою тему форм
+PRODUCTION
+	?
+	process manager Supervisor or systemd for messenger	
+	проверить timezone у messenger doctrine
+	Утилиты для управления ENV_VAR https://docs.platform.sh/guides/symfony/environment-variables.html?utm_source=symfony-cloud-sign-up&utm_medium=backlink&utm_campaign=Symfony-Cloud-sign-up&utm_content=docs
+	custom env loader (configuraiton)
+	https://symfony.com/doc/current/contributing/code/conventions.html
+hinclude.js (HOTWIRE круче)
+TODO
+	WebApp
+		themes
+			./templates\form\theme\custom.html.twig
+				class="immutable" & TextType -> displays immutably
+		$get
+			for QueryHandlerInterface ->addTag('messenger.message_handler', ['bus' => BusTypes::QUERY_BUS])
+		-	CommandBusHandlerInterface
+			EventBusHandlerInterface
+			QueryBusHandlerInterface
+		$errorFormat('message %s', 'param') $newUserFormat('message %s', 'param')
+			GrinWay\WebApp\Contract\MessageFormat\*
+			GrinWay\WebApp\Type\MessageFormat\*
+			GrinWay\WebApp\MessageFormat\*
+			GrinWay\WebApp\Configurator\MessageFormatConfigurator.php'
+		add useful functoins into ExpressionLanguage
+		AbstractHandler must:
+			tag 'container.service_subscriber'
+			.\src\Messenger\AbstractHandler.php
+		twig extension
+			for_user
+		twig components (config/packages/twig_component.yaml)
+			grin_way_svg
+		HasSyncTransportInterface -> MessageHasSyncTransportInterface
+		YearMonthDayHourMinuteSecondType
+			and create theme for it
+		cuz there is disabled option that to the same ?take: // TODO: PreventModifyingPropsOfEntity
+		//TODO: NormalizeLocaleDataTransformer add FormTypeExtension
+			+ написать тест для неё
+		//TODO: CarbonValueResolver separate now and nowModified logic
+			+ написать тест для неё
+		//TODO: TAKE IT TO EnableAutoMapping
+	GsEnvProcessor
+		fix abstractions (only with functions)
+	Command
+		deploy command (bundles, doctrine, dotenv:dump`composer dump-env prod`)
+		избавиться от ENV переменных
+		добавить новых функций в expression_language
+	Services
+		для serviceLocator ServiceMethodsSubscriberTrait отложенная автопроводка .\src\Trait\ServiceLocator\Aware
+		позаимствовать App\CompillerPass\AbstractCompillerPass
+		позаимствовать //TODO (NewClosureDefinitionWithTagPass)
+		OptionsResolverUtils::getCheckedKeysDefaultsValues($className, $passedValues, $nestedNodeName, $nestedNodeDefaults)
+			./src\Form\Type\TaskFormType::setNormalizer
+		take //TODO : NoteType
+		*реализовать PasswordConstraint extends Compound только regex должен поциферно и побуквенно включать \sprintf('(?=.*[%1$s](?=.*[%1$s]))(?=.*[%2$s](?=.*[%2$s](?=.*[%2$s])))[%1$s%2$s%3$s]+', $regexLetters, $regexNumbers, $regexSpecialChars)
+		//TODO: ExpressionLanguageStaticFunctions
+		// TODO: AllTypes
+		
+Банда 4-х

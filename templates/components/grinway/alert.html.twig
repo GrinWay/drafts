@@ -1,0 +1,48 @@
+{# Usage:
+    <twig:grinway:alert type="" size="" alignment="" alert:ATTRIBUTE="">
+	    CONTENT
+	</twig:grinway:alert>
+#}
+
+{% props type = 'primary', size = 'normal' , alignment = 'left' %}
+
+{% set class = cva({
+	base: 'alert',
+	variants: {
+		type: {
+			primary: 'alert-primary',
+			secondary: 'alert-secondary',
+			success: 'alert-success',
+			danger: 'alert-danger',
+			warning: 'alert-warning',
+			info: 'alert-info',
+			light: 'alert-light',
+			dark: 'alert-dark',
+		},
+		size: {
+			lg: 'font-size-lg',
+			md: 'font-size-md',
+			sm: 'font-size-sm',
+			normal: '',
+		},
+		alignment: {
+			left: 'text-left',
+			center: 'text-center',
+			right: 'text-right',
+		},
+	},
+	compoundVariants: [
+		{
+			type: ['danger', 'warning'],
+			class: 'h6',
+		},
+	],
+}) %}
+
+{% set nestedAlertName = 'alert' %}
+
+<div class="{{ class.apply({type, size, alignment}, attributes.nested(nestedAlertName).render('class')) }}" {{ attributes.nested(nestedAlertName).defaults({ role: 'alert' }) }}>
+	{%- block content -%}
+		EMPTY ALERT
+	{%- endblock content -%}
+</div>

@@ -1,0 +1,45 @@
+monolog:
+
+    # Service will be enabled:          monolog.logger.<channel>
+    channels:
+    
+        - grin_way_generic_parts.debug
+    
+    handlers:
+
+        grin_way_generic_parts.debug:
+            type:           rotating_file
+            max_files:      1
+            path:           "%kernel.logrin_way_dir%/grin_way_generic_parts_%kernel.environment%_debug.log"
+            level:          debug
+            channels:       ["grin_way_generic_parts.debug"]
+    
+        ###> ERRORS ON SITE TO ADMIN EMAIL ###
+        grin_way_generic_parts_admin_email_error_logger:
+            type:           symfony_mailer
+            
+            ###> Will be owerwritten by GrinWay\GenericParts\Pass\MonologLoggerPass
+            from_email:     'will@be.overwritten'
+            to_email:       'will@be.overwritten'
+            ###< Will be owerwritten by GrinWay\GenericParts\Pass\MonologLoggerPass
+            
+            # or list of recipients
+            # to_email:   ['dev1@example.com', 'dev2@example.com', ...]
+            subject:        'ERROR (%kernel.project_dir%): %%message%%'
+            level:          error
+            formatter:      monolog.formatter.html
+            content_type:   text/html
+        grin_way_generic_parts_admin_email_error_deduplication:
+            type:           deduplication
+            handler:        grin_way_generic_parts_admin_email_error_logger
+            time:           1
+        grin_way_generic_parts_admin_email_error:
+            type:           fingers_crossed
+            # action_level: critical for logging 500 (critical) errors
+            action_level:   critical
+            # action_level: error for logging not higher than 4** errors
+            # action_level: error
+            excluded_http_codes:
+            -   404
+            handler:        grin_way_generic_parts_admin_email_error_deduplication
+        ###< ERRORS ON SITE TO ADMIN EMAIL ###

@@ -1,0 +1,36 @@
+world:
+    countries:
+    
+    -   USA:
+        -   .inf
+        -   'ssad asd asd ''as d'
+        -   !!str 1
+        -   !!float 1
+        -   !!binary U0VDUkVUIERBdGE=
+        -   !php/enum App\Type\Product\FurnitureProductColorType
+        -   !php/const App\Type\Product\ProductTypes::FURNITURE
+        -   |
+            lskdfjlsk djflskd ajflksda jflksd jflksdaj flksd jflksdaj flksa djflskd
+            klasdjf lkdsj aflksjda flsajd lfjsadl fjsdl fkjsadl fjsladkf jlskadjf lksd firstName
+            ksajd flksjadf lkjsd lfkjsdla kfjsal dkfjlsdk jflskdj flksdj flksjda flkjs fl
+        -   >
+            lskdfjlsk djflskd ajflksda jflksd jflksdaj flksd jflksdaj flksa djflskd
+            klasdjf lkdsj aflksjda flsajd lfjsadl fjsdl fkjsadl fjsladkf jlskadjf lksd firstName
+            ksajd flksjadf lkjsd lfkjsdla kfjsal dkfjlsdk jflskdj flksdj flksjda flkjs fl
+        -   >-
+            lskdfjlsk djflskd ajflksda jflksd jflksdaj flksd jflksdaj flksa djflskd
+            klasdjf lkdsj aflksjda flsajd lfjsadl fjsdl fkjsadl fjsladkf jlskadjf lksd firstName
+            ksajd flksjadf lkjsd lfkjsdla kfjsal dkfjlsdk jflskdj flksdj flksjda flkjs fl
+        -   1_000_000_000
+        -   2_000_000_000
+        -   2024-04-30T10:01:11+00:00
+        
+    -   KANADA:
+            name: Grin
+            login: alom
+            pass: '180898'
+
+    -   RUSSIA:
+        -   1
+        -   2
+        -   !php/object 'O:20:"App\Dto\User\UserDto":3:{s:9:"firstName";N;s:8:"lastName";N;s:3:"age";N;}'

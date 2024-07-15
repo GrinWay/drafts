@@ -1,0 +1,16 @@
+framework:
+    validation:
+        enabled: true
+        enable_attributes: false
+        static_method: null
+        #translation_domain: validators
+        #auto_mapping:
+        #-   App\Entity\
+        #not_compromised_password:
+        #    enabled: true
+        #    endpoint: null
+
+when@test:
+    framework:
+        validation:
+            not_compromised_password: false

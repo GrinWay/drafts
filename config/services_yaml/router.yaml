@@ -1,0 +1,22 @@
+services:
+    _defaults:
+        bind:
+            $kernelProjectDir:  '%kernel.project_dir%'
+
+    App\Service\Router\AttributeRouterReader:
+        class: App\Service\Router\AttributeRouterReader
+        tags:
+        -   routing.loader
+        
+    decorated_attribute_router_reader:
+        stack:
+        -   class: App\Service\Router\Decorator\AttributeRouterReader
+            decoration_on_invalid: null
+            arguments:
+            -   '%kernel.project_dir%'
+            -   '%env(APP_ENV)%'
+            -   '@?.inner'
+        -   class: App\Service\Router\AttributeRouterReader
+            arguments:
+            -   '%kernel.project_dir%'
+            -   '%env(APP_ENV)%'

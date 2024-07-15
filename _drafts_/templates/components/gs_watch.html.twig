@@ -1,0 +1,23 @@
+{#
+	Usage:
+		{{ component('grin_way_watch', {
+			intervalMs:				1000,
+			
+			attr:					{
+				class:		'',
+				style:		'',
+			},
+		}) }}
+#}
+
+<div
+	{{ stimulus_controller('grin_way_watch', {
+		intervalMs,
+	}) }}
+	{{- attr|grin_way_array_to_attribute -}}
+>
+	{{- render(controller('GrinWay\\GenericParts\\Controller\\ApiUtcDtController::index'))|trim('" \'') -}}
+	{#
+	{{ include('@GSGenericParts/templates/_placeholder.html.twig') }}
+	#}
+</div>

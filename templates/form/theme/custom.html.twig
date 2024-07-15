@@ -1,0 +1,20 @@
+{% use 'form_div_layout.html.twig' %}
+{% use 'bootstrap_5_layout.html.twig' %}
+{% use 'form/func.twig' %}
+
+{#
+{%- block app_task_form_row -%}
+	{{ dump() }}
+{%- endblock -%}
+
+{%- block choice_widget -%}
+	<select {{ block('attr') }}>
+		{%- for choice in choices -%}
+			<option {% if choice is selectedchoice(selected_value) %}selected="selected"{% endif %}value="{{- choice.value -}}">{{- choice.label -}}</option>
+		{%- endfor -%}
+	</select>
+{%- endblock -%}
+{%- block form_label -%}
+	{{- dump(field_label(form)) -}}
+{%- endblock -%}
+#}

@@ -1,0 +1,29 @@
+{% use 'form/func.twig' %}
+
+{%- block app_user_row -%}
+	<form action="{{ action }}" method="{{ method }}">
+
+		<div class="container w-100 text-center display-6 mb-3">
+			{{ name|capitalize }}
+		</div>
+
+		{% for child in form.children|filter(el => not el.rendered) %}
+			{% if block('child_is_hidden') %}
+				{{ form_widget(child) }}
+			{% else %}
+				<div class="container">
+					{{ form_label(child) }}
+					{{ form_widget(child) }}
+					{{ form_help(child) }}
+					{{ form_errors(child) }}
+				</div>
+			{% endif %}
+		{% endfor %}
+	</form>
+{%- endblock -%}
+
+{%- block _app_user_products_entry_type_label -%}
+	<span class="badge text-bg-success mb-1">
+		{{ 'user product type' }}
+	</span>
+{%- endblock -%}

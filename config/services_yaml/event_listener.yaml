@@ -1,0 +1,28 @@
+services:
+
+    #App\EventListener\Kernel\ExceptionEventListener:
+    #    class: App\EventListener\Kernel\ExceptionEventListener
+    #    tags:
+    #    -   name: kernel.event_listener
+    #        priority: 2
+            #event: !php/const Symfony\Component\HttpKernel\KernelEvents::EXCEPTION
+
+    App\EventListener\Kernel\ControllerEventListener:
+        class: App\EventListener\Kernel\ControllerEventListener
+        tags:
+        -   kernel.event_listener
+    
+    App\EventListener\Kernel\ResponseEventListener:
+        class: App\EventListener\Kernel\ResponseEventListener
+        tags:
+        -   kernel.event_listener
+    
+    App\EventListener\Kernel\RequestEventListener:
+        class: App\EventListener\Kernel\RequestEventListener
+        tags:
+        -   kernel.event_listener
+    
+    App\EventListener\Kernel\ControllerArgumentsEventListener:
+        class: App\EventListener\Kernel\ControllerArgumentsEventListener
+        tags:
+        -   kernel.event_listener

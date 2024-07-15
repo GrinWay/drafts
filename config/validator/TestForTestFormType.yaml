@@ -1,0 +1,32 @@
+#normalizer: ['App\Service\Validator\TextValidatorNormalizer', 'trim']
+App\Service\Form\AbstractTestForTestFormType:
+
+    constraints:
+    -   Cascade:
+    -   EnableAutoMapping:
+    
+    properties:
+        name:
+        -   Choice:
+                choices: !php/const App\Type\Note\NoteType::TYPES
+                multiple: true
+                multipleMessage: '{{ value }}, {{ label }}'
+                
+App\Service\Form\TestForTestFormType:
+
+    properties:
+        product:
+        -   Valid: ~
+    
+        createdAt:
+        -   DateTime: ~
+                #format: 'd-m-Y H:i:s'            
+        rubric:
+        -   Locale:
+                #schemes: !php/const Symfony\Component\Validator\Constraints\CardScheme::MIR
+        #percent:
+        #-   NotBlank: ~
+        #-   PositiveOrZero: ~
+        #-   Regex: '~^0|1|0?.[0-9]{1,2}$~'
+
+    getters:

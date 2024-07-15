@@ -1,0 +1,8 @@
+services:
+
+    app.messenger.service_locator:
+        class: Symfony\Component\DependencyInjection\ServiceLocator
+        arguments:
+        -
+            # KEY: SERVICE_ID
+            logger: '@Psr\Log\LoggerInterface $messengerEmailLogger'

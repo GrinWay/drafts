@@ -1,0 +1,9 @@
+#//TODO: TAKE IT TO EnableAutoMapping
+App\Contract\Doctrine\AutoMappingEnabledInterface:
+
+    constraints:
+    -   EnableAutoMapping: ~
+    
+    properties:
+    
+    getters:

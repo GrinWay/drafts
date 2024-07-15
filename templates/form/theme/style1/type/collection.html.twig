@@ -1,0 +1,17 @@
+{% use 'form/theme/style1/block/collection.html.twig' %}
+
+{%- block collection_label -%}
+	{%- if style1 is defined and true == style1 -%} 
+		{{- block('style1_collection_label') -}}
+	{%- else -%} 
+		{{- form_label(form) -}}
+	{%- endif -%} 
+{%- endblock -%}
+
+{%- block collection_widget -%}
+	{%- if style1 is defined and true == style1 -%} 
+		{{- block('style1_collection_widget') -}}
+	{%- else -%} 
+		{{- form_widget(form) -}}
+	{%- endif -%} 
+{%- endblock -%}

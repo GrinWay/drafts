@@ -1,0 +1,12 @@
+{%- block file_widget -%}
+	{%- if app_path is defined and app_path != false -%}
+		<div class="">
+			{{- form_widget(form) -}}
+		</div>
+		<div class="">
+			<img class="img-fluid rounded mx-auto d-block w-25" src="{{ asset(app_path) }}"/>
+		</div>
+	{%- else -%}
+		{{- form_widget(form) -}}	
+	{%- endif -%}
+{%- endblock -%}

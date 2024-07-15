@@ -1,0 +1,7 @@
+services:
+
+    App\Service\Doctrine\PurgerTruncateFactory:
+        class:  App\Service\Doctrine\PurgerTruncateFactory
+        tags:
+        -   name:   'doctrine.fixtures.purger_factory'
+            alias:  't'
