@@ -1,1 +1,1 @@
-bash "./public/deploy/install-grinway-bundles.sh"
+bash "./public/deploy/install-grinway-symfony-bundles.sh"
