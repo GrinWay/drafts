@@ -26,6 +26,15 @@ abstract class AbstractFormType extends AbstractType
 	) {
 	}
 	
+	public function configureOptions(OptionsResolver $resolver)
+    {
+		$resolver
+			->setDefaults([
+				'label_format' => "app.form.%name%",
+			])
+		;
+    }
+	
 	public function buildView(FormView $view, FormInterface $form, array $options)
     {
 		$this->customizeStyle1(

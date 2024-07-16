@@ -9,7 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Avatar>
  */
-class ImageRepository extends ServiceEntityRepository
+class AvatarRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {

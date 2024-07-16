@@ -1,0 +1,4 @@
+services:
+
+    app.engligh_inflector:
+        class: Symfony\Component\String\Inflector\EnglishInflector

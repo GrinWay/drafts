@@ -1,5 +1,3 @@
-ALWAYS SYMFONY BIN/CONSOLE TOOLS
-|
 SYMFONY ROUTE
 	?
 	зачем options в route и можно ли их модифицировать в ControllerEventListener
@@ -116,7 +114,7 @@ SYMFONY TWIG COMPONENTS https://symfony.com/bundles/ux-twig-component/current/in
 	как каждый раз вызвать метод а не получать computed, который по умолчанию (вызов через this)
 SYMFONY FORMS
 	***
-	NEXT FORM TYPE: https://symfony.com/doc/current/reference/forms/types/search.html
+	NEXT: https://symfony.com/doc/current/reference/forms/types/choice.html#choice-filter
 	CollectionType: https://symfony.com/doc/current/form/form_collections.html#handling-the-new-tags-in-php
 	?
 	не получилось задать empty_data в виде массива compoundFormType
@@ -217,7 +215,7 @@ SYMFONY UPLOAD FILES
 SYMFONY HTTP COMPONENT https://symfony.com/doc/current/components/http_kernel.html
 SYMFONY STRING https://symfony.com/doc/current/string.html#methods-to-pad-and-trim
 ***
-SYMFONY CLOCK COMPONENT
+SYMFONY CLOCK COMPONENT https://symfony.com/doc/current/components/clock.html
 SYMFONY CONFIG COMPONENT https://symfony.com/doc/current/components/config.html
 SYMFONY OPTIONS RESOLVER
 	?

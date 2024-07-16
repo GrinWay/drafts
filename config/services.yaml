@@ -13,6 +13,10 @@ services:
             ###< SERVICES ###
             
             
+            ###> ASCII ###
+            $emojiSlugger: '@app.slugger_with_emoji'
+            ###< ASCII ###
+            
             ###> grinway ###
             $ru12Carbon:  '@app.ru_12_carbon'
             $enUtcCarbon: '@app.en_utc_carbon'

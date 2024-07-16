@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f71d85e8df848b96730fdf9e19070d73",
+    "content-hash": "124c41aa69800ba576e5995ca7a65526",
     "packages": [
         {
             "name": "carbonphp/carbon-doctrine-types",
@@ -1483,7 +1483,7 @@
             "dist": {
                 "type": "path",
                 "url": "./bundles/grinway/command-bundle",
-                "reference": "a76a7cc2520fa856c72488134839727eb7eff0ab"
+                "reference": "7f0abc590c067daef3933fe1226422acb7fa0ddc"
             },
             "require": {
                 "grinway/env-processor-bundle": ">=1",
@@ -1528,7 +1528,7 @@
             "dist": {
                 "type": "path",
                 "url": "./bundles/grinway/env-processor-bundle",
-                "reference": "0d4442b045bfea5385563ddc34a3688f78fdf878"
+                "reference": "dc037d141afe0cfbda2f314c55a6806fa35de54a"
             },
             "require": {
                 "grinway/service-bundle": ">=1",
@@ -1568,7 +1568,7 @@
             "dist": {
                 "type": "path",
                 "url": "./bundles/grinway/service-bundle",
-                "reference": "e41d867fa34929e6363376211d297c7e9e2b7e03"
+                "reference": "0bde77b5c756275cbff311a29de87eb9d2670a2b"
             },
             "require": {
                 "fzaninotto/faker": "dev-bugfix",
@@ -1615,7 +1615,7 @@
             "dist": {
                 "type": "path",
                 "url": "./bundles/grinway/web-app-bundle",
-                "reference": "152ad7ae77ebd9e4e5862945abb9993c50f3c902"
+                "reference": "67568336d90d09444fbac346a1eec520f42f799a"
             },
             "require": {
                 "doctrine/doctrine-bundle": ">=2",
@@ -3971,6 +3971,82 @@
                 }
             ],
             "time": "2024-05-31T14:57:53+00:00"
+        },
+        {
+            "name": "symfony/emoji",
+            "version": "v7.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony/emoji.git",
+                "reference": "70f856867dd6346ad40656b0cb6e4a21e0ed8ab9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony/emoji/zipball/70f856867dd6346ad40656b0cb6e4a21e0ed8ab9",
+                "reference": "70f856867dd6346ad40656b0cb6e4a21e0ed8ab9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-intl": "*",
+                "php": ">=8.2"
+            },
+            "require-dev": {
+                "symfony/filesystem": "^7.1",
+                "symfony/finder": "^6.4|^7.0",
+                "symfony/var-exporter": "^6.4|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Component\\Emoji\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/",
+                    "/Resources/data/",
+                    "/Resources/bin/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Grégoire Pineau",
+                    "email": "lyrixx@lyrixx.info"
+                },
+                {
+                    "name": "Symfony Community",
+                    "homepage": "https://symfony.com/contributors"
+                }
+            ],
+            "description": "Provides access to emoji characters and sequences from the Unicode CLDR",
+            "homepage": "https://symfony.com",
+            "keywords": [
+                "cldr",
+                "emoji",
+                "intl",
+                "transliterator",
+                "unicode"
+            ],
+            "support": {
+                "source": "https://github.com/symfony/emoji/tree/v7.1.1"
+            },
+            "funding": [
+                {
+                    "url": "https://symfony.com/sponsor",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/symfony/symfony",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-06-01T06:44:44+00:00"
         },
         {
             "name": "symfony/error-handler",
@@ -8930,6 +9006,73 @@
             ],
             "support": {
                 "source": "https://github.com/twigphp/intl-extra/tree/v3.10.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/fabpot",
+                    "type": "github"
+                },
+                {
+                    "url": "https://tidelift.com/funding/github/packagist/twig/twig",
+                    "type": "tidelift"
+                }
+            ],
+            "time": "2024-05-11T07:35:57+00:00"
+        },
+        {
+            "name": "twig/string-extra",
+            "version": "v3.10.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/twigphp/string-extra.git",
+                "reference": "cd76ed8ae081bcd4fddf549e92e20c5df76c358a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/twigphp/string-extra/zipball/cd76ed8ae081bcd4fddf549e92e20c5df76c358a",
+                "reference": "cd76ed8ae081bcd4fddf549e92e20c5df76c358a",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2.5",
+                "symfony/string": "^5.4|^6.4|^7.0",
+                "symfony/translation-contracts": "^1.1|^2|^3",
+                "twig/twig": "^3.0"
+            },
+            "require-dev": {
+                "symfony/phpunit-bridge": "^6.4|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Twig\\Extra\\String\\": ""
+                },
+                "exclude-from-classmap": [
+                    "/Tests/"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Fabien Potencier",
+                    "email": "fabien@symfony.com",
+                    "homepage": "http://fabien.potencier.org",
+                    "role": "Lead Developer"
+                }
+            ],
+            "description": "A Twig extension for Symfony String",
+            "homepage": "https://twig.symfony.com",
+            "keywords": [
+                "html",
+                "string",
+                "twig",
+                "unicode"
+            ],
+            "support": {
+                "source": "https://github.com/twigphp/string-extra/tree/v3.10.0"
             },
             "funding": [
                 {

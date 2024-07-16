@@ -2,6 +2,18 @@
 
 {% block body %}
 	
+	{% set s = 'Lorem :kiwi-fruit::interrobang: ipsum dolor sit amet, consectetur adipisicing elit. Omnis magni explicabo ab molestias     asperiores laboriosam quod sequi sed. Atque, harum.' %}
+	{% set len = s|u.length %}
+	
+	<div class="container mb-3">
+		<div class="">
+			{{ s|emojify|u.truncate(20, '...', false) }}
+		</div>
+		<div class="">
+			{{ s|u.splice('...', 5, (len - 20)) }}
+		</div>
+	</div>
+	
 	{% if form is defined %}
 		{% if obj is defined and not (obj is null) %}
 			<a href="{{ vich_uploader_asset(obj, 'file') }}" class="">IMAGE</a>

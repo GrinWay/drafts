@@ -5,6 +5,9 @@ namespace App\Controller;
 use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Emoji\EmojiTransliterator;
+use Symfony\Component\String\CodePointString;
 use Symfony\Component\String\ByteString;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
 use App\Validation\Compound\AllTypes;
@@ -692,17 +695,11 @@ class HomeController extends AbstractController
 		UploaderHelper $vichService,
 		#[Autowire('@kernel')]
 		$kernel,
+		$emojiSlugger,
+		#[Autowire('@app.engligh_inflector')]
+		$enInf,
 	) {
-		$result = (string) u('String ~Reg~ witht conteinntdne')
-			->ignoreCase()
-			->replace('~reg~', '')
-			->append('!')
-		;
-		$result = u('лодвыфао')->ignoreCase()->indexOf('л').'';
-		$result = ''.u('a certain pattern::phone')->before('::');
-
-		\dd($result);
-//$id = Uuid::fromString($id);
+		//$id = Uuid::fromString($id);
 		$obj = $imageRepo->find($id);
 		
 		/*
@@ -759,10 +756,10 @@ class HomeController extends AbstractController
 				*/
 				
 				$obj = $form->getData();
-					/*
 				\dd(
+					$form->get('formType')->getData(),
+					/*
 					$payload,
-					$obj,
 					
 					$obj->getFileSize(),
 					$obj->getFileMimeType(),
@@ -771,10 +768,10 @@ class HomeController extends AbstractController
 					$form->get('file')->get('delete')->getData(),
 					$form->get('file')->getData(),
 					$obj->getVichFile(),
-				);
 				$em->persist($obj);
 				$em->remove($obj);
 					*/
+				);
 				$em->flush();
 				//\dd($payload, $data);
 				return $this->redirectToRoute('app_home_producttypes', $r->attributes->get('_route_params', []));
