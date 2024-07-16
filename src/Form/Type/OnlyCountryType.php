@@ -32,43 +32,25 @@ class OnlyCountryType extends AbstractFormType
 	}
 	
 	public function buildForm(FormBuilderInterface $builder, array $options): void
-    {
-		$pa = $this->pa;
-		
-		$vtf = static function($v) {
-			\dump('vtf');
-			return $v;
-		};
-		$vto = static function($v) {
-			\dump('vto');
-			return $v;
-		};
-		$vt = new CallbackTransformer($vtf, $vto);
-		
-		$mtf = static function($v) {
-			\dump('mtf');
-			return $v;
-		};
-		$mto = static function($v) {
-			\dump('mto');
-			return $v;
-		};
-		$mt = new CallbackTransformer($mtf, $mto);
+    {	
+		$onlyCountries = $this->pa->getValue($options, '[only]');
 		
 		$builder
 			->add($builder->create('country', FormType\CountryType::class,
 				options: [
-					'choice_filter' => static function($v) use (&$options, $pa): bool {
-						$onlyCountries = $pa->getValue($options, '[only]');
-						if (null === $onlyCountries) {
-							return true;
-						} else {
-							return u($v)->ignoreCase()->containsAny($onlyCountries);
-						}
-					},
+					'mapped' => false,
+					// ChoiceList switches the cache on
+					'choice_filter' => ChoiceList::filter(
+						$this,
+						static function($v) use (&$onlyCountries): bool {
+							if (null === $onlyCountries) {
+								return true;
+							} else {
+								return u($v)->ignoreCase()->containsAny($onlyCountries);
+							}
+						},
+					)
 				])
-				//->addViewTransformer($vt)
-				//->addModelTransformer($mt)
 			)
 		;
 	}
@@ -83,4 +65,6 @@ class OnlyCountryType extends AbstractFormType
 			->setAllowedTypes('only', ['null', 'array'])
 		;
     }
+	
+	
 }

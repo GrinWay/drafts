@@ -81,7 +81,6 @@ class TestFormType extends AbstractFormType
 		
         $resolver->setDefaults([
 			'data_class' => TestForTestFormType::class,
-			'label_format' => new TranslatableMessage('app.form.test.%name%', [], 'validators'),
 			//for parent
 			/*
 			'error_mapping' => [

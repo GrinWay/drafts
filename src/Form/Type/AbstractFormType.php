@@ -4,6 +4,8 @@ namespace App\Form\Type;
 
 use function Symfony\Component\String\u;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Form\AbstractType;
@@ -21,6 +23,7 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 abstract class AbstractFormType extends AbstractType
 {
+	
 	public function __construct(
         protected readonly PropertyAccessorInterface $pa,
 	) {
@@ -30,7 +33,9 @@ abstract class AbstractFormType extends AbstractType
     {
 		$resolver
 			->setDefaults([
-				'label_format' => "app.form.%name%",
+				'translation_domain' => 'form',
+				'choice_translation_domain' => 'form',
+				'label_format' => new TranslatableMessage('app.form.test.%name%', [], 'form'),
 			])
 		;
     }

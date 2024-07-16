@@ -4,6 +4,10 @@ namespace App\Form\Type;
 
 use function Symfony\component\string\u;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Translation\TranslatableMessage;
+use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
+use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\ChoiceList\ChoiceList;
 use App\Doctrine\DTO\UserDto;
 use App\Repository\AvatarRepository;
@@ -13,6 +17,7 @@ use Symfony\Component\Form\FormEvents;
 use App\Entity\Media\Image;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as FormType;
 use Symfony\Component\HttpFoundation\File\File;
@@ -32,6 +37,26 @@ class ImageFormType extends AbstractFormType
 	
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
+		$vtf = static function($v) {
+			\dump('vtf');
+			return $v;
+		};
+		$vto = static function($v) {
+			\dump('vto');
+			return $v;
+		};
+		$vt = new CallbackTransformer($vtf, $vto);
+		
+		$mtf = static function($v) {
+			\dump('mtf');
+			return $v;
+		};
+		$mto = static function($v) {
+			\dump('mto');
+			return $v;
+		};
+		$mt = new CallbackTransformer($mtf, $mto);
+		
 		$getter = function($o) {
 			\dump('getter');
 			\dd($o);
@@ -49,21 +74,56 @@ class ImageFormType extends AbstractFormType
 					'disabled' => true,
 				],
 			)
-            ->add('fileDimensions', FormType\ChoiceType::class, //OnlyCountryType::class,
+            ->add($builder->create('fileDimensions', FormType\CurrencyType::class, //OnlyCountryType::class,
 				options: [
 					'label' => 'CHOICE TYPE',
-					//'mapped' => false,
-					'choices'  => [
-						'LAND' => 'landspace',
-						'PORT' => 'portrait',
-						'CUBE' => 'cube',
-					],
-					'getter' => $getter,
-					'setter' => $setter,
+					'mapped' => false,
+					//'choices'  => 'fileDimensions',
+					//'getter' => $getter,
+					//'setter' => $setter,
 					//'only' => ['ru', 'us', 'jp'],
+					//'class' => \App\Type\Product\FurnitureProductColorType::class,
+					'choice_translation_locale' => 'ru',
+					//'intl' => true,
+					'choice_filter' => static function($c) {
+						if (null === $c) {
+							return true;
+						}
+						return true;
+						$m = u($c)->ignoreCase()->match('~[0-9]~');
+						return 0 === count($m);
+					},
+					/*
+					'choice_translation_locale' => 'ja',
+					'choice_label' => static function($c, $k, $v) {
+						return \sprintf('app.%s', \mb_strtolower($v));
+					},
+					*/
+					//'required' => false,
+					//'placeholder' => 'app.placeholder.select_option',
+					'placeholder_attr' => [
+						'title' => 'Выбери',
+					],
+					'preferred_choices' => ChoiceList::preferred(
+						$this,
+						static fn($c) => \is_string($c) ? u($c)->ignoreCase()->containsAny(['image']) : false,
+					),
+					'separator_html' => true,
+					'separator' => '<hr>',
+
+					//'choices'  => \array_combine(['app.choice.image', 'app.choice.avatar'], \App\Type\Media\MediaType::TYPES),
+					//'choice_value' => static fn($v) => \is_array($v) ? \implode($v) : $v,
+
+					'duplicate_preferred_choices' => false,					
 					
+					'translation_domain' => 'form',
+					'choice_translation_parameters' => [
+						'app.choice.image' => [],
+						'app.choice.avatar' => [
+							'%param%' => 'V',
+						],
+					],
 					//'choice_loader' => $this->avatarRepo->findAll(...),
-					//'choices'  => \App\Type\Media\MediaType::TYPES,
 					//'choice_value' => static fn($v): string => $v?->id ?: '',
 					//'choice_label' => static fn($v): string => ($name = $v?->name) ? \mb_strtoupper($name) : $name,
 					// ChoiceList adds cache
@@ -97,7 +157,9 @@ class ImageFormType extends AbstractFormType
 						]),
 						*/
 					],
-				]
+				])
+				->addViewTransformer($vt)
+				->addModelTransformer($mt)
 			)
             ->add('file', VichImageType::class,
 				options: [

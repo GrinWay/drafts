@@ -4,7 +4,10 @@ namespace App\Controller;
 
 use function Symfony\component\string\u;
 use function Symfony\component\string\b;
+use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Clock\Clock;
+use Symfony\Component\Clock\MockClock;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Emoji\EmojiTransliterator;
 use Symfony\Component\String\CodePointString;
@@ -678,7 +681,7 @@ class HomeController extends AbstractController
 		],
 	)]
 	/**
-	* @var Carbon $nowModified +8year
+	* @var Carbon $nowModified +10 year
 	*/
     public function productTypes(
 		Request $r,
@@ -699,6 +702,7 @@ class HomeController extends AbstractController
 		#[Autowire('@app.engligh_inflector')]
 		$enInf,
 	) {
+		
 		//$id = Uuid::fromString($id);
 		$obj = $imageRepo->find($id);
 		
@@ -757,7 +761,8 @@ class HomeController extends AbstractController
 				
 				$obj = $form->getData();
 				\dd(
-					$form->get('formType')->getData(),
+					$form->getData(),
+					$form->get('fileDimensions')->getData(),
 					/*
 					$payload,
 					

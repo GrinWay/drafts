@@ -114,9 +114,9 @@ SYMFONY TWIG COMPONENTS https://symfony.com/bundles/ux-twig-component/current/in
 	как каждый раз вызвать метод а не получать computed, который по умолчанию (вызов через this)
 SYMFONY FORMS
 	***
-	NEXT: https://symfony.com/doc/current/reference/forms/types/choice.html#choice-filter
 	CollectionType: https://symfony.com/doc/current/form/form_collections.html#handling-the-new-tags-in-php
 	?
+	*реализовать и добавить в bundle CarbonTimeZoneFormType (с трансформатором IntlTimeZone::raw_offset -> +00:00)
 	не получилось задать empty_data в виде массива compoundFormType
 		$resolver
             ->setDefaults([
@@ -214,11 +214,12 @@ SYMFONY UPLOAD FILES
 	Если в Request::payload не попадают загружаемые файлы тогда как обработать только поле файла FormFile::submit (добавь в payload данные из Request::files)
 SYMFONY HTTP COMPONENT https://symfony.com/doc/current/components/http_kernel.html
 SYMFONY STRING https://symfony.com/doc/current/string.html#methods-to-pad-and-trim
-***
 SYMFONY CLOCK COMPONENT https://symfony.com/doc/current/components/clock.html
+***
 SYMFONY CONFIG COMPONENT https://symfony.com/doc/current/components/config.html
 SYMFONY OPTIONS RESOLVER
 	?
+	*неужели входные данные передаются через Options $options (да, но доступ возможен только к другим nodes)
 	не передавать массив значений в callback только чтобы установить по умолчанию $resolver->setIgnoreUndefined(true);
 	определить разрешённый набор ЗНАЧЕНИЙ choices => [ anyKey => stringValue, anyKey2 => stringValue2 ] Как прототип НО с ключевыми значениями
 SYMFONY EXTENTIONS
@@ -267,6 +268,9 @@ SYMFONY TESTS https://symfony.com/doc/current/testing.html
 	https://symfony.com/doc/current/service_container/service_subscribers_locators.html#testing-a-service-subscriber
 	https://symfony.com/doc/current/form/unit_testing.html
 	https://symfony.com/doc/current/validation/custom_constraint.html#testing-custom-constraints
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Clock/MockClock.php
+		https://symfony.com/doc/current/components/clock.html#mockclock
+		https://symfony.com/doc/current/components/clock.html#writing-time-sensitive-tests
 SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
 SYMFONY TRANSLATION COMPONENT https://symfony.com/doc/current/translation.html
 SYMFONY CACHE

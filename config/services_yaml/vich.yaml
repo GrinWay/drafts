@@ -11,3 +11,5 @@ services:
     App\Service\Naming\SlugNamer:
         public: true
         class: App\Service\Naming\SlugNamer
+        arguments:
+            $slugger: '@slugger'
