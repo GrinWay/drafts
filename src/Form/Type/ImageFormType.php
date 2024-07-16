@@ -32,12 +32,12 @@ class ImageFormType extends AbstractFormType
 	
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-		$getter = static function($o) {
+		$getter = function($o) {
 			\dump('getter');
 			\dd($o);
 			return $v;
 		};
-		$setter = static function($o, $v) {
+		$setter = function($o, $v) {
 			\dump('setter');
 			\dd($o);
 			return $v;
