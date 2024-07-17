@@ -16,6 +16,8 @@ app:
     white: 'Белый'
     
     choice:
+        date:
+            weekend: 'Дата выходного дня'
         image: 'ImaGE'
         avatar: 'AvaTAR %param%'
     placeholder:

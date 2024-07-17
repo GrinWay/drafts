@@ -4,6 +4,10 @@ namespace App\Form\Type;
 
 use function Symfony\component\string\u;
 
+use App\Messenger\Command\Message\OnlyWeekendsOfThisMonth;
+use Carbon\Carbon;
+use Carbon\CarbonImmutable;
+use Doctrine\DBAL\Types\Types;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Translation\TranslatableMessage;
 use Symfony\Component\Form\ChoiceList\Loader\CallbackChoiceLoader;
@@ -29,6 +33,7 @@ class ImageFormType extends AbstractFormType
 		PropertyAccessorInterface $pa,
 		private readonly string $absPublicDir,
 		private readonly AvatarRepository $avatarRepo,
+		private $get,
 	) {
 		parent::__construct(
 			pa: $pa,
@@ -68,10 +73,43 @@ class ImageFormType extends AbstractFormType
 			return $v;
 		};
 		
+		$weekendDays = ($this->get)(new OnlyWeekendsOfThisMonth(includePassed: true));
+		//$weekendDays = \range(1, 31);
+		\array_walk($weekendDays, static fn(&$d) => $d = (string) $d);
+		
         $builder
             ->add('id',// FormType\FileType::class,
 				options: [
 					'disabled' => true,
+				],
+			)
+			->add('createdAt', FormType\DateTimeType::class,
+				options: [
+					//'mapped' => false,
+					'model_timezone' => $dbTimezone = 'UTC',
+					'view_timezone' => $userTimezone = '+12:00',
+					//'html5' => false,
+					//'format' => $format = 'dd-MM-yyyy',
+					
+					'input' => Types::DATETIME_IMMUTABLE,//'array'// Types::DATETIME_IMMUTABLE,
+					'widget' => 'choice',//'choice',
+					
+					'days' => $weekendDays,
+					//'input_format' => 'm-Y-d', // if only 'input' => 'string'
+					'placeholder' => 'app.choice.date.weekend',
+					'choice_translation_domain' => true,
+					
+					/*
+					'constraints' => [
+						new Constraints\Expression(
+							expression: 'null == value or value.format("j") in weekend_days',
+							values: [
+								'weekend_days' => $weekendDays,
+							],
+							message: 'Дата должна содержать выходной день недели',
+						),
+					],
+					*/
 				],
 			)
             ->add($builder->create('fileDimensions', FormType\CurrencyType::class, //OnlyCountryType::class,

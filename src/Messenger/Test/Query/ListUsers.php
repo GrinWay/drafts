@@ -2,9 +2,9 @@
 
 namespace App\Messenger\Test\Query;
 
-use GrinWay\WebApp\Contract\Messenger\HasSyncTransportInterface;
+use GrinWay\WebApp\Contract\Messenger\MessageHasSyncTransportInterface;
 
-class ListUsers implements HasSyncTransportInterface
+class ListUsers implements MessageHasSyncTransportInterface
 {
     public function __construct()
     {

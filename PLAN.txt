@@ -116,6 +116,7 @@ SYMFONY FORMS
 	***
 	CollectionType: https://symfony.com/doc/current/form/form_collections.html#handling-the-new-tags-in-php
 	?
+	+ DateType widget:text не выводит placeholder (задай через attr.placeholder)
 	*реализовать и добавить в bundle CarbonTimeZoneFormType (с трансформатором IntlTimeZone::raw_offset -> +00:00)
 	не получилось задать empty_data в виде массива compoundFormType
 		$resolver

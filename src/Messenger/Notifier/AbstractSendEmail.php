@@ -4,7 +4,7 @@ namespace App\Messenger\Notifier;
 
 use App\Messenger\AsyncMessageInterface;
 use Symfony\Component\Validator\Constraints;
-use GrinWay\WebApp\Contract\Messenger\HasSyncTransportInterface;
+use GrinWay\WebApp\Contract\Messenger\MessageHasSyncTransportInterface;
 
 abstract class AbstractSendEmail implements AsyncMessageInterface
 {
