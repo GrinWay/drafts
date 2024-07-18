@@ -706,6 +706,7 @@ class HomeController extends AbstractController
 		#[Autowire('@app.engligh_inflector')]
 		$enInf,
 	) {
+		$t->setLocale('en');
 		//$id = Uuid::fromString($id);
 		$obj = $imageRepo->find($id);
 		/*
