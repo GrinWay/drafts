@@ -35,7 +35,7 @@ abstract class AbstractFormType extends AbstractType
 			->setDefaults([
 				'translation_domain' => 'form',
 				'choice_translation_domain' => 'form',
-				'label_format' => new TranslatableMessage('app.form.test.%name%', [], 'form'),
+				'label_format' => new TranslatableMessage('app.%name%', [], 'form'),
 			])
 		;
     }

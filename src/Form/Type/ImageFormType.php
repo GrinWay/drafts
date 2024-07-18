@@ -117,6 +117,11 @@ class ImageFormType extends AbstractFormType
 			)
 			->add('userDto', UserDtoFormType::class,
 				options: [
+					'help' => 'app.user_dto',
+					'help_translation_parameters' => [
+						'%class%' => UserDto::class,
+					],
+					'translation_domain' => 'form',
 					//'data' => new UserDto(id: 1, name: 'Alex', age: 22),
 				],
 			)
@@ -219,7 +224,7 @@ class ImageFormType extends AbstractFormType
     {
         $resolver->setDefaults([
             'data_class' => Image::class,
-			
+			//'form_attr' => md5(self::class),
         ]);
     }
 }

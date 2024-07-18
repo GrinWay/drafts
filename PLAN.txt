@@ -116,7 +116,7 @@ SYMFONY FORMS
 	***
 	CollectionType: https://symfony.com/doc/current/form/form_collections.html#handling-the-new-tags-in-php
 	?
-	в каких случаях можно использовать options 'form_attr' => true,
+	*в каких случаях можно использовать options 'form_attr' => true,
 	абсолютно не понятно зачем опция is_empty_callback
 	+ DateType widget:text не выводит placeholder (задай через attr.placeholder)
 	*реализовать и добавить в bundle CarbonTimeZoneFormType (с трансформатором IntlTimeZone::raw_offset -> +00:00)
