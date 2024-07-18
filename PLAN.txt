@@ -118,7 +118,8 @@ SYMFONY FORMS
 	***
 	CollectionType: https://symfony.com/doc/current/form/form_collections.html#handling-the-new-tags-in-php
 	?
-	UuidType 
+	*в каких случаях можно использовать options 'form_attr' => true,
+	абсолютно не понятно зачем опция is_empty_callback
 	+ DateType widget:text не выводит placeholder (задай через attr.placeholder)
 	*реализовать и добавить в bundle CarbonTimeZoneFormType (с трансформатором IntlTimeZone::raw_offset -> +00:00)
 	не получилось задать empty_data в виде массива compoundFormType
@@ -220,12 +221,14 @@ SYMFONY HTTP COMPONENT https://symfony.com/doc/current/components/http_kernel.ht
 SYMFONY STRING https://symfony.com/doc/current/string.html#methods-to-pad-and-trim
 SYMFONY CLOCK COMPONENT https://symfony.com/doc/current/components/clock.html
 ***
-SYMFONY CONFIG COMPONENT https://symfony.com/doc/current/components/config.html
+SYMFONY TRANSLATION COMPONENT https://symfony.com/doc/current/translation.html
+	https://symfony.com/doc/current/reference/formats/message_format.html
 SYMFONY OPTIONS RESOLVER
 	?
 	*неужели входные данные передаются через Options $options (да, но доступ возможен только к другим nodes)
 	не передавать массив значений в callback только чтобы установить по умолчанию $resolver->setIgnoreUndefined(true);
 	определить разрешённый набор ЗНАЧЕНИЙ choices => [ anyKey => stringValue, anyKey2 => stringValue2 ] Как прототип НО с ключевыми значениями
+SYMFONY CONFIG COMPONENT https://symfony.com/doc/current/components/config.html
 SYMFONY EXTENTIONS
 	?
 	add doctrine functions
@@ -252,6 +255,7 @@ SYMFONY UX TURBO https://symfony.com/bundles/ux-turbo/current/index.html
 	есть ли разница между зафейленой обработанной формой (422) и необработанной формой для UX TURBO
 SYMFONY STIMULUS https://symfony.com/bundles/StimulusBundle/current/index.html
 	HOTWIRE: TURBO
+	*придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
 SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/index.html
 	https://ux.symfony.com/demos/live-component/form-collection-type/2299
 	https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
@@ -277,7 +281,6 @@ SYMFONY TESTS https://symfony.com/doc/current/testing.html
 		https://symfony.com/doc/current/components/clock.html#mockclock
 		https://symfony.com/doc/current/components/clock.html#writing-time-sensitive-tests
 SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
-SYMFONY TRANSLATION COMPONENT https://symfony.com/doc/current/translation.html
 SYMFONY CACHE
 	?
 	$request->getETags()

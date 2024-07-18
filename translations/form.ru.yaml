@@ -11,9 +11,14 @@ app:
     id: 'ID'
     timezone: 'Временная зона'
     product: 'Продукт'
+    age: 'Возраст'
     
     black: 'Чёрный'
     white: 'Белый'
+    
+    user_dto: >-
+        Пользователь, но не настоящий,
+        а DTO объект класса: "%class%"
     
     choice:
         date:

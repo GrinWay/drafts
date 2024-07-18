@@ -14,6 +14,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Form\Type\Style1;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use App\Form\Type\ProductFormType;
 
 class UserType extends AbstractFormType
 {
@@ -28,7 +29,7 @@ class UserType extends AbstractFormType
     {
         $builder
             ->add('products', FormType\CollectionType::class, [
-				'entry_type' => ProductType::class,
+				'entry_type' => ProductFormType::class,
 				
 				'allow_add' => true,
 				'allow_delete' => true,
@@ -40,7 +41,7 @@ class UserType extends AbstractFormType
 				*/
 				'by_reference' => false,
 			])
-			
+			->setMethod('PATCH')
 			/*
             ->add('passport', EntityType::class, [
                 'class' => UserPassport::class,

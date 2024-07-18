@@ -35,8 +35,7 @@ abstract class AbstractFormType extends AbstractType
 			->setDefaults([
 				'translation_domain' => 'form',
 				'choice_translation_domain' => 'form',
-				'label_format' => 'app.form.test.%name%',
-				//'label_format' => new TranslatableMessage('app.form.test.%name%', [], 'form'),
+				//'label_format' => new TranslatableMessage('app.%name%', [], 'form'),
 			])
 		;
     }
@@ -49,16 +48,16 @@ abstract class AbstractFormType extends AbstractType
 		);
     }
 	
+	private function customizeStyle1(FormView $view, array $options): void {
+		if (true === $this->pa->getValue($options, '[style1]')) {
+			$view->vars['style1'] = true;
+		}
+	}
+	
 	public function getBlockPrefix(): string
     {
 		$resultBlockPrefix = 'app_'.parent::getBlockPrefix();
         //\dd($resultBlockPrefix);
         return $resultBlockPrefix;
     }
-	
-	private function customizeStyle1(FormView $view, array $options): void {
-		if (true === $this->pa->getValue($options, '[style1]')) {
-			$view->vars['style1'] = true;
-		}
-	}
 }

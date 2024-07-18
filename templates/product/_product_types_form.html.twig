@@ -14,10 +14,8 @@
 		</div>
 	</div>
 	
+	
 	{% if form is defined %}
-		{% if obj is defined and not (obj is null) %}
-			<a href="{{ vich_uploader_asset(obj, 'file') }}" class="">IMAGE</a>
-		{% endif %}
 		<div class="container">
 			{{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
 				{{ form_errors(form) }}

@@ -2,6 +2,7 @@
 
 namespace App\Entity\Media;
 
+use App\Doctrine\DTO\UserDto;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
@@ -45,5 +46,19 @@ class Image extends Media
 	
 	public function getFileDimensions(): ?array {
 		return $this->fileDimensions;
+	}
+	
+	
+	protected ?UserDto $userDto = null;
+	
+	public function setUserDto(?UserDto $userDto): static {
+		\dump(__METHOD__);
+		$this->userDto = $userDto;
+		return $this;
+	}
+	
+	public function getUserDto(): ?UserDto {
+		\dump(__METHOD__);
+		return $this->userDto;
 	}
 }

@@ -1,0 +1,9 @@
+App\Entity\Media\Image:
+
+    constraints:
+    
+    properties:
+        userDto:
+        -   Valid:
+        
+    getters:
