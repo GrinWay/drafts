@@ -705,6 +705,7 @@ class HomeController extends AbstractController
 	) {
 		
 		//$id = Uuid::fromString($id);
+		
 		$obj = $imageRepo->find($id);
 		/*
 		$obj->setUserDto(new UserDto(id: 0, name: 'Unknown', age: 0));
