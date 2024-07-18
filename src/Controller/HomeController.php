@@ -741,7 +741,8 @@ class HomeController extends AbstractController
 			//'forbid_modify_props_feature' => false,
 		]);
         
-		if ($r->isMethod('PATCH')) {
+		//if ($r->isMethod('PATCH')) {
+			/* 
 			$request = $r->getPayload()->all();
 			$files = $r->files->all();
 			$rootKey = '['.$form->getName().']';
@@ -749,13 +750,12 @@ class HomeController extends AbstractController
 			$payloadFiles = $pa->getValue($files, $rootKey) ?? [];
 			$payload = \array_merge($payload, $payloadFiles);
 			
-			/* 
 			$pa->setValue($payload, '[product][webPath]', 'images/2.jpg');
-			*/
 			\dd($payload);
+			*/
 			
-			$form->submit($payload, false);
-			//$form->handleRequest($r);
+			//$form->submit($payload, false);
+			$form->handleRequest($r);
 			if ($form->isSubmitted() && $form->isValid()) {
 				/*
 				\dd($payload, \mb_strlen($form->get('product')->getData()?->getName()));
@@ -764,7 +764,7 @@ class HomeController extends AbstractController
 				$obj = $form->getData();
 				\dd(
 					$form->getData(),
-					$form->get('userDto')->getData(),
+					$form->get('createdAt')->getData(),
 					/*
 					$payload,
 					
@@ -783,7 +783,7 @@ class HomeController extends AbstractController
 				//\dd($payload, $data);
 				return $this->redirectToRoute('app_home_producttypes', $r->attributes->get('_route_params', []));
 			}
-		}
+		//}
 		
         return [
             'form' => $form,

@@ -253,6 +253,7 @@ SYMFONY UX TURBO https://symfony.com/bundles/ux-turbo/current/index.html
 	есть ли разница между зафейленой обработанной формой (422) и необработанной формой для UX TURBO
 SYMFONY STIMULUS https://symfony.com/bundles/StimulusBundle/current/index.html
 	HOTWIRE: TURBO
+	*придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
 SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/index.html
 	https://ux.symfony.com/demos/live-component/form-collection-type/2299
 	https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms

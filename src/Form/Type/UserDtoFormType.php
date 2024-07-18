@@ -47,19 +47,32 @@ class UserDtoFormType extends AbstractFormType
 				options: [
 					//'empty_data' => [],
 					//'required' => true,
+					'block_prefix' => 'user_dto_id',
+					'translation_domain' => 'form',
 				],
 			)
-			->add('name')
-			->add('age')
+			->add('name',
+				options: [
+					//'empty_data' => [],
+					//'required' => true,
+				],
+			)
+			->add('age',
+				options: [
+					//'empty_data' => [],
+					//'required' => true,
+				],
+			)
 		;
     }
-
-    public function configureOptions(OptionsResolver $resolver): void
+	
+	public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
 			'data_class' => UserDto::class,
-            //'by_reference' => true,
+            'label_format' => 'app.%name%',
 			//'empty_data' => null,
+			'block_prefix' => 'user_dto',
         ]);
     }
 }
