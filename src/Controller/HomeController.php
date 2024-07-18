@@ -2,10 +2,12 @@
 
 namespace App\Controller;
 
+use function Symfony\Component\Translation\t;
 use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Translation\TranslatableMessage;
 use Carbon\CarbonInterval;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\Clock\MockClock;
@@ -699,13 +701,12 @@ class HomeController extends AbstractController
 		UploaderHelper $vichService,
 		#[Autowire('@kernel')]
 		$kernel,
+		$t,
 		$emojiSlugger,
 		#[Autowire('@app.engligh_inflector')]
 		$enInf,
 	) {
-		
 		//$id = Uuid::fromString($id);
-		
 		$obj = $imageRepo->find($id);
 		/*
 		$obj->setUserDto(new UserDto(id: 0, name: 'Unknown', age: 0));
@@ -790,6 +791,7 @@ class HomeController extends AbstractController
         return [
             'form' => $form,
             'obj' => $obj,
+            'string' => t('app.name', domain: 'form'),
         ];
     }
 }

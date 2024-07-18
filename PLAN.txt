@@ -220,8 +220,11 @@ SYMFONY UPLOAD FILES
 SYMFONY HTTP COMPONENT https://symfony.com/doc/current/components/http_kernel.html
 SYMFONY STRING https://symfony.com/doc/current/string.html#methods-to-pad-and-trim
 SYMFONY CLOCK COMPONENT https://symfony.com/doc/current/components/clock.html
-***
 SYMFONY TRANSLATION COMPONENT https://symfony.com/doc/current/translation.html
+	?
+	не получилось установить домен with twig tag trans_default_domain
+	как указать домен по умолчанию для разных файлов/папок шаблонов
+***
 	https://symfony.com/doc/current/reference/formats/message_format.html
 SYMFONY OPTIONS RESOLVER
 	?

@@ -92,40 +92,9 @@ class ImageFormType extends AbstractFormType
 					'mapped' => false,
 				],
 			)
-			->add('createdAt', FormType\ChoiceType::class,
+			->add('createdAt', //FormType\ChoiceType::class,
 				options: [
-					'mapped' => false,
-					'choices' => [
-						'yes' => true,
-						'no' => false,
-					],
-					'expanded' => true,
-					'multiple' => false,
 					
-<<<<<<< HEAD
-					//'widget' => 'choice',
-=======
-					'input' => Types::DATETIME_IMMUTABLE,//'array'// Types::DATETIME_IMMUTABLE,
-					'widget' => 'choice',//'choice',
-					
-					//'days' => $weekendDays,
-					//'input_format' => 'm-Y-d', // if only 'input' => 'string'
-					'placeholder' => 'app.choice.date.weekend',
-					'choice_translation_domain' => true,
->>>>>>> 1f0d398d3a73864bbd8fd6c7019fbed202dafa71
-					
-					//'data' => null,
-					/*
-					'constraints' => [
-						new Constraints\Expression(
-							expression: 'null == value or value.format("j") in weekend_days',
-							values: [
-								'weekend_days' => $weekendDays,
-							],
-							message: 'Дата должна содержать выходной день недели',
-						),
-					],
-					*/
 				],
 			)
 			->add('userDto', UserDtoFormType::class,

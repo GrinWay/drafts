@@ -8,6 +8,9 @@ controllers:
     schemes: ['https']
 
     #name_prefix: 'null_'
+    #prefix:
+    #    ru: ''
+    #    en: '/en'
 
     trailing_slash_on_root: true
 

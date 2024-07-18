@@ -1483,7 +1483,7 @@
             "dist": {
                 "type": "path",
                 "url": "./bundles/grinway/command-bundle",
-                "reference": "7f0abc590c067daef3933fe1226422acb7fa0ddc"
+                "reference": "8242399bfae432ae89424519328dd480244e9a2e"
             },
             "require": {
                 "grinway/env-processor-bundle": ">=1",
@@ -1528,7 +1528,7 @@
             "dist": {
                 "type": "path",
                 "url": "./bundles/grinway/env-processor-bundle",
-                "reference": "dc037d141afe0cfbda2f314c55a6806fa35de54a"
+                "reference": "645def4ea3bfafd031438c01020a2521320f3dc7"
             },
             "require": {
                 "grinway/service-bundle": ">=1",
@@ -1568,7 +1568,7 @@
             "dist": {
                 "type": "path",
                 "url": "./bundles/grinway/service-bundle",
-                "reference": "0bde77b5c756275cbff311a29de87eb9d2670a2b"
+                "reference": "7609f4fe90e8d4564e0bc97114e6165527992c97"
             },
             "require": {
                 "fzaninotto/faker": "dev-bugfix",
@@ -1615,7 +1615,7 @@
             "dist": {
                 "type": "path",
                 "url": "./bundles/grinway/web-app-bundle",
-                "reference": "67568336d90d09444fbac346a1eec520f42f799a"
+                "reference": "50bed19d1804078c0b5f537abcdb6f8e3ba1d9a4"
             },
             "require": {
                 "doctrine/doctrine-bundle": ">=2",

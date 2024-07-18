@@ -1,0 +1,4 @@
+app:
+    name: >-
+        Name from validation
+        %var%

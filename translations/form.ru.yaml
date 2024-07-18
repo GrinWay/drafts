@@ -1,4 +1,7 @@
 app:
+    small:
+        name: '<small>Имя</small>'
+
     name: 'Имя'
     price: 'Цена'
     rubric: 'Рубрика'

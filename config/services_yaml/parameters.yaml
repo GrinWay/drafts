@@ -4,6 +4,12 @@ parameters:
     #app.sign: '='
     #app.app: '%env(key_val:explode:app.sign:default::key:query:url:APP_APP)%'
 
+    ###> TRANSLATION ###
+    app.enabled_locales:
+    -   en
+    -   ru
+    ###< TRANSLATION ###
+    
     ###> REGEXP ###
     app.regexp.digit:   '[0-9]'
     ###< REGEXP ###
