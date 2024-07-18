@@ -4,6 +4,7 @@ namespace App\Form\Type;
 
 use function Symfony\component\string\u;
 
+use Symfony\Component\Form\FormInterface;
 use App\Messenger\Command\Message\OnlyWeekendsOfThisMonth;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
@@ -43,6 +44,8 @@ class ImageFormType extends AbstractFormType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$vtf = static function($v) {
+			//\dd($v);
+			//$v->setId(2);
 			\dump('vtf');
 			return $v;
 		};
@@ -94,7 +97,7 @@ class ImageFormType extends AbstractFormType
 					'input' => Types::DATETIME_IMMUTABLE,//'array'// Types::DATETIME_IMMUTABLE,
 					'widget' => 'choice',//'choice',
 					
-					'days' => $weekendDays,
+					//'days' => $weekendDays,
 					//'input_format' => 'm-Y-d', // if only 'input' => 'string'
 					'placeholder' => 'app.choice.date.weekend',
 					'choice_translation_domain' => true,
@@ -110,6 +113,11 @@ class ImageFormType extends AbstractFormType
 						),
 					],
 					*/
+				],
+			)
+			->add('userDto', UserDtoFormType::class,
+				options: [
+					//'data' => new UserDto(id: 1, name: 'Alex', age: 22),
 				],
 			)
             ->add($builder->create('fileDimensions', FormType\CurrencyType::class, //OnlyCountryType::class,
@@ -196,14 +204,14 @@ class ImageFormType extends AbstractFormType
 						*/
 					],
 				])
-				->addViewTransformer($vt)
-				->addModelTransformer($mt)
 			)
             ->add('file', VichImageType::class,
 				options: [
 				]
 			)
 			->setMethod('PATCH')
+			//->addViewTransformer($vt)
+			//->addModelTransformer($mt)
         ;
     }
 
@@ -211,6 +219,7 @@ class ImageFormType extends AbstractFormType
     {
         $resolver->setDefaults([
             'data_class' => Image::class,
+			
         ]);
     }
 }

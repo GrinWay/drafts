@@ -83,6 +83,11 @@ class Product implements GroupSequenceProviderInterface//, AutoMappingEnabledInt
         protected ?User $user = null,
     ) {
     }
+	
+    public function __clone()
+    {
+		\dump(__METHOD__);
+    }
 
     public function getId(): ?int
     {
@@ -156,7 +161,7 @@ class Product implements GroupSequenceProviderInterface//, AutoMappingEnabledInt
 
     public function setUser(?User $user): static
     {
-		\dump('set user', $user?->getId());
+		\dump(__METHOD__);
 		
         $this->user = $user;
 

@@ -1,4 +1,4 @@
-#bash "./public/deploy/install-grinway-symfony-bundles.sh"
+bash "./public/deploy/install-grinway-symfony-bundles.sh"
 
 php bin/console doctrine:schema:drop -f --full-database
 php bin/console make:migration

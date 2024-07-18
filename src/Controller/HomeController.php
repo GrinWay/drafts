@@ -83,7 +83,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\HttpKernel\Attribute\MapQueryString;
 use App\Dto\User\NullUserDto;
-use App\Dto\User\UserDto;
+use App\Doctrine\DTO\UserDto;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpFoundation\UriSigner;
@@ -607,7 +607,7 @@ class HomeController extends AbstractController
     #[Route(path: '/product/abc')]
     public function removeProduct()
     {
-        return $this->render('admin/index.html.twig');
+        return new Response('HTML');
     }
 
     #[Route(path: '/product/{id<[0-9]+>}', methods: ['GET'])]
@@ -674,7 +674,7 @@ class HomeController extends AbstractController
     }
 
     #[Template('product/_product_types_form.html.twig')]
-    #[Route('product/types/{id?27}',
+    #[Route('product/types/{id?1}',
 		requirements: [
 			//'id' => '[0-9a-fA-F\-]{8}\-[0-9a-fA-F\-]{4}\-[0-9a-fA-F\-]{4}\-[0-9a-fA-F\-]{4}\-[0-9a-fA-F\-]{12}',
 			'id' => '[0-9]+',
@@ -705,8 +705,8 @@ class HomeController extends AbstractController
 		
 		//$id = Uuid::fromString($id);
 		$obj = $imageRepo->find($id);
-		
 		/*
+		$obj->setUserDto(new UserDto(id: 0, name: 'Unknown', age: 0));
 		\dd(
 			$vichService->asset($obj),
 		);
@@ -731,7 +731,7 @@ class HomeController extends AbstractController
 		);
 		*/
 		//$data = '';
-		//$form = $this->createForm(TaskFormType::class, $obj, options: [
+		//$form = $this->createForm(ImageFormType::class, $obj, options: [
 		$form = $this->createForm(ImageFormType::class, $obj, options: [
 			//'validation_groups' => [
 			//	'TestForTestFormType',
@@ -748,12 +748,14 @@ class HomeController extends AbstractController
 			$payload = $pa->getValue($request, $rootKey) ?? [];
 			$payloadFiles = $pa->getValue($files, $rootKey) ?? [];
 			$payload = \array_merge($payload, $payloadFiles);
+			
 			/* 
 			$pa->setValue($payload, '[product][webPath]', 'images/2.jpg');
-			\dd($payload);
 			*/
+			\dd($payload);
 			
 			$form->submit($payload, false);
+			//$form->handleRequest($r);
 			if ($form->isSubmitted() && $form->isValid()) {
 				/*
 				\dd($payload, \mb_strlen($form->get('product')->getData()?->getName()));
@@ -762,7 +764,7 @@ class HomeController extends AbstractController
 				$obj = $form->getData();
 				\dd(
 					$form->getData(),
-					$form->get('createdAt')->getData(),
+					$form->get('userDto')->getData(),
 					/*
 					$payload,
 					

@@ -65,19 +65,24 @@ class User
         return $this;
     }
 
+    public function __clone()
+    {
+		\dump(__METHOD__);
+    }
+
     /**
      * @return Collection<int, Product>
      */
     public function getProducts(): Collection
     {
-		\dump('get products');
+		\dump(__METHOD__);
 		
         return $this->products;
     }
 
     public function addProduct(Product $product): static
     {
-		\dump('add product', $product->getId());
+		\dump(__METHOD__);
         if (!$this->products->contains($product)) {
             $this->products->add($product);
             $product->setUser($this);
@@ -88,8 +93,7 @@ class User
 
     public function removeProduct(Product $product): static
     {
-		\dump('remove product', $product->getId());
-		\dump('remove method user', $this);
+		\dump(__METHOD__);
         if ($this->products->removeElement($product)) {
             // set the owning side to null (unless already changed)
             if ($product->getUser() === $this) {
