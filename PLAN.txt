@@ -14,6 +14,8 @@ SYMFONY HTTP FOUNDATION
 	как в request УСТАНОВИТЬ не скалярное значение (можно)
 SYMFONY DOCTRINE
 	?
+	*в каком формате сохранять интервал CarbonInterval
+	*в каком формате сохранять период CarbonPeriod
 	Что конкретно делает ORM\Embedded
 	как изменить тип записи datetime в базу данных (dbal:doctrine.dbal.types.datetime_immutable.MyClass)
 	setHint(Query::HINT_REFRESH, true) вообще работает?
@@ -116,6 +118,7 @@ SYMFONY FORMS
 	***
 	CollectionType: https://symfony.com/doc/current/form/form_collections.html#handling-the-new-tags-in-php
 	?
+	UuidType 
 	+ DateType widget:text не выводит placeholder (задай через attr.placeholder)
 	*реализовать и добавить в bundle CarbonTimeZoneFormType (с трансформатором IntlTimeZone::raw_offset -> +00:00)
 	не получилось задать empty_data в виде массива compoundFormType
@@ -252,6 +255,7 @@ SYMFONY STIMULUS https://symfony.com/bundles/StimulusBundle/current/index.html
 SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/index.html
 	https://ux.symfony.com/demos/live-component/form-collection-type/2299
 	https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
+	https://symfony.com/doc/current/reference/forms/types.html#symfony-ux-fields
 	?
 	вызывается или нет PreCreateForRenderEvent при обновлении re-render
 HOTWIRE: STRADA
