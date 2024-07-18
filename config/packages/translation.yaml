@@ -6,3 +6,7 @@ framework:
         default_path: '%kernel.project_dir%/translations'
         fallbacks: '%app.enabled_locales%'
         providers:
+            loco:
+                dsn: '%env(LOCO_DSN)%'
+                domains: ['messages']
+                locales: ['ru', 'en']

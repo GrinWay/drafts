@@ -220,11 +220,12 @@ SYMFONY UPLOAD FILES
 SYMFONY HTTP COMPONENT https://symfony.com/doc/current/components/http_kernel.html
 SYMFONY STRING https://symfony.com/doc/current/string.html#methods-to-pad-and-trim
 SYMFONY CLOCK COMPONENT https://symfony.com/doc/current/components/clock.html
-SYMFONY TRANSLATION COMPONENT https://symfony.com/doc/current/translation.html
+SYMFONY TRANSLATION COMPONENT
+	NEXT: https://symfony.com/doc/current/translation.html#the-locale-and-the-url
+***
 	?
 	не получилось установить домен with twig tag trans_default_domain
 	как указать домен по умолчанию для разных файлов/папок шаблонов
-***
 	https://symfony.com/doc/current/reference/formats/message_format.html
 SYMFONY OPTIONS RESOLVER
 	?
@@ -338,13 +339,6 @@ SYMFONY COMMAND class
 	Autowire RequestStack -> RequestStack::getCurrentRequest() === null
 SYMFONY COMPONENTS: https://symfony.com/components
 https://symfony.com/doc/current/reference/index.html
-AMQP
-	?
-	https://habr.com/ru/articles/62502/
-	https://www.rabbitmq.com/tutorials/tutorial-one-php
-	https://symfony.com/doc/current/messenger.html#amqp-transport
-	https://github.com/cloudamqp/amqproxy
-Beanstalkd Transport https://habr.com/ru/companies/shopozzcom/articles/240483/
 The Runtime Component https://symfony.com/doc/current/components/runtime.html
 REFERENCE https://symfony.com/doc/current/reference/index.html
 BOOTSTRAP (not deep)
@@ -356,6 +350,19 @@ CROP JS
 	?
 	https://symfony.com/doc/current/form/bootstrap5.html
 	реализовать полностью свою тему форм
+
+SYMFONY DOCTRINE
+	https://github.com/KnpLabs/DoctrineBehaviors
+	https://github.com/doctrine-extensions/DoctrineExtensions
+AMQP
+	?
+	https://habr.com/ru/articles/62502/
+	https://www.rabbitmq.com/tutorials/tutorial-one-php
+	https://symfony.com/doc/current/messenger.html#amqp-transport
+	https://github.com/cloudamqp/amqproxy
+Beanstalkd Transport https://habr.com/ru/companies/shopozzcom/articles/240483/
+SYMFONY TRANSLATION
+	Использовать провайдера Loco зарегайся с VPN: https://symfony.com/doc/current/translation.html#installing-and-configuring-a-third-party-provider
 PRODUCTION
 	?
 	process manager Supervisor or systemd for messenger	

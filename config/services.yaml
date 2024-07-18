@@ -96,6 +96,7 @@ services:
         App\Contract\EventListener\KernelEventListenerInterface:
             tags:
             -   name: kernel.event_listener
+                priority: 256
         
         ###< EVENT LISTENER ###
 

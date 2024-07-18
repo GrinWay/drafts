@@ -129,6 +129,15 @@
             "./src/Kernel.php"
         ]
     },
+    "symfony/loco-translation-provider": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.3",
+            "ref": "500b568fcdf2de12ac18e157e11820114db89986"
+        }
+    },
     "symfony/maker-bundle": {
         "version": "1.59",
         "recipe": {
