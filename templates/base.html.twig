@@ -27,6 +27,17 @@
     </head>
 
     <body>
-        {% block body %}{% endblock %}
+        <div class="container">
+			<div class="mb-4">
+				{% block debug_info %}
+					<div class="badge text-bg-success">
+						Request locale: {{ app.request.locale }}
+					</div>
+				{% endblock %}			
+			</div>
+			<div class="">
+				{% block body %}{% endblock %}
+			</div>
+		</div>
     </body>
 </html>

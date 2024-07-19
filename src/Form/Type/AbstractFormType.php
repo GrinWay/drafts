@@ -33,9 +33,10 @@ abstract class AbstractFormType extends AbstractType
     {
 		$resolver
 			->setDefaults([
-				'translation_domain' => 'form',
-				'choice_translation_domain' => 'form',
-				//'label_format' => new TranslatableMessage('app.%name%', [], 'form'),
+				'translation_domain' => 'app.form',
+				'choice_translation_domain' => 'app.form',
+				'label_format' => '%name%',
+				//'label_format' => t('%name%', [], 'app.form'),
 			])
 		;
     }

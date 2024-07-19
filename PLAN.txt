@@ -221,7 +221,7 @@ SYMFONY HTTP COMPONENT https://symfony.com/doc/current/components/http_kernel.ht
 SYMFONY STRING https://symfony.com/doc/current/string.html#methods-to-pad-and-trim
 SYMFONY CLOCK COMPONENT https://symfony.com/doc/current/components/clock.html
 SYMFONY TRANSLATION COMPONENT
-	NEXT: https://symfony.com/doc/current/translation.html#the-locale-and-the-url
+	NEXT: https://symfony.com/doc/current/reference/formats/message_format.html#additional-placeholder-functions
 ***
 	?
 	не получилось установить домен with twig tag trans_default_domain
@@ -371,7 +371,9 @@ PRODUCTION
 	custom env loader (configuraiton)
 	https://symfony.com/doc/current/contributing/code/conventions.html
 hinclude.js (HOTWIRE круче)
+https://docs.github.com/en/actions
 TODO
+	Все переводы бандлов поместить в домен grinway, то есть имя домена === имя бандла
 	WebApp
 		themes
 			./templates\form\theme\custom.html.twig

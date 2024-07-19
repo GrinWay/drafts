@@ -3,6 +3,7 @@
 namespace App\Form\Type;
 
 use function Symfony\component\string\u;
+use function Symfony\Component\Translation\t;
 
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Form\FormInterface;
@@ -89,26 +90,29 @@ class ImageFormType extends AbstractFormType
         $builder
             ->add('id', FormType\UuidType::class,
 				options: [
+					'translation_domain' => 'app.form+intl-icu',
+					'label' => t('created_count', ['{type}' => 'furniture', '{count}' => 22], 'app.product+intl-icu'),
 					'mapped' => false,
+					'disabled' => true,
 				],
 			)
 			->add('createdAt', //FormType\ChoiceType::class,
 				options: [
-					
+					'translation_domain' => 'app.form',
 				],
 			)
 			->add('userDto', UserDtoFormType::class,
 				options: [
-					'help' => 'app.user_dto',
+					'help' => 'user_dto',
 					'help_translation_parameters' => [
 						'%class%' => UserDto::class,
 					],
-					'translation_domain' => 'form',
 					//'data' => new UserDto(id: 1, name: 'Alex', age: 22),
 				],
 			)
             ->add($builder->create('fileDimensions', FormType\CurrencyType::class, //OnlyCountryType::class,
 				options: [
+					'translation_domain' => 'app.form',
 					'label' => 'CHOICE TYPE',
 					'mapped' => false,
 					//'choices'  => 'fileDimensions',
@@ -149,7 +153,7 @@ class ImageFormType extends AbstractFormType
 
 					'duplicate_preferred_choices' => false,					
 					
-					'translation_domain' => 'form',
+					'choice_translation_domain' => 'app.form',
 					'choice_translation_parameters' => [
 						'app.choice.image' => [],
 						'app.choice.avatar' => [
@@ -194,6 +198,7 @@ class ImageFormType extends AbstractFormType
 			)
             ->add('file', VichImageType::class,
 				options: [
+					'translation_domain' => 'app.form',
 				]
 			)
 			->setMethod('PATCH')
@@ -206,6 +211,8 @@ class ImageFormType extends AbstractFormType
     {
         $resolver->setDefaults([
             'data_class' => Image::class,
+			'label_format' => '%name%',
+			'translation_domain' => 'app.form',
 			//'form_attr' => md5(self::class),
         ]);
     }

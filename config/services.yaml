@@ -13,6 +13,10 @@ services:
             ###< SERVICES ###
             
             
+            ###> LANG ###
+            $appEnabledLocales: '%app.enabled_locales%'
+            ###< LANG ###
+            
             ###> ASCII ###
             $emojiSlugger: '@app.slugger_with_emoji'
             ###< ASCII ###

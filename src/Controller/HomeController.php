@@ -7,6 +7,9 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Translation\MessageCatalogueInterface;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Translation\LocaleSwitcher;
 use Symfony\Component\Translation\TranslatableMessage;
 use Carbon\CarbonInterval;
 use Symfony\Component\Clock\Clock;
@@ -677,7 +680,7 @@ class HomeController extends AbstractController
     }
 
     #[Template('product/_product_types_form.html.twig')]
-    #[Route('product/types/{id?1}',
+    #[Route('product/types/{id?1}/{_locale?ru}',
 		requirements: [
 			//'id' => '[0-9a-fA-F\-]{8}\-[0-9a-fA-F\-]{4}\-[0-9a-fA-F\-]{4}\-[0-9a-fA-F\-]{4}\-[0-9a-fA-F\-]{12}',
 			'id' => '[0-9]+',
@@ -689,6 +692,7 @@ class HomeController extends AbstractController
     public function productTypes(
 		Request $r,
 		string $id,
+		string $_locale,
 		TaskRepository $taskRepo,
 		UserRepository $userRepo,
 		ImageRepository $imageRepo,
@@ -705,8 +709,26 @@ class HomeController extends AbstractController
 		$emojiSlugger,
 		#[Autowire('@app.engligh_inflector')]
 		$enInf,
+		$appEnabledLocales,
+		LocaleSwitcher $localeSwitcher,
+		RequestContext $rc,
+		MessageBusInterface $bus,
 	) {
-		$t->setLocale('en');
+		$originLocale = $localeSwitcher->getLocale();
+		//$localeSwitcher->setLocale('en');
+		//$localeSwitcher->reset();
+		$callbackWithAnotherLocale = static function($locale) use ($localeSwitcher, $r, $rc): void {
+			\dd(
+				//$bus->dispatch(new RunCommandMessage('debug:translation ru --domain=app.form')),
+				$r->getLocale(),
+				$localeSwitcher->getLocale(),
+				$rc->getParameters()['_locale'],
+			);			
+		};
+		//$localeSwitcher->runWithLocale('ar', $callbackWithAnotherLocale);
+		//\dd($originLocale);
+		//$t->setLocale('en');
+		
 		//$id = Uuid::fromString($id);
 		$obj = $imageRepo->find($id);
 		/*
@@ -792,7 +814,6 @@ class HomeController extends AbstractController
         return [
             'form' => $form,
             'obj' => $obj,
-            'string' => t('app.name', domain: 'form'),
         ];
     }
 }

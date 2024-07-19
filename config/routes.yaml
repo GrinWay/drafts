@@ -8,13 +8,28 @@ controllers:
     schemes: ['https']
 
     #name_prefix: 'null_'
+
     #prefix:
-    #    ru: ''
-    #    en: '/en'
+        # DEFAULT
+        #ru: '' 
+        #en: '/en'
 
     trailing_slash_on_root: true
 
 ###> Add path ###
+
+# set locale in uri statically
+#app_admin_index:
+#    alias: 'app_admin_index.ru'
+#app_home_home:
+#    alias: 'app_home_home.ru'
+#app_home_removeproduct:
+#    alias: 'app_home_removeproduct.ru'
+#app_home_condition:
+#    alias: 'app_home_condition.ru'
+#app_home_producttypes:
+#    alias: 'app_home_producttypes.ru'
+
 static:
     path: /static/{id<[0-9]+>?1}
     controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController

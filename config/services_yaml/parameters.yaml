@@ -5,6 +5,7 @@ parameters:
     #app.app: '%env(key_val:explode:app.sign:default::key:query:url:APP_APP)%'
 
     ###> TRANSLATION ###
+    app.default_locale_route_dot_suffix: en
     app.enabled_locales:
     -   en
     -   ru

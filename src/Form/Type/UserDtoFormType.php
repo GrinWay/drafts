@@ -47,18 +47,20 @@ class UserDtoFormType extends AbstractFormType
 				options: [
 					//'empty_data' => [],
 					//'required' => true,
+					'translation_domain' => 'app.form',
 					'block_prefix' => 'user_dto_id',
-					'translation_domain' => 'form',
 				],
 			)
 			->add('name',
 				options: [
+					'translation_domain' => 'app.form',
 					//'empty_data' => [],
 					//'required' => true,
 				],
 			)
 			->add('age',
 				options: [
+					'translation_domain' => 'app.form',
 					//'empty_data' => [],
 					//'required' => true,
 				],
@@ -70,7 +72,8 @@ class UserDtoFormType extends AbstractFormType
     {
         $resolver->setDefaults([
 			'data_class' => UserDto::class,
-            'label_format' => 'app.%name%',
+            'label_format' => '%name%',
+            'translation_domain' => 'app.form',
 			//'empty_data' => null,
 			'block_prefix' => 'user_dto',
         ]);
