@@ -13,4 +13,10 @@ class NoteType {
 		'WARNING' => self::WARNING,
 		'ERROR'   => self::ERROR,
 	];
+	
+	public const SNAKE_KEYS_TYPES = [
+		'notice'  => self::NOTICE,
+		'warning' => self::WARNING,
+		'erorr'   => self::ERROR,
+	];
 }

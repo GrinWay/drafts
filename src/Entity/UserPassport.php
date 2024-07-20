@@ -22,15 +22,15 @@ class UserPassport extends Passport
     use \GrinWay\WebApp\Trait\Doctrine\UpdatedAt;
     use \GrinWay\WebApp\Trait\Doctrine\CreatedAt;
 
-    #[ORM\OneToOne(mappedBy: 'passport', cascade: ['persist'], orphanRemoval: true)]
+    #[ORM\OneToOne(mappedBy: 'passport', cascade: ['persist'], orphanRemoval: false)]
     private ?User $user = null;
 
     public function __construct(
         ?string $name = null,
         #[ORM\Column(type: 'key_val', length: 255)]
         private null|array|string $lastName = null,
-        #[ORM\Column(length: 255, unique: true)]
-        private ?string $email = null,
+        //#[ORM\Column(length: 255, unique: true)]
+        //private ?string $email = null,
     ) {
         parent::__construct(
             name: $name,

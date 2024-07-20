@@ -13,31 +13,20 @@
 
         {% block javascripts %}
         {% endblock %}
-		
-        {% block menu %}
-			<div class="menu">
-				<ul>
-					<li><a href="{{ path('app_home_home', {}) }}">home</a></li>
-					<li><a href="{{ path('app_home_removeproduct', {}) }}">removeproduct</a></li>
-					<li><a href="{{ path('app_home_condition', {id: 1}) }}">condition</a></li>
-					<li><a href="{{ path('static') }}">static</a></li>
-				</ul>
-			</div>
-        {% endblock %}
     </head>
 
-    <body>
-        <div class="container">
-			<div class="mb-4">
-				{% block debug_info %}
-					<div class="badge text-bg-success">
-						Request locale: {{ app.request.locale }}
-					</div>
-				{% endblock %}			
-			</div>
+    <body class="position-relative">
+		<twig:grinway:flash alert_size="sm" flash_position="sticky" />
+		
+		<twig:menu />
+		
+		<twig:debug />
+		
+        <div class="container">	
 			<div class="">
 				{% block body %}{% endblock %}
 			</div>
 		</div>
+		
     </body>
 </html>

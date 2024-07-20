@@ -87,11 +87,13 @@ class ImageFormType extends AbstractFormType
 		
 		$days = array_combine(\range(1, 5), \range(1, 5));
 		
+		//\dd(Carbon::now('UTC')->tz('+12:00'));
+		
         $builder
             ->add('id', FormType\UuidType::class,
 				options: [
 					'translation_domain' => 'app.form+intl-icu',
-					'label' => t('created_count', ['{type}' => 'furniture', '{count}' => 22], 'app.product+intl-icu'),
+					'label' => t('created_count', ['{type}' => 'furniture', '{count}' => 2], 'app.product+intl-icu'),
 					'mapped' => false,
 					'disabled' => true,
 				],

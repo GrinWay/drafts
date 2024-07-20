@@ -317,6 +317,9 @@
             "./config/packages/workflow.yaml"
         ]
     },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.17.0"
+    },
     "tales-from-a-dev/twig-tailwind-extra": {
         "version": "0.2",
         "recipe": {

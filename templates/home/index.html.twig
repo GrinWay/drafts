@@ -4,15 +4,6 @@
 
 {% block body %}
 
-	{{ form_start(form, { attr: { method: 'PUT', novalidate: true } }) }}
-		{#
-		{{ render_hinclude(url('app_home_condition', { id: 1 })) }}
-		#}
-		{{ form_widget(form) }}
-	{{ form_end(form) }}
-	
-	{{ dump(csrf_token('default')) }}
-	{#
-	#}
+	HOME
 	
 {% endblock %}

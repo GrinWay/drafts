@@ -37,7 +37,7 @@ static:
         template: 'static/index.html.twig'
         context:
             var: 1
-        
+       
 app_cool:
     path: /cool
     controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController    

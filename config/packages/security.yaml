@@ -1,17 +1,82 @@
+when@dev:
+    security:
+        firewalls:
+            main:
+                form_login:
+                    enable_csrf: false
+
 security:
     # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
     password_hashers:
         Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
-        users_in_memory: { memory: null }
+        # used to reload user from session & other features (e.g. switch_user)
+        app_user_provider:
+            entity:
+                class: App\Entity\User
+                property: email
     firewalls:
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern:
+                - ^/_profiler/
+                - ^/_wdt/
+                - ^/css/
+                - ^/images/
+                - ^/js/
             security: false
         main:
             lazy: true
-            provider: users_in_memory
+            #pattern: '.*'
+            provider: app_user_provider
+            
+            login_throttling:
+                max_attempts: 1
+                #interval: '5 seconds'
+            
+            entry_point: form_login
+            
+            form_login:
+                enable_csrf: true
+                # Redirect if denied
+                login_path: app_login
+                # Для перехвата аутентификатором
+                check_path: app_login
+                csrf_parameter: '%app.csrf_name%'
+                csrf_token_id: youWillNotHackMe
+                success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
+                failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
+            
+            #remote_user:
+                #provider: ~
+                #user: APP_REMOTE_USER
+            
+            #access_token:
+            #    realm: ~
+            
+            login_link:
+                login_path: app_login
+                check_route: app_login_link
+                check_post_only: false
+                signature_properties:
+                -   email
+                -   password
+                lifetime: 600
+                max_uses: 5
+                always_use_default_target_path: false
+                default_target_path: app_home_home
+                
+            http_basic:
+                realm: 'Secured Area'
+            
+            json_login:
+                login_path: app_login
+                check_path: app_json_login
+                username_path: username
+                password_path: password
+            
+            logout:
+                target: app_login
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
@@ -21,8 +86,9 @@ security:
 
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
-    access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
+    #access_control:
+    #-   path: ^/
+    #    roles: ROLE_USER
         # - { path: ^/profile, roles: ROLE_USER }
 
 when@test:

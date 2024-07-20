@@ -23,7 +23,6 @@ class AcceptLanguageLocaleEventListener implements KernelEventListenerInterface
 			$this->appEnabledLocales,
 		);
 		$request->setLocale($locale);
-		
 		// Doesn't work here
 		//$this->localeSwitcher->setLocale('en');
     }

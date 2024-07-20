@@ -1,15 +1,16 @@
 {# Usage:
-    <twig:grinway:alert type="" size="" alignment="" alert:ATTRIBUTE="">
+    <twig:grinway:alert alert_type="" size="" alert_alignment="" alert_position="" alert:ATTRIBUTE="">
 	    CONTENT
 	</twig:grinway:alert>
 #}
 
-{% props type = 'primary', size = 'normal' , alignment = 'left' %}
-
+{%- props alert_type = 'primary', alert_size = 'sm', alert_alignment = 'left', alert_position = 'normal' -%}
+{%- set nestedAlertName = 'alert' -%}
+{%- set base = 'alert my-0' -%}
 {% set class = cva({
-	base: 'alert',
+	base,
 	variants: {
-		type: {
+		alert_type: {
 			primary: 'alert-primary',
 			secondary: 'alert-secondary',
 			success: 'alert-success',
@@ -19,29 +20,36 @@
 			light: 'alert-light',
 			dark: 'alert-dark',
 		},
-		size: {
+		alert_size: {
 			lg: 'font-size-lg',
 			md: 'font-size-md',
-			sm: 'font-size-sm',
+			sm: 'small',
 			normal: '',
 		},
-		alignment: {
+		alert_alignment: {
 			left: 'text-left',
 			center: 'text-center',
 			right: 'text-right',
 		},
+		alert_position: {
+			top: 'position-absolute top-0 start-0 end-0',
+			sticky: 'position-sticky top-0 start-0 end-0',
+			normal: '',
+		},
 	},
 	compoundVariants: [
 		{
-			type: ['danger', 'warning'],
-			class: 'h6',
+			alert_type: ['danger', 'warning'],
+			class: 'h5',
+		},
+		{
+			alert_size: ['sm'],
+			class: 'p-2',
 		},
 	],
 }) %}
 
-{% set nestedAlertName = 'alert' %}
-
-<div class="{{ class.apply({type, size, alignment}, attributes.nested(nestedAlertName).render('class')) }}" {{ attributes.nested(nestedAlertName).defaults({ role: 'alert' }) }}>
+<div class="{{ class.apply({alert_type, alert_size, alert_alignment, alert_position}, attributes.nested(nestedAlertName).render('class')) }}" {{ attributes.nested(nestedAlertName).defaults({ role: 'alert' }) }}>
 	{%- block content -%}
 		EMPTY ALERT
 	{%- endblock content -%}

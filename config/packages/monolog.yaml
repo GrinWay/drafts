@@ -2,6 +2,7 @@ monolog:
     channels:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
         - messenger.email
+        - security
 
 when@dev:
     monolog:
@@ -27,6 +28,12 @@ when@dev:
                 channels: ["messenger.email"]
                 type: 'rotating_file'
                 path:  '%kernel.logs_dir%/messenger_email_%kernel.environment%.log'
+                level: 'info'
+                max_files: 1
+            security:
+                channels: ["security"]
+                type: 'rotating_file'
+                path:  '%kernel.logs_dir%/security_%kernel.environment%.log'
                 level: 'info'
                 max_files: 1
                 

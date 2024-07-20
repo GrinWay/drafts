@@ -21,7 +21,8 @@ twig:
 
         # Example:
         # - '@My/form.html.twig'
-    globals: []
+    globals:
+        app_note_type: !php/const App\Type\Note\NoteType::SNAKE_KEYS_TYPES
     cache: '%kernel.project_dir%/var/cache/dev/twig'
     charset:              '%kernel.charset%'
     debug:                '%kernel.debug%'

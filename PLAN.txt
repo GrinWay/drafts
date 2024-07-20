@@ -221,12 +221,11 @@ SYMFONY HTTP COMPONENT https://symfony.com/doc/current/components/http_kernel.ht
 SYMFONY STRING https://symfony.com/doc/current/string.html#methods-to-pad-and-trim
 SYMFONY CLOCK COMPONENT https://symfony.com/doc/current/components/clock.html
 SYMFONY TRANSLATION COMPONENT
-	NEXT: https://symfony.com/doc/current/reference/formats/message_format.html#additional-placeholder-functions
-***
 	?
 	не получилось установить домен with twig tag trans_default_domain
 	как указать домен по умолчанию для разных файлов/папок шаблонов
 	https://symfony.com/doc/current/reference/formats/message_format.html
+***
 SYMFONY OPTIONS RESOLVER
 	?
 	*неужели входные данные передаются через Options $options (да, но доступ возможен только к другим nodes)
@@ -236,9 +235,8 @@ SYMFONY CONFIG COMPONENT https://symfony.com/doc/current/components/config.html
 SYMFONY EXTENTIONS
 	?
 	add doctrine functions
-SYMFONY SECURITY
-	https://symfony.com/doc/current/reference/configuration/security.html
-	?
+***
+SYMFONY SECURITY https://symfony.com/doc/current/security.html#logout-programmatically
 	назначать группы login, register в зависимости от состояния объекта с помощью своего sequence provider UserGroupProvider 
 	как в сервисе получить _token csrf защиты
 	(The security system uses an event dispatcher per firewall: php bin/console debug:event-dispatcher --dispatcher=security.event_dispatcher.main)
@@ -250,6 +248,20 @@ SYMFONY SECURITY
 	make:registration-form
 	https://symfony.com/doc/current/reference/forms/types/password.html#hash-property-path
 	https://symfony.com/doc/current/reference/constraints/UserPassword.html
+	https://symfony.com/doc/current/reference/configuration/security.html
+	https://github.com/hwi/HWIOAuthBundle
+	?
+	+ как буд-то бы не работает перехватчик json_login для check_path (потому что помимо check_path проверялся заголовок ContentType, который должен был быть application/json)
+	как запустить другой аутентификатор при неудаче предыдущего
+	*залогиниться через X.509 Client Certificates
+	*залогиниться через remote_user
+	*используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
+SYMFONY MAILER https://symfony.com/doc/current/mailer.html
+SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
+	?
+	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
+	создать своего лимитера для логина login_throttling limiter
+		https://symfony.com/doc/current/security.html#limiting-login-attempts
 SYMFONY UX TURBO https://symfony.com/bundles/ux-turbo/current/index.html
 	HOTWIRE: STIMULUS
 	?
@@ -302,9 +314,6 @@ SYMFONY CONTAINER BUILDER
 	?
 	https://github.com/violet-php/class-scanner
 	Yaml::PARSE_CONSTANT add into grin_way_service to allow !const 'GrinWay\WebApp\Type\Messenger\BusTypes::QUERY_BUS' into C:\Рабочий стол\PHP SYMFONY\__SANDBOX__\SYMFONY 7\bundles\grinway\web-app-bundle\config\services.yaml
-SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
-	?
-	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
 SYMFONY Process Component https://symfony.com/doc/current/components/process.html
 SYMFONY MONOLOG
 ###> EXCERPTS TO ANSWER ###
@@ -313,7 +322,6 @@ By default, the URLs generated for web assets use the same default_uri value, bu
 SYMFONY BUNDLES
 	?
 	Configuration addDefaultChildrenIfNoneSet
-SYMFONY MAILER https://symfony.com/doc/current/mailer.html
 SYMFONY WORKFLOW
 SYMFONY PROFILER
 	?
@@ -395,7 +403,7 @@ TODO
 		twig extension
 			for_user
 		twig components (config/packages/twig_component.yaml)
-			grin_way_svg
+			take all grinway twig components
 		HasSyncTransportInterface -> MessageHasSyncTransportInterface
 		YearMonthDayHourMinuteSecondType
 			and create theme for it
@@ -421,6 +429,7 @@ TODO
 		*реализовать PasswordConstraint extends Compound только regex должен поциферно и побуквенно включать \sprintf('(?=.*[%1$s](?=.*[%1$s]))(?=.*[%2$s](?=.*[%2$s](?=.*[%2$s])))[%1$s%2$s%3$s]+', $regexLetters, $regexNumbers, $regexSpecialChars)
 		//TODO: ExpressionLanguageStaticFunctions
 		// TODO: AllTypes
+		//TODO: FragmentUtils
 		
 https://symfony.com/doc/current/create_framework/introduction.html
 Банда 4-х

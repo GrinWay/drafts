@@ -7,6 +7,9 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Translation\MessageCatalogueInterface;
 use Symfony\Component\Routing\RequestContext;
 use Symfony\Component\Translation\LocaleSwitcher;
@@ -194,7 +197,7 @@ class HomeController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/{slug<[a-zA-Zа-яА-Я0-9_\-\:]+>?1}')]
+    #[Route(path: '/')]
     //#[IsCsrfTokenValid(id: 'default', tokenKey: '_token')]
     //#[SomeAttribute]
     public function home(
@@ -249,42 +252,11 @@ class HomeController extends AbstractController
         //$someValue,
         #[Autowire('@twig')]
         $twig,
-        $slug,
         #[Autowire('@security.csrf.token_manager')]
         $csrfTokenManager,
     ) {
-        $etagContent = '';
-
-        [$task, $form] = $get(new TaskForm(['slug' => $slug]));
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            \dd(
-				$form->getParent(),
-            /*
-                $token = $csrfTokenManager->getToken('default'),
-                //$form->get('_token')->getData(),
-                //$token = $request->getPayload()->get('_token'),
-                $csrfTokenManager->isTokenValid(new CsrfToken('default', $token)),
-                //$request->getPayload()->all(),
-                'text_unmapped: ', $form->get('text_unmapped')->getData(), //null
-            */
-            );
-            $em->flush();
-
-            return $this->redirectToRoute('app_home_home', [
-                'slug' => $task->getSlug(),
-            ]);
-        }
-
         $response = $this->render('home/index.html.twig', [
-            'form' => $form,
         ]);
-
-        //$response->setEtag(md5($etagContent));
-        if ($response->isNotModified($request)) {
-            return $response;
-        }
         return $response;
 
         //\dd($twig->getLoader()->exists('home/index.html.twig'));
@@ -713,7 +685,27 @@ class HomeController extends AbstractController
 		LocaleSwitcher $localeSwitcher,
 		RequestContext $rc,
 		MessageBusInterface $bus,
+		UserProviderInterface $userProvider,
+		//#[Autowire('@security.user.provider.concrete.app_user_provider')]
+		//$userProvider,
+		Security $security,
 	) {
+		$user = $userRepo->findOneByEmail('s');
+		$authenticatorName = 'form_login';
+		$firewallName = 'main';
+		$badges = [
+			(new RememberMeBadge())->enable(),
+		];
+		$response = $security->login(
+			user: $user,
+			authenticatorName: $authenticatorName,
+			firewallName: $firewallName,
+			badges: $badges
+		);
+		$security->logout(false);
+		
+		//return $response;
+		
 		$originLocale = $localeSwitcher->getLocale();
 		//$localeSwitcher->setLocale('en');
 		//$localeSwitcher->reset();

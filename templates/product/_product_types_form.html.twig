@@ -8,8 +8,6 @@
 	{% set s = 'Lorem :kiwi-fruit::interrobang: ipsum dolor sit amet, consectetur adipisicing elit. Omnis magni explicabo ab molestias     asperiores laboriosam quod sequi sed. Atque, harum.' %}
 	{% set len = s|u.length %}
 	
-	{{ 'static in template'|trans(domain="app.form")|raw }}
-	
 	<div class="container mb-3">
 		<div class="">
 			{{ s|emojify|u.truncate(20, '...', false) }}

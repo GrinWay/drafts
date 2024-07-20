@@ -4,6 +4,10 @@ parameters:
     #app.sign: '='
     #app.app: '%env(key_val:explode:app.sign:default::key:query:url:APP_APP)%'
 
+    ###> SECURITY ###
+    app.csrf_name: '_csrf_token'
+    ###< SECURITY ###
+    
     ###> TRANSLATION ###
     app.default_locale_route_dot_suffix: en
     app.enabled_locales:

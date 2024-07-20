@@ -1,4 +1,4 @@
-{# Usage: "compatible with constraint.payload.level: !php/const App\Type\Note\NoteType::ERROR"
+{# Usage: "compatible with constraint.payload.level: !php/const App\Type\Note\NoteType::TYPES"
 	
 	<twig:grinway:form:error :level="level">
 		{{- error.message -}}
@@ -22,7 +22,7 @@
 }) %}
 
 <div {{ attributes.defaults({ class: class_cva.apply({level}) }) -}}>
-	<div {{ attributes -}}>
+	<div {{ attributes.nested('inner').defaults({}) -}}>
 		{%- block content -%}
 			Error happened
 		{%- endblock -%}

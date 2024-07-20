@@ -25,7 +25,7 @@ class UserPassportFixture extends AbstractFixtures
             $obj = new UserPassport(
                 name: $this->faker->firstName,
                 lastName: $this->faker->lastName,
-                email: $this->faker->unique()->email,
+                //email: $this->faker->unique()->email,
             );
 
             $this->addReference(UserPassport::class . $i, $obj);

@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Register{% endblock %}
+
+{% block body %}
+    <h1>Register</h1>
+
+    {{ form_errors(registrationForm) }}
+
+    {{ form_start(registrationForm, {attr: {novalidate: 'novalidate'}}) }}
+        {{ form_row(registrationForm) }}
+        <twig:grinway:btn class="btn-outline-success"></twig:grinway:btn>
+    {{ form_end(registrationForm) }}
+{% endblock %}
