@@ -2,7 +2,18 @@
 
 namespace App\Controller;
 
+use Doctrine\ORM\EntityManagerInterface;
+use App\Form\Error\UserPasswordNotValidFormError;
+use App\Type\Note\NoteType;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Form\Type\DeleteUserFormType;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
+use App\Repository\UserRepository;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 use App\Service\FragmentUtils;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
@@ -18,10 +29,12 @@ use App\Entity\User;
 
 class SecurityController extends AbstractController
 {
+	public function __construct(
+		private readonly RequestStack $requestStack,
+	) {}
+	
     #[Route(path: '/login/link', name: 'app_login_link', methods: ['GET', 'POST'])]
     public function loginLink(): Response {
-        
-		
 		return new Response('');
     }
 	
@@ -47,7 +60,6 @@ class SecurityController extends AbstractController
     public function login(
 		AuthenticationUtils $authenticationUtils,
 		FragmentUtils $fragmentUtils,
-		Request $r,
 	): Response {
 		
 		$targetPath = $fragmentUtils->templateUri('security/success_login.html.twig');
@@ -66,9 +78,71 @@ class SecurityController extends AbstractController
         ]);
     }
 
+    #[Route(path: '/login/auto/{email?s}', name: 'app_auto_login')]
+    public function loginAuto(
+		User $user,
+		Security $security,
+	): Response {
+		$authenticatorName = 'form_login';
+		$firewallName = 'main';
+		$badges = [
+			(new RememberMeBadge())->enable(),
+		];
+		$response = $security->login(
+			user: $user,
+			authenticatorName: $authenticatorName,
+			firewallName: $firewallName,
+			badges: $badges,
+		);
+		return $response;
+    }
+
     #[Route(path: '/logout', name: 'app_logout')]
     public function logout()
     {
+		throw new \LogicException('You will never come here');
 		return $this->redirectToRoute('app_home_home');
+    }
+
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[Route(
+		path: '/current/user/delete',
+		name: 'app_delete_current_user',
+		methods: ['GET', 'POST'],
+	)]
+    public function deleteCurrentUser(
+		UserPasswordHasherInterface $hasher,
+		EntityManagerInterface $em,
+		Security $security,
+	) {
+		$form = $this->createForm(DeleteUserFormType::class, options: []);
+		
+		$form->handleRequest($this->requestStack->getCurrentRequest());
+		$user = $this->getUser();
+		$plainPassword = $form->get('password')->getData();
+		if ($user && $plainPassword && !$hasher->isPasswordValid($user, $plainPassword)) {
+			$message = 'Неправильный пароль.';
+			$form->get('password')->addError(new UserPasswordNotValidFormError($message));
+			
+			//throw new AccessDeniedException($message);
+		}
+		if ($form->isSubmitted() && $form->isValid()) {			
+			
+			$security->logout(false);
+			
+			$em->remove($user);
+			$em->flush();
+			
+			$this->addFlash(
+				NoteType::NOTICE,
+				\sprintf('Пользователь "%s" был навсегда удалён.', $user->getUserIdentifier())
+			);
+			
+			return $this->redirectToRoute('app_register');
+		}
+		
+		return $this->render('security/delete_current_user.html.twig', [
+			'form' => $form,
+		]);
     }
 }

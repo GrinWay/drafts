@@ -33,7 +33,7 @@ twig:
     # The default path used to load templates
     default_path: '%kernel.project_dir%/templates'
     paths:
-        templates/admin/home: admin_home
+        templates/admin/index: admin
     
     # Pattern of file name used for cache warmer and linter
     file_name_pattern: [

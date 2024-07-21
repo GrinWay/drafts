@@ -1,9 +1,11 @@
 {% extends 'home/layout.html.twig' %}
 
+{%- trans_default_domain 'messages' -%}
+
 {%- block home_title ' index'|title -%}
 
 {% block body %}
 
-	HOME
+	{{ 'app.HOME'|trans }}
 	
 {% endblock %}

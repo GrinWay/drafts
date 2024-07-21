@@ -22,13 +22,18 @@ class UserPassport extends Passport
     use \GrinWay\WebApp\Trait\Doctrine\UpdatedAt;
     use \GrinWay\WebApp\Trait\Doctrine\CreatedAt;
 
-    #[ORM\OneToOne(mappedBy: 'passport', cascade: ['persist'], orphanRemoval: false)]
-    private ?User $user = null;
+    #[ORM\OneToOne(mappedBy: 'passport', cascade: ['persist'])]
+	private ?User $user = null;
+
 
     public function __construct(
         ?string $name = null,
         #[ORM\Column(type: 'key_val', length: 255)]
         private null|array|string $lastName = null,
+		#[ORM\Column(length: 30, nullable: true)]
+		private ?string $timezone = null,
+		#[ORM\Column(length: 10, nullable: true)]
+		private ?string $lang = null,
         //#[ORM\Column(length: 255, unique: true)]
         //private ?string $email = null,
     ) {
@@ -49,6 +54,7 @@ class UserPassport extends Passport
         return $this;
     }
 
+	/*
     public function getEmail(): ?string
     {
         return $this->email;
@@ -60,6 +66,7 @@ class UserPassport extends Passport
 
         return $this;
     }
+	*/
 
     public function getUser(): ?User
     {
@@ -74,6 +81,30 @@ class UserPassport extends Passport
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getTimezone(): ?string
+    {
+        return $this->timezone;
+    }
+
+    public function setTimezone(?string $timezone): static
+    {
+        $this->timezone = $timezone;
+
+        return $this;
+    }
+
+    public function getLang(): ?string
+    {
+        return $this->lang;
+    }
+
+    public function setLang(?string $lang): static
+    {
+        $this->lang = $lang;
 
         return $this;
     }

@@ -7,6 +7,11 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use App\Exception\Security\Authentication\OAuthNeedsException;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use App\Type\Note\NoteType;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\RememberMeBadge;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
@@ -662,7 +667,7 @@ class HomeController extends AbstractController
 	* @var Carbon $nowModified +10 year
 	*/
     public function productTypes(
-		Request $r,
+		Request $request,
 		string $id,
 		string $_locale,
 		TaskRepository $taskRepo,
@@ -686,27 +691,24 @@ class HomeController extends AbstractController
 		RequestContext $rc,
 		MessageBusInterface $bus,
 		UserProviderInterface $userProvider,
+		UrlGeneratorInterface $ug,
+		$_route,
 		//#[Autowire('@security.user.provider.concrete.app_user_provider')]
 		//$userProvider,
-		Security $security,
+		UserPasswordHasherInterface $userPasswordHasherInterface,
+		PasswordHasherFactoryInterface $hasherFacotry,
 	) {
-		$user = $userRepo->findOneByEmail('s');
-		$authenticatorName = 'form_login';
-		$firewallName = 'main';
-		$badges = [
-			(new RememberMeBadge())->enable(),
-		];
-		$response = $security->login(
-			user: $user,
-			authenticatorName: $authenticatorName,
-			firewallName: $firewallName,
-			badges: $badges
-		);
-		$security->logout(false);
+		$r = $request;
+		
+		$hasher = $hasherFacotry->getPasswordHasher('admin_hasher');
+		$string = '123';
+		//$hash = $hasher->hash($string);
+		
+		//$security->logout(false);
 		
 		//return $response;
 		
-		$originLocale = $localeSwitcher->getLocale();
+		$locale = $localeSwitcher->getLocale();
 		//$localeSwitcher->setLocale('en');
 		//$localeSwitcher->reset();
 		$callbackWithAnotherLocale = static function($locale) use ($localeSwitcher, $r, $rc): void {

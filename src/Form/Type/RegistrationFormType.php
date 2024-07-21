@@ -19,10 +19,18 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('passport', UserPassportFormType::class, 
 				options: [
+					'attr' => [
+					],
 					'label' => false,
 				],
 			)
             ->add('email')
+            ->add('roles', 
+				options: [
+					'getter' => static fn($obj, $f) => \implode(', ', $obj->getRoles()),
+					'setter' => static fn($obj, $v, $f) => $obj->setRoles(empty($v) ? [] : \array_map(static fn($v) => \trim($v), \explode(',', $v))),
+				],
+			)
             ->add('plainPassword', PasswordType::class, [
 				// instead of being set onto the object directly,
                 // this is read and encoded in the controller

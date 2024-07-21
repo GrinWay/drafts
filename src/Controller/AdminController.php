@@ -4,13 +4,21 @@ namespace App\Controller;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted(
+	'VOTE_MODIFY_ADMIN',
+	message: 'Доступ разрешён только для тех, кто может управлять админами.',
+	//statusCode: Response::HTTP_UNAUTHORIZED,
+	//exceptionCode: 180898,
+)]
+#[Route(path: '/admin')]
 class AdminController extends AbstractController
 {
-    #[Route('/admin/{id}', defaults: ['id' => 1, '_controller' => 'no!'])]
+    #[Route(path: '/')]
     public function index(): Response
     {
-        return $this->render('admin/index.html.twig', [
+        return $this->render('@admin/index.html.twig', [
             'controller_name' => 'AdminController',
         ]);
     }

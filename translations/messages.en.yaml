@@ -1,4 +1,6 @@
 app:
+    HOME: HOME
+    
     exception:
     
     word:

@@ -100,7 +100,7 @@ services:
         App\Contract\EventListener\KernelEventListenerInterface:
             tags:
             -   name: kernel.event_listener
-                priority: 256
+                priority: 127
         
         ###< EVENT LISTENER ###
 
@@ -124,3 +124,4 @@ services:
             - '../src/Service/SomeService2.php'
             - '../src/Extension/ExpressionLanguage/Decorator/ValidatorExpLangFunctionProvider.php'
             - '../src/Service/Naming/SlugNamer.php'
+            - '../src/Security/Voter/ModifyAdminVoter.php'

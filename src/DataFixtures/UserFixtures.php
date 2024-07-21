@@ -35,8 +35,11 @@ class UserFixtures extends AbstractFixtures implements DependentFixtureInterface
 			$passport = $this->getReference(UserPassport::class . $i);
 			
 			$roles = $this->faker->randomElement([
-				[Role::USER],
-				[Role::USER, Role::ADMIN],
+				[],
+				[],
+				[],
+				[],
+				[Role::ADMIN],
 			]);
 			
 			$user = new User(

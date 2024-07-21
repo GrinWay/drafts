@@ -17,10 +17,10 @@ framework:
         gc_probability:       1
         gc_divisor:           1
         
-        gc_maxlifetime: 5
+        gc_maxlifetime: '%app.session.max_idle_sec%'
 
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
-        cookie_lifetime: 31536000
+        cookie_lifetime: '%app.session.max_idle_sec%'
         #cookie_path: '%kernel.project_dir%/var/cookies/%kernel.environment%'
         
     #error_controller: App\Controller\ErrorController

@@ -8,7 +8,7 @@
 
 {% props svg_container_style = null %}
 
-<div {{ attributes.defaults({ style: "width: 24px; height: 24px; #{svg_container_style}" }) }}>
+<div {{ attributes.nested('container').defaults({ style: "width: 24px; height: 24px; #{svg_container_style}" }) }}>
 	<svg {{ attributes.nested('svg').defaults({ class: 'w-100 h-100' }) }}>
 		<use xlink:href="{{- asset('grinwaywebappbundle/images/svg/sprite.svg') -}}#{{- attributes.has('id') ? attributes.render('id') : block('content') -}}"></use>
 	</svg>

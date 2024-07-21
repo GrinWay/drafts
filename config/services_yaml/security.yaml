@@ -1,0 +1,9 @@
+services:
+
+    App\Security\Voter\ModifyAdminVoter:
+        class: App\Security\Voter\ModifyAdminVoter
+        tags:
+        -   name: security.voter
+        arguments:
+            $container: !service_locator
+                authChecker: '@Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'

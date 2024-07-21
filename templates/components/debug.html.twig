@@ -1,4 +1,56 @@
 {%- if "prod" != app.environment -%}
+
+	{%- set impersonation_email = 'pavel30@nekrasova.com' -%}
+	
+	{%- set securitySvgClass = "m-auto pt-1" -%}
+	
+	{%- if is_granted('IS_AUTHENTICATED_FULLY') -%}
+		<div class="badge text-bg-secondary me-1">
+			Auth fully <twig:grinway:svg container:class="{{ securitySvgClass }}" id="ok" />
+		</div>
+	{%- else -%}
+		<div class="badge text-bg-secondary me-1">
+			Auth fully <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+		</div>
+	{%- endif -%}
+	
+	{%- if is_granted('IS_AUTHENTICATED') -%}
+		<div class="badge text-bg-secondary me-1">
+			Auth with cookie <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="ok" />			
+		</div>
+	{%- else -%}
+		<div class="badge text-bg-secondary me-1">
+			Auth with cookie <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+		</div>
+	{%- endif -%}
+	
+	{%- if is_granted('IS_IMPERSONATOR') -%}
+		<div class="badge text-bg-secondary me-1">
+			Impersonator <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="ok" />
+		</div>
+		<div class="d-inline">
+			<a href="{{ impersonation_exit_path() }}" class="">EXIT</a>
+		</div>
+		<div class="d-inline">
+			But actually you're: "{{ app.token.originalToken.user.userIdentifier -}}"
+		</div>
+	{%- else -%}
+		<div class="badge text-bg-secondary me-1">
+			Impersonator <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+		</div>
+		<div class="d-inline">
+			<a href="{{- impersonation_path(impersonation_email) -}}" class="">PRETEND</a>
+		</div>
+	{%- endif -%}
+	
+	{%- if is_granted('ROLE_OWNER') -%}
+		<div class="">
+			<div class="badge text-bg-secondary">
+				USER ID: {{ app.user.userIdentifier }}
+			</div>
+		</div>
+	{%- endif -%}
+	
 	<div class="mb-4">
 		{% block debug_info %}
 			<div class="badge text-bg-success">
@@ -6,4 +58,5 @@
 			</div>
 		{% endblock %}			
 	</div>
+	
 {%- endif -%}

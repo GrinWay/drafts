@@ -1,4 +1,8 @@
+
 app:
+
+    HOME: ДОМ
+
     name: 'Variable: %var%'
     exception:
     

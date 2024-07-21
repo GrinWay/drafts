@@ -27,7 +27,7 @@ class FailureHandler implements AuthenticationFailureHandlerInterface {
 				'security'
 			),
 		);
-		$request->getSession()->getFlashBag()->add(NoteType::WARNING, $message);
+		$request->getSession()->getFlashBag()->add(NoteType::ERROR, $message);
 		return new RedirectResponse($this->ug->generate('app_login'));
 	}
 }

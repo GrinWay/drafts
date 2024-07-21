@@ -16,6 +16,9 @@ class UserPassportFormType extends AbstractType
         $builder
             ->add('name',
 				options: [
+					'attr' => [
+						'autofocus' => 'autofocus',
+					],
 					'translation_domain' => 'app.security+intl-icu',
 				]
 			)

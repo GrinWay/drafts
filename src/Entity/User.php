@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Type\Security\User\Role;
 use App\Entity\UserPassport;
 use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -10,12 +11,14 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Types;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_EMAIL', fields: ['email'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_PASSPORT', fields: ['passport'])]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface//, EquatableInterface
 {
     #[ORM\Id]
 	#[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -23,22 +26,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types\UlidType::NAME, unique: true)]
     private ?Ulid $id = null;
 
+
 	/**
 	 * @var array $roles list<string> The user roles
 	 * @var ?string $password string The hashed password
 	 */
 	public function __construct(
-			#[ORM\Column(length: 255)]
-			private ?string $email = null,
-			#[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
-			#[ORM\JoinColumn(nullable: false)]
-			private ?UserPassport $passport = null,
-      		#[ORM\Column]
-      		private array $roles = [],
-      		#[ORM\Column]
-      		private ?string $password = null,
-          ) {
-      	}
+		#[ORM\Column(length: 255)]
+		private ?string $email = null,
+		#[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EAGER')]
+		#[ORM\JoinColumn(nullable: false)]
+		private ?UserPassport $passport = null,
+		#[ORM\Column]
+		private array $roles = [],
+		#[ORM\Column]
+		private ?string $password = null,
+		#[ORM\Column()]
+		private bool $switchUserAble = false,
+	) {}
 
     public function getId(): ?Ulid
     {
@@ -75,7 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $roles = $this->roles;
         // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
+        $roles[] = Role::USER;
 
         return array_unique($roles);
     }
@@ -122,6 +127,39 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassport(UserPassport $passport): static
     {
         $this->passport = $passport;
+
+        return $this;
+    }
+	
+	public function isEqualTo(UserInterface $dbUser): bool {
+         		return true
+         			&& $dbUser->getUserIdentifier() === $this->getUserIdentifier()
+         			//&& $dbUser->getId() === $this->getId()
+         			//&& $dbUser->getRoles() === $this->getRoles()
+         		;
+         	}
+	
+	/**
+	* PasswordHasherAwareInterface
+	*/
+	public function getPasswordHasherName(): ?string {
+         		$hasher = null;
+         		
+         		if (\in_array('ROLE_ADMIN', $this->getRoles())) {
+         			$hasher = 'admin_hasher';
+         		}
+         		
+         		return $hasher;
+         	}
+
+    public function isSwitchUserAble(): bool
+    {
+        return $this->switchUserAble;
+    }
+
+    public function setSwitchUserAble(bool $switchUserAble): static
+    {
+        $this->switchUserAble = $switchUserAble;
 
         return $this;
     }
