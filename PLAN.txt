@@ -241,7 +241,6 @@ SYMFONY EXTENTIONS
 	add doctrine functions
 ***
 SYMFONY SECURITY
-	https://symfony.com/doc/current/security/entry_point.html
 	https://symfony.com/doc/current/security/custom_authenticator.html
 	https://symfony.com/doc/current/security/voters.html
 	https://symfony.com/doc/current/security/user_checkers.html
