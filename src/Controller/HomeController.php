@@ -7,6 +7,7 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use App\Exception\Security\Authentication\OAuthNeedsException;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -259,9 +260,11 @@ class HomeController extends AbstractController
         $twig,
         #[Autowire('@security.csrf.token_manager')]
         $csrfTokenManager,
+		TokenInterface $token,
     ) {
         $response = $this->render('home/index.html.twig', [
         ]);
+		
         return $response;
 
         //\dd($twig->getLoader()->exists('home/index.html.twig'));

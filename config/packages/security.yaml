@@ -32,6 +32,11 @@ security:
             id: 'App\Security\PasswordHasher\NoHashPasswordHasher'
         
         # Named hasher
+        low_cost_bcrypt:
+            algorithm: bcrypt
+            cost: 7
+            
+        # Named hasher
         admin_hasher:
             algorithm: auto
             cost: 14
@@ -61,6 +66,9 @@ security:
         main:
             entry_point: 'App\Security\EntryPoint\ExceptionDependedEntryPoint'
             
+            custom_authenticators:
+            -   App\Security\Authenticator\FormLoginAuthenticator
+            
             lazy: true
             #pattern: '.*'
             provider: app_user_provider
@@ -69,16 +77,16 @@ security:
                 max_attempts: 10
                 #interval: '5 seconds'
             
-            form_login:
-                enable_csrf: true
+            #form_login:
+            #    enable_csrf: true
                 # Redirect if denied
-                login_path: app_login
+            #    login_path: app_login
                 # Для перехвата аутентификатором
-                check_path: app_login
-                csrf_parameter: '%app.csrf_name%'
-                csrf_token_id: youWillNotHackMe
-                success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
-                failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
+            #    check_path: app_login
+            #    csrf_parameter: '%app.csrf_name%'
+            #    csrf_token_id: youWillNotHackMe
+            #    success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
+            #    failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
             
             http_basic:
                 realm: 'Secured Area'

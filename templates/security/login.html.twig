@@ -23,10 +23,6 @@
 		
 		<input type="hidden" name="_csrf_token" value="{{ csrf_token('youWillNotHackMe') }}">
 		
-		{%- set hiddenSuccessLoginRoute = controller('Symfony\\Bundle\\FrameworkBundle\\Controller\\TemplateController', {
-			template: 'security/success_login.html.twig',
-		}) -%}
-		
 		<input type="hidden" name="_target_path" value="{{ _target_path }}">
         
 		{#
