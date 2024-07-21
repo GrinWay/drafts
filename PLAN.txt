@@ -265,6 +265,7 @@ SYMFONY SECURITY
 	https://symfony.com/blog/cve-2016-4423-large-username-storage-in-session
 	https://github.com/hwi/HWIOAuthBundle
 	?
+	возможно сервис TokenInterface является synthetic так как по одному и тому же SERVICE_ID я получаю разные сервисы
 	выдача себя за другого пользователя через заголовок не работает https://symfony.com/doc/current/security/impersonating_user.html#events
 	*как из auto hasher мигрировать пароль в custom no_hash
 	не получается мигрировать password hashers в md2 или другие, но если стоит auto всё мигрируется в новейший password hasher

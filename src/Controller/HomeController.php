@@ -262,8 +262,7 @@ class HomeController extends AbstractController
         $csrfTokenManager,
 		TokenInterface $token,
     ) {
-        $response = $this->render('home/index.html.twig', [
-        ]);
+        $response = $this->render('home/index.html.twig', []);
 		
         return $response;
 
