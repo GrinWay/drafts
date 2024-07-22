@@ -454,6 +454,7 @@ TODO
 		//TODO: ExpressionLanguageStaticFunctions
 		// TODO: AllTypes
 		//TODO: FragmentUtils
+		//TODO: take isEnabledLocale
 		
 https://symfony.com/doc/current/create_framework/introduction.html
 Банда 4-х

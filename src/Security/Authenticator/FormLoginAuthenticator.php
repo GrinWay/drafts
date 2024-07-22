@@ -24,11 +24,12 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\CsrfTokenBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\PasswordUpgradeBadge;
 use Symfony\Component\Security\Http\Authenticator\Passport\Badge\PreAuthenticatedUserBadge;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
+use App\Security\Badge\ModifyUserPropBadge;
 
 /**
 * Creating your AUTHENTICATOR you can:
 * 
-* create your BADGE (to validate the user in a listener)
+* create your BADGE (to validate the rest in a listener)
 * create your TOKEN (to store the info for app, it'll be the tokenService)
 */
 class FormLoginAuthenticator extends AbstractLoginFormAuthenticator {
@@ -74,7 +75,7 @@ class FormLoginAuthenticator extends AbstractLoginFormAuthenticator {
 			badges: [
 				(new RememberMeBadge)->enable(),
 				new CsrfTokenBadge($csrfTokenId, $csrfToken),
-				//new Badge(),
+				new ModifyUserPropBadge('passport.name', static fn($origin) => \mb_strtoupper($origin)),
 				/*
 				new PreAuthenticatedUserBadge(),
 				*/

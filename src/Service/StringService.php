@@ -2,6 +2,8 @@
 
 namespace App\Service;
 
+use function Symfony\component\string\u;
+
 use GrinWay\Service\Service\StringService as GrinWayStringService;
 use Symfony\Component\DependencyInjection\Attribute\When;
 use Symfony\Contracts\Service\Attribute\Required;
@@ -43,4 +45,23 @@ class StringService extends GrinWayStringService
             grinWayServiceSlashOfIpRegex: $grinWayServiceSlashOfIpRegex,
         );
     }
+	
+	//TODO: take isEnabledLocale
+	public static function isEnabledLocale(?string $needleLocale, array $enabledLocales): bool {
+		if (empty($needleLocale)) {
+			return false;
+		}
+		
+		$needleLocale = (string) u($needleLocale)->replace('-', '_');
+		$needleLocaleFirstPart = \explode('_', $needleLocale);
+		$needleLocaleFirstPart = \mb_strtolower($needleLocaleFirstPart[0]);
+		
+		foreach($enabledLocales as $enabledLocale) {
+			$enabledLocale = \mb_strtolower($enabledLocale);
+			if (null != $needleLocale && \str_starts_with($enabledLocale, $needleLocaleFirstPart)) {
+				return true;
+			}
+		}
+		return false;
+	}
 }

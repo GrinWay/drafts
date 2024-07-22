@@ -260,7 +260,7 @@ class HomeController extends AbstractController
         $twig,
         #[Autowire('@security.csrf.token_manager')]
         $csrfTokenManager,
-		TokenInterface $token,
+		?TokenInterface $token,
     ) {
         $response = $this->render('home/index.html.twig', []);
 		
