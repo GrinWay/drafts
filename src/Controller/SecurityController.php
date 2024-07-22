@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use App\Security\Authenticator\FormLoginAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Form\Error\UserPasswordNotValidFormError;
 use App\Type\Note\NoteType;
@@ -26,9 +28,12 @@ use Symfony\Bundle\FrameworkBundle\Controller\TemplateController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use App\Entity\User;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
 class SecurityController extends AbstractController
 {
+	use TargetPathTrait;
+	
 	public function __construct(
 		private readonly RequestStack $requestStack,
 	) {}
@@ -60,11 +65,13 @@ class SecurityController extends AbstractController
     public function login(
 		AuthenticationUtils $authenticationUtils,
 		FragmentUtils $fragmentUtils,
+		SessionInterface $session,
 	): Response {
 		
-		$targetPath = $fragmentUtils->templateUri('security/success_login.html.twig');
-		
-        // get the login error if there is one
+		$targetPath = $this->getTargetPath($session, firewallName: 'main');
+		$targetPath ??= $fragmentUtils->templateUri('security/success_login.html.twig');
+        
+		// get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 		//if ($error) \dd($error->getMessageKey(), $error->getMessageData());
 		
@@ -83,7 +90,7 @@ class SecurityController extends AbstractController
 		User $user,
 		Security $security,
 	): Response {
-		$authenticatorName = 'form_login';
+		$authenticatorName = FormLoginAuthenticator::class;
 		$firewallName = 'main';
 		$badges = [
 			(new RememberMeBadge())->enable(),
@@ -94,6 +101,9 @@ class SecurityController extends AbstractController
 			firewallName: $firewallName,
 			badges: $badges,
 		);
+		
+		$response ??= $this->redirectToRoute('app_home_home');
+		
 		return $response;
     }
 

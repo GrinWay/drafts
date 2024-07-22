@@ -2,6 +2,8 @@
 
 namespace App\Security\EntryPoint;
 
+use App\Type\Security\Voter\VoterSubject;
+use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use App\Trait\ServiceLocator\Aware\SecurityEntryPointLoggerAware;
 use App\Type\Note\NoteType;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -20,7 +22,8 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
 class ExceptionDependedEntryPoint implements AuthenticationEntryPointInterface, ServiceSubscriberInterface {
 	
 	use ServiceMethodsSubscriberTrait, SecurityEntryPointLoggerAware;
-	
+	use TargetPathTrait;	
+
 	public function __construct(
 		private readonly UrlGeneratorInterface $ug,
 		private readonly RequestStack $requestStack,
@@ -40,22 +43,28 @@ class ExceptionDependedEntryPoint implements AuthenticationEntryPointInterface, 
 		));
 		*/
 		
-		//###> DEFAULT
-		$url = 'app_login';
-
+		$uri = null;
+		
 		if ($authException instanceof FormLoginNeedsException) {
-			$url = 'app_login';
+			$uri = 'app_login';
 		}
 
 		if ($authException instanceof OAuthNeedsException) {
-			$url = 'app_o_auth_login';
+			$uri = 'app_o_auth_login';
 		}
 		
 		$this->tryToAddFlash($authException);
 		$this->tryTolog($authException);
 		
-		$url = $this->ug->generate($url);
-		return new RedirectResponse($url);
+		if (null === $uri) {
+			if (null === $authException && $request->hasSession()) {
+				$uri = $this->getTargetPath($request->getSession(), firewallName: 'main');				
+			}
+			$uri ??= 'app_login';
+		}
+		
+		$uri = $this->ug->generate($uri);
+		return new RedirectResponse($uri);
 	}
 	
 	

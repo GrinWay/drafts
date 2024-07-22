@@ -15,7 +15,9 @@ when@dev: &when_dev
 when@test: *when_dev
 
 security:
-
+    
+    access_decision_manager:
+        
     role_hierarchy:
         
         ROLE_ADMIN:

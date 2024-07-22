@@ -7,14 +7,16 @@ use Symfony\Component\Security\Http\Authenticator\Token\PostAuthenticationToken;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 class FormLoginAuthenticationToken extends PostAuthenticationToken {
-	
+	protected readonly string $token;
 	
 	public function __construct(
 		UserInterface $user,
 		string $firewallName,
 		array $roles,
-		protected readonly string $token,
+		?string $token,
 	) {
+		$this->token = $token ?? '';
+		
 		parent::__construct(
 			$user,
 			$firewallName,

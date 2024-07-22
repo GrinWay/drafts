@@ -2,6 +2,9 @@
 
 namespace App\Security\Authenticator;
 
+use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\CustomCredentials;
 use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordCredentials;
@@ -29,6 +32,7 @@ use App\Security\Badge\ModifyUserPropBadge;
 /**
 * Creating your AUTHENTICATOR you can:
 * 
+* create your CREDENTIAL (to validate the user in the passport listener)
 * create your BADGE (to validate the rest in a listener)
 * create your TOKEN (to store the info for app, it'll be the tokenService)
 */
@@ -67,7 +71,33 @@ class FormLoginAuthenticator extends AbstractLoginFormAuthenticator {
 		$userBadge = new UserBadge(
 			userIdentifier: $userIdentifier,
 		);
-		$credential = new PasswordCredentials($plainPassword); // auto + PasswordUpgradeBadge
+		$hasherFactory = $this->hasherFactory;
+		
+		$userChecker = static function($plainPassword, $user) use ($hasherFactory): bool {
+            
+			//###> CHECK PASSWORD ###
+			if (!$user instanceof PasswordAuthenticatedUserInterface) {
+                throw new \LogicException(sprintf('Class "%s" must implement "%s" for using password-based authentication.', get_debug_type($user), PasswordAuthenticatedUserInterface::class));
+            }
+
+            if ('' === $plainPassword) {
+                throw new BadCredentialsException('The presented password cannot be empty.');
+            }
+
+            if (null === $user->getPassword()) {
+                throw new BadCredentialsException('The presented password is invalid.');
+            }
+
+            if (!$hasherFactory->getPasswordHasher($user)->verify($user->getPassword(), $plainPassword, $user instanceof LegacyPasswordAuthenticatedUserInterface ? $user->getSalt() : null)) {
+                throw new BadCredentialsException('The presented password is invalid.');
+            }
+			//###< CHECK PASSWORD ###
+			
+			
+			
+			return true;
+		};
+		$credential = new CustomCredentials($userChecker, $plainPassword);
 		
 		$passport = new Passport(
 			userBadge: $userBadge,
@@ -75,8 +105,11 @@ class FormLoginAuthenticator extends AbstractLoginFormAuthenticator {
 			badges: [
 				(new RememberMeBadge)->enable(),
 				new CsrfTokenBadge($csrfTokenId, $csrfToken),
-				new ModifyUserPropBadge('passport.name', static fn($origin) => \mb_strtoupper($origin)),
 				/*
+				new ModifyUserPropBadge(
+					'passport.lastName',
+					static fn($origin) => \mb_strtoupper($origin),
+				),
 				new PreAuthenticatedUserBadge(),
 				*/
 			],
