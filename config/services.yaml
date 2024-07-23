@@ -111,6 +111,7 @@ services:
             - '../src/DependencyInjection/'
             - '../src/Attribute/'
             - '../src/Entity/'
+            - '../src/Exception/'
             - '../src/Contract/'
             - '../src/EventSubscriber/'
             - '../src/Kernel.php'
@@ -125,3 +126,4 @@ services:
             - '../src/Extension/ExpressionLanguage/Decorator/ValidatorExpLangFunctionProvider.php'
             - '../src/Service/Naming/SlugNamer.php'
             - '../src/Security/Voter/ModifyAdminVoter.php'
+            - '../src/Security/UserChecker/UserChecker.php'

@@ -7,3 +7,10 @@ services:
         arguments:
             $container: !service_locator
                 authChecker: '@Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
+
+    App\Security\UserChecker\UserChecker:
+        class: App\Security\UserChecker\UserChecker
+        tags:
+        -   name: security.user_checker.main
+            priority: 0
+        

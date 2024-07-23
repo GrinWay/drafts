@@ -52,6 +52,14 @@ class StringService extends GrinWayStringService
 			return false;
 		}
 		
+		if (\preg_match('~^[^a-z0-9]~i', $needleLocale)) {
+			return false;
+		}
+		
+		if (\preg_match('~[^a-z0-9]$~i', $needleLocale)) {
+			return false;
+		}
+		
 		$needleLocale = (string) u($needleLocale)->replace('-', '_');
 		$needleLocaleFirstPart = \explode('_', $needleLocale);
 		$needleLocaleFirstPart = \mb_strtolower($needleLocaleFirstPart[0]);

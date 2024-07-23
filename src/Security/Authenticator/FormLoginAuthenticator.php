@@ -2,6 +2,7 @@
 
 namespace App\Security\Authenticator;
 
+use App\Messenger\Command\Message\SecurityAlwaysRememberMe;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
@@ -40,6 +41,7 @@ class FormLoginAuthenticator extends AbstractLoginFormAuthenticator {
 	
 	public function __construct(
 		private readonly PasswordHasherFactoryInterface $hasherFactory,
+		private $get,
 	) {}
 	
 	public function createToken(Passport $passport, string $firewallName): TokenInterface
@@ -67,52 +69,34 @@ class FormLoginAuthenticator extends AbstractLoginFormAuthenticator {
 		$userIdentifier = $request->get('_username');
 		$csrfToken = $request->get('_csrf_token');
 		$plainPassword = $request->get('_password');
+		$isRememberMe = $request->get('_remember_me');
+		$alwaysRememberMe = ($this->get)(new SecurityAlwaysRememberMe());
 		
 		$userBadge = new UserBadge(
 			userIdentifier: $userIdentifier,
 		);
-		$hasherFactory = $this->hasherFactory;
 		
-		$userChecker = static function($plainPassword, $user) use ($hasherFactory): bool {
-            
-			//###> CHECK PASSWORD ###
-			if (!$user instanceof PasswordAuthenticatedUserInterface) {
-                throw new \LogicException(sprintf('Class "%s" must implement "%s" for using password-based authentication.', get_debug_type($user), PasswordAuthenticatedUserInterface::class));
-            }
-
-            if ('' === $plainPassword) {
-                throw new BadCredentialsException('The presented password cannot be empty.');
-            }
-
-            if (null === $user->getPassword()) {
-                throw new BadCredentialsException('The presented password is invalid.');
-            }
-
-            if (!$hasherFactory->getPasswordHasher($user)->verify($user->getPassword(), $plainPassword, $user instanceof LegacyPasswordAuthenticatedUserInterface ? $user->getSalt() : null)) {
-                throw new BadCredentialsException('The presented password is invalid.');
-            }
-			//###< CHECK PASSWORD ###
-			
-			
-			
-			return true;
-		};
-		$credential = new CustomCredentials($userChecker, $plainPassword);
+		$credential = new PasswordCredentials($plainPassword);
+		
+		$badges = [
+			new CsrfTokenBadge($csrfTokenId, $csrfToken),
+			/*
+			new ModifyUserPropBadge(
+				'passport.lastName',
+				static fn($origin) => \mb_strtoupper($origin),
+			),
+			new PreAuthenticatedUserBadge(),
+			*/
+		];
+		
+		if ($alwaysRememberMe || !empty($isRememberMe)) {
+			$badges[] = (new RememberMeBadge)->enable();
+		}
 		
 		$passport = new Passport(
 			userBadge: $userBadge,
 			credentials: $credential,
-			badges: [
-				(new RememberMeBadge)->enable(),
-				new CsrfTokenBadge($csrfTokenId, $csrfToken),
-				/*
-				new ModifyUserPropBadge(
-					'passport.lastName',
-					static fn($origin) => \mb_strtoupper($origin),
-				),
-				new PreAuthenticatedUserBadge(),
-				*/
-			],
+			badges: $badges,
 		);
 
 		$requestBasedToken = $userIdentifier.\md5($request->attributes->get('_router')).$csrfToken;

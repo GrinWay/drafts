@@ -20,7 +20,7 @@ framework:
         gc_maxlifetime: '%app.session.max_idle_sec%'
 
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
-        cookie_lifetime: '%app.session.max_idle_sec%'
+        cookie_lifetime: '%app.cookie_lifetime%'
         #cookie_path: '%kernel.project_dir%/var/cookies/%kernel.environment%'
         
     #error_controller: App\Controller\ErrorController

@@ -19,8 +19,12 @@ parameters:
     app.regexp.digit:   '[0-9]'
     ###< REGEXP ###
     
+    ###> COOKIE ###
+    app.cookie_lifetime: 31536000
+    ###< COOKIE ###
+    
     ###> SESSION ###
-    app.session.max_idle_sec:   '100000'
+    app.session.max_idle_sec: 259200
     ###< SESSION ###
     
     ###> Fixture ###

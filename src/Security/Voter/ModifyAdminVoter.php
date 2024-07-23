@@ -11,6 +11,7 @@ use Symfony\Component\Security\Core\Authentication\Token\NullToken;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\CacheableVoterInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
+use App\Exception\Security\Authentication\LackOfPermissionException;
 
 class ModifyAdminVoter extends Voter implements CacheableVoterInterface {
 	
@@ -30,15 +31,18 @@ class ModifyAdminVoter extends Voter implements CacheableVoterInterface {
 			throw new FormLoginNeedsException(self::EXCEPTION_MESSAGE.' (user is not authorized)');
 		}
 		
-		if (!$this->container->get('authChecker')->isGranted('ROLE_GOD')) {}
-		if (!$this->container->get('authChecker')->isGranted('ROLE_OWNER')) {
-			return false;
+		if (!$this->container->get('authChecker')->isGranted('IS_AUTHENTICATED_FULLY')) {
 			$message = \sprintf(
-				'%s (User with id: "%s")',
-				self::EXCEPTION_MESSAGE,
-				$token->getUser()->getUserIdentifier(),
+				'Вы должны подтвердить себя.',
 			);
-			throw new FormLoginNeedsException($message);
+			throw new CustomUserMessageAccountStatusException($message);
+		}
+		
+		if (!$this->container->get('authChecker')->isGranted('ROLE_OWNER')) {
+			$message = \sprintf(
+				'Недостаточно прав.',
+			);
+			throw new LackOfPermissionException($message);
 		}
 		
 		return true;

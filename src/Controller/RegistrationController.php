@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Validation;
 use App\Entity\User;
 use App\Form\Type\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
@@ -29,12 +31,13 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // encode the plain password
-            $user->setPassword(
-                    $userPasswordHasher->hashPassword(
-                    $user,
-                    $form->get('plainPassword')->getData()
-                )
-            );
+            $plainPassword = $form->get('plainPassword')->getData();
+			$hashedPassword = $userPasswordHasher->hashPassword(
+				$user,
+				$plainPassword,
+			);
+			
+			$user->setPassword($hashedPassword);
 
             $entityManager->persist($user);
             $entityManager->flush();

@@ -25,6 +25,7 @@ class UserPassport extends Passport
     #[ORM\OneToOne(mappedBy: 'passport', cascade: ['persist'])]
 	private ?User $user = null;
 
+
     public function __construct(
         ?string $name = null,
         #[ORM\Column(type: 'key_val', length: 255)]
@@ -33,6 +34,8 @@ class UserPassport extends Passport
 		private ?string $timezone = null,
 		#[ORM\Column(length: 10, nullable: true)]
 		private ?string $lang = null,
+		#[ORM\Column]
+		private bool $banned = false,
         //#[ORM\Column(length: 255, unique: true)]
         //private ?string $email = null,
     ) {
@@ -104,6 +107,18 @@ class UserPassport extends Passport
     public function setLang(?string $lang): static
     {
         $this->lang = $lang;
+
+        return $this;
+    }
+
+    public function isBanned(): bool
+    {
+        return $this->banned;
+    }
+
+    public function setBanned(bool $banned): static
+    {
+        $this->banned = $banned;
 
         return $this;
     }

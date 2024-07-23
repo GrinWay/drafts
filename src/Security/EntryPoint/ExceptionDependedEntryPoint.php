@@ -9,6 +9,7 @@ use App\Type\Note\NoteType;
 use Symfony\Component\HttpFoundation\Session\Session;
 use App\Exception\Security\Authentication\FormLoginNeedsException;
 use App\Exception\Security\Authentication\OAuthNeedsException;
+use App\Exception\Security\Authentication\LackOfPermissionException;
 use Symfony\Component\Security\Http\EntryPoint\AuthenticationEntryPointInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,15 +48,38 @@ class ExceptionDependedEntryPoint implements AuthenticationEntryPointInterface, 
 		
 		if ($authException instanceof FormLoginNeedsException) {
 			$uri = 'app_login';
+			$this->tryToAddFlash($authException);
+			$this->tryTolog($authException);
+			return $this->response($authException, $uri);
 		}
 
 		if ($authException instanceof OAuthNeedsException) {
 			$uri = 'app_o_auth_login';
+			$this->tryToAddFlash($authException);
+			$this->tryTolog($authException);
+			return $this->response($authException, $uri);
 		}
-		
-		$this->tryToAddFlash($authException);
-		$this->tryTolog($authException);
-		
+
+		if ($authException instanceof LackOfPermissionException) {
+			$uri = 'app_login';
+			$this->tryToAddFlash(
+				$authException,
+				noteType: NoteType::ERROR,
+			);
+			$this->tryTolog($authException);
+			return $this->response($authException, $uri);
+		}
+
+		if ($authException instanceof AuthenticationException) {
+			$uri = 'app_login';
+			$this->tryToAddFlash($authException);
+			$this->tryTolog($authException);
+			return $this->response($authException, $uri);
+		}
+	}
+	
+	//###> HELPER ###
+	private function response(?AuthenticationException $authException, string $uri): Response {
 		if (null === $uri) {
 			if (null === $authException && $request->hasSession()) {
 				$uri = $this->getTargetPath($request->getSession(), firewallName: 'main');				
@@ -67,8 +91,6 @@ class ExceptionDependedEntryPoint implements AuthenticationEntryPointInterface, 
 		return new RedirectResponse($uri);
 	}
 	
-	
-	//###> HELPER ###
 	private function tryTolog(
 		?AuthenticationException $authException,
 		string $domain = 'app.security',

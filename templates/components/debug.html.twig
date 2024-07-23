@@ -1,32 +1,42 @@
 {%- if "prod" != app.environment -%}
 
-	{%- set impersonation_email = 'german.trofimova@inbox.ru' -%}
+	{%- set impersonation_email = 'zahar.ovcinnikov@pahomov.com' -%}
 	
 	{%- set securitySvgClass = "m-auto pt-1" -%}
 	
 	{%- if is_granted('IS_AUTHENTICATED_FULLY') -%}
 		<div class="badge text-bg-secondary me-1">
-			Auth fully <twig:grinway:svg container:class="{{ securitySvgClass }}" id="ok" />
+			IS_AUTHENTICATED_FULLY <twig:grinway:svg container:class="{{ securitySvgClass }}" id="ok" />
 		</div>
 	{%- else -%}
 		<div class="badge text-bg-secondary me-1">
-			Auth fully <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+			IS_AUTHENTICATED_FULLY <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+		</div>
+	{%- endif -%}
+	
+	{%- if is_granted('IS_REMEMBERED') -%}
+		<div class="badge text-bg-secondary me-1">
+			IS_REMEMBERED <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="ok" />			
+		</div>
+	{%- else -%}
+		<div class="badge text-bg-secondary me-1">
+			IS_REMEMBERED <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
 		</div>
 	{%- endif -%}
 	
 	{%- if is_granted('IS_AUTHENTICATED') -%}
 		<div class="badge text-bg-secondary me-1">
-			Auth with cookie <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="ok" />			
+			IS_AUTHENTICATED <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="ok" />			
 		</div>
 	{%- else -%}
 		<div class="badge text-bg-secondary me-1">
-			Auth with cookie <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+			IS_AUTHENTICATED <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
 		</div>
 	{%- endif -%}
 	
 	{%- if is_granted('IS_IMPERSONATOR') -%}
 		<div class="badge text-bg-secondary me-1">
-			Impersonator <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="ok" />
+			IS_IMPERSONATOR <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="ok" />
 		</div>
 		<div class="d-inline">
 			<a href="{{ impersonation_exit_path() }}" class="">EXIT</a>
@@ -38,7 +48,7 @@
 		{%- endif -%}
 	{%- else -%}
 		<div class="badge text-bg-secondary me-1">
-			Impersonator <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+			IS_IMPERSONATOR <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
 		</div>
 		<div class="d-inline">
 			<a href="{{- impersonation_path(impersonation_email) -}}" class="">PRETEND</a>

@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Messenger\Command\Message\SecurityAlwaysRememberMe;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Security\Authenticator\FormLoginAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
@@ -66,7 +67,9 @@ class SecurityController extends AbstractController
 		AuthenticationUtils $authenticationUtils,
 		FragmentUtils $fragmentUtils,
 		SessionInterface $session,
+		$get,
 	): Response {
+		$alwaysRememberMe = $get(new SecurityAlwaysRememberMe());
 		
 		$targetPath = $this->getTargetPath($session, firewallName: 'main');
 		$targetPath ??= $fragmentUtils->templateUri('security/success_login.html.twig');
@@ -82,6 +85,7 @@ class SecurityController extends AbstractController
             'last_username' => $lastUsername,
             'error' => $error,
             '_target_path' => $targetPath,
+            '_always_remember_me' => $alwaysRememberMe,
         ]);
     }
 

@@ -7,6 +7,7 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use App\Exception\Security\Authentication\OAuthNeedsException;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;

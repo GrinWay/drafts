@@ -240,9 +240,7 @@ SYMFONY EXTENTIONS
 	?
 	add doctrine functions
 ***
-SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/user_checkers.html#creating-a-custom-user-checker
-	https://symfony.com/doc/current/security/user_checkers.html
-	https://symfony.com/doc/current/security/remember_me.html
+SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/remember_me.html#customize-how-remember-me-tokens-are-stored
 	https://symfony.com/doc/current/security/firewall_restriction.html
 	https://symfony.com/doc/current/security/form_login.html
 	https://symfony.com/doc/current/security/csrf.html
@@ -264,6 +262,10 @@ SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/user_checkers.ht
 	https://symfony.com/blog/cve-2016-4423-large-username-storage-in-session
 	https://github.com/hwi/HWIOAuthBundle
 	?
+	+ как буд-то при некоторых исключениях сбрасывается IS_AUTHENTICATED_FULLY (да, AccountStatusException, причём даже если авторизован, перебрасывает в entry point)
+	если ограничить REMEMBERME на определённый путь, всё равно из REMEMBERME данные перетекают в PHPSESSID
+		как это работает
+	реализовать LoginForm for User and VipUser[что-то больше чем просто роли] (как будет удобнее и разумнее), VipUser entity, VipUserPassport entity, VipUserChecker tagged with security.user_checker.main
 	**проанализировать процесс записи TokenInterface service в течении аутентификации (как оно работает изнутри)
 	возможно сервис TokenInterface является synthetic так как по одному и тому же SERVICE_ID я получаю разные сервисы
 	выдача себя за другого пользователя через заголовок не работает https://symfony.com/doc/current/security/impersonating_user.html#events

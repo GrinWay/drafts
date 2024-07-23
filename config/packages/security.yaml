@@ -66,6 +66,10 @@ security:
                 - ^/js/
             security: false
         main:
+            pattern: ^/
+            
+            user_checker: security.user_checker.chain.main
+        
             entry_point: 'App\Security\EntryPoint\ExceptionDependedEntryPoint'
             
             custom_authenticators:
@@ -79,6 +83,30 @@ security:
                 max_attempts: 10
                 #interval: '5 seconds'
             
+            remember_me:
+                lifetime: '%app.cookie_lifetime%'
+                name: REMEMBERME_MAIN
+                #domain: '127.0.0.1'
+                # HTTPS
+                samesite: strict
+                secure: true
+                always_remember_me: true
+                remember_me_parameter: _remember_me
+                #token_provider:
+                #    doctrine: true
+                #service: 'security.authenticator.remember_me_signature_hasher'
+                signature_properties:
+                -   passport.id
+                -   passport.name
+                -   passport.lastName
+                -   passport.banned
+                -   passport.timezone
+                -   passport.lang
+                -   passport.updatedAt
+                -   id
+                -   email
+                -   password
+                -   switchUserAble
             #form_login:
             #    enable_csrf: true
                 # Redirect if denied

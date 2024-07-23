@@ -29,6 +29,8 @@ use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use App\Extension\Test\ExtensionExample;
 use Symfony\Component\DependencyInjection\Reference;
 use Symfony\Component\DependencyInjection\ChildDefinition;
+use App\Service\ConfigService;
+use Symfony\Contracts\Service\Attribute\Required;
 
 class Kernel extends BaseKernel implements CompilerPassInterface
 {
@@ -96,7 +98,8 @@ class Kernel extends BaseKernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        $serviceId = 'App\Service\SomeService';
+        
+		$serviceId = 'App\Service\SomeService';
 
         $d = $container->findDefinition($serviceId);
 
