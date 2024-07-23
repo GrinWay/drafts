@@ -270,8 +270,8 @@ SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/expressions.html
 		очень грубый рабочий вариант:
 			$token->getUser()->getPassport()->invalidateRememberMeCookie(); (подконтрольная сигнатура)
 			$this->container->get('em')->flush();
-			throw new CustomUserMessageAccountStatusException();
-	как буд-то при некоторых исключениях сбрасывается IS_AUTHENTICATED_FULLY
+			в Voter throw new CustomUserMessageAccountStatusException();
+	+ как буд-то при некоторых исключениях сбрасывается IS_AUTHENTICATED_FULLY (если в Voter бросить AccountStatusException token fully authenticated инвалидируется)
 	если ограничить REMEMBERME на определённый путь, всё равно из REMEMBERME данные перетекают в PHPSESSID
 		как это работает
 	реализовать LoginForm for User and VipUser[что-то больше чем просто роли] (как будет удобнее и разумнее), VipUser entity, VipUserPassport entity, VipUserChecker tagged with security.user_checker.main
