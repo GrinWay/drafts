@@ -20,7 +20,8 @@ parameters:
     ###< REGEXP ###
     
     ###> COOKIE ###
-    app.cookie_lifetime: 31536000
+    app.cookie_lifetime: 604800
+    app.remember_me.cookie_lifetime: 31536000
     ###< COOKIE ###
     
     ###> SESSION ###

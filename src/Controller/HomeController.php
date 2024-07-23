@@ -702,7 +702,6 @@ class HomeController extends AbstractController
 		PasswordHasherFactoryInterface $hasherFacotry,
 	) {
 		$r = $request;
-		
 		$hasher = $hasherFacotry->getPasswordHasher('admin_hasher');
 		$string = '123';
 		//$hash = $hasher->hash($string);

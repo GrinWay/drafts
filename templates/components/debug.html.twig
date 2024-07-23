@@ -1,8 +1,11 @@
 {%- if "prod" != app.environment -%}
 
-	{%- set impersonation_email = 'zahar.ovcinnikov@pahomov.com' -%}
+	{%- set impersonation_email = 'viktoria51@lytkin.net' -%}
 	
 	{%- set securitySvgClass = "m-auto pt-1" -%}
+	
+	SESSION
+	{{ dump(app.session.all) }}
 	
 	{%- if is_granted('IS_AUTHENTICATED_FULLY') -%}
 		<div class="badge text-bg-secondary me-1">

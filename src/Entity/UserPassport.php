@@ -25,7 +25,6 @@ class UserPassport extends Passport
     #[ORM\OneToOne(mappedBy: 'passport', cascade: ['persist'])]
 	private ?User $user = null;
 
-
     public function __construct(
         ?string $name = null,
         #[ORM\Column(type: 'key_val', length: 255)]

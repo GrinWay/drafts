@@ -11,12 +11,16 @@ use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Serializer\Annotation\Groups;
 
 #[MappedSuperclass]
+#[ORM\HasLifecycleCallbacks]
 abstract class Passport
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     protected ?int $id = null;
+
+    #[ORM\Column]
+    protected ?\DateTimeImmutable $rememberMeUpdatedAt = null;
 
     public function __construct(
         #[ORM\Column(length: 255)]
@@ -39,5 +43,27 @@ abstract class Passport
         $this->name = $name;
 
         return $this;
+    }
+
+    public function getRememberMeUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->rememberMeUpdatedAt;
+    }
+	
+	#[ORM\PrePersist]
+    public function setRememberMeUpdatedAt(mixed $rememberMeUpdatedAt = null): static
+    {
+		if (!$rememberMeUpdatedAt instanceof \DateTimeImmutable) {
+			$rememberMeUpdatedAt = new \DateTimeImmutable();			
+		}
+		
+        $this->rememberMeUpdatedAt = $rememberMeUpdatedAt;
+
+        return $this;
+    }
+	
+    public function invalidateRememberMeCookie(): static
+    {
+		return $this->setRememberMeUpdatedAt();
     }
 }

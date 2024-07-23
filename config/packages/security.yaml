@@ -1,5 +1,9 @@
 when@dev: &when_dev
     security:
+        firewalls:
+            main:
+                form_login:
+                    enable_csrf: false
         password_hashers:
             admin_hasher:
                 algorithm: auto
@@ -66,14 +70,16 @@ security:
                 - ^/js/
             security: false
         main:
-            pattern: ^/
+            pattern: '^/'
+            host: '^127[.]0[.]0[.]1$'
+            methods:
+            -   GET
+            -   POST
+            request_matcher: App\Security\RequestMatcher\CustomRequestMatcher
             
             user_checker: security.user_checker.chain.main
         
             entry_point: 'App\Security\EntryPoint\ExceptionDependedEntryPoint'
-            
-            custom_authenticators:
-            -   App\Security\Authenticator\FormLoginAuthenticator
             
             lazy: true
             #pattern: '.*'
@@ -84,39 +90,38 @@ security:
                 #interval: '5 seconds'
             
             remember_me:
-                lifetime: '%app.cookie_lifetime%'
+                lifetime: '%app.remember_me.cookie_lifetime%'
                 name: REMEMBERME_MAIN
-                #domain: '127.0.0.1'
-                # HTTPS
-                samesite: strict
-                secure: true
                 always_remember_me: true
                 remember_me_parameter: _remember_me
-                #token_provider:
-                #    doctrine: true
-                #service: 'security.authenticator.remember_me_signature_hasher'
+                
+                secret: '%env(APP_ENV)%'
                 signature_properties:
-                -   passport.id
-                -   passport.name
-                -   passport.lastName
-                -   passport.banned
-                -   passport.timezone
-                -   passport.lang
-                -   passport.updatedAt
-                -   id
+                -   passport.rememberMeUpdatedAt
                 -   email
                 -   password
-                -   switchUserAble
-            #form_login:
-            #    enable_csrf: true
+                
+            form_login:
+                enable_csrf: true
                 # Redirect if denied
-            #    login_path: app_login
+                #login_path: app_login
                 # Для перехвата аутентификатором
-            #    check_path: app_login
-            #    csrf_parameter: '%app.csrf_name%'
-            #    csrf_token_id: youWillNotHackMe
-            #    success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
-            #    failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
+                check_path: app_login
+                #remember_me: false
+                
+                csrf_parameter: '%app.csrf_name%'
+                csrf_token_id: youWillNotHackMe
+                
+                #success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
+                #failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
+                #failure_path: 'app_home_home'
+                
+                default_target_path: 'app_home_home'
+                always_use_default_target_path: false
+                #use_referer: true
+                
+            #custom_authenticators:
+            #-   App\Security\Authenticator\FormLoginAuthenticator
             
             http_basic:
                 realm: 'Secured Area'

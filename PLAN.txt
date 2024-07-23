@@ -240,11 +240,7 @@ SYMFONY EXTENTIONS
 	?
 	add doctrine functions
 ***
-SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/remember_me.html#customize-how-remember-me-tokens-are-stored
-	https://symfony.com/doc/current/security/firewall_restriction.html
-	https://symfony.com/doc/current/security/form_login.html
-	https://symfony.com/doc/current/security/csrf.html
-	https://symfony.com/doc/current/security/expressions.html
+SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/expressions.html
 	https://symfony.com/doc/current/security/access_denied_handler.html
 	https://symfony.com/doc/current/security/force_https.html
 	https://symfony.com/doc/current/doctrine/registration_form.html
@@ -261,8 +257,21 @@ SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/remember_me.html
 	security-http/Attribute/CurrentUser.php
 	https://symfony.com/blog/cve-2016-4423-large-username-storage-in-session
 	https://github.com/hwi/HWIOAuthBundle
+	*https://symfony.com/doc/current/security/remember_me.html
+		1) workflow REMEMBER_ME
+		2) workflow Token lifecycle
 	?
-	+ как буд-то при некоторых исключениях сбрасывается IS_AUTHENTICATED_FULLY (да, AccountStatusException, причём даже если авторизован, перебрасывает в entry point)
+	На чистом шаблоне попробуй: что конкретно делает конфигурация form_login.remember_me
+		Просто как будт-то бы ни на что не влияет
+	как сделать немедленный выход из системы если определённые поля объекта изменены
+		может быть изменить user.rememberMeUpdatedAt
+		(в EventListener как-то понять что RememberMeToken не валидный и)
+		throw new AccountStatusException (чтобы удалить _session_FIREWALL, то есть деавторизовать user)
+		очень грубый рабочий вариант:
+			$token->getUser()->getPassport()->invalidateRememberMeCookie(); (подконтрольная сигнатура)
+			$this->container->get('em')->flush();
+			throw new CustomUserMessageAccountStatusException();
+	как буд-то при некоторых исключениях сбрасывается IS_AUTHENTICATED_FULLY
 	если ограничить REMEMBERME на определённый путь, всё равно из REMEMBERME данные перетекают в PHPSESSID
 		как это работает
 	реализовать LoginForm for User and VipUser[что-то больше чем просто роли] (как будет удобнее и разумнее), VipUser entity, VipUserPassport entity, VipUserChecker tagged with security.user_checker.main

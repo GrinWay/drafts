@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240723001651 extends AbstractMigration
+final class Version20240723154314 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -32,7 +32,7 @@ final class Version20240723001651 extends AbstractMigration
         $this->addSql('CREATE TABLE task_topic (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE toy_product (for_kids_more_than INT NOT NULL, id INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE user (id BINARY(16) NOT NULL, email VARCHAR(255) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, switch_user_able TINYINT(1) NOT NULL, passport_id INT NOT NULL, UNIQUE INDEX UNIQ_USER_EMAIL (email), UNIQUE INDEX UNIQ_USER_PASSPORT (passport_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
-        $this->addSql('CREATE TABLE user_passport (id INT AUTO_INCREMENT NOT NULL, last_name VARCHAR(255) NOT NULL, timezone VARCHAR(30) DEFAULT NULL, lang VARCHAR(10) DEFAULT NULL, banned TINYINT(1) NOT NULL, updated_at DATETIME(6) DEFAULT NULL, created_at DATETIME(6) NOT NULL, first_name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE user_passport (id INT AUTO_INCREMENT NOT NULL, remember_me_updated_at DATETIME(6) NOT NULL, last_name VARCHAR(255) NOT NULL, timezone VARCHAR(30) DEFAULT NULL, lang VARCHAR(10) DEFAULT NULL, banned TINYINT(1) NOT NULL, updated_at DATETIME(6) DEFAULT NULL, created_at DATETIME(6) NOT NULL, first_name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE messenger_messages (id BIGINT AUTO_INCREMENT NOT NULL, body LONGTEXT NOT NULL, headers LONGTEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME(6) NOT NULL, available_at DATETIME(6) NOT NULL, delivered_at DATETIME(6) DEFAULT NULL, INDEX IDX_75EA56E0FB7336F0 (queue_name), INDEX IDX_75EA56E0E3BD61CE (available_at), INDEX IDX_75EA56E016BA31DB (delivered_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('ALTER TABLE avatar ADD CONSTRAINT FK_1677722FBF396750 FOREIGN KEY (id) REFERENCES media (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE food_product ADD CONSTRAINT FK_9CD5D895BF396750 FOREIGN KEY (id) REFERENCES product (id) ON DELETE CASCADE');

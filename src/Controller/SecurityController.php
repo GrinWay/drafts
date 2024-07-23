@@ -2,6 +2,10 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\ExpressionLanguage\Expression;
+use App\Service\ConfigService;
+use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use App\Messenger\Command\Message\SecurityAlwaysRememberMe;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use App\Security\Authenticator\FormLoginAuthenticator;
@@ -62,13 +66,15 @@ class SecurityController extends AbstractController
 		]);
     }
 	
-    #[Route(path: '/login', name: 'app_login')]
+	#[Route(path: '/login', name: 'app_login')]
     public function login(
 		AuthenticationUtils $authenticationUtils,
 		FragmentUtils $fragmentUtils,
 		SessionInterface $session,
+		CsrfTokenManagerInterface $csrfTokenManager,
 		$get,
 	): Response {
+		
 		$alwaysRememberMe = $get(new SecurityAlwaysRememberMe());
 		
 		$targetPath = $this->getTargetPath($session, firewallName: 'main');
