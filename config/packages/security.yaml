@@ -78,8 +78,9 @@ security:
             request_matcher: App\Security\RequestMatcher\CustomRequestMatcher
             
             user_checker: security.user_checker.chain.main
-        
-            entry_point: 'App\Security\EntryPoint\ExceptionDependedEntryPoint'
+            
+            entry_point: 'App\Security\ProtectedResourceHandler\EntryPoint\ExceptionDependedEntryPoint'
+            access_denied_handler: 'App\Security\ProtectedResourceHandler\AccessDenied\DefaultAccessDeniedHandler'
             
             lazy: true
             #pattern: '.*'
@@ -166,8 +167,22 @@ security:
     # Easy way to control access for large sections of your site
     # Note: Only the *first* access control that matches will be used
     access_control:
+
     -   path: ^/(?:login|register)
-        roles: PUBLIC_ACCESS
+        roles:
+        -   PUBLIC_ACCESS
+        requires_channel: '%env(APP_REQUIRED_SCHEME)%'
         
-    #-   path: ^/logout
-    #    roles: IS_AUTHENTICATED
+    -   request_matcher: 'App\Security\RequestMatcher\IpRangeRequestMatcher'
+        #request_matcher: !service // TODO: current
+        #    class: 'App\Security\RequestMatcher\IpRangeRequestMatcher'
+        #    arguments:
+        #        $minIdx3: 0
+        #        $maxIdx3: 10
+        requires_channel: '%env(APP_REQUIRED_SCHEME)%'
+        
+    -   path: ^/
+        roles:
+        -   VOTE_PUBLIC_ACCESS
+        #allow_if: 'get("ROLE_USER")'
+        requires_channel: '%env(APP_REQUIRED_SCHEME)%'

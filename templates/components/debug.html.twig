@@ -4,8 +4,15 @@
 	
 	{%- set securitySvgClass = "m-auto pt-1" -%}
 	
-	SESSION
-	{{ dump(app.session.all) }}
+	<div class="">
+		SESSION
+		{{ dump(app.session.all) }}
+	</div>
+
+	<div class="">
+		REQUEST ATTRIBUTES
+		{{ dump(app.request.attributes.all) }}
+	</div>
 	
 	{%- if is_granted('IS_AUTHENTICATED_FULLY') -%}
 		<div class="badge text-bg-secondary me-1">

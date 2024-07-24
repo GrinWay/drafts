@@ -58,6 +58,7 @@ SYMFONY YAML PARSER (TAGS)
 	kernel.default_locale от чего зависит
 SYMFONY SERVICE CONTAINER
 	?
+	+ Как сервис может получить доступ ко всем аргументам метода контроллера (слушая ControllerArgumentsEvent)
 	**В каком случае сервис нельзя подтянуть как аргумент контроллера
 		Или в чём разница команд debug:container, debug:autowire
 	Запросить в extension сервис, который ещё не успел попасть в контейнер
@@ -242,9 +243,7 @@ SYMFONY EXTENTIONS
 	?
 	add doctrine functions
 ***
-SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/expressions.html
-	https://symfony.com/doc/current/security/access_denied_handler.html
-	https://symfony.com/doc/current/security/force_https.html
+SYMFONY SECURITY https://symfony.com/doc/current/security/access_control.html#securing-by-an-expression
 	https://symfony.com/doc/current/doctrine/registration_form.html
 	https://symfony.com/doc/current/reference/formats/expression_language.html#built-in-objects-and-variables
 	https://symfony.com/doc/current/reference/forms/types/password.html#hash-property-path
@@ -408,6 +407,7 @@ AMQP
 Beanstalkd Transport https://habr.com/ru/companies/shopozzcom/articles/240483/
 SYMFONY TRANSLATION
 	Использовать провайдера Loco зарегайся с VPN: https://symfony.com/doc/current/translation.html#installing-and-configuring-a-third-party-provider
+SYMFONY DEPLOYMENT https://symfony.com/doc/current/deployment.html
 PRODUCTION
 	?
 	process manager Supervisor or systemd for messenger	
@@ -417,6 +417,8 @@ PRODUCTION
 	https://symfony.com/doc/current/contributing/code/conventions.html
 hinclude.js (HOTWIRE круче)
 https://docs.github.com/en/actions
+
+
 TODO
 	Все переводы бандлов поместить в домен grinway, то есть имя домена === имя бандла
 	WebApp
@@ -468,6 +470,7 @@ TODO
 		// TODO: AllTypes
 		//TODO: FragmentUtils
 		//TODO: take isEnabledLocale
+		//TODO: AccessService (Философия такая, что Symfony говорит всегда выкидывай AccessDeniedException и не выбрасывай AuthenticationException вручную(оно перевыброситься если ты ещё не авторизован), так как логика попадания в EntryPoint уже описана)
 		
 https://symfony.com/doc/current/create_framework/introduction.html
 Банда 4-х

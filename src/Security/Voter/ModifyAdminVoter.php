@@ -2,6 +2,9 @@
 
 namespace App\Security\Voter;
 
+use App\Exception\Security\AccessDenied\RoleNotGrantedAccessDeniedException;
+use App\Service\AccessDeniedService;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Type\Security\Voter\VoterSubject;
 use App\Exception\Security\Authentication\FormLoginNeedsException;
@@ -28,23 +31,16 @@ class ModifyAdminVoter extends Voter implements CacheableVoterInterface {
 	}
 	
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool {
-		if ($token instanceof NullToken) {
-			throw new FormLoginNeedsException(self::EXCEPTION_MESSAGE.' (user is not authorized)');
-		}
-
-		if (!$this->container->get('authChecker')->isGranted('IS_AUTHENTICATED_FULLY')) {
-			$message = \sprintf(
-				'Вы должны подтвердить себя.',
-			);
-			throw new CustomUserMessageAccountStatusException($message);
-		}
 		
-		if (!$this->container->get('authChecker')->isGranted('ROLE_OWNER')) {
-			$message = \sprintf(
-				'Недостаточно прав.',
-			);
-			throw new LackOfPermissionException($message);
-		}
+		$this->container->get('accessService')->denyAccessUnlessGranted(
+			'IS_AUTHENTICATED_FULLY',
+			onRoleNotGranted: static fn($role) => throw new FormLoginNeedsException(),
+		);
+		
+		$this->container->get('accessService')->denyAccessUnlessGranted(
+			$role = 'ROLE_OWNER',
+			onRoleNotGranted: static fn($role) => throw new RoleNotGrantedAccessDeniedException($role),
+		);
 		
 		return true;
 	}

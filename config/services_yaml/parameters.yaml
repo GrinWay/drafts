@@ -1,5 +1,10 @@
 parameters:
 
+    ###> KERNEL ###
+    router.request_context.scheme: '%env(APP_REQUIRED_SCHEME)%'
+    asset.request_context.secure: true
+    ###< KERNEL ###
+    
     app.app: "_0" #@
     #app.sign: '='
     #app.app: '%env(key_val:explode:app.sign:default::key:query:url:APP_APP)%'

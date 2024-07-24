@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Security\EntryPoint;
+namespace App\Security\ProtectedResourceHandler\EntryPoint;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use App\Type\Security\Voter\VoterSubject;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 use App\Trait\ServiceLocator\Aware\SecurityEntryPointLoggerAware;
@@ -42,9 +43,8 @@ class ExceptionDependedEntryPoint implements AuthenticationEntryPointInterface, 
 			$token,
 			$code,
 		));
+		throw new HttpException(Response::HTTP_UNAUTHORIZED, 'Вы не авторизованы!');
 		*/
-		
-		$uri = null;
 		
 		if ($authException instanceof FormLoginNeedsException) {
 			$uri = 'app_login';
@@ -72,14 +72,20 @@ class ExceptionDependedEntryPoint implements AuthenticationEntryPointInterface, 
 
 		if ($authException instanceof AuthenticationException) {
 			$uri = 'app_login';
-			$this->tryToAddFlash($authException);
+			$authException = new FormLoginNeedsException();
+			$this->tryToAddFlash(
+				$authException,
+				noteType: NoteType::WARNING,
+			);
 			$this->tryTolog($authException);
 			return $this->response($authException, $uri);
 		}
+		
+		return $this->response($authException);
 	}
 	
 	//###> HELPER ###
-	private function response(?AuthenticationException $authException, string $uri): Response {
+	private function response(?AuthenticationException $authException, ?string $uri = null): Response {
 		if (null === $uri) {
 			if (null === $authException && $request->hasSession()) {
 				$uri = $this->getTargetPath($request->getSession(), firewallName: 'main');				

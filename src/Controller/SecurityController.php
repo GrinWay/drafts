@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use function Symfony\component\string\u;
+
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
 use App\Service\ConfigService;

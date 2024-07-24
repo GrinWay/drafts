@@ -7,6 +7,7 @@ services:
         arguments:
             $container: !service_locator
                 authChecker: '@Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
+                accessService: '@App\Service\AccessService'
                 em: '@Doctrine\ORM\EntityManagerInterface'
 
     App\Security\UserChecker\UserChecker:
@@ -17,4 +18,8 @@ services:
     
     app.security.expression_language:
         decorates: security.expression_language
+        class: App\Security\ExpressionLanguage\SecurityExpressionLanguageDecorator
+    
+    app.security.is_granted_attribute_expression_language:
+        decorates: security.is_granted_attribute_expression_language
         class: App\Security\ExpressionLanguage\SecurityExpressionLanguageDecorator

@@ -8,6 +8,7 @@ use Symfony\Component\ExpressionLanguage\ExpressionFunctionProviderInterface;
 class SecurityExpressionLanguageProvider implements ExpressionFunctionProviderInterface {
 	public function getFunctions(): array
     {
+        return [];
         return [
 			/*
 			*/
@@ -16,8 +17,9 @@ class SecurityExpressionLanguageProvider implements ExpressionFunctionProviderIn
 				static function ($args): mixed {
 					return \sprintf('%s', $args);
 				},
-				static function ($vars, $args): mixed {
-					\dd($vars, $args);
+				function ($vars, $args): mixed {
+					\dd($args);
+					return $args;
 				}
 			),
         ];

@@ -15,8 +15,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 class AdminController extends AbstractController
 {
 	#[IsGranted(
-		new Expression('get(subject)'),
-		new Expression('logger'), // Какой expression language имеет доступ к request, args
+		'MODIFY_ADMIN',
 		message: 'Доступ разрешён только для тех, кто может управлять админами.',
 		//statusCode: Response::HTTP_UNAUTHORIZED,
 		//exceptionCode: 180898,
@@ -24,6 +23,7 @@ class AdminController extends AbstractController
     #[Route(path: '/{id?1}', defaults: [
 	])]
 	public function index(
+		$id,
 		?Product $product,
 	): Response {
         return $this->render('@admin/index.html.twig', [

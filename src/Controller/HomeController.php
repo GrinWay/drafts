@@ -7,6 +7,8 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use App\Exception\Security\AccessDenied\RoleNotGrantedAccessDeniedException;
+use App\Exception\Security\Authentication\FormLoginNeedsException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use App\Exception\Security\Authentication\OAuthNeedsException;

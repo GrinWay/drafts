@@ -127,3 +127,4 @@ services:
             - '../src/Service/Naming/SlugNamer.php'
             - '../src/Security/Voter/ModifyAdminVoter.php'
             - '../src/Security/UserChecker/UserChecker.php'
+            #- '../src/Security/RequestMatcher/IpRangeRequestMatcher.php' // TODO: current
