@@ -120,8 +120,8 @@ security:
                 always_use_default_target_path: false
                 #use_referer: true
                 
-            #custom_authenticators:
-            #-   App\Security\Authenticator\FormLoginAuthenticator
+            custom_authenticators:
+            -   App\Security\Authenticator\FormLoginAuthenticator
             
             http_basic:
                 realm: 'Secured Area'

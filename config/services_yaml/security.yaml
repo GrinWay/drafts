@@ -14,4 +14,7 @@ services:
         tags:
         -   name: security.user_checker.main
             priority: 0
-        
+    
+    app.security.expression_language:
+        decorates: security.expression_language
+        class: App\Security\ExpressionLanguage\SecurityExpressionLanguageDecorator

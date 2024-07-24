@@ -20,3 +20,9 @@ services:
             arguments:
             -   '%kernel.project_dir%'
             -   '%env(APP_ENV)%'
+    
+    app.router.expression_language_provider:
+        class: App\Router\ExpressionLanguage\ExpressionLanguageProvider\RouterExpressionLanguageProviderDecorator
+        decorates: router.expression_language_provider
+        arguments:
+            $inner: '@.inner'

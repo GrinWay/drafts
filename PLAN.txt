@@ -58,6 +58,8 @@ SYMFONY YAML PARSER (TAGS)
 	kernel.default_locale от чего зависит
 SYMFONY SERVICE CONTAINER
 	?
+	**В каком случае сервис нельзя подтянуть как аргумент контроллера
+		Или в чём разница команд debug:container, debug:autowire
 	Запросить в extension сервис, который ещё не успел попасть в контейнер
 	реализовать проход компилятора для тега (app.set_callable_result, method, args) чтоб был найден метод (SetCallableResultInterface) класса для снабжения данными тегированного
 	разница в проходах компилятора PassConfig::TYPE_BEFORE_OPTIMIZATION PassConfig::TYPE_AFTER_REMOVING

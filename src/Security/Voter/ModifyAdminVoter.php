@@ -27,7 +27,6 @@ class ModifyAdminVoter extends Voter implements CacheableVoterInterface {
 		return self::ATTRIBUTE === $attribute;
 	}
 	
-	
     protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool {
 		if ($token instanceof NullToken) {
 			throw new FormLoginNeedsException(self::EXCEPTION_MESSAGE.' (user is not authorized)');

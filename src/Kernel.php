@@ -98,7 +98,6 @@ class Kernel extends BaseKernel implements CompilerPassInterface
 
     public function process(ContainerBuilder $container): void
     {
-        
 		$serviceId = 'App\Service\SomeService';
 
         $d = $container->findDefinition($serviceId);

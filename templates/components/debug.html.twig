@@ -1,6 +1,6 @@
 {%- if "prod" != app.environment -%}
 
-	{%- set impersonation_email = 'viktoria51@lytkin.net' -%}
+	{%- set impersonation_email = 'cvetkov.ignatij@agafonova.com' -%}
 	
 	{%- set securitySvgClass = "m-auto pt-1" -%}
 	
@@ -24,6 +24,16 @@
 	{%- else -%}
 		<div class="badge text-bg-secondary me-1">
 			IS_REMEMBERED <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+		</div>
+	{%- endif -%}
+	
+	{%- if is_granted('IS_AUTHENTICATED_REMEMBERED') -%}
+		<div class="badge text-bg-secondary me-1">
+			IS_AUTHENTICATED_REMEMBERED <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="ok" />			
+		</div>
+	{%- else -%}
+		<div class="badge text-bg-secondary me-1">
+			IS_AUTHENTICATED_REMEMBERED <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
 		</div>
 	{%- endif -%}
 	
