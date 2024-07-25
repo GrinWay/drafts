@@ -7,6 +7,8 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use App\Form\Type\LoginLinkFormType;
+use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use App\Exception\Security\AccessDenied\RoleNotGrantedAccessDeniedException;
 use App\Exception\Security\Authentication\FormLoginNeedsException;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusException;
@@ -206,7 +208,7 @@ class HomeController extends AbstractController
     ) {
     }
 
-    #[Route(path: '/')]
+    #[Route(path: '/{email<\w{1}>?s}')]
     //#[IsCsrfTokenValid(id: 'default', tokenKey: '_token')]
     //#[SomeAttribute]
     public function home(
@@ -264,8 +266,25 @@ class HomeController extends AbstractController
         #[Autowire('@security.csrf.token_manager')]
         $csrfTokenManager,
 		?TokenInterface $token,
+		LoginLinkHandlerInterface $loginLinkHandler,
+		User $user,
+		PropertyAccessorInterface $pa,
     ) {
-        $response = $this->render('home/index.html.twig', []);
+		$loginLink = $loginLinkHandler->createLoginLink($user);
+		
+		$data = HeaderUtils::parseQuery((string) $pa->getValue(\explode('?', $loginLink), '[1]'));
+		
+		$data = [
+			'user' => $pa->getValue($data, '[user]'),
+			'expires' => $pa->getValue($data, '[expires]'),
+			'hash' => $pa->getValue($data, '[hash]'),
+		];
+		
+		$form = $this->createForm(LoginLinkFormType::class, $data, options: []);
+		
+		$response = $this->render('home/index.html.twig', [
+			'login_link_form' => $form,
+		]);
 		
         return $response;
 
@@ -707,6 +726,8 @@ class HomeController extends AbstractController
 		$hasher = $hasherFacotry->getPasswordHasher('admin_hasher');
 		$string = '123';
 		//$hash = $hasher->hash($string);
+		
+		//$request->getSession()->set('someKey', new \StdClass());
 		
 		//$security->logout(false);
 		

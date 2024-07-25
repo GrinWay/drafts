@@ -7,9 +7,9 @@ framework:
             enabled: true
             field_name: '%app.csrf_name%'
             
-when@dev:
+when@dev: &when_dev
     framework:
         form:
             csrf_protection:
-                enabled: true
-            
+                enabled: false
+when@test: *when_dev            

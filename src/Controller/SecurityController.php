@@ -45,9 +45,9 @@ class SecurityController extends AbstractController
 		private readonly RequestStack $requestStack,
 	) {}
 	
-    #[Route(path: '/login/link', name: 'app_login_link', methods: ['GET', 'POST'])]
-    public function loginLink(): Response {
-		return new Response('');
+    #[Route(path: '/login/link', name: 'app_login_link', methods: ['GET'])]
+    public function loginLink() {
+		throw new \LogicException('Ты попал в link_login контроллер. Как так произошло?');
     }
 	
     #[Route(path: '/login/json', name: 'app_json_login', methods: ['POST'])]
@@ -81,7 +81,7 @@ class SecurityController extends AbstractController
 		
 		$targetPath = $this->getTargetPath($session, firewallName: 'main');
 		$targetPath ??= $fragmentUtils->templateUri('security/success_login.html.twig');
-        
+		
 		// get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
 		//if ($error) \dd($error->getMessageKey(), $error->getMessageData());

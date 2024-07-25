@@ -241,7 +241,7 @@ SYMFONY TRANSLATION COMPONENT
 ***
 SYMFONY OPTIONS RESOLVER
 	?
-	*неужели входные данные передаются через Options $options (да, но доступ возможен только к другим nodes)
+	+ неужели входные данные передаются через Options $options (да, но доступ возможен только к другим nodes)
 	не передавать массив значений в callback только чтобы установить по умолчанию $resolver->setIgnoreUndefined(true);
 	определить разрешённый набор ЗНАЧЕНИЙ choices => [ anyKey => stringValue, anyKey2 => stringValue2 ] Как прототип НО с ключевыми значениями
 SYMFONY CONFIG COMPONENT https://symfony.com/doc/current/components/config.html
@@ -249,9 +249,11 @@ SYMFONY EXTENTIONS
 	?
 	add doctrine functions
 ***
-SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/ldap.html
-	***
-	https://symfony.com/doc/current/reference/configuration/security.html#hide-user-not-found
+SYMFONY SECURITY
+	https://symfony.com/doc/current/security/access_token.html
+	https://habr.com/ru/articles/538662/
+	https://symfony.com/doc/current/security/ldap.html
+	https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
 	назначать группы login, register в зависимости от состояния объекта с помощью своего sequence provider UserGroupProvider 
 	как в сервисе получить _token csrf защиты
 	(The security system uses an event dispatcher per firewall: php bin/console debug:event-dispatcher --dispatcher=security.event_dispatcher.main)
@@ -264,6 +266,10 @@ SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/ldap.html
 		1) workflow REMEMBER_ME
 		2) workflow Token lifecycle
 	?
+	+ деавторизировать пользователя если у него изменилось (customPoly)
+		возможно ли через свой app_user_provider (Doctrine decorator) Symfony\Component\Security\Core\User\UserProviderInterface
+		(ДА, пользователь выходит из авторизации если в своём UserProvider бросить исключение UserNotFoundException)
+	как буд-то form_login.use_forward не использует forward, а всё равно перенаправляет
 	На чистом шаблоне попробуй: что конкретно делает конфигурация form_login.remember_me
 		Просто как будт-то бы ни на что не влияет
 	как сделать немедленный выход из системы если определённые поля объекта изменены
@@ -278,6 +284,11 @@ SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/ldap.html
 	если ограничить REMEMBERME на определённый путь, всё равно из REMEMBERME данные перетекают в PHPSESSID
 		как это работает
 	реализовать LoginForm for User and VipUser[что-то больше чем просто роли] (как будет удобнее и разумнее), VipUser entity, VipUserPassport entity, VipUserChecker tagged with security.user_checker.main
+		*раз у нас разные поставщики пользователей
+		значит реализовать аутентификаторы в разных firewalls (чтобы выход из одного firewall не заставлял выходить из другого logout.invalidate_session=false)
+		*для того чтобы иметь другой (VipUserToken) для User сделай form_login, а для Vip сделай собственный аутентификатор, который вернёт новый тип VipUserToken с доп. фичами (информаций, которая не храниться в БД обычных пользователей)
+		ради эксперемента установить firewall_1.context=<same> firewall_2.context=<same> и statelss=false
+		при аутентификации через один firewall попробовать добиться аутентификации через другой firewall
 	**проанализировать процесс записи TokenInterface service в течении аутентификации (как оно работает изнутри)
 	возможно сервис TokenInterface является synthetic так как по одному и тому же SERVICE_ID я получаю разные сервисы
 	выдача себя за другого пользователя через заголовок не работает https://symfony.com/doc/current/security/impersonating_user.html#events
@@ -287,14 +298,16 @@ SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/ldap.html
 	*не могу авторизоваться после смены password hasher но добавив migrate_from	
 	+ как буд-то бы не работает перехватчик json_login для check_path (потому что помимо check_path проверялся заголовок ContentType, который должен был быть application/json)
 	как запустить другой аутентификатор при неудаче предыдущего
-	*залогиниться через X.509 Client Certificates
-	*залогиниться через remote_user
+	*залогиниться через X.509 Client Certificates https://symfony.com/doc/current/reference/configuration/security.html#x-509-authentication
+	*залогиниться через remote_user https://symfony.com/doc/current/reference/configuration/security.html#remote-user-authentication
 	*используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
 SYMFONY MAILER https://symfony.com/doc/current/mailer.html
 	clear && bin/console make:reset-password --with-ulid
 		https://symfony.com/doc/current/security/passwords.html#reset-password
 		https://github.com/symfonycasts/reset-password-bundle
 	?
+SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
+	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
 SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
 	?
 	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
@@ -366,6 +379,7 @@ SYMFONY PROFILER
 	Почему сервис @Psr\Container\ContainerInterface не доступен из services.yaml
 https://symfony.com/doc/current/reference/dic_tags.html
 SYMFONY REDIS BUNDLE
+	https://symfony.com/doc/current/security/login_link.html#configure-a-maximum-use-of-a-link
 SYMFONY MY ADMIN
 SYMFONY WebLink
 SYMFONY WEBPACK ENCORE
@@ -454,6 +468,7 @@ TODO
 		//TODO: CarbonValueResolver separate now and nowModified logic
 			+ написать тест для неё
 		//TODO: TAKE IT TO EnableAutoMapping
+		// TODO: RememberMeSignatureUserProvider
 	GsEnvProcessor
 		fix abstractions (only with functions)
 	Command

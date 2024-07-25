@@ -22,6 +22,8 @@ security:
     
     hide_user_not_found: true
     
+    #session_fixation_strategy: !php/const Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy::INVALIDATE
+    
     access_decision_manager:
         
     role_hierarchy:
@@ -62,6 +64,15 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        
+        app.user_provider.doctrine_decorator:
+            id: 'app.user_provider.doctrine_decorator'
+        
+        #app_admin_provider:
+        #    entity:
+        #        class: App\Entity\Admin
+        #        property: email
+    
     firewalls:
         dev:
             pattern:
@@ -71,22 +82,34 @@ security:
                 - ^/images/
                 - ^/js/
             security: false
+        #admin:
+        #    pattern: '^/admin'
+            #user_checker: security.user_checker.chain.admin
+
+            #entry_point: 'App\Security\ProtectedResourceHandler\EntryPoint\ExceptionDependedEntryPoint'
+            #access_denied_handler: 'App\Security\ProtectedResourceHandler\AccessDenied\DefaultAccessDeniedHandler'
+            
+        #    provider: app_admin_provider
+            
         main:
             pattern: '^/'
-            host: '^127[.]0[.]0[.]1$'
-            methods:
-            -   GET
-            -   POST
-            request_matcher: App\Security\RequestMatcher\CustomRequestMatcher
+
+            #context: main_admin
+            lazy: true
+            stateless: false
             
-            user_checker: security.user_checker.chain.main
+            provider: 'app.user_provider.doctrine_decorator'
+            #provider: app_user_provider
             
             entry_point: 'App\Security\ProtectedResourceHandler\EntryPoint\ExceptionDependedEntryPoint'
+            user_checker: security.user_checker.chain.main
             access_denied_handler: 'App\Security\ProtectedResourceHandler\AccessDenied\DefaultAccessDeniedHandler'
-            
-            lazy: true
-            #pattern: '.*'
-            provider: app_user_provider
+
+            #host: '^127[.]0[.]0[.]1$'
+            #methods:
+            #-   GET
+            #-   POST
+            #request_matcher: App\Security\RequestMatcher\CustomRequestMatcher            
             
             login_throttling:
                 max_attempts: 10
@@ -103,9 +126,9 @@ security:
                 -   passport.rememberMeUpdatedAt
                 -   email
                 -   password
+                -   switchUserAble
                 
             form_login:
-                enable_csrf: true
                 # Redirect if denied
                 #login_path: app_login
                 # Для перехвата аутентификатором
@@ -115,20 +138,33 @@ security:
                 csrf_parameter: '%app.csrf_name%'
                 csrf_token_id: youWillNotHackMe
                 
-                success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
-                failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
+                #success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
+                #failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
                 #failure_path: 'app_home_home'
                 
-                default_target_path: 'app_home_home'
-                always_use_default_target_path: false
+                #default_target_path: 'app_home_home'
+                #always_use_default_target_path: false
                 #use_referer: true
                 
-            custom_authenticators:
-            -   App\Security\Authenticator\FormLoginAuthenticator
+                #form_only: true
+                use_forward: true
+                
+            #custom_authenticators:
+            #-   App\Security\Authenticator\FormLoginAuthenticator
             
             http_basic:
                 realm: 'Secured Area'
                 
+            #http_digest:
+            
+            #form_login_ldap:
+            
+            #http_basic_ldap:
+            
+            #x509:
+
+            #guard:
+            
             #remote_user:
                 #provider: ~
                 #user: APP_REMOTE_USER
@@ -137,14 +173,17 @@ security:
             #    realm: ~
             
             login_link:
-                login_path: app_login
                 check_route: app_login_link
-                check_post_only: false
                 signature_properties:
                 -   email
                 -   password
                 lifetime: 600
-                max_uses: 5
+                ###> MAX 1 === POST only ###
+                max_uses: 1
+                check_post_only: true
+                ###< MAX 1 === POST only ###
+                
+                #login_path: app_login
                 always_use_default_target_path: false
                 default_target_path: app_home_home
             
@@ -159,7 +198,14 @@ security:
                 target: app_login
                 #delete_cookies:
                 #    app_theme:
-
+                #clear_site_data:
+                #-   '*'
+                #-   'cache'
+                #-   'cookies'
+                #-   'storage'
+                #-   'executionContexts'
+                invalidate_session: false
+                
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall
 

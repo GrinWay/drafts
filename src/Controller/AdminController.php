@@ -11,16 +11,15 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 
-#[Route(path: '/admin')]
 class AdminController extends AbstractController
 {
 	#[IsGranted(
-		'ALWAYS_FORBIDDEN',
+		'ROLE_OWNER',
 		message: 'Доступ разрешён только для тех, кто может управлять админами.',
 		//statusCode: Response::HTTP_UNAUTHORIZED,
 		//exceptionCode: 180898,
 	)]
-    #[Route(path: '/{id?1}', defaults: [
+    #[Route(path: '/admin/{id?1}', defaults: [
 	])]
 	public function index(
 		$id,

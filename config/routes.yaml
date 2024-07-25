@@ -60,6 +60,16 @@ redirect:
 
 ###> Add alias ###
 
+app_security_admin_login:
+    path: '/admin/login'
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: app_home_home
+app_security_admin_logout:
+    path: '/admin/logout'
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController   
+    defaults:
+        route: app_home_home
 ###> DEFAULT LANG ###
 ###< DEFAULT LANG ###
 
