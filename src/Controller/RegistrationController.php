@@ -27,24 +27,24 @@ class RegistrationController extends AbstractController
 	): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
-        $form->handleRequest($request);
-
+		$form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+			/*
+			// encode the plain password
             $plainPassword = $form->get('plainPassword')->getData();
 			$hashedPassword = $userPasswordHasher->hashPassword(
 				$user,
 				$plainPassword,
 			);
-			
 			$user->setPassword($hashedPassword);
+			*/
 
             $entityManager->persist($user);
             $entityManager->flush();
 
 			$security->login(
 				$user,
-				FormLoginAuthenticator::class,
+				'form_login',//FormLoginAuthenticator::class,
 			);
 			
             return $this->redirectToRoute('app_home_home');

@@ -1,0 +1,11 @@
+App\Entity\UserPassport:
+
+    constraints:
+    
+    properties:
+        name:
+        -   NotBlank:
+        lastName:
+        -   NotBlank:
+        
+    getters:

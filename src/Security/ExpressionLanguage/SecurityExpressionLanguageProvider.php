@@ -18,7 +18,7 @@ class SecurityExpressionLanguageProvider implements ExpressionFunctionProviderIn
 					return \sprintf('%s', $args);
 				},
 				function ($vars, $args): mixed {
-					\dd($args);
+					\dd($vars['auth_checker']);
 					return $args;
 				}
 			),

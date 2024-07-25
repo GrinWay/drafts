@@ -1,6 +1,7 @@
 App\Entity\User:
 
     constraints:
+    -   Cascade:
     -   Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields:
             -   email

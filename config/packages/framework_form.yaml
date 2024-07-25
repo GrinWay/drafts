@@ -1,6 +1,8 @@
 framework:
+    csrf_protection:
+        enabled: true
+
     form:
-    
         csrf_protection:
             enabled: true
             field_name: '%app.csrf_name%'
@@ -9,5 +11,5 @@ when@dev:
     framework:
         form:
             csrf_protection:
-                enabled: false
+                enabled: true
             

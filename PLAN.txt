@@ -58,6 +58,7 @@ SYMFONY YAML PARSER (TAGS)
 	kernel.default_locale от чего зависит
 SYMFONY SERVICE CONTAINER
 	?
+	что делает services.yaml>services>SOME_SERVICE> properties настройка
 	+ Как сервис может получить доступ ко всем аргументам метода контроллера (слушая ControllerArgumentsEvent)
 	**В каком случае сервис нельзя подтянуть как аргумент контроллера
 		Или в чём разница команд debug:container, debug:autowire
@@ -100,6 +101,9 @@ SYMFONY CONFIGURING SYMFONY https://symfony.com/doc/current/configuration.html
 	?
 	извлечь используя extractor docBlock @return
 SYMFONY EXPRESSION LANGUAGE
+	?
+	чекнуть (за счёт expressionLanguageProviderDecorator) какие переменные есть в services.yaml expressionLanguage
+		по документации там как минимум есть: container
 SYMFONY EVENTS
 	?
 	??? слушатель зарегестрирован в dispatcher, а при отправке события не вызывается
@@ -124,6 +128,8 @@ SYMFONY FORMS
 	***
 	CollectionType: https://symfony.com/doc/current/form/form_collections.html#handling-the-new-tags-in-php
 	?
+	***не могу даже найти документацию по вынесению элементов формы за её пределы, чтобы они отправились
+	**как не выводить ошибки от form_start(), form()
 	*как назначить ошибку form::addError целой форме чтобы она выводилась ровно 1 раз
 	*в каких случаях можно использовать options 'form_attr' => true,
 	абсолютно не понятно зачем опция is_empty_callback
@@ -141,7 +147,7 @@ SYMFONY FORMS
             ])
 			->setAllowedTypes('address_list', ['array', 'null'])
         ;
-	Не знаю какой, но есть критерий по которому form::submit(payload)|form::handleRequest(request)
+	Не знаю какой, но есть критерий(может по form type) по которому form::submit(payload)|form::handleRequest(request)
 		может не передать данные формы в исходные данные(объект)
 		есть тип формы и я в ручную добавляю в payload данные, которых не было до этого (request->files в request->request)
 		при этом тип формы содержит поле, которое я добавляю в payload
@@ -161,7 +167,7 @@ SYMFONY FORMS
 		Каким образом результирующий объект содержит переданное кол-во collection
 	как отобразить сообщение об ошибке над конкретным полем (false === compound)
 	каждый элемент с label, кроме самого наружнего, это _row()
-	не уверен, но кажется form_start() содержит в себе form_errors()
+	+ не уверен, но кажется form_start() содержит в себе form_errors() (да содержит, и form, form_start, form_row тоже)
 	для типа uuid нужен похоже свой трансформер
 	как определить имя блока коллекции
 	даже если указан класс data_class как запретить создавать объект от него (например потому что он абстрактный)
@@ -170,7 +176,7 @@ SYMFONY FORMS
 	почему не переопределяет элемент формы по пользовательскому типу [app_test_large_form]_[widget]
 	как отрисовать только определённую часть всех типов форм, но [form]_label() как буд-то не все типы
 		почему не переопределяет каждый тип [form]_[widget]
-	как убрать легенду из формы
+	+ как убрать легенду из формы (отрисовывать её как form || form_widget, а не form_row)
 	что за методы $form->getParent() $form->getConfig()
 	как не включать form_widget element
 		заменить input csrf_token не включаяя его, а используя render_hinclude когда страница закеширована
@@ -243,12 +249,7 @@ SYMFONY EXTENTIONS
 	?
 	add doctrine functions
 ***
-SYMFONY SECURITY https://symfony.com/doc/current/security/access_control.html#securing-by-an-expression
-	https://symfony.com/doc/current/doctrine/registration_form.html
-	https://symfony.com/doc/current/reference/formats/expression_language.html#built-in-objects-and-variables
-	https://symfony.com/doc/current/reference/forms/types/password.html#hash-property-path
-	https://symfony.com/doc/current/reference/constraints/UserPassword.html
-	https://symfony.com/doc/current/reference/configuration/security.html
+SYMFONY SECURITY
 	https://symfony.com/doc/current/security/ldap.html
 	назначать группы login, register в зависимости от состояния объекта с помощью своего sequence provider UserGroupProvider 
 	как в сервисе получить _token csrf защиты
@@ -471,6 +472,7 @@ TODO
 		//TODO: FragmentUtils
 		//TODO: take isEnabledLocale
 		//TODO: AccessService (Философия такая, что Symfony говорит всегда выкидывай AccessDeniedException и не выбрасывай AuthenticationException вручную(оно перевыброситься если ты ещё не авторизован), так как логика попадания в EntryPoint уже описана)
+		// TODO: IpRangeRequestMatcher
 		
 https://symfony.com/doc/current/create_framework/introduction.html
 Банда 4-х

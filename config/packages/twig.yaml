@@ -15,8 +15,8 @@ twig:
         #- form/theme/user.html.twig
         #- form/theme/file.html.twig
         #- form/theme/choice.thml.twig
-        - form/theme/style1/index.html.twig
         - form/theme/custom.html.twig
+        - form/theme/style1/index.html.twig
         # HIGH PRIORITY
 
         # Example:

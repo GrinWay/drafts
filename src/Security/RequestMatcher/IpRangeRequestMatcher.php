@@ -4,11 +4,13 @@ namespace App\Security\RequestMatcher;
 
 use function Symfony\component\string\u;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
+// TODO: IpRangeRequestMatcher
 class IpRangeRequestMatcher implements RequestMatcherInterface {
     
 	public function __construct(
@@ -26,12 +28,20 @@ class IpRangeRequestMatcher implements RequestMatcherInterface {
 	public function matches(Request $request): bool {
 		$ip = $request->getClientIp();
 		
-		[
-			'idx0' => $idx0,
-			'idx1' => $idx1,
-			'idx2' => $idx2,
-			'idx3' => $idx3,
-		] = u($ip)->match('~(?<idx0>[0-9]+)[.](?<idx1>[0-9]+)[.](?<idx2>[0-9]+)[.](?<idx3>[0-9]+)~');
+		$match = u($ip)->match('~(?<idx0>[0-9]+)[.](?<idx1>[0-9]+)[.](?<idx2>[0-9]+)[.](?<idx3>[0-9]+)~');
+		
+		$pa = PropertyAccess::createPropertyAccessor();
+		
+		$idx0 = $pa->getValue($match, '[idx0?]');
+		$idx1 = $pa->getValue($match, '[idx1?]');
+		$idx2 = $pa->getValue($match, '[idx2?]');
+		$idx3 = $pa->getValue($match, '[idx3?]');
+		
+		$anyIsNull = null === $idx0 || null === $idx1 || null === $idx2 || null === $idx3;
+		
+		if ($anyIsNull) {
+			return false;
+		}
 		
 		$isIpValid = static function($min, $max) {
 			$constraints = [];
@@ -56,5 +66,4 @@ class IpRangeRequestMatcher implements RequestMatcherInterface {
 		
 		return $isIpsValid;
 	}
-	
 }

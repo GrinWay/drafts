@@ -173,16 +173,15 @@ security:
         -   PUBLIC_ACCESS
         requires_channel: '%env(APP_REQUIRED_SCHEME)%'
         
-    -   request_matcher: 'App\Security\RequestMatcher\IpRangeRequestMatcher'
-        #request_matcher: !service // TODO: current
-        #    class: 'App\Security\RequestMatcher\IpRangeRequestMatcher'
-        #    arguments:
-        #        $minIdx3: 0
-        #        $maxIdx3: 10
-        requires_channel: '%env(APP_REQUIRED_SCHEME)%'
+    #-   ips:
+    #    -   '127.0.0.1/8' # 127.255.255.255
+    #    roles: ALWAYS_FORBIDDEN
+    #    requires_channel: '%env(APP_REQUIRED_SCHEME)%'
+        
+    #-   request_matcher: 'app.request_matcher.localhost_home'
+    #    roles: ALWAYS_FORBIDDEN
+    #    requires_channel: '%env(APP_REQUIRED_SCHEME)%'
         
     -   path: ^/
-        roles:
-        -   VOTE_PUBLIC_ACCESS
-        #allow_if: 'get("ROLE_USER")'
+        roles: PUBLIC_ACCESS
         requires_channel: '%env(APP_REQUIRED_SCHEME)%'

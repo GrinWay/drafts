@@ -17,6 +17,7 @@ class UserPassportFormType extends AbstractType
             ->add('name',
 				options: [
 					'attr' => [
+						'autocomplete' => 'off',
 						'autofocus' => 'autofocus',
 					],
 					'translation_domain' => 'app.security+intl-icu',
@@ -24,6 +25,9 @@ class UserPassportFormType extends AbstractType
 			)
             ->add('lastName',
 				options: [
+					'attr' => [
+						'autocomplete' => 'off',
+					],
 					'translation_domain' => 'app.security+intl-icu',
 				]
 			)

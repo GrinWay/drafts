@@ -2,11 +2,6 @@
 
 {% block title %}Delete account{% endblock %}
 
-{#
-1 _csrf
-2 2 ошибки
-#}
-
 {% block body %}
     {{ form_start(form, { attr: {novalidate: 'novalidate'}}) }}
 		{{- form_row(form, { row_attr: { class: 'my-0' } }) -}}

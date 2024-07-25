@@ -143,14 +143,14 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 	* PasswordHasherAwareInterface
 	*/
 	public function getPasswordHasherName(): ?string {
-         		$hasher = null;
-         		
-         		if (\in_array('ROLE_ADMIN', $this->getRoles())) {
-         			$hasher = 'admin_hasher';
-         		}
-         		
-         		return $hasher;
-         	}
+		$hasher = null;
+		
+		if (\in_array('ROLE_ADMIN', $this->getRoles())) {
+			$hasher = 'admin_hasher';
+		}
+		
+		return $hasher;
+	}
 
     public function isSwitchUserAble(): bool
     {
