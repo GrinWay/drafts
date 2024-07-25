@@ -249,8 +249,9 @@ SYMFONY EXTENTIONS
 	?
 	add doctrine functions
 ***
-SYMFONY SECURITY
-	https://symfony.com/doc/current/security/ldap.html
+SYMFONY SECURITY NEXT: https://symfony.com/doc/current/security/ldap.html
+	***
+	https://symfony.com/doc/current/reference/configuration/security.html#hide-user-not-found
 	назначать группы login, register в зависимости от состояния объекта с помощью своего sequence provider UserGroupProvider 
 	как в сервисе получить _token csrf защиты
 	(The security system uses an event dispatcher per firewall: php bin/console debug:event-dispatcher --dispatcher=security.event_dispatcher.main)

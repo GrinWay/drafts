@@ -20,6 +20,8 @@ when@test: *when_dev
 
 security:
     
+    hide_user_not_found: true
+    
     access_decision_manager:
         
     role_hierarchy:
@@ -113,8 +115,8 @@ security:
                 csrf_parameter: '%app.csrf_name%'
                 csrf_token_id: youWillNotHackMe
                 
-                #success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
-                #failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
+                success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
+                failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
                 #failure_path: 'app_home_home'
                 
                 default_target_path: 'app_home_home'
@@ -155,6 +157,8 @@ security:
             logout:
                 path: app_logout
                 target: app_login
+                #delete_cookies:
+                #    app_theme:
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

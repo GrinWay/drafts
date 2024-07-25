@@ -15,7 +15,7 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 class AdminController extends AbstractController
 {
 	#[IsGranted(
-		'MODIFY_ADMIN',
+		'ALWAYS_FORBIDDEN',
 		message: 'Доступ разрешён только для тех, кто может управлять админами.',
 		//statusCode: Response::HTTP_UNAUTHORIZED,
 		//exceptionCode: 180898,
