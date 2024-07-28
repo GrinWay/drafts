@@ -5,7 +5,10 @@ App\Entity\UserPassport:
     properties:
         name:
         -   NotBlank:
+                groups:
+                -   register
         lastName:
         -   NotBlank:
-        
+                groups:
+                -   register
     getters:

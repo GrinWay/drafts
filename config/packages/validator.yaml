@@ -1,9 +1,10 @@
 framework:
     validation:
         enabled: true
-        enable_attributes: false
+        enable_attributes: true
         static_method: null
         #translation_domain: validators
+        auto_mapping: ~
         #auto_mapping:
         #-   App\Entity\
         #not_compromised_password:

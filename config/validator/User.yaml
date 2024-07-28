@@ -1,11 +1,47 @@
 App\Entity\User:
 
     constraints:
+    #-   GroupSequenceProvider: 'App\Validation\GroupProvider\Entity\UserGroupProvider'
     -   Cascade:
     -   Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity:
             fields:
             -   email
     
     properties:
+        email:
+        -   Type:
+                type: 'string'
+                groups:
+                -   login
+                -   register
+        -   NotBlank:
+                groups:
+                -   login
+                -   register
+        password:
+        -   Type:
+                type: 'string'
+                groups:
+                -   login
+                -   register
+        -   Length:
+                max: 255
+                groups:
+                -   login
+                -   register
+        -   NotBlank:
+                groups:
+                -   login
+                -   register
+        passport:
+        -   Type:
+                type: 'App\Entity\UserPassport'
+                groups:
+                -   register
+        switchUserAble:
+        -   Type:
+                type: 'boolean'
+                groups:
+                -   register
         
     getters:

@@ -2,10 +2,11 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Validator\Constraints\GroupSequence;
+use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use App\Type\Security\User\Role;
 use App\Entity\UserPassport;
 use App\Repository\UserRepository;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Uid\Ulid;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -18,7 +19,6 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_EMAIL', fields: ['email'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_PASSPORT', fields: ['passport'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_API_TOKEN', fields: ['apiToken'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface//, EquatableInterface
 {
     #[ORM\Id]
@@ -174,7 +174,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     {
         return $this->apiToken;
     }
-
+	
     public function setApiToken(?string $apiToken): static
     {
         $this->apiToken = $apiToken;

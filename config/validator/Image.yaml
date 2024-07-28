@@ -2,7 +2,7 @@ App\Entity\Media\Image:
 
     constraints:
     #-   EnableAutoMapping:
-    -   Callback: isValid
+    #-   Callback: isValid
     
     properties:
         userDto:

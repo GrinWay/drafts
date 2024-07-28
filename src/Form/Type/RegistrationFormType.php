@@ -58,7 +58,7 @@ class RegistrationFormType extends AbstractFormType
 							'min' => 6,
 							'minMessage' => 'Your password should be at least {{ limit }} characters',
 							// max length allowed by Symfony for security reasons
-							'max' => 4096,
+							'max' => 10,
 						]),
 					],
 				],
@@ -68,7 +68,7 @@ class RegistrationFormType extends AbstractFormType
             ])
             ->add('agreeTerms', CheckboxType::class, [
 				'mapped' => false,
-                'constraints' => [
+				'constraints' => [
                     new IsTrue([
                         'message' => 'Согласись.',
                     ]),
