@@ -30,13 +30,6 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\PreAuthenticate
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use App\Security\Badge\ModifyUserPropBadge;
 
-/**
-* Creating your AUTHENTICATOR you can:
-* 
-* create your CREDENTIAL (to validate the user in the passport listener)
-* create your BADGE (to validate the rest in a listener)
-* create your TOKEN (to store the info for app, it'll be the tokenService)
-*/
 class FormLoginAuthenticator extends AbstractLoginFormAuthenticator {
 	
 	public function __construct(

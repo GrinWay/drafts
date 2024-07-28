@@ -16,6 +16,9 @@
         "grinway/env-processor-bundle": "^1.0",
         "grinway/service-bundle": ">=2.0",
         "grinway/web-app-bundle": "^1.0",
+        "knpuniversity/oauth2-client-bundle": "^2.18",
+        "league/oauth2-github": "*",
+        "league/oauth2-google": "^4.0",
         "nesbot/carbon": "^3.5",
         "phpdocumentor/reflection-docblock": "^5.4",
         "phpdocumentor/type-resolver": "^1.8",
@@ -68,7 +71,9 @@
         "twig/intl-extra": "^3.10",
         "twig/string-extra": "*",
         "twig/twig": ">=3.5 <4",
-        "vich/uploader-bundle": "^2.4"
+        "vich/uploader-bundle": "^2.4",
+        "web-token/jwt-library": "*",
+        "wohali/oauth2-discord-new": "^1.2"
     },
 	"repositories": [
 		{

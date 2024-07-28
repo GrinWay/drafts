@@ -1,5 +1,10 @@
 parameters:
 
+    ###> CONTAINER ###
+    env(SERVICES_GLOBAL_INSTANCE_OF): '%kernel.project_dir%/config/_instanceof.yaml%'
+    grin_way.services_global_instanceof: '%env(grin_way_yaml:file:resolve:SERVICES_GLOBAL_INSTANCE_OF)%'
+    ###< CONTAINER ###
+
     ###> KERNEL ###
     router.request_context.scheme: '%env(APP_REQUIRED_SCHEME)%'
     asset.request_context.secure: true

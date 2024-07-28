@@ -12,7 +12,9 @@ class RequestEventListener implements KernelEventListenerInterface
     public function __invoke(
         RequestEvent $event,
     ): void {
-		
+
+		//$event->getRequest()->server->set('REMOTE_USER', 's');
+
         if (!$event->isMainRequest()) {
             $classMethod = \explode('::', $event->getRequest()->attributes->get('_controller'));
             $class = $classMethod[0];

@@ -4,7 +4,13 @@ namespace App;
 
 use function Symfony\component\string\u;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Validator\Constraints;
+use Symfony\Component\Validator\Validation;
+use Symfony\Component\Yaml\Yaml;
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\EventDispatcher\DependencyInjection\AddEventAliasesPass;
+use App\Contract\Messenger\CommandBusHandlerInterface;
 use App\Contract\EventListener\Form\InvokeableFormEventListenerInterface;
 use App\Type\Event\ShopEvent;
 use App\Messenger\Event\Message\Shop\PriceWasDecreased;
@@ -45,7 +51,7 @@ class Kernel extends BaseKernel implements CompilerPassInterface
 
     protected function build(ContainerBuilder $container): void
     {
-        $this->addEventAliasesPass($container);
+		$this->addEventAliasesPass($container);
 
         $container->registerExtension($e = new ExtensionExample());
         $container->loadFromExtension($e->getAlias());
@@ -95,10 +101,14 @@ class Kernel extends BaseKernel implements CompilerPassInterface
 
         $this->registerAutowireMyMethodOf($container);
     }
-
+	
     public function process(ContainerBuilder $container): void
     {
 		$serviceId = 'App\Service\SomeService';
+
+		$ids = $container->findTaggedServiceIds('app.promocode');
+
+		//\dd($ids);
 
         $d = $container->findDefinition($serviceId);
 

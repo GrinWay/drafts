@@ -17,6 +17,7 @@ use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_EMAIL', fields: ['email'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_PASSPORT', fields: ['passport'])]
+#[ORM\UniqueConstraint(name: 'UNIQ_USER_API_TOKEN', fields: ['apiToken'])]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface//, EquatableInterface
 {
@@ -26,6 +27,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     #[ORM\Column(type: Types\UlidType::NAME, unique: true)]
     private ?Ulid $id = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $apiToken = null;
 
 	/**
 	 * @var array $roles list<string> The user roles
@@ -132,12 +135,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     }
 	
 	public function isEqualTo(UserInterface $dbUser): bool {
-         		return true
-         			&& $dbUser->getUserIdentifier() === $this->getUserIdentifier()
-         			//&& $dbUser->getId() === $this->getId()
-         			//&& $dbUser->getRoles() === $this->getRoles()
-         		;
-         	}
+		//\dd($dbUser, $this, $dbUser === $this);
+		
+		return true
+			//&& $dbUser->getUserIdentifier() === $this->getUserIdentifier()
+			//&& $dbUser->getId() === $this->getId()
+			//&& $dbUser->getRoles() === $this->getRoles()
+			//&& $dbUser->isSwitchUserAble() === $this->isSwitchUserAble()
+		;
+	}
 	
 	/**
 	* PasswordHasherAwareInterface
@@ -160,6 +166,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function setSwitchUserAble(bool $switchUserAble): static
     {
         $this->switchUserAble = $switchUserAble;
+
+        return $this;
+    }
+
+    public function getApiToken(): ?string
+    {
+        return $this->apiToken;
+    }
+
+    public function setApiToken(?string $apiToken): static
+    {
+        $this->apiToken = $apiToken;
 
         return $this;
     }

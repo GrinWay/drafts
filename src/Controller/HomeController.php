@@ -7,6 +7,15 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Routing\Requirement\Requirement;
+use Symfony\Component\HttpFoundation\UriSigner;
+use App\Messenger\Command\Message\SyncRunProcessMessage;
+use KnpU\OAuth2ClientBundle\Client\ClientRegistry;
+use Symfony\Component\Process\Messenger\RunProcessMessage;
+use Symfony\Component\Security\Core\Signature\Exception\ExpiredSignatureException;
+use Symfony\Component\Security\Core\Signature\Exception\InvalidSignatureException;
+use App\Security\Authenticator\LoginLink\LoginLinkSignatureHasher;
 use App\Form\Type\LoginLinkFormType;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkHandlerInterface;
 use App\Exception\Security\AccessDenied\RoleNotGrantedAccessDeniedException;
@@ -96,7 +105,6 @@ use App\Exception\E404;
 use Symfony\Component\WebLink\Link;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpKernel\Attribute\MapUploadedFile;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\File\File;
@@ -106,7 +114,6 @@ use App\Dto\User\NullUserDto;
 use App\Doctrine\DTO\UserDto;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\HttpFoundation\UriSigner;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Filesystem\Path;
@@ -199,15 +206,21 @@ use App\Entity\Task;
 use Symfony\Component\Form\Extension\Core\Type as FormType;
 use App\Messenger\Query\Message\Task\TaskForm;
 use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
+use App\Trait\Security\GitHub\GitHubAccessTokenAware;
 
 class HomeController extends AbstractController
 {
+	use GitHubAccessTokenAware;
+	
     public function __construct(
         #[\App\Attribute\AutowireMyMethodOf(\App\Service\SomeService::class)]
         protected \Closure $getGenerator,
     ) {
     }
 
+	/**
+	* @var Carbon $nowModified -1second
+	*/
     #[Route(path: '/{email<\w{1}>?s}')]
     //#[IsCsrfTokenValid(id: 'default', tokenKey: '_token')]
     //#[SomeAttribute]
@@ -216,7 +229,6 @@ class HomeController extends AbstractController
         RequestStack $requestStack,
         ParameterBagInterface $parameters,
         $t,
-        #[Autowire(param: 'kernel.project_dir')]
         $projectDir,
         UrlHelper $url,
         EntityManagerInterface $em,
@@ -253,11 +265,6 @@ class HomeController extends AbstractController
         $callableHashLocator,
         \Psr\EventDispatcher\EventDispatcherInterface $dispatcher,
         Request $request,
-        /**
-         * controllerArgumentsDynamicDbEventListener: METHOD(RESULT_OF_REPOSITORY, ...ARGS)
-         *
-         * @param Carbon $now = +2 days
-         */
         ?Carbon $now,
         $ru12Carbon,
         //$someValue,
@@ -269,21 +276,25 @@ class HomeController extends AbstractController
 		LoginLinkHandlerInterface $loginLinkHandler,
 		User $user,
 		PropertyAccessorInterface $pa,
+		#[Autowire('@security.authenticator.login_link_signature_hasher.main')]
+		$linkHasher,
+		Carbon $nowModified,
+		#[Autowire('@security.authenticator.login_link_handler.main')]
+		$loginLink,
+		ClientRegistry $clientRegistry,
+		UriSigner $uriSigner,
+		UrlGeneratorInterface $ug,
     ) {
-		$loginLink = $loginLinkHandler->createLoginLink($user);
+		$loginLink = $loginLink->createLoginLink($user, $r, $seconds = 100);
 		
-		$data = HeaderUtils::parseQuery((string) $pa->getValue(\explode('?', $loginLink), '[1]'));
+		$uri = 'https://127.0.0.1/?user=s&expires=123102380';
 		
-		$data = [
-			'user' => $pa->getValue($data, '[user]'),
-			'expires' => $pa->getValue($data, '[expires]'),
-			'hash' => $pa->getValue($data, '[hash]'),
-		];
+		$signedUri = $uriSigner->sign($uri, $now->add(1, 'second'));
 		
-		$form = $this->createForm(LoginLinkFormType::class, $data, options: []);
-		
+		//$result = '';
+
 		$response = $this->render('home/index.html.twig', [
-			'login_link_form' => $form,
+			'login_link' => $loginLink,
 		]);
 		
         return $response;
@@ -683,7 +694,7 @@ class HomeController extends AbstractController
     #[Template('product/_product_types_form.html.twig')]
     #[Route('product/types/{id?1}/{_locale?ru}',
 		requirements: [
-			//'id' => '[0-9a-fA-F\-]{8}\-[0-9a-fA-F\-]{4}\-[0-9a-fA-F\-]{4}\-[0-9a-fA-F\-]{4}\-[0-9a-fA-F\-]{12}',
+			//'id' => Requirement::UUID,
 			'id' => '[0-9]+',
 		],
 	)]
@@ -714,18 +725,20 @@ class HomeController extends AbstractController
 		LocaleSwitcher $localeSwitcher,
 		RequestContext $rc,
 		MessageBusInterface $bus,
-		UserProviderInterface $userProvider,
 		UrlGeneratorInterface $ug,
 		$_route,
 		//#[Autowire('@security.user.provider.concrete.app_user_provider')]
 		//$userProvider,
 		UserPasswordHasherInterface $userPasswordHasherInterface,
 		PasswordHasherFactoryInterface $hasherFacotry,
+		?TokenInterface $token,
 	) {
 		$r = $request;
 		$hasher = $hasherFacotry->getPasswordHasher('admin_hasher');
 		$string = '123';
 		//$hash = $hasher->hash($string);
+		
+		//\dump($token->getRoleNames(), $token->getUser()->getRoles());
 		
 		//$request->getSession()->set('someKey', new \StdClass());
 		

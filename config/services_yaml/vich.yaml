@@ -1,4 +1,8 @@
 services:
+    
+    _defaults:
+        autowire: true
+        autoconfigure: true
 
     Vich\UploaderBundle\Naming\SlugNamer:
         class: Vich\UploaderBundle\Naming\SlugNamer

@@ -4,6 +4,9 @@ namespace App\Controller;
 
 use function Symfony\component\string\u;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Carbon\Carbon;
+use App\Form\Type\LoginLinkFormType;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\ExpressionLanguage\Expression;
 use App\Service\ConfigService;
@@ -32,7 +35,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\HttpKernel\Fragment\InlineFragmentRenderer;
 use Symfony\Bundle\FrameworkBundle\Controller\TemplateController;
-use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use App\Entity\User;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
@@ -45,9 +47,39 @@ class SecurityController extends AbstractController
 		private readonly RequestStack $requestStack,
 	) {}
 	
-    #[Route(path: '/login/link', name: 'app_login_link', methods: ['GET'])]
-    public function loginLink() {
-		throw new \LogicException('Ты попал в link_login контроллер. Как так произошло?');
+	/**
+	* @var Carbon $nowModifiedLoginLinkExpiresIn +10second
+	*/
+    #[Route(path: '/login/link', name: 'app_login_link', methods: ['GET', 'POST'])]
+    public function loginLink(
+		Carbon $nowModifiedLoginLinkExpiresIn,
+		UserRepository $userRepo,
+		#[Autowire('@security.authenticator.login_link_signature_hasher.main')]
+		$linkHasher,
+		Request $request,
+	): Response {
+		$userObj = $userRepo->findOneBy(['email' => 's']);
+		$user = $request->query->get('user') ?? $userObj->getUserIdentifier();
+		if (null === $user) {
+			throw new \Exception('Пользователя с email s несуществует');
+		}
+		$expires = $request->query->get('expires') ?? $nowModifiedLoginLinkExpiresIn->timestamp;
+		$hash = $request->query->get('hash') ?? $linkHasher->computeSignatureHash($userObj, $expires);
+		
+		if (\is_object($user)) {
+			$user = $user->getUserIdentifier();
+		}
+		
+		$data = [
+			'user' => $user,
+			'expires' => $expires,
+			'hash' => $hash,
+		];
+		$form = $this->createForm(LoginLinkFormType::class, $data, options: []);
+		
+		return $this->render('security/login_link.html.twig', [
+			'form' => $form,
+		]);
     }
 	
     #[Route(path: '/login/json', name: 'app_json_login', methods: ['POST'])]

@@ -6,7 +6,9 @@ use  function Symfony\Component\String\u;
 
 use Twig\Extension\AbstractExtension;
 use App\Extension\Twig\Runtime\TwigFilterExtension;
+use App\Extension\Twig\Runtime\TwigFunctionExtension;
 use Twig\TwigFilter;
+use Twig\TwigFunction;
 use Carbon\Carbon;
 use Carbon\CarbonImmutable;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -38,7 +40,10 @@ class TwigExtension extends AbstractExtension
 
     public function getFunctions()
     {
-        return [];
+        return [
+			new TwigFunction('get_debug_type', \get_debug_type(...)),
+			new TwigFunction('get_short_class', [TwigFunctionExtension::class, 'getShortClass']),
+		];
     }
 
     public function getOperators()

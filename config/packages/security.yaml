@@ -64,9 +64,12 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
-        
-        app.user_provider.doctrine_decorator:
-            id: 'app.user_provider.doctrine_decorator'
+                
+        oauth:
+            id: knpu.oauth2.user_provider
+            
+        #app.user_provider.doctrine_decorator:
+        #    id: 'app.user_provider.doctrine_decorator'
         
         #app_admin_provider:
         #    entity:
@@ -90,7 +93,30 @@ security:
             #access_denied_handler: 'App\Security\ProtectedResourceHandler\AccessDenied\DefaultAccessDeniedHandler'
             
         #    provider: app_admin_provider
+        
+        api:
+            pattern: '^/api'
+            provider: 'app_user_provider'
+            #provider: 'app.user_provider.doctrine_decorator'
+            lazy: true
+            methods:
+            -   GET
+            -   POST
             
+            json_login:
+            #    check_path: api_generate_new_token
+                check_path: api_login
+                username_path: _username
+                password_path: _password
+                success_handler: 'App\Security\Handler\JsonLogin\SuccessHandler'
+            
+            access_token:
+                token_extractors:
+                -   'header'
+                #-   'security.access_token_extractor.request_body'
+                #-   'security.access_token_extractor.query_string'
+                token_handler: App\Security\Authenticator\AccessTokenAuthenticator\TokenHandler\DefaultTokenHandler
+                    
         main:
             pattern: '^/'
 
@@ -98,8 +124,8 @@ security:
             lazy: true
             stateless: false
             
-            provider: 'app.user_provider.doctrine_decorator'
-            #provider: app_user_provider
+            #provider: 'app.user_provider.doctrine_decorator'
+            provider: app_user_provider
             
             entry_point: 'App\Security\ProtectedResourceHandler\EntryPoint\ExceptionDependedEntryPoint'
             user_checker: security.user_checker.chain.main
@@ -115,6 +141,15 @@ security:
                 max_attempts: 10
                 #interval: '5 seconds'
             
+            access_token:
+                #provider: 'app.user_provider.doctrine_decorator'
+                success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
+                failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
+                remember_me: true
+                token_extractors:
+                -   'query_string'
+                token_handler: 'App\Security\Authenticator\AccessTokenAuthenticator\TokenHandler\DefaultTokenHandler'
+                
             remember_me:
                 lifetime: '%app.remember_me.cookie_lifetime%'
                 name: REMEMBERME_MAIN
@@ -123,10 +158,10 @@ security:
                 
                 secret: '%env(APP_ENV)%'
                 signature_properties:
-                -   passport.rememberMeUpdatedAt
-                -   email
+                #-   passport.rememberMeUpdatedAt
+                #-   email
                 -   password
-                -   switchUserAble
+                #-   switchUserAble
                 
             form_login:
                 # Redirect if denied
@@ -149,8 +184,13 @@ security:
                 #form_only: true
                 use_forward: true
                 
-            #custom_authenticators:
-            #-   App\Security\Authenticator\FormLoginAuthenticator
+            custom_authenticators:
+            -   App\Security\Authenticator\FormLoginAuthenticator
+            -   App\Security\Authenticator\GitHubAuthenticator
+
+            #guard:
+            #    authenticators:
+            #    -   'App\Security\Authenticator\GuardAuthenticator\GitHubGuardAuthenticator'
             
             http_basic:
                 realm: 'Secured Area'
@@ -162,15 +202,10 @@ security:
             #http_basic_ldap:
             
             #x509:
-
-            #guard:
             
-            #remote_user:
+            remote_user:
                 #provider: ~
                 #user: APP_REMOTE_USER
-            
-            #access_token:
-            #    realm: ~
             
             login_link:
                 check_route: app_login_link
@@ -179,8 +214,8 @@ security:
                 -   password
                 lifetime: 600
                 ###> MAX 1 === POST only ###
-                max_uses: 1
                 check_post_only: true
+                max_uses: 1
                 ###< MAX 1 === POST only ###
                 
                 #login_path: app_login

@@ -52,4 +52,8 @@ class LoginLinkFormType extends AbstractFormType
 			])
         ;
     }
+	
+    public function getBlockPrefix(): string {
+		return '';
+	}
 }

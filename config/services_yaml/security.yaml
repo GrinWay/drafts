@@ -26,7 +26,7 @@ services:
     
     app.user_provider.doctrine_decorator:
         class: App\Security\UserProvider\RememberMeSignatureUserProvider
-        decorates: security.user.provider.concrete.app_user_provider
+        #decorates: security.user.provider.concrete.app_user_provider
         arguments:
             $inner: '@.inner'
             $userRepo: '@App\Repository\UserRepository'

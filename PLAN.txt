@@ -1,24 +1,27 @@
 SYMFONY ROUTE
 	?
+	+ ?как установить _fragment в Route (при генерации пути передай _fragment в переменные роута)
 	зачем options в route и можно ли их модифицировать в ControllerEventListener
-	RequestStack or Request
-	use Session in stateless route
+	+ RequestStack or Request (Request)
+	+ use Session in stateless route (Exception)
 SYMFONY SECRETS
 SYMFONY CONTROLLER
 	?
 	#[MapUploadedFile] UploadedFile $filename
+	использовать class Map* (MapRequestPayload, MapDateTime, MapQueryParameter, MapQueryString)
 SYMFONY COOKIE
 SYMFONY SESSION
 SYMFONY HTTP FOUNDATION
 	?
-	как в request УСТАНОВИТЬ не скалярное значение (можно)
+	+ как в request УСТАНОВИТЬ не скалярное значение (можно)
 SYMFONY DOCTRINE
 	?
-	*кто отвечает за порядок расположения столбцов
+	?не получилось добавить функцию dql doctrine
+	?кто отвечает за порядок расположения столбцов
 	кто отвечает за именование полей в базе данных
 	есть какое-то ограничение на выбор стороны держателя OneToOne
-	*в каком формате сохранять интервал CarbonInterval
-	*в каком формате сохранять период CarbonPeriod
+	?в каком формате сохранять интервал CarbonInterval
+	?в каком формате сохранять период CarbonPeriod
 	Что конкретно делает ORM\Embedded
 	как изменить тип записи datetime в базу данных (dbal:doctrine.dbal.types.datetime_immutable.MyClass)
 	setHint(Query::HINT_REFRESH, true) вообще работает?
@@ -30,7 +33,6 @@ SYMFONY DOCTRINE
 	разница ObjectManager EntityManager #[MapEntity(objectManager: '')]
 	гидротация только одного объекта
 	разница Query::execute Query::getResult
-	https://github.com/stof/StofDoctrineExtensionsBundle
 	сдеалть своего purger
 	doctrine add hint (download from db)
 	make:fixtures
@@ -60,7 +62,7 @@ SYMFONY SERVICE CONTAINER
 	?
 	что делает services.yaml>services>SOME_SERVICE> properties настройка
 	+ Как сервис может получить доступ ко всем аргументам метода контроллера (слушая ControllerArgumentsEvent)
-	**В каком случае сервис нельзя подтянуть как аргумент контроллера
+	??В каком случае сервис нельзя подтянуть как аргумент контроллера
 		Или в чём разница команд debug:container, debug:autowire
 	Запросить в extension сервис, который ещё не успел попасть в контейнер
 	реализовать проход компилятора для тега (app.set_callable_result, method, args) чтоб был найден метод (SetCallableResultInterface) класса для снабжения данными тегированного
@@ -96,14 +98,13 @@ SYMFONY SERVICE CONTAINER
 		И ВЫЗВАТЬ ЕГО МОЖНО БЫЛО НЕСТАТИЧЕСКИ (new Reference)
 	decorator pattern https://symfony.com/doc/current/service_container/service_decoration.html
 	!!! КАК В COMPILER PASS ПЕРЕДАТЬ \Closure например от метода сервиса в аргумент у Definition (создать Definition(Closure))
-SYMFONY DependencyInjection Component https://symfony.com/doc/current/components/dependency_injection.html
-SYMFONY CONFIGURING SYMFONY https://symfony.com/doc/current/configuration.html
+SYMFONY DependencyInjection Component
+SYMFONY CONFIGURING SYMFONY
 	?
 	извлечь используя extractor docBlock @return
 SYMFONY EXPRESSION LANGUAGE
 	?
-	чекнуть (за счёт expressionLanguageProviderDecorator) какие переменные есть в services.yaml expressionLanguage
-		по документации там как минимум есть: container
+	+ чекнуть (за счёт expressionLanguageProviderDecorator) какие переменные есть в services.yaml expressionLanguage (variables: container, args)
 SYMFONY EVENTS
 	?
 	??? слушатель зарегестрирован в dispatcher, а при отправке события не вызывается
@@ -119,22 +120,26 @@ TWIG
 	?
 	Как вызвать Closure в шаблоне
 	The TwigBundle registers an ErrorListener that forwards the Request to a given controller defined by the exception_listener.controller parameter
-SYMFONY TWIG COMPONENTS https://symfony.com/bundles/ux-twig-component/current/index.html
+SYMFONY TWIG COMPONENTS
 	?
 	attributes.defaults можно перезаписать, а класс добавится
 	cva(compoundVariants) зачем class (странное название, не имеет отношение к выбираемому аттрибуту, просто значение, которое вернётся)
 	как каждый раз вызвать метод а не получать computed, который по умолчанию (вызов через this)
 SYMFONY FORMS
 	***
-	CollectionType: https://symfony.com/doc/current/form/form_collections.html#handling-the-new-tags-in-php
+	https://symfony.com/doc/current/reference/forms/types/collection.html
+	https://symfony.com/doc/current/form/form_collections.html#handling-the-new-tags-in-php
+	(rest_types)
+	https://symfony.com/doc/current/reference/forms/types/form.html#post-max-size-message
 	?
-	***не могу даже найти документацию по вынесению элементов формы за её пределы, чтобы они отправились
-	**как не выводить ошибки от form_start(), form()
-	*как назначить ошибку form::addError целой форме чтобы она выводилась ровно 1 раз
-	*в каких случаях можно использовать options 'form_attr' => true,
+	???не получилось вынести элементы формы за её пределы, чтобы они отправились
+		https://symfony.com/doc/current/reference/forms/types/form.html#form-attr
+	??как не выводить ошибки от form_start(), form()
+	?как назначить ошибку form::addError целой форме чтобы она выводилась ровно 1 раз
+	?в каких случаях можно использовать options 'form_attr' => true,
 	абсолютно не понятно зачем опция is_empty_callback
 	+ DateType widget:text не выводит placeholder (задай через attr.placeholder)
-	*реализовать и добавить в bundle CarbonTimeZoneFormType (с трансформатором IntlTimeZone::raw_offset -> +00:00)
+	?реализовать и добавить в bundle CarbonTimeZoneFormType (с трансформатором IntlTimeZone::raw_offset -> +00:00)
 	не получилось задать empty_data в виде массива compoundFormType
 		$resolver
             ->setDefaults([
@@ -158,7 +163,7 @@ SYMFONY FORMS
 	NOTE вся валидация проиходит после событий
 	при создании формы пользователя возникает ошибка
 		Cannot assign string to property App\Entity\Product\Product::$createdAt of type ?DateTimeInterface
-	*Не могу понять из-за чего встроенный тип формы не может попасть в Request::getPayload
+	?Не могу понять из-за чего встроенный тип формы не может попасть в Request::getPayload
 	Как переопределить maxlength в типе формы без создания угадывателя типа
 	Как выводить форму редактирования пользователя если у него есть абстрактный вид продукта (сделать не абстрактным, а для формы добавить трансформер чтобы нужный тип объекта с формы делал)
 	как bootstrap определяет темы (block form_label например)
@@ -205,6 +210,7 @@ SYMFONY FORMS
 	не получается в root form type configureOptions для определённого поля указать constraints (?фича удалена)
 SYMFONY VALIDATOR
 	?
+	зачем метод setInvalidValue у ConstraintViolationBuilder
 	+ Возможно ли ограничить способы валидации (-Attributes, -loadMethod, +addYamlMappings) (естественно, просто настрой framework.validation)
 	ExpressionSyntax constraint имеет косяк, даже когда моя функция добавлена через provider
 		ExpressionSyntax всё равно не видит её
@@ -213,26 +219,25 @@ SYMFONY VALIDATOR
 	непонятное ограничение https://symfony.com/doc/current/reference/constraints/Cidr.html#basic-usage
 	Constraints\Valid работает ли на Collection
 	Length or Range используются формой для аттрибута html5 maxlenght
-	Как заставить читать ограничения коллекции
-	Как включить ограничение EnableAutoMapping глобально
+	+ Как заставить читать ограничения коллекции (Cascade, Valid)
+	+ Как включить ограничение EnableAutoMapping глобально (через настройки бандла фреймворка, framework.validation.auto_mapping.Namespace[])
 	достать ClassMetadata определённого класса и добавить ограничение Callback
-	*назначить Traverse на класс коллекции, а в классе, который использует коллекцию не указывать Valid или Cascade
+	?назначить Traverse на класс коллекции, а в классе, который использует коллекцию не указывать Valid или Cascade
 	 будет ли проверка элеметов коллекции
 SYMFONY UPLOAD FILES
 	***
-	NEXT: https://github.com/dustin10/VichUploaderBundle/blob/master/docs/namers.md#directory-namer
-	NEXT: https://github.com/dustin10/VichUploaderBundle/blob/master/docs/file_namer/howto/create_a_custom_file_namer.md
-	
+	https://github.com/dustin10/VichUploaderBundle/blob/master/docs/namers.md#directory-namer
+	https://github.com/dustin10/VichUploaderBundle/blob/master/docs/file_namer/howto/create_a_custom_file_namer.md
 	https://github.com/dustin10/VichUploaderBundle/blob/master/docs/other_usages/replacing_file.md
 	?
-	*Как загрузить папку
+	?Как загрузить папку
 		еще момент If a directory was uploaded, getClientOriginalPath() will contain the webkitRelativePath as provided by the browser. Otherwise this value will be identical to getClientOriginalName().
-	*Как request->files обрабатывается при form::submit
-	*Как валидировать сущность с UniqueEntity по полю типа File (когда форма отправляет файл)
+	?Как request->files обрабатывается при form::submit
+	?Как валидировать сущность с UniqueEntity по полю типа File (когда форма отправляет файл)
 	Если в Request::payload не попадают загружаемые файлы тогда как обработать только поле файла FormFile::submit (добавь в payload данные из Request::files)
-SYMFONY HTTP COMPONENT https://symfony.com/doc/current/components/http_kernel.html
-SYMFONY STRING https://symfony.com/doc/current/string.html#methods-to-pad-and-trim
-SYMFONY CLOCK COMPONENT https://symfony.com/doc/current/components/clock.html
+SYMFONY HTTP COMPONENT
+SYMFONY STRING
+SYMFONY CLOCK COMPONENT
 SYMFONY TRANSLATION COMPONENT
 	?
 	не получилось установить домен with twig tag trans_default_domain
@@ -247,28 +252,47 @@ SYMFONY OPTIONS RESOLVER
 SYMFONY CONFIG COMPONENT https://symfony.com/doc/current/components/config.html
 SYMFONY EXTENTIONS
 	?
-	add doctrine functions
 ***
 SYMFONY SECURITY
-	https://symfony.com/doc/current/security/access_token.html
-	https://habr.com/ru/articles/538662/
-	https://symfony.com/doc/current/security/ldap.html
-	https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
 	назначать группы login, register в зависимости от состояния объекта с помощью своего sequence provider UserGroupProvider 
 	как в сервисе получить _token csrf защиты
 	(The security system uses an event dispatcher per firewall: php bin/console debug:event-dispatcher --dispatcher=security.event_dispatcher.main)
 	Autowiring: [ #[CurrentUser] User $user / User $user ]
 	Какая разница между User and SecurityToken (UserValueResolver, SecurityTokenValueResolver)
 	security-http/Attribute/CurrentUser.php
+
 	https://symfony.com/blog/cve-2016-4423-large-username-storage-in-session
+
 	https://github.com/hwi/HWIOAuthBundle
-	*https://symfony.com/doc/current/security/remember_me.html
+	
+	https://symfony.com/bundles/SchebTwoFactorBundle/current/index.html
+
+	https://habr.com/ru/articles/538662/
+	https://symfony.com/doc/current/security/ldap.html
+	https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
+	
+	?https://symfony.com/doc/current/security/remember_me.html
 		1) workflow REMEMBER_ME
 		2) workflow Token lifecycle
 	?
+	???много чего непонятного с OAuth2-client-bundle, как использовать accessToken
+		как передавать expired
+		и вообще как пользоваться accessToken
+	???управлять своей учётной записью github со своего сайта
+	???не получилось OIDC https://symfony.com/doc/current/security/access_token.html#using-openid-connect-oidc
+	???не получилось CAS 2.0 https://symfony.com/doc/current/security/access_token.html#using-cas-2-0
+	+ авторизируется ли пользователь несколькими authenticators за раз (да, но это безсмысленно, так как в session сохраняется _security_<FIREWALL_NAME>
 	+ деавторизировать пользователя если у него изменилось (customPoly)
 		возможно ли через свой app_user_provider (Doctrine decorator) Symfony\Component\Security\Core\User\UserProviderInterface
-		(ДА, пользователь выходит из авторизации если в своём UserProvider бросить исключение UserNotFoundException)
+		(
+		ДА, пользователь выходит из авторизации если в своём UserProvider бросить исключение UserNotFoundException
+		НО проще это сделать через User implements EquatableInterface
+		)
+	+ ?почему при смене роли даже если пользователи session & db считаются равными(EquatableInterface) с базы данных не устанавливаются роли в сессию
+		(
+			дело в том что Token содержит роли, присвоенные при аутентификации, security::isGranted использует их
+			а у user да, они могут измениться
+		)
 	как буд-то form_login.use_forward не использует forward, а всё равно перенаправляет
 	На чистом шаблоне попробуй: что конкретно делает конфигурация form_login.remember_me
 		Просто как будт-то бы ни на что не влияет
@@ -284,23 +308,22 @@ SYMFONY SECURITY
 	если ограничить REMEMBERME на определённый путь, всё равно из REMEMBERME данные перетекают в PHPSESSID
 		как это работает
 	реализовать LoginForm for User and VipUser[что-то больше чем просто роли] (как будет удобнее и разумнее), VipUser entity, VipUserPassport entity, VipUserChecker tagged with security.user_checker.main
-		*раз у нас разные поставщики пользователей
+		?раз у нас разные поставщики пользователей
 		значит реализовать аутентификаторы в разных firewalls (чтобы выход из одного firewall не заставлял выходить из другого logout.invalidate_session=false)
-		*для того чтобы иметь другой (VipUserToken) для User сделай form_login, а для Vip сделай собственный аутентификатор, который вернёт новый тип VipUserToken с доп. фичами (информаций, которая не храниться в БД обычных пользователей)
+		?для того чтобы иметь другой (VipUserToken) для User сделай form_login, а для Vip сделай собственный аутентификатор, который вернёт новый тип VipUserToken с доп. фичами (информаций, которая не храниться в БД обычных пользователей)
 		ради эксперемента установить firewall_1.context=<same> firewall_2.context=<same> и statelss=false
 		при аутентификации через один firewall попробовать добиться аутентификации через другой firewall
-	**проанализировать процесс записи TokenInterface service в течении аутентификации (как оно работает изнутри)
+	??проанализировать процесс записи TokenInterface service в течении аутентификации (как оно работает изнутри)
 	возможно сервис TokenInterface является synthetic так как по одному и тому же SERVICE_ID я получаю разные сервисы
 	выдача себя за другого пользователя через заголовок не работает https://symfony.com/doc/current/security/impersonating_user.html#events
-	*как из auto hasher мигрировать пароль в custom no_hash
+	?как из auto hasher мигрировать пароль в custom no_hash
 	не получается мигрировать password hashers в md2 или другие, но если стоит auto всё мигрируется в новейший password hasher
 	+ похоже собственный password hasher можно использовать только со своим authenticator (НЕТ, просто сущность должна сама возвращать имя passowrd hasher)
-	*не могу авторизоваться после смены password hasher но добавив migrate_from	
+	?не могу авторизоваться после смены password hasher но добавив migrate_from	
 	+ как буд-то бы не работает перехватчик json_login для check_path (потому что помимо check_path проверялся заголовок ContentType, который должен был быть application/json)
 	как запустить другой аутентификатор при неудаче предыдущего
-	*залогиниться через X.509 Client Certificates https://symfony.com/doc/current/reference/configuration/security.html#x-509-authentication
-	*залогиниться через remote_user https://symfony.com/doc/current/reference/configuration/security.html#remote-user-authentication
-	*используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
+	??залогиниться через X.509 Client Certificates не получилось https://symfony.com/doc/current/reference/configuration/security.html#x-509-authentication
+	?используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
 SYMFONY MAILER https://symfony.com/doc/current/mailer.html
 	clear && bin/console make:reset-password --with-ulid
 		https://symfony.com/doc/current/security/passwords.html#reset-password
@@ -322,7 +345,7 @@ SYMFONY UX TURBO https://symfony.com/bundles/ux-turbo/current/index.html
 	есть ли разница между зафейленой обработанной формой (422) и необработанной формой для UX TURBO
 SYMFONY STIMULUS https://symfony.com/bundles/StimulusBundle/current/index.html
 	HOTWIRE: TURBO
-	*придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
+	?придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
 SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/index.html
 	https://ux.symfony.com/demos/live-component/form-collection-type/2299
 	https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
@@ -347,12 +370,15 @@ SYMFONY TESTS https://symfony.com/doc/current/testing.html
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Clock/MockClock.php
 		https://symfony.com/doc/current/components/clock.html#mockclock
 		https://symfony.com/doc/current/components/clock.html#writing-time-sensitive-tests
+	https://symfony.com/doc/current/components/console/helpers/questionhelper.html#testing-a-command-that-expects-input
+SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
 SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
 SYMFONY CACHE
 	?
 	$request->getETags()
 	создать cache адаптер для ExpressionLanguage($adapter)
-SYMFONY SERIALIZER
+SYMFONY SERIALIZER https://symfony.com/doc/current/components/serializer.html
+	https://symfony.com/doc/current/serializer.html
 	?
 	добавляет новые поля в json при serialize
 	grin_way_env_csv_multiline parse with serializer
@@ -366,11 +392,11 @@ SYMFONY CONTAINER BUILDER
 	https://github.com/violet-php/class-scanner
 	Yaml::PARSE_CONSTANT add into grin_way_service to allow !const 'GrinWay\WebApp\Type\Messenger\BusTypes::QUERY_BUS' into C:\Рабочий стол\PHP SYMFONY\__SANDBOX__\SYMFONY 7\bundles\grinway\web-app-bundle\config\services.yaml
 SYMFONY Process Component https://symfony.com/doc/current/components/process.html
-SYMFONY MONOLOG
+SYMFONY MONOLOG https://symfony.com/doc/current/logging.html
 ###> EXCERPTS TO ANSWER ###
 By default, the URLs generated for web assets use the same default_uri value, but you can change it with the asset.request_context.base_path and asset.request_context.secure container parameters.
 ###< EXCERPTS TO ANSWER ###
-SYMFONY BUNDLES
+SYMFONY BUNDLES https://symfony.com/doc/current/bundles.html
 	?
 	Configuration addDefaultChildrenIfNoneSet
 SYMFONY WORKFLOW
@@ -393,7 +419,7 @@ Framework Configuration Reference https://symfony.com/doc/current/reference/conf
 SYMFONY BUNDLE FOSJsRoutingBundle (route -> uri in js)
 SYMFONY BUNDLE FOSHttpCacheBundle (invalidate cache)
 SYMFONY Dotenv class
-SYMFONY COMMAND class
+SYMFONY COMMAND
 	?
 	command --param --param: InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY
 	Autowire RequestStack -> RequestStack::getCurrentRequest() === null
@@ -405,15 +431,22 @@ BOOTSTRAP (not deep)
 	?
 	опираясь на пример темы ".\vendor\symfony\twig-bridge\Resources\views\Form\form_div_layout.html.twig"
 		сделать свою тему на bootstrap (form/theme/grinway/index.html.twig)
+SYMFONY ROUTE
+	CMF Routing Bundle
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/index.html
+		https://symfony.com/bundles/CMFRoutingBundle/current/index.html
+SYMFONY MAKER BUNDLE https://symfony.com/bundles/SymfonyMakerBundle/current/index.html
+SYMFONY BEST PRACTIES https://symfony.com/doc/current/best_practices.html
 CHART JS
 CROP JS
 	?
 	https://symfony.com/doc/current/form/bootstrap5.html
 	реализовать полностью свою тему форм
-
 SYMFONY DOCTRINE
+	https://symfony.com/doc/current/reference/configuration/doctrine.html
 	https://github.com/KnpLabs/DoctrineBehaviors
 	https://github.com/doctrine-extensions/DoctrineExtensions
+	https://github.com/stof/StofDoctrineExtensionsBundle
 AMQP
 	?
 	https://habr.com/ru/articles/62502/
@@ -425,15 +458,30 @@ SYMFONY TRANSLATION
 	Использовать провайдера Loco зарегайся с VPN: https://symfony.com/doc/current/translation.html#installing-and-configuring-a-third-party-provider
 SYMFONY DEPLOYMENT https://symfony.com/doc/current/deployment.html
 PRODUCTION
+	https://symfony.com/doc/current/reference/configuration/kernel.html
 	?
 	process manager Supervisor or systemd for messenger	
 	проверить timezone у messenger doctrine
 	Утилиты для управления ENV_VAR https://docs.platform.sh/guides/symfony/environment-variables.html?utm_source=symfony-cloud-sign-up&utm_medium=backlink&utm_campaign=Symfony-Cloud-sign-up&utm_content=docs
 	custom env loader (configuraiton)
 	https://symfony.com/doc/current/contributing/code/conventions.html
+	??? запустить "php bin/console lint:twig --format=github" GitHub Actions
 hinclude.js (HOTWIRE круче)
 https://docs.github.com/en/actions
-
+SYMFONY MESSENGER
+	https://symfony.com/doc/current/messenger.html#transactional-messages-handle-new-messages-after-handling-is-done
+	https://symfony.com/doc/current/components/messenger.html#transports
+	https://symfony.com/doc/current/messenger/custom-transport.html
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Messenger/Handler/RedispatchMessageHandler.php
+TWIG
+	https://symfony.com/doc/current/reference/twig_reference.html
+	https://symfony.com/doc/current/reference/configuration/twig.html
+SYMFONY SESSION
+	не получилось https://symfony.com/doc/current/session.html#encryption-of-session-data
+SYMFONY VARDUMPER https://symfony.com/doc/current/components/var_dumper.html#components-var-dumper-dump
+EmojiTransliterator::create('text-emoji')->transliterate() used it https://github.com/unicode-org/cldr?tab=readme-ov-file
+security через передачу заголовка impersonator не сработал https://symfony.com/doc/current/security/impersonating_user.html
+SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
 
 TODO
 	Все переводы бандлов поместить в домен grinway, то есть имя домена === имя бандла
@@ -465,7 +513,7 @@ TODO
 		cuz there is disabled option that to the same ?take: // TODO: PreventModifyingPropsOfEntity
 		//TODO: NormalizeLocaleDataTransformer add FormTypeExtension
 			+ написать тест для неё
-		//TODO: CarbonValueResolver separate now and nowModified logic
+		//TODO: CarbonValueResolver separate now and nowModified logic (replace @var with @param)
 			+ написать тест для неё
 		//TODO: TAKE IT TO EnableAutoMapping
 		// TODO: RememberMeSignatureUserProvider
@@ -482,13 +530,16 @@ TODO
 		OptionsResolverUtils::getCheckedKeysDefaultsValues($className, $passedValues, $nestedNodeName, $nestedNodeDefaults)
 			./src\Form\Type\TaskFormType::setNormalizer
 		take //TODO : NoteType
-		*реализовать PasswordConstraint extends Compound только regex должен поциферно и побуквенно включать \sprintf('(?=.*[%1$s](?=.*[%1$s]))(?=.*[%2$s](?=.*[%2$s](?=.*[%2$s])))[%1$s%2$s%3$s]+', $regexLetters, $regexNumbers, $regexSpecialChars)
+		?реализовать PasswordConstraint extends Compound только regex должен поциферно и побуквенно включать \sprintf('(?=.*[%1$s](?=.*[%1$s]))(?=.*[%2$s](?=.*[%2$s](?=.*[%2$s])))[%1$s%2$s%3$s]+', $regexLetters, $regexNumbers, $regexSpecialChars)
 		//TODO: ExpressionLanguageStaticFunctions
 		// TODO: AllTypes
 		//TODO: FragmentUtils
 		//TODO: take isEnabledLocale
 		//TODO: AccessService (Философия такая, что Symfony говорит всегда выкидывай AccessDeniedException и не выбрасывай AuthenticationException вручную(оно перевыброситься если ты ещё не авторизован), так как логика попадания в EntryPoint уже описана)
 		// TODO: IpRangeRequestMatcher
-		
-https://symfony.com/doc/current/create_framework/introduction.html
+
+SYMFONY TRANSLATION
+	phrase https://phrase.com/
+		bundle for it https://github.com/wickedOne/phrase-tag-bundle
 Банда 4-х
+https://symfony.com/doc/current/create_framework/index.html

@@ -30,6 +30,15 @@ controllers:
 #app_home_producttypes:
 #    alias: 'app_home_producttypes.ru'
 
+api_login:
+    path: /api/login
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: 'app_home_home'
+    methods:
+    -   GET
+    -   POST
+
 static:
     path: /static/{id<[0-9]+>?1}
     controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController

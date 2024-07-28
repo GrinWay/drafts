@@ -2,6 +2,7 @@
 
 namespace App\Entity\Media;
 
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use App\Doctrine\DTO\UserDto;
 use App\Repository\ImageRepository;
 use Doctrine\ORM\Mapping as ORM;
@@ -61,4 +62,20 @@ class Image extends Media
 		\dump(__METHOD__);
 		return $this->userDto;
 	}
+	
+	public function isValid(ExecutionContextInterface $context, mixed $payload): void
+    {
+        if (true) {
+			$messsage = 'Неверно {value}';
+			$violaiton = $context->buildViolation($messsage);
+			\dump(\get_debug_type($violaiton));
+			$violaiton
+				->atPath('createdAt')
+				->setPlural(1)
+				->setParameter('{value}', $this->getCreatedAt().'' ?: 'empty')
+				->addViolation()
+			;
+		}
+    }
+
 }

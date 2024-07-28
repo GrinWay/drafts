@@ -1,0 +1,7 @@
+services:
+    #Symfony\Component\Cache\Marshaller\SodiumMarshaller:
+    #    decorates: 'session.marshaller'
+    #    arguments:
+    #    -
+    #        -   'Wa8CGn5J+heD2bf2JiiKMt/zZ/DEPJ72kwT13Nc14znDmYQaY2C+mfgQDb5elD2GNEkUPK+IKavpvgds3s+IXQ=='
+    #    -   '@.inner'
