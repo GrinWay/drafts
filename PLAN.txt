@@ -132,6 +132,7 @@ SYMFONY FORMS
 	(rest_types)
 	https://symfony.com/doc/current/reference/forms/types/form.html#post-max-size-message
 	?
+	+ почему после отправки формы с PasswordType.hash_property_path пароль не хэширован (потому что PasswordFormTypeExtension лишь заполняет свой сервис данными о хешировании)
 	???не получилось вынести элементы формы за её пределы, чтобы они отправились
 		https://symfony.com/doc/current/reference/forms/types/form.html#form-attr
 	??как не выводить ошибки от form_start(), form()
@@ -279,7 +280,6 @@ SYMFONY SECURITY
 		Symfony 7.1 Form Component не учитывает передачу groupSequenceProvider как аргумент validation_groups
 		поэтому приходится делать GroupSequenceProvider callable(__invoke)
 	)
-	+ почему после отправки формы с PasswordType.hash_property_path пароль не хэширован (потому что PasswordFormTypeExtension лишь заполняет свой сервис данными о хешировании)
 	???много чего непонятного с OAuth2-client-bundle, как использовать accessToken
 		как передавать expired
 		и вообще как пользоваться accessToken
