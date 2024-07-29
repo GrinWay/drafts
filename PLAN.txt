@@ -426,6 +426,7 @@ SYMFONY BUNDLE FOSHttpCacheBundle (invalidate cache)
 SYMFONY Dotenv class
 SYMFONY COMMAND
 	?
+	возможно ли динамически переименовывать команды, задавать алиасы
 	command --param --param: InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY
 	Autowire RequestStack -> RequestStack::getCurrentRequest() === null
 SYMFONY COMPONENTS: https://symfony.com/components
