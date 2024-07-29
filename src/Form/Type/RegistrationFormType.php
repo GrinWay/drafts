@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type as FormType;
@@ -13,9 +14,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use App\Validation\GroupProvider\Entity\UserGroupProvider;
 
 class RegistrationFormType extends AbstractFormType
 {
+    public function __construct(
+		PropertyAccessorInterface $pa,
+		private readonly UserGroupProvider $userGroupProvider,
+	) {
+		parent::__construct(
+			pa: $pa,
+		);
+	}
+	
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -53,12 +64,16 @@ class RegistrationFormType extends AbstractFormType
 					'constraints' => [
 						new NotBlank([
 							'message' => 'Please enter a password',
+						], groups: [
+							'register',
 						]),
 						new Length([
 							'min' => 6,
 							'minMessage' => 'Your password should be at least {{ limit }} characters',
 							// max length allowed by Symfony for security reasons
 							'max' => 10,
+						], groups: [
+							'register',
 						]),
 					],
 				],
@@ -80,11 +95,17 @@ class RegistrationFormType extends AbstractFormType
 
     public function configureOptions(OptionsResolver $resolver): void
     {
+		//\dd($this->userGroupProvider);
         $resolver->setDefaults([
             'data_class' => User::class,
+			'validation_groups' => $this->userGroupProvider,
             'csrf_token_id' => 'register-a-new-user',
 			/*
 			*/
         ]);
     }
+	
+	public function getBlockPrefix(): string {
+		return 'app_user_registration_form';
+	}
 }

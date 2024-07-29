@@ -1,7 +1,7 @@
 framework:
     validation:
         enabled: true
-        enable_attributes: true
+        enable_attributes: false
         static_method: null
         #translation_domain: validators
         auto_mapping: ~

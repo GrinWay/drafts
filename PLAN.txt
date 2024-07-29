@@ -254,7 +254,6 @@ SYMFONY EXTENTIONS
 	?
 ***
 SYMFONY SECURITY
-	назначать группы login, register в зависимости от состояния объекта с помощью своего sequence provider UserGroupProvider 
 	как в сервисе получить _token csrf защиты
 	(The security system uses an event dispatcher per firewall: php bin/console debug:event-dispatcher --dispatcher=security.event_dispatcher.main)
 	Autowiring: [ #[CurrentUser] User $user / User $user ]
@@ -275,6 +274,12 @@ SYMFONY SECURITY
 		1) workflow REMEMBER_ME
 		2) workflow Token lifecycle
 	?
+	+ назначать группы login, register в зависимости от состояния объекта с помощью своего sequence provider UserGroupProvider 
+	(
+		Symfony 7.1 Form Component не учитывает передачу groupSequenceProvider как аргумент validation_groups
+		поэтому приходится делать GroupSequenceProvider callable(__invoke)
+	)
+	+ почему после отправки формы с PasswordType.hash_property_path пароль не хэширован (потому что PasswordFormTypeExtension лишь заполняет свой сервис данными о хешировании)
 	???много чего непонятного с OAuth2-client-bundle, как использовать accessToken
 		как передавать expired
 		и вообще как пользоваться accessToken
@@ -517,6 +522,7 @@ TODO
 			+ написать тест для неё
 		//TODO: TAKE IT TO EnableAutoMapping
 		// TODO: RememberMeSignatureUserProvider
+		Вынести логику чтения _instanceof в отдельный Extension и описать что он есть в документации
 	GsEnvProcessor
 		fix abstractions (only with functions)
 	Command

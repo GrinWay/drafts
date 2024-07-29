@@ -274,7 +274,7 @@ class HomeController extends AbstractController
         $csrfTokenManager,
 		?TokenInterface $token,
 		LoginLinkHandlerInterface $loginLinkHandler,
-		User $user,
+		?User $user,
 		PropertyAccessorInterface $pa,
 		#[Autowire('@security.authenticator.login_link_signature_hasher.main')]
 		$linkHasher,
@@ -285,7 +285,11 @@ class HomeController extends AbstractController
 		UriSigner $uriSigner,
 		UrlGeneratorInterface $ug,
     ) {
-		$loginLink = $loginLink->createLoginLink($user, $r, $seconds = 100);
+		if (null !== $user) {
+			$loginLink = $loginLink->createLoginLink($user, $r, $seconds = 100);
+		} else {			
+			$loginLink = '#';
+		}
 		
 		$uri = 'https://127.0.0.1/?user=s&expires=123102380';
 		

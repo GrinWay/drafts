@@ -27,7 +27,8 @@ class UserPassport extends Passport
 
     public function __construct(
         ?string $name = null,
-        #[ORM\Column(type: 'key_val', length: 255)]
+        //#[ORM\Column(type: 'key_val', length: 255)]
+        #[ORM\Column(length: 255)]
         private null|array|string $lastName = null,
 		#[ORM\Column(length: 30, nullable: true)]
 		private ?string $timezone = null,

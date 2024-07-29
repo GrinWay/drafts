@@ -23,7 +23,6 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 abstract class AbstractFormType extends AbstractType
 {
-	
 	public function __construct(
         protected readonly PropertyAccessorInterface $pa,
 	) {
