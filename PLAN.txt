@@ -132,7 +132,8 @@ SYMFONY FORMS
 	(rest_types)
 	https://symfony.com/doc/current/reference/forms/types/form.html#post-max-size-message
 	?
-	TODO: current где читается _csrf_token в системе форм
+	TODO: current где читается _csrf_token в системе форм (слушатель на событие формы?!)
+		./symfony\form\Extension\Csrf\EventListener\CsrfValidationListener.php
 	+ как так выходит что через форму нельзя получить _csrf_token (_csrf_token и нет в твоём определении типа формы!)
 	+ (2) как в сервисе получить _token csrf защиты (раз через форму нельзя, получу через request->getPayload())
 	+ в каких случаях не читается data option form type (PasswordType(data не читается))
