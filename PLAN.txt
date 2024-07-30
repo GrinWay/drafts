@@ -132,6 +132,10 @@ SYMFONY FORMS
 	(rest_types)
 	https://symfony.com/doc/current/reference/forms/types/form.html#post-max-size-message
 	?
+	TODO: current где читается _csrf_token в системе форм
+	+ как так выходит что через форму нельзя получить _csrf_token (_csrf_token и нет в твоём определении типа формы!)
+	+ (2) как в сервисе получить _token csrf защиты (раз через форму нельзя, получу через request->getPayload())
+	+ в каких случаях не читается data option form type (PasswordType(data не читается))
 	+ почему после отправки формы с PasswordType.hash_property_path пароль не хэширован (потому что PasswordFormTypeExtension лишь заполняет свой сервис данными о хешировании)
 	???не получилось вынести элементы формы за её пределы, чтобы они отправились
 		https://symfony.com/doc/current/reference/forms/types/form.html#form-attr
@@ -255,7 +259,6 @@ SYMFONY EXTENTIONS
 	?
 ***
 SYMFONY SECURITY
-	как в сервисе получить _token csrf защиты
 	(The security system uses an event dispatcher per firewall: php bin/console debug:event-dispatcher --dispatcher=security.event_dispatcher.main)
 	Autowiring: [ #[CurrentUser] User $user / User $user ]
 	Какая разница между User and SecurityToken (UserValueResolver, SecurityTokenValueResolver)

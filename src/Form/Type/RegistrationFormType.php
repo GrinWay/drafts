@@ -50,6 +50,7 @@ class RegistrationFormType extends AbstractFormType
 					'setter' => static fn($obj, $v, $f) => $obj->setRoles(empty($v) ? [] : \array_map(static fn($v) => \trim($v), \explode(',', $v))),
 				],
 			)
+			/* RepeatedType
             ->add('password', FormType\RepeatedType::class, [
 				'type' => FormType\PasswordType::class,
 				'mapped' => false,
@@ -59,6 +60,7 @@ class RegistrationFormType extends AbstractFormType
 					'label' => 'Пароль',
 					'hash_property_path' => 'password',
 					'attr' => [
+						'value' => $pass = '123123',
 						'autocomplete' => 'new-password',
 					],
 					'constraints' => [
@@ -79,16 +81,54 @@ class RegistrationFormType extends AbstractFormType
 				],
 				'second_options' => [
 					'label' => 'Повтори пароль',
+					'attr' => [
+						'value' => $pass,
+					],
+				],
+            ])
+			*/
+			/* Only one poly of the password
+			*/
+            ->add('password', FormType\PasswordType::class, [
+				'mapped' => false,
+				'label' => 'Пароль',
+				'hash_property_path' => 'password',
+				//не читается
+				//'data' => '123123',
+				'attr' => [
+					'value' => $pass = '123123',
+					'autocomplete' => 'new-password',
+				],
+				'constraints' => [
+					new NotBlank([
+						'message' => 'Please enter a password',
+					], groups: [
+						'register',
+					]),
+					new Length([
+						'min' => 6,
+						'minMessage' => 'Your password should be at least {{ limit }} characters',
+						// max length allowed by Symfony for security reasons
+						'max' => 10,
+					], groups: [
+						'register',
+					]),
 				],
             ])
             ->add('agreeTerms', CheckboxType::class, [
 				'mapped' => false,
+				'data' => true,
 				'constraints' => [
                     new IsTrue([
                         'message' => 'Согласись.',
                     ]),
                 ],
             ])
+			/*
+            ->add('_hiddenPoly', FormType\TextType::class, [
+				'mapped' => false,
+            ])
+			*/
             ->add('submit', FormType\SubmitType::class, [])
         ;
     }

@@ -2,9 +2,12 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
+use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Validation;
 use App\Entity\User;
+use App\Entity\UserPassport;
 use App\Form\Type\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,6 +18,8 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Security\Authenticator\FormLoginAuthenticator;
+use App\Contract\Util\IpUtilsInterface;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class RegistrationController extends AbstractController
 {
@@ -24,11 +29,22 @@ class RegistrationController extends AbstractController
 		UserPasswordHasherInterface $userPasswordHasher,
 		EntityManagerInterface $entityManager,
 		Security $security,
+		CsrfTokenManagerInterface $csrfTokenManager,
+		PropertyAccessorInterface $propertyAccessor,
 	): Response {
-        $user = new User();
+        $user = new User(
+			passport: new UserPassport(
+				name: 's',
+				lastName: 's',
+			),
+			email: 'ss',
+			//_hiddenPoly: '_hidden',
+		);
         $form = $this->createForm(RegistrationFormType::class, $user);
+		
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
+			\dd('VALID');
 			/*
 			// encode the plain password
             $plainPassword = $form->get('plainPassword')->getData();

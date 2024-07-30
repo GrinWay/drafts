@@ -87,3 +87,4 @@ services:
             - '../src/Security/Voter/ModifyAdminVoter.php'
             - '../src/Security/UserChecker/UserChecker.php'
             - '../src/Security/Authenticator/LoginLink/LoginLinkSignatureHasher.php'
+            

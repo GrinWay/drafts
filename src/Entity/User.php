@@ -30,6 +30,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $apiToken = null;
 
+
 	/**
 	 * @var array $roles list<string> The user roles
 	 * @var ?string $password string The hashed password
@@ -46,6 +47,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 		private ?string $password = null,
 		#[ORM\Column()]
 		private bool $switchUserAble = false,
+		//private ?string $_hiddenPoly = null,
 	) {}
 
     public function getId(): ?Ulid
@@ -181,4 +183,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
         return $this;
     }
+
+/*
+    public function getHiddenPoly(): ?string
+    {
+        return $this->_hiddenPoly;
+    }
+	
+    public function setHiddenPoly(?string $_hiddenPoly): static
+    {
+        $this->_hiddenPoly = $_hiddenPoly;
+
+        return $this;
+    }
+*/
 }
