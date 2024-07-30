@@ -16,6 +16,7 @@
         "grinway/env-processor-bundle": "^1.0",
         "grinway/service-bundle": ">=2.0",
         "grinway/web-app-bundle": "^1.0",
+        "hwi/oauth-bundle": "^2.2",
         "knpuniversity/oauth2-client-bundle": "^2.18",
         "league/oauth2-github": "*",
         "league/oauth2-google": "^4.0",

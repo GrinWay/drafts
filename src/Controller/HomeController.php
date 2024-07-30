@@ -288,10 +288,6 @@ class HomeController extends AbstractController
 		$formServerParams,
 		?User $user,
     ) {
-		\dump(
-			$user,
-		);
-		
 		/*
 		\dump(
 			$formServerParams->hasPostMaxSizeBeenExceeded(),

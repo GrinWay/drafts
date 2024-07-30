@@ -1,0 +1,24 @@
+hwi_oauth:
+    #target_path_parameter: _destination
+    use_referer: true
+    # https://github.com/hwi/HWIOAuthBundle/blob/master/docs/2-configuring_resource_owners.md
+    resource_owners:
+    
+        github:
+            type:                github
+            client_id:           '%env(OAUTH_GITHUB_ID)%'
+            client_secret:       '%env(OAUTH_GITHUB_SECRET)%'
+            scope:               "user,public_repo,repo,gist,delete_repo"
+            # TODO: current 
+            #paths:
+            #    email: email
+            #    username: github.id
+            #    profilepicture: github.profilePicture
+            #    accessToken: github.accessToken
+            options:
+                refresh_on_expire: true
+                
+                ###> csrf ###
+                csrf: true
+                state: '%env(APP_SECRET)%'
+                ###< csrf ###

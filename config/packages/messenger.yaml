@@ -80,6 +80,7 @@ framework:
             
         routing:
             'App\Messenger\*': async
+            'App\Messenger\Command\*': sync
             # GrinWay\WebApp\Contract\Messenger\HasSyncTransportInterface
             
 # when@test:

@@ -29,8 +29,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $apiToken = null;
-
-
+	
 	/**
 	 * @var array $roles list<string> The user roles
 	 * @var ?string $password string The hashed password
@@ -47,6 +46,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 		private ?string $password = null,
 		#[ORM\Column()]
 		private bool $switchUserAble = false,
+		#[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+		private ?GitHub $gitHub = null,
 		//private ?string $_hiddenPoly = null,
 	) {}
 
@@ -137,28 +138,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     }
 	
 	public function isEqualTo(UserInterface $dbUser): bool {
-		//\dd($dbUser, $this, $dbUser === $this);
-		
-		return true
-			//&& $dbUser->getUserIdentifier() === $this->getUserIdentifier()
-			//&& $dbUser->getId() === $this->getId()
-			//&& $dbUser->getRoles() === $this->getRoles()
-			//&& $dbUser->isSwitchUserAble() === $this->isSwitchUserAble()
-		;
-	}
+                  		//\dd($dbUser, $this, $dbUser === $this);
+                  		
+                  		return true
+                  			//&& $dbUser->getUserIdentifier() === $this->getUserIdentifier()
+                  			//&& $dbUser->getId() === $this->getId()
+                  			//&& $dbUser->getRoles() === $this->getRoles()
+                  			//&& $dbUser->isSwitchUserAble() === $this->isSwitchUserAble()
+                  		;
+                  	}
 	
 	/**
 	* PasswordHasherAwareInterface
 	*/
 	public function getPasswordHasherName(): ?string {
-		$hasher = null;
-		
-		if (\in_array('ROLE_ADMIN', $this->getRoles())) {
-			$hasher = 'admin_hasher';
-		}
-		
-		return $hasher;
-	}
+                  		$hasher = null;
+                  		
+                  		if (\in_array('ROLE_ADMIN', $this->getRoles())) {
+                  			$hasher = 'admin_hasher';
+                  		}
+                  		
+                  		return $hasher;
+                  	}
 
     public function isSwitchUserAble(): bool
     {
@@ -197,4 +198,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         return $this;
     }
 */
+
+public function getGitHub(): ?GitHub
+{
+    return $this->gitHub;
+}
+
+public function setGitHub(?GitHub $gitHub): static
+{
+    $this->gitHub = $gitHub;
+
+    return $this;
+}
 }

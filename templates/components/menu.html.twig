@@ -3,6 +3,7 @@
 		{%- block content -%}{%- endblock -%}
 		<ul>
 			{%- if is_granted('IS_AUTHENTICATED') -%}
+				<li><a href="{{ path('app_github_delete_repo', {}) }}">DELETE GITHUB REPO</a></li>
 				<li><a href="{{ path('app_admin_index', {}) }}">admin</a></li>
 				<li><a href="{{ path('app_delete_current_user', {}) }}">Delete Account</a></li>
 				<li><a href="{{ path('app_logout', {}) }}">Log out</a></li>
@@ -20,5 +21,11 @@
 			<li><a href="{{ path('app_home_condition', {id: 1}) }}">condition</a></li>
 			<li><a href="{{ path('static') }}">static</a></li>
 		</ul>
+		<div class="text-bg-dark mx-1 rounded-2 p-2">
+			HWI OAuth:
+			<ul>
+				<li><a class="text-bg-dark" href="{{- path('hwi_oauth_service_redirect', {'service': 'github' }) -}}">GitHub</a></li>
+			</ul>
+		</div>
 	</div>
 {%- endblock -%}

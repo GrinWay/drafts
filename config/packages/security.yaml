@@ -123,6 +123,7 @@ security:
             #context: main_admin
             lazy: true
             stateless: false
+            #anonymous: true
             
             #provider: 'app.user_provider.doctrine_decorator'
             provider: app_user_provider
@@ -140,27 +141,37 @@ security:
             login_throttling:
                 max_attempts: 10
                 #interval: '5 seconds'
-            
-            access_token:
+
+            oauth:
+                resource_owners:
+                    github:         app_github_login
+                login_path:         app_home_home
+                use_forward:        true
+                failure_path:       app_home_home
+
+                oauth_user_provider:
+                    service: hwi_oauth.user.provider.entity
+
+            #access_token:
                 #provider: 'app.user_provider.doctrine_decorator'
-                success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
-                failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
-                remember_me: true
-                token_extractors:
-                -   'query_string'
-                token_handler: 'App\Security\Authenticator\AccessTokenAuthenticator\TokenHandler\DefaultTokenHandler'
+            #    success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
+            #    failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
+            #    remember_me: true
+            #    token_extractors:
+            #    -   'query_string'
+            #    token_handler: 'App\Security\Authenticator\AccessTokenAuthenticator\TokenHandler\DefaultTokenHandler'
                 
-            remember_me:
-                lifetime: '%app.remember_me.cookie_lifetime%'
-                name: REMEMBERME_MAIN
-                always_remember_me: true
-                remember_me_parameter: _remember_me
+            #remember_me:
+            #    lifetime: '%app.remember_me.cookie_lifetime%'
+            #    name: REMEMBERME_MAIN
+            #    always_remember_me: true
+            #    remember_me_parameter: _remember_me
                 
-                secret: '%env(APP_ENV)%'
-                signature_properties:
+            #    secret: '%env(APP_ENV)%'
+            #    signature_properties:
                 #-   passport.rememberMeUpdatedAt
                 #-   email
-                -   password
+            #    -   password
                 #-   switchUserAble
                 
             form_login:
@@ -186,14 +197,14 @@ security:
                 
             custom_authenticators:
             -   App\Security\Authenticator\FormLoginAuthenticator
-            -   App\Security\Authenticator\GitHubAuthenticator
+            #-   App\Security\Authenticator\GitHubAuthenticator
 
             #guard:
             #    authenticators:
             #    -   'App\Security\Authenticator\GuardAuthenticator\GitHubGuardAuthenticator'
             
-            http_basic:
-                realm: 'Secured Area'
+            #http_basic:
+            #    realm: 'Secured Area'
                 
             #http_digest:
             
@@ -203,7 +214,7 @@ security:
             
             #x509:
             
-            remote_user:
+            #remote_user:
                 #provider: ~
                 #user: APP_REMOTE_USER
             
@@ -222,11 +233,11 @@ security:
                 always_use_default_target_path: false
                 default_target_path: app_home_home
             
-            json_login:
-                login_path: app_login
-                check_path: app_json_login
-                username_path: username
-                password_path: password
+            #json_login:
+            #    login_path: app_login
+            #    check_path: app_json_login
+            #    username_path: username
+            #    password_path: password
             
             logout:
                 path: app_logout

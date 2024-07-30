@@ -132,7 +132,7 @@ SYMFONY FORMS
 	(rest_types)
 	https://symfony.com/doc/current/reference/forms/types/form.html#post-max-size-message
 	?
-	добавить своё hidden poly в finishView через FormTypeExtension
+	добавить своё hidden poly в finishView(попробовать немного нарушить правила и сделать это в buildView) через FormTypeExtension
 		очень хороший пример FormTypeCsrfExtension
 	+ где добавляется _csrf_token в form view (FormTypeExtension(FormType) finishView view->children)
 	+ где проверяется _csrf_token в системе форм (eventSubscriber preSubmit)
@@ -262,11 +262,8 @@ SYMFONY EXTENTIONS
 	?
 ***
 SYMFONY SECURITY
-	https://symfony.com/blog/cve-2016-4423-large-username-storage-in-session
-	
-	SecurityTokenValueResolver
-
-	https://github.com/hwi/HWIOAuthBundle
+	***
+	https://github.com/hwi/HWIOAuthBundle/blob/master/docs/internals/response_object_and_paths.md
 	
 	https://symfony.com/bundles/SchebTwoFactorBundle/current/index.html
 
@@ -278,6 +275,10 @@ SYMFONY SECURITY
 		1) workflow REMEMBER_ME
 		2) workflow Token lifecycle
 	?
+	+ HWI OAuth почему фейлится csrf валидация (csrf ни при чём, HWI UserProvider не создаёт пользователя поэтому и найти не мог)
+	HWI OAuth зачем нужен и как пользоваться refreshToken
+	HWI OAuth сделать авторизацию через Google
+	HWI OAuth сделать авторизацию через Telegram
 	+ Какая разница между User and SecurityToken (SecurityToken отображает вид аутентификации и данные, присущие токену, например роли когда пользователь был авторизован, а не те которые есть у пользователя с БД)
 	+ назначать группы login, register в зависимости от состояния объекта с помощью своего sequence provider UserGroupProvider 
 	(
@@ -389,6 +390,7 @@ SYMFONY CACHE
 SYMFONY SERIALIZER https://symfony.com/doc/current/components/serializer.html
 	https://symfony.com/doc/current/serializer.html
 	?
+	зачем сериализовывать объекты в сессии (? может быть дело в хранимом объёме, или что ещё...)
 	добавляет новые поля в json при serialize
 	grin_way_env_csv_multiline parse with serializer
 SYMFONY FILESYSTEM
@@ -457,6 +459,8 @@ SYMFONY DOCTRINE
 	https://github.com/KnpLabs/DoctrineBehaviors
 	https://github.com/doctrine-extensions/DoctrineExtensions
 	https://github.com/stof/StofDoctrineExtensionsBundle
+	?
+	как найти имя сущности в Repository
 AMQP
 	?
 	https://habr.com/ru/articles/62502/
