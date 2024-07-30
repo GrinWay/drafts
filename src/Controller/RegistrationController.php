@@ -41,7 +41,7 @@ class RegistrationController extends AbstractController
 			//_hiddenPoly: '_hidden',
 		);
         $form = $this->createForm(RegistrationFormType::class, $user);
-		
+		//\dump($form->get('_csrf_token')?->getData());		
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
 			\dd('VALID');

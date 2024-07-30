@@ -7,6 +7,7 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\HttpFoundation\UriSigner;
@@ -274,7 +275,6 @@ class HomeController extends AbstractController
         $csrfTokenManager,
 		?TokenInterface $token,
 		LoginLinkHandlerInterface $loginLinkHandler,
-		?User $user,
 		PropertyAccessorInterface $pa,
 		#[Autowire('@security.authenticator.login_link_signature_hasher.main')]
 		$linkHasher,
@@ -284,7 +284,25 @@ class HomeController extends AbstractController
 		ClientRegistry $clientRegistry,
 		UriSigner $uriSigner,
 		UrlGeneratorInterface $ug,
+		//$serverParams->hasPostMaxSizeBeenExceeded()
+		//TODO: current
+		#[Autowire('@form.server_params')]
+		$formServerParams,
+		?User $user,
     ) {
+		\dump(
+			$user,
+		);
+		
+		/*
+		\dump(
+			$formServerParams->hasPostMaxSizeBeenExceeded(),
+			$formServerParams->getPostMaxSize(),
+			$formServerParams->getNormalizedIniPostMaxSize(),
+			$formServerParams->getContentLength(),
+		);
+		*/
+		
 		if (null !== $user) {
 			$loginLink = $loginLink->createLoginLink($user, $r, $seconds = 100);
 		} else {			

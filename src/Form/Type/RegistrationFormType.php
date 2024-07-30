@@ -2,6 +2,8 @@
 
 namespace App\Form\Type;
 
+use Symfony\Component\Form\FormInterface;
+use Symfony\Component\Form\FormView;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
@@ -130,8 +132,16 @@ class RegistrationFormType extends AbstractFormType
             ])
 			*/
             ->add('submit', FormType\SubmitType::class, [])
+			->setMethod('PATCH')
         ;
     }
+	
+	public function finishView(FormView $view, FormInterface $form, array $options): void
+    {
+		\dump(
+			\get_debug_type($form->getConfig()),
+		);
+	}
 
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -141,6 +151,7 @@ class RegistrationFormType extends AbstractFormType
 			'validation_groups' => $this->userGroupProvider,
             'csrf_token_id' => 'register-a-new-user',
 			/*
+			'allow_extra_fields' => true,
 			*/
         ]);
     }
