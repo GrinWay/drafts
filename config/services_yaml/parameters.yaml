@@ -1,5 +1,13 @@
 parameters:
 
+    ###> OVERRIDE ###
+    
+    ###> framework ###
+    #form.translation_domain: 'app.security+intl-icu'
+    ###< framework ###
+    
+    ###< OVERRIDE ###
+
     ###> CONTAINER ###
     env(SERVICES_GLOBAL_INSTANCE_OF): '%kernel.project_dir%/config/_instanceof.yaml%'
     grin_way.services_global_instanceof: '%env(grin_way_yaml:file:resolve:SERVICES_GLOBAL_INSTANCE_OF)%'

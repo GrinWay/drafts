@@ -1,5 +1,7 @@
 imports:    
     -   resource: 'services_yaml/'
+    #-   resource: 'services_yaml/parameters/'  # better
+    #-   resource: 'services_yaml/services/'    # better
 
 services:
     _defaults:

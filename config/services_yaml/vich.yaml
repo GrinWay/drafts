@@ -17,5 +17,3 @@ services:
         class: App\Service\Naming\SlugNamer
         arguments:
             $slugger: '@slugger'
-            
-    App\Contract\Util\IpUtilsInterface: '@App\Service\IpUtils'

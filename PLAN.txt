@@ -132,10 +132,12 @@ SYMFONY FORMS
 	(rest_types)
 	https://symfony.com/doc/current/reference/forms/types/form.html#post-max-size-message
 	?
-	TODO: current где читается _csrf_token в системе форм (слушатель на событие формы?!)
-		./symfony\form\Extension\Csrf\EventListener\CsrfValidationListener.php
-	+ как так выходит что через форму нельзя получить _csrf_token (_csrf_token и нет в твоём определении типа формы!)
-	+ (2) как в сервисе получить _token csrf защиты (раз через форму нельзя, получу через request->getPayload())
+	добавить своё hidden poly в finishView через FormTypeExtension
+		очень хороший пример FormTypeCsrfExtension
+	+ где добавляется _csrf_token в form view (FormTypeExtension(FormType) finishView view->children)
+	+ где проверяется _csrf_token в системе форм (eventSubscriber preSubmit)
+	+ как так выходит что через форму нельзя получить _csrf_token (так у тебя и нет child form type _csrf_token в твоём определении типа формы!)
+	+ как в сервисе получить _token csrf защиты (раз через форму нельзя, получу данные через request->getPayload())
 	+ в каких случаях не читается data option form type (PasswordType(data не читается))
 	+ почему после отправки формы с PasswordType.hash_property_path пароль не хэширован (потому что PasswordFormTypeExtension лишь заполняет свой сервис данными о хешировании)
 	???не получилось вынести элементы формы за её пределы, чтобы они отправились
@@ -260,12 +262,9 @@ SYMFONY EXTENTIONS
 	?
 ***
 SYMFONY SECURITY
-	(The security system uses an event dispatcher per firewall: php bin/console debug:event-dispatcher --dispatcher=security.event_dispatcher.main)
-	Autowiring: [ #[CurrentUser] User $user / User $user ]
-	Какая разница между User and SecurityToken (UserValueResolver, SecurityTokenValueResolver)
-	security-http/Attribute/CurrentUser.php
-
 	https://symfony.com/blog/cve-2016-4423-large-username-storage-in-session
+	
+	SecurityTokenValueResolver
 
 	https://github.com/hwi/HWIOAuthBundle
 	
@@ -279,6 +278,7 @@ SYMFONY SECURITY
 		1) workflow REMEMBER_ME
 		2) workflow Token lifecycle
 	?
+	+ Какая разница между User and SecurityToken (SecurityToken отображает вид аутентификации и данные, присущие токену, например роли когда пользователь был авторизован, а не те которые есть у пользователя с БД)
 	+ назначать группы login, register в зависимости от состояния объекта с помощью своего sequence provider UserGroupProvider 
 	(
 		Symfony 7.1 Form Component не учитывает передачу groupSequenceProvider как аргумент validation_groups
