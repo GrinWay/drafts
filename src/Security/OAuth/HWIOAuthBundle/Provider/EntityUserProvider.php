@@ -47,8 +47,9 @@ class EntityUserProvider implements UserProviderInterface, OAuthAwareUserProvide
 	* UserProviderInterface
 	*/
     public function loadUserByIdentifier(string $identifier): UserInterface {
+		
+		//TODO: current redo completely
 		$user = $this->inner->loadUserByIdentifier($identifier);
-		\dump(__METHOD__);
 		return $user;
 	}
 	
@@ -57,6 +58,7 @@ class EntityUserProvider implements UserProviderInterface, OAuthAwareUserProvide
 	*/
 	public function loadUserByOAuthUserResponse(UserResponseInterface $response): ?UserInterface {
 		$user = null;
+		/*
 		\dump(
 			__METHOD__,
 			$response->getUsername(), // unique
@@ -78,7 +80,9 @@ class EntityUserProvider implements UserProviderInterface, OAuthAwareUserProvide
 			
 			$response->getOAuthToken(),
 		);
+		*/
 		
+		//TODO: current redo completely
 		$user = $this->inner->loadUserByOAuthUserResponse($response);
 		try {
 		} catch (\Exception $e) {
