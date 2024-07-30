@@ -345,23 +345,6 @@ SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-lim
 	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
 	создать своего лимитера для логина login_throttling limiter
 		https://symfony.com/doc/current/security.html#limiting-login-attempts
-SYMFONY UX TURBO https://symfony.com/bundles/ux-turbo/current/index.html
-	HOTWIRE: STIMULUS
-	?
-	реализовать https://symfony.com/doc/current/form/form_collections.html#allowing-new-tags-with-the-prototype
-		посмотреть после реализации
-		https://symfony.com/doc/current/form/form_collections.html#javascript-with-stimulus
-	есть ли разница между зафейленой обработанной формой (422) и необработанной формой для UX TURBO
-SYMFONY STIMULUS https://symfony.com/bundles/StimulusBundle/current/index.html
-	HOTWIRE: TURBO
-	?придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
-SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/index.html
-	https://ux.symfony.com/demos/live-component/form-collection-type/2299
-	https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
-	https://symfony.com/doc/current/reference/forms/types.html#symfony-ux-fields
-	?
-	вызывается или нет PreCreateForRenderEvent при обновлении re-render
-HOTWIRE: STRADA
 SYMFONY TESTS https://symfony.com/doc/current/testing.html
 	https://symfony.com/doc/current/translation.html#locale-switcher
 	?
@@ -380,6 +363,23 @@ SYMFONY TESTS https://symfony.com/doc/current/testing.html
 		https://symfony.com/doc/current/components/clock.html#mockclock
 		https://symfony.com/doc/current/components/clock.html#writing-time-sensitive-tests
 	https://symfony.com/doc/current/components/console/helpers/questionhelper.html#testing-a-command-that-expects-input
+SYMFONY UX TURBO https://symfony.com/bundles/ux-turbo/current/index.html
+	HOTWIRE: STIMULUS
+	?
+	реализовать https://symfony.com/doc/current/form/form_collections.html#allowing-new-tags-with-the-prototype
+		посмотреть после реализации
+		https://symfony.com/doc/current/form/form_collections.html#javascript-with-stimulus
+	есть ли разница между зафейленой обработанной формой (422) и необработанной формой для UX TURBO
+SYMFONY STIMULUS https://symfony.com/bundles/StimulusBundle/current/index.html
+	HOTWIRE: TURBO
+	?придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
+SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/index.html
+	https://ux.symfony.com/demos/live-component/form-collection-type/2299
+	https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
+	https://symfony.com/doc/current/reference/forms/types.html#symfony-ux-fields
+	?
+	вызывается или нет PreCreateForRenderEvent при обновлении re-render
+HOTWIRE: STRADA
 SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
 SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
 SYMFONY CACHE

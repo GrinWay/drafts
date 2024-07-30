@@ -284,8 +284,6 @@ class HomeController extends AbstractController
 		ClientRegistry $clientRegistry,
 		UriSigner $uriSigner,
 		UrlGeneratorInterface $ug,
-		//$serverParams->hasPostMaxSizeBeenExceeded()
-		//TODO: current
 		#[Autowire('@form.server_params')]
 		$formServerParams,
 		?User $user,
