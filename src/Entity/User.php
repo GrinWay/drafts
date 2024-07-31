@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Scheb\TwoFactorBundle\Model\TrustedDeviceInterface;
+use Doctrine\DBAL\Types\Types as DBALTypes;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Symfony\Component\Validator\Constraints\GroupSequence;
@@ -18,13 +20,18 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
 use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface as TotpTwoFactorInterface;
 use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface as GoogleTwoFactorInterface;
+use Scheb\TwoFactorBundle\Model\Email\TwoFactorInterface as EmailTwoFactorInterface;
+use Scheb\TwoFactorBundle\Model\BackupCodeInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_EMAIL', fields: ['email'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_PASSPORT', fields: ['passport'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_API_TOKEN', fields: ['apiToken'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TotpTwoFactorInterface, GoogleTwoFactorInterface//, EquatableInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TotpTwoFactorInterface, GoogleTwoFactorInterface, EmailTwoFactorInterface, BackupCodeInterface, TrustedDeviceInterface//, EquatableInterface
 {
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $emailAuthCode = null;
+	
     #[ORM\Id]
 	#[ORM\GeneratedValue(strategy: 'CUSTOM')]
 	#[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
@@ -39,6 +46,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $googleSecret = null;
+
+	#[ORM\Column(type: DBALTypes::JSON, nullable: true)]
+	private ?array $backupCodes = null;
+
+    #[ORM\Column()]
+    private int $trustedVersion = 0;
 	
 	/**
 	 * @var array $roles list<string> The user roles
@@ -148,28 +161,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     }
 	
 	public function isEqualTo(UserInterface $dbUser): bool {
-		//\dd($dbUser, $this, $dbUser === $this);
-		
-		return true
-			//&& $dbUser->getUserIdentifier() === $this->getUserIdentifier()
-			//&& $dbUser->getId() === $this->getId()
-			//&& $dbUser->getRoles() === $this->getRoles()
-			//&& $dbUser->isSwitchUserAble() === $this->isSwitchUserAble()
-		;
-	}
+                  		//\dd($dbUser, $this, $dbUser === $this);
+                  		
+                  		return true
+                  			//&& $dbUser->getUserIdentifier() === $this->getUserIdentifier()
+                  			//&& $dbUser->getId() === $this->getId()
+                  			//&& $dbUser->getRoles() === $this->getRoles()
+                  			//&& $dbUser->isSwitchUserAble() === $this->isSwitchUserAble()
+                  		;
+                  	}
 	
 	/**
 	* PasswordHasherAwareInterface
 	*/
 	public function getPasswordHasherName(): ?string {
-		$hasher = null;
-		
-		if (\in_array('ROLE_ADMIN', $this->getRoles())) {
-			$hasher = 'admin_hasher';
-		}
-		
-		return $hasher;
-	}
+                  		$hasher = null;
+                  		
+                  		if (\in_array('ROLE_ADMIN', $this->getRoles())) {
+                  			$hasher = 'admin_hasher';
+                  		}
+                  		
+                  		return $hasher;
+                  	}
 
     public function isSwitchUserAble(): bool
     {
@@ -210,16 +223,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 	*/
 
 	public function getGitHub(): ?GitHub
-	{
-		return $this->gitHub;
-	}
+                  	{
+                  		return $this->gitHub;
+                  	}
 
 	public function setGitHub(?GitHub $gitHub): static
-	{
-		$this->gitHub = $gitHub;
-  
-		return $this;
-	}
+                  	{
+                  		$this->gitHub = $gitHub;
+                    
+                  		return $this;
+                  	}
 	
     /**
      * Return true if the user should do TOTP authentication.
@@ -260,9 +273,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     }
 	
 	public function isGoogleAuthenticatorEnabled(): bool
-    {
-        return null !== $this->googleSecret;
-    }
+                      {
+                          return null !== $this->googleSecret;
+                      }
 
     public function getGoogleAuthenticatorUsername(): string
     {
@@ -289,5 +302,104 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function setGoogleAuthenticatorSecret(?string $googleSecret): void
     {
         $this->googleSecret = $googleSecret;
+    }
+	
+	public function isEmailAuthEnabled(): bool
+                      {
+                          return true; // This can be a persisted field to switch email code authentication on/off
+                      }
+
+    public function getEmailAuthRecipient(): string
+    {
+        return $this->getEmail();
+    }
+	
+	public function getEmailAuthCode(): string
+                      {
+                          if (null === $this->emailAuthCode) {
+                              throw new \LogicException('The email authentication code was not set');
+                          }
+                  
+                          return $this->emailAuthCode;
+                      }
+
+    public function setEmailAuthCode(string $emailAuthCode): void
+    {
+        $this->emailAuthCode = $emailAuthCode;
+    }
+
+    public function getBackupCodes(): ?array
+    {
+        return $this->backupCodes;
+    }
+
+    public function setBackupCodes(?array $backupCodes): static
+    {
+        $this->backupCodes = $backupCodes;
+
+        return $this;
+    }
+	
+	/**
+     * Check if it is a valid backup code.
+     */
+    public function isBackupCode(string $code): bool
+    {
+        return \in_array($code, $this->backupCodes);
+    }
+
+    /**
+     * Invalidate a backup code
+     */
+    public function invalidateBackupCode(string $code): void
+    {
+        $key = \array_search($code, $this->backupCodes);
+        if ($key !== false){
+            unset($this->backupCodes[$key]);
+        }
+    }
+
+    /**
+     * Add a backup code
+     */
+    public function addBackUpCode($backUpCode): void
+    {
+		if (\is_array($backUpCode)) {
+			foreach($backUpCode as $bc) {
+				$this->addBackUpCode($bc);
+				continue;
+			}
+			return;
+		}
+		
+		if (\is_scalar($backUpCode)) {
+			if (null === $this->backupCodes || !\in_array($backUpCode, $this->backupCodes)) {
+				$this->backupCodes[] = $backUpCode;
+			}			
+		}
+    }
+
+    public function getTrustedVersion(): int
+    {
+        return $this->trustedVersion;
+    }
+
+    public function setTrustedVersion(int $trustedVersion): static
+    {
+        $this->trustedVersion = $trustedVersion;
+
+        return $this;
+    }
+	
+    public function getTrustedTokenVersion(): int
+    {
+        return $this->trustedVersion;
+    }
+	
+    public function invalidateTrustedTokenCookie(): static
+    {
+        ++$this->trustedVersion;
+		
+		return $this;
     }
 }

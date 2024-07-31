@@ -2,6 +2,7 @@
 
 namespace App\Security\Handler\FormLogin;
 
+use Scheb\TwoFactorBundle\Security\Authentication\Token\TwoFactorToken;
 use App\Type\Note\NoteType;
 use Symfony\Component\Security\Http\Authentication\AuthenticationSuccessHandlerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,7 +21,7 @@ class SuccessHandler implements AuthenticationSuccessHandlerInterface {
 		
 		$user = $token->getUser();
 		
-		if ($user->isTotpAuthenticationEnabled()) {
+		if ($token instanceof TwoFactorToken) {
 			$request->getSession()->getFlashBag()->add(NoteType::WARNING, 'Двухфакторная аутентификация');			
 			return new RedirectResponse($this->ug->generate('2fa_login'));			
 		} else {

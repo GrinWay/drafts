@@ -1,14 +1,14 @@
 <?php
 
-namespace App\EventListener\Security\Authentication\2FA;
+namespace App\EventListener\Security\Authentication\Auth2FA;
 
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 
 #[AsEventListener(
 	event: 'scheb_two_factor.authentication.attempt',
 )]
-class AuthenticationAttemptEventListener {
+class Auth2FAAttemptEventListener {
 	public function __invoke($event): void {
-		\dump(get_debug_type($event));
+		\dump('scheb_two_factor.authentication.attempt');
 	}
 }

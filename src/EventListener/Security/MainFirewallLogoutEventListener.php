@@ -12,6 +12,6 @@ class MainFirewallLogoutEventListener {
 	public function __construct() {}
 	
 	public function __invoke(LogoutEvent $e): void {
-		\dump('SECURITY: LogoutEvent of MAIN firewall', $e->getToken());
+		\dump('SECURITY: LogoutEvent of MAIN firewall', \get_debug_type($e->getToken()));
 	}
 }

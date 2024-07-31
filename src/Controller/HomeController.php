@@ -7,6 +7,8 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Scheb\TwoFactorBundle\Security\TwoFactor\Trusted\TrustedDeviceTokenStorage;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGeneratorInterface;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -298,7 +300,13 @@ class HomeController extends AbstractController
 		$formServerParams,
 		?User $user,
 		?TotpAuthenticatorInterface $totpAuthenticator,
+		?CodeGeneratorInterface $emailCodeGenerator,
+		#[Autowire('@scheb_two_factor.trusted_token_storage')]
+		?TrustedDeviceTokenStorage $trustedTokenStorage,
     ) {
+		if (null !== $trustedTokenStorage && null !== $user) {
+			//$trustedTokenStorage->clearTrustedToken($user->getUserIdentifier(), 'main');
+		}
 		
 		/*
 		\dump(

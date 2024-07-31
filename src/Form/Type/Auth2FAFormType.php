@@ -29,7 +29,7 @@ class Auth2FAFormType extends AbstractFormType
         $builder
             ->add('_auth_code', //FormType\TextType::class, 
 			options: [
-				'label' => 'Код аутентификации totp (Google Authenticator):',
+				'label' => 'Код аутентификации:',
 				'row_attr' => [
 				],
 				'attr' => [

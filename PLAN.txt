@@ -132,6 +132,8 @@ SYMFONY FORMS
 	(rest_types)
 	https://symfony.com/doc/current/reference/forms/types/form.html#post-max-size-message
 	?
+	?из за неизвестной причины не рисуется csrf_token (csrf_protection: true везде)
+		.\src\Security\Authenticator\Auth2FA\DefaultTwoFactorFormRenderer.php
 	добавить своё hidden poly в finishView(попробовать немного нарушить правила и сделать это в buildView) через FormTypeExtension
 		очень хороший пример FormTypeCsrfExtension
 	+ где добавляется _csrf_token в form view (FormTypeExtension(FormType) finishView view->children)
@@ -262,23 +264,19 @@ SYMFONY EXTENTIONS
 	?
 ***
 SYMFONY SECURITY
-	https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/email.html
-	https://symfony.com/bundles/SchebTwoFactorBundle/current/backup_codes.html
-	https://symfony.com/bundles/SchebTwoFactorBundle/current/trusted_device.html
-	https://symfony.com/bundles/SchebTwoFactorBundle/current/configuration.html
-	https://symfony.com/bundles/SchebTwoFactorBundle/current/troubleshooting.html
-	https://symfony.com/bundles/SchebTwoFactorBundle/current/events.html
-	https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/totp.html#custom-form-rendering
-	
 	https://habr.com/ru/articles/538662/
 	https://symfony.com/doc/current/security/ldap.html
 	https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
-	
+	?
 	?https://symfony.com/doc/current/security/remember_me.html
 		1) workflow REMEMBER_ME
 		2) workflow Token lifecycle
-	?
+	по неизвестной причине не вызывается scheb_two_factor.authentication.require при требовании 2FA хотя scheb_two_factor.authentication.form отправляется
+	зачем нужны JWT токены
+	реализовать 3 обязательных TwoFactor аутентификатора за раз чтобы просто войти
 	задача: получить из TOTP secret -> CODE для аутентификации с другим алгоритмом и всего 3-мя цифрами
+	найти утилиту которая выдаёт TOTP код по переданному секрету
+	если у firewalls одинаковый контекст значит ли это то что выход из системы у них тоже будет одновременным
 	??Если пользователь имеет Token означает ли это то что он всегда IS_AUTHENTICATED
 	HWI OAuth если указан infos_url получает данные с него, но там есть интересный паттерн /~:(params) непонятно в каких случаях возможно получить ограниченный набор данных
 	HWI OAuth не получилось возвращать из UserResponse свойства из path https://github.com/hwi/HWIOAuthBundle/blob/master/docs/internals/response_object_and_paths.md
@@ -295,8 +293,9 @@ SYMFONY SECURITY
 	???много чего непонятного с OAuth2-client-bundle, как использовать accessToken
 		как передавать expired
 		и вообще как пользоваться accessToken
-	???управлять своей учётной записью github со своего сайта
+	???управлять своей учётной записью github со своего сайта (через api github)
 	???не получилось OIDC https://symfony.com/doc/current/security/access_token.html#using-openid-connect-oidc
+	чекнуть API TwoFactorToken
 	???не получилось CAS 2.0 https://symfony.com/doc/current/security/access_token.html#using-cas-2-0
 	+ авторизируется ли пользователь несколькими authenticators за раз (да, но это безсмысленно, так как в session сохраняется _security_<FIREWALL_NAME>
 	+ деавторизировать пользователя если у него изменилось (customPoly)
@@ -345,6 +344,7 @@ SYMFONY MAILER https://symfony.com/doc/current/mailer.html
 	clear && bin/console make:reset-password --with-ulid
 		https://symfony.com/doc/current/security/passwords.html#reset-password
 		https://github.com/symfonycasts/reset-password-bundle
+	https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/email.html
 	?
 SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
@@ -470,6 +470,7 @@ SYMFONY DOCTRINE
 	https://github.com/stof/StofDoctrineExtensionsBundle
 	?
 	как найти имя сущности в Repository
+	реализовать (MappedSuperClass)Authentication и её сущность UserAuthentication(сущность CustomAuth[access_token], сущность Auth2FA[totp, google code, email, backup codes], сущность OAuth[github, telegram, google])
 AMQP
 	?
 	https://habr.com/ru/articles/62502/
@@ -506,6 +507,8 @@ SYMFONY VARDUMPER https://symfony.com/doc/current/components/var_dumper.html#com
 EmojiTransliterator::create('text-emoji')->transliterate() used it https://github.com/unicode-org/cldr?tab=readme-ov-file
 security через передачу заголовка impersonator не сработал https://symfony.com/doc/current/security/impersonating_user.html
 SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
+SYMFONY RESPONSE сохранить куки
+	зависящую от параметра Entity чтобы можно было инвалидировать
 
 
 TODO

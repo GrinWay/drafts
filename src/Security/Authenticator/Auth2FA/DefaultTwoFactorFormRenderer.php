@@ -21,12 +21,14 @@ use Symfony\Component\Form\FormFactory;
 use App\Form\Type\Auth2FAFormType;
 use Symfony\Component\Form\FormFactoryInterface;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Google\GoogleAuthenticator;
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 
 class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 	public function __construct(
         private readonly Environment $twigEnvironment,
 		private readonly TokenStorageInterface $tokenStorage,
 		private readonly FormFactoryInterface $formFactory,
+		private readonly PropertyAccessorInterface $pa,
 		private readonly ?TotpAuthenticatorInterface $totpAuthenticator = null,
 		private readonly ?GoogleAuthenticator $googleAuthenticator = null,
 	) {}
@@ -34,7 +36,12 @@ class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 	public function renderForm(Request $request, array $templateVars): Response
     {
 		$data = [];
-		$form = $this->formFactory->create(Auth2FAFormType::class, $data, options: []);
+		
+		$form = $this->formFactory->create(Auth2FAFormType::class, $data, options: [
+			'csrf_protection' => $this->pa->getValue($templateVars, '[isCsrfProtectionEnabled]'),
+			'csrf_field_name' => $this->pa->getValue($templateVars, '[csrfParameterName]'),
+			'csrf_token_id' => $this->pa->getValue($templateVars, '[csrfTokenId]'),
+		]);
 		
 		$qrCodeUri = $this->getQRCodeUri();
         
@@ -95,7 +102,7 @@ class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 			->setTextColor(new Color(0, 0, 0))
 		;
 		
-		$result = $writer->write(qrCode: $qrCode, label: $label);
+		$result = $writer->write(qrCode: $qrCode);
 		$qrCodeUri = $result->getDataUri();
 		
 		return $qrCodeUri;

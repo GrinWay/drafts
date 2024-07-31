@@ -14,6 +14,26 @@
 		{{ dump(app.request.attributes.all) }}
 	</div>
 	
+	{%- if is_granted('VOTE_IS_AUTH') -%}
+		<div class="badge text-bg-secondary me-1">
+			VOTE_IS_AUTH <twig:grinway:svg container:class="{{ securitySvgClass }}" id="ok" />
+		</div>
+	{%- else -%}
+		<div class="badge text-bg-secondary me-1">
+			NOT VOTE_IS_AUTH <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+		</div>
+	{%- endif -%}
+	
+	{%- if is_granted('IS_AUTHENTICATED_ANONYMOUSLY') -%}
+		<div class="badge text-bg-secondary me-1">
+			IS_AUTHENTICATED_ANONYMOUSLY <twig:grinway:svg container:class="{{ securitySvgClass }}" id="ok" />
+		</div>
+	{%- else -%}
+		<div class="badge text-bg-secondary me-1">
+			NOT IS_AUTHENTICATED_ANONYMOUSLY <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+		</div>
+	{%- endif -%}
+	
 	{%- if is_granted('IS_AUTHENTICATED_FULLY') -%}
 		<div class="badge text-bg-secondary me-1">
 			IS_AUTHENTICATED_FULLY <twig:grinway:svg container:class="{{ securitySvgClass }}" id="ok" />

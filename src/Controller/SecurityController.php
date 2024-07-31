@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use function Symfony\component\string\u;
 
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGeneratorInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Carbon\Carbon;
 use App\Form\Type\LoginLinkFormType;
@@ -155,6 +156,17 @@ class SecurityController extends AbstractController
     public function logout()
     {
 		throw new \LogicException('You will never come here');
+		return $this->redirectToRoute('app_home_home');
+    }
+
+    #[Route(path: '/login2fa/email/resend/code', name: 'app_login_2fa_resend_code')]
+    public function login2faResend(
+		CodeGeneratorInterface $emailCodeGenerator,
+		?User $user,
+	): Response {
+		if (null !== $user && $this->isGranted('IS_AUTHENTICATED_2FA_IN_PROGRESS')) {
+			$emailCodeGenerator->reSend($user);			
+		}
 		return $this->redirectToRoute('app_home_home');
     }
 
