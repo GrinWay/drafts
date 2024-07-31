@@ -44,7 +44,6 @@ class RegistrationController extends AbstractController
 		//\dump($form->get('_csrf_token')?->getData());		
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
-			\dd('VALID');
 			/*
 			// encode the plain password
             $plainPassword = $form->get('plainPassword')->getData();

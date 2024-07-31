@@ -12,12 +12,28 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 /**
  * @extends ServiceEntityRepository<User>
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends AbstractRepository implements PasswordUpgraderInterface
 {
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
+	
+	/**
+	* If a key contains relations
+	*/
+	//public function joinedFindOneBy(array $criteria): mixed {
+	public function getUserIfThereIsGitHubRelation(int|string $id): ?User {
+		return $this->createQueryBuilder('o')
+            ->join('o.gitHub', 'g')
+            ->andWhere('g.id = :id')
+			->setParameter('id', $id)
+			->orderBy('g.id', 'DESC')
+			->setMaxResults(1)
+			->getQuery()
+			->getOneOrNullResult()
+		;
+	}
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.

@@ -8,13 +8,16 @@ hwi_oauth:
             type:                github
             client_id:           '%env(OAUTH_GITHUB_ID)%'
             client_secret:       '%env(OAUTH_GITHUB_SECRET)%'
-            scope:               "user,public_repo,repo,gist,delete_repo"
-            # TODO: current 
+            scope:               "user,public_repo,repo,gist"
+            #infos_url: "https://api.github.com/users/GrinWay/~:(id,login,avatar_url,name,email,bio)"
+            # ассоциации не работают
             #paths:
-            #    email: email
-            #    username: github.id
-            #    profilepicture: github.profilePicture
-            #    accessToken: github.accessToken
+            #    firstname: passport.name
+            #    lastname: passport.lastame
+            #    realname:
+            #    -   passport.name
+            #    -   passport.lastName
+                
             options:
                 refresh_on_expire: true
                 

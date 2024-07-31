@@ -17,7 +17,16 @@ class SuccessHandler implements AuthenticationSuccessHandlerInterface {
 	) {}
 	
 	public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response {
-		$request->getSession()->getFlashBag()->add(NoteType::NOTICE, 'Авторизация прошла успешно');
+		
+		$user = $token->getUser();
+		
+		if ($user->isTotpAuthenticationEnabled()) {
+			$request->getSession()->getFlashBag()->add(NoteType::WARNING, 'Двухфакторная аутентификация');			
+			return new RedirectResponse($this->ug->generate('2fa_login'));			
+		} else {
+			$request->getSession()->getFlashBag()->add(NoteType::NOTICE, 'Авторизация прошла успешно');			
+		}
+		
 		return new RedirectResponse($this->ug->generate('app_home_home'));
 	}
 }

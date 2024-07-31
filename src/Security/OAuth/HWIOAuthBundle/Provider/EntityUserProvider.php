@@ -2,6 +2,7 @@
 
 namespace App\Security\OAuth\HWIOAuthBundle\Provider;
 
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -21,6 +22,8 @@ class EntityUserProvider implements UserProviderInterface, OAuthAwareUserProvide
 	public function __construct(
 		private $inner,
 		private readonly UserPasswordHasherInterface $passwordHasher,
+		private readonly UserRepository $userRepo,
+		private readonly PropertyAccessorInterface $pa,
 		private readonly EntityManagerInterface $em,
 	) {}
 	
@@ -48,8 +51,14 @@ class EntityUserProvider implements UserProviderInterface, OAuthAwareUserProvide
 	*/
     public function loadUserByIdentifier(string $identifier): UserInterface {
 		
-		//TODO: current redo completely
-		$user = $this->inner->loadUserByIdentifier($identifier);
+		$user = $this->userRepo->getUserIfThereIsGitHubRelation([
+			'gitHub.id' => $identifier,
+		]);
+		
+		if (null === $user) {
+			throw new UserNotFoundException('User was not found.');
+		}
+		
 		return $user;
 	}
 	
@@ -58,6 +67,14 @@ class EntityUserProvider implements UserProviderInterface, OAuthAwareUserProvide
 	*/
 	public function loadUserByOAuthUserResponse(UserResponseInterface $response): ?UserInterface {
 		$user = null;
+		\dump(
+			__METHOD__,
+			$response->getData(),
+			$response->getRealName(),
+			//$response->getLastName(),
+			//$response->getFirstName(),
+			//$this->pa->getValue($response->getData(), '[delete]'),
+		);
 		/*
 		\dump(
 			__METHOD__,
@@ -80,13 +97,14 @@ class EntityUserProvider implements UserProviderInterface, OAuthAwareUserProvide
 			
 			$response->getOAuthToken(),
 		);
+		$user = $this->userRepo->joinedFindOneBy([
+			'gitHub.id' => $response->getUsername(),
+		]);
 		*/
 		
-		//TODO: current redo completely
-		$user = $this->inner->loadUserByOAuthUserResponse($response);
-		try {
-		} catch (\Exception $e) {
-		}
+		$id = $response->getUsername();
+		
+		$user = $this->userRepo->getUserIfThereIsGitHubRelation($id);
 		
 		if (null === $user) {
 			$user = $this->getNewUser($response);
@@ -104,8 +122,8 @@ class EntityUserProvider implements UserProviderInterface, OAuthAwareUserProvide
 		
 		$user = new User(
 			passport: new UserPassport(
-				name: $response->getFirstName() ?? $email,
-				lastName: $response->getLastName() ?? $email,
+				name: $response->getFirstName() ?? 'first name '.$email,
+				lastName: $response->getLastName() ?? 'last name '.$email,
 			),
 			email: $email,
 			gitHub: new GitHub(

@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpFoundation\RequestStack;
 use App\Contract\EventListener\KernelEventListenerInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class ExceptionEventListener implements KernelEventListenerInterface
 {
@@ -18,6 +19,13 @@ class ExceptionEventListener implements KernelEventListenerInterface
     public function __invoke(
         ExceptionEvent $event,
     ): void {
+		
+		$throwable = $event->getThrowable();
+		
+		if ($throwable instanceof NotFoundHttpException) {
+			\dd($event);
+		}
+		
         return;
         //\dd('LISTENER');
         //if (!$event instanceof ExceptionEvent) return;

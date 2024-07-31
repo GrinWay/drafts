@@ -141,6 +141,11 @@ security:
             login_throttling:
                 max_attempts: 10
                 #interval: '5 seconds'
+            
+            two_factor:
+                enable_csrf: true
+                auth_form_path: 2fa_login    # The route name you have used in the routes.yaml
+                check_path: 2fa_login_check  # The route name you have used in the routes.yaml
 
             oauth:
                 resource_owners:
@@ -184,11 +189,11 @@ security:
                 csrf_parameter: '%app.csrf_name%'
                 csrf_token_id: youWillNotHackMe
                 
-                #success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
+                success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
                 #failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
                 #failure_path: 'app_home_home'
                 
-                #default_target_path: 'app_home_home'
+                #default_target_path: 2fa_login
                 #always_use_default_target_path: false
                 #use_referer: true
                 
@@ -264,19 +269,23 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
 
-    -   path: ^/(?:login|register)
+    -   path: ^/(?:login|logout|register)
         roles:
         -   PUBLIC_ACCESS
         requires_channel: '%env(APP_REQUIRED_SCHEME)%'
         
     #-   ips:
-    #    -   '127.0.0.1/8' # 127.255.255.255
+    #    -   '127.0.0.1/8' # 127.0.0.255
     #    roles: ALWAYS_FORBIDDEN
     #    requires_channel: '%env(APP_REQUIRED_SCHEME)%'
         
     #-   request_matcher: 'app.request_matcher.localhost_home'
     #    roles: ALWAYS_FORBIDDEN
     #    requires_channel: '%env(APP_REQUIRED_SCHEME)%'
+        
+    -   path: ^/2fa
+        roles: IS_AUTHENTICATED_2FA_IN_PROGRESS 
+        requires_channel: '%env(APP_REQUIRED_SCHEME)%'
         
     -   path: ^/
         roles: PUBLIC_ACCESS

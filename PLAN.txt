@@ -262,11 +262,14 @@ SYMFONY EXTENTIONS
 	?
 ***
 SYMFONY SECURITY
-	***
-	https://github.com/hwi/HWIOAuthBundle/blob/master/docs/internals/response_object_and_paths.md
+	https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/email.html
+	https://symfony.com/bundles/SchebTwoFactorBundle/current/backup_codes.html
+	https://symfony.com/bundles/SchebTwoFactorBundle/current/trusted_device.html
+	https://symfony.com/bundles/SchebTwoFactorBundle/current/configuration.html
+	https://symfony.com/bundles/SchebTwoFactorBundle/current/troubleshooting.html
+	https://symfony.com/bundles/SchebTwoFactorBundle/current/events.html
+	https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/totp.html#custom-form-rendering
 	
-	https://symfony.com/bundles/SchebTwoFactorBundle/current/index.html
-
 	https://habr.com/ru/articles/538662/
 	https://symfony.com/doc/current/security/ldap.html
 	https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
@@ -275,6 +278,10 @@ SYMFONY SECURITY
 		1) workflow REMEMBER_ME
 		2) workflow Token lifecycle
 	?
+	задача: получить из TOTP secret -> CODE для аутентификации с другим алгоритмом и всего 3-мя цифрами
+	??Если пользователь имеет Token означает ли это то что он всегда IS_AUTHENTICATED
+	HWI OAuth если указан infos_url получает данные с него, но там есть интересный паттерн /~:(params) непонятно в каких случаях возможно получить ограниченный набор данных
+	HWI OAuth не получилось возвращать из UserResponse свойства из path https://github.com/hwi/HWIOAuthBundle/blob/master/docs/internals/response_object_and_paths.md
 	+ HWI OAuth почему фейлится csrf валидация (csrf ни при чём, HWI UserProvider не создаёт пользователя поэтому и найти не мог)
 	HWI OAuth зачем нужен и как пользоваться refreshToken
 	HWI OAuth сделать авторизацию через Google
@@ -341,6 +348,8 @@ SYMFONY MAILER https://symfony.com/doc/current/mailer.html
 	?
 SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
+	?
+	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
 SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
 	?
 	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
@@ -487,6 +496,7 @@ SYMFONY MESSENGER
 	https://symfony.com/doc/current/components/messenger.html#transports
 	https://symfony.com/doc/current/messenger/custom-transport.html
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Messenger/Handler/RedispatchMessageHandler.php
+PNG WRITER https://github.com/endroid/qr-code
 TWIG
 	https://symfony.com/doc/current/reference/twig_reference.html
 	https://symfony.com/doc/current/reference/configuration/twig.html
@@ -496,6 +506,7 @@ SYMFONY VARDUMPER https://symfony.com/doc/current/components/var_dumper.html#com
 EmojiTransliterator::create('text-emoji')->transliterate() used it https://github.com/unicode-org/cldr?tab=readme-ov-file
 security через передачу заголовка impersonator не сработал https://symfony.com/doc/current/security/impersonating_user.html
 SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
+
 
 TODO
 	Все переводы бандлов поместить в домен grinway, то есть имя домена === имя бандла

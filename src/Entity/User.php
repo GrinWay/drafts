@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfigurationInterface;
+use Scheb\TwoFactorBundle\Model\Totp\TotpConfiguration;
 use Symfony\Component\Validator\Constraints\GroupSequence;
 use Symfony\Component\Validator\GroupSequenceProviderInterface;
 use App\Type\Security\User\Role;
@@ -14,12 +16,14 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Bridge\Doctrine\Types;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherAwareInterface;
+use Scheb\TwoFactorBundle\Model\Totp\TwoFactorInterface as TotpTwoFactorInterface;
+use Scheb\TwoFactorBundle\Model\Google\TwoFactorInterface as GoogleTwoFactorInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_EMAIL', fields: ['email'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_PASSPORT', fields: ['passport'])]
 #[ORM\UniqueConstraint(name: 'UNIQ_USER_API_TOKEN', fields: ['apiToken'])]
-class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface//, EquatableInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, PasswordHasherAwareInterface, TotpTwoFactorInterface, GoogleTwoFactorInterface//, EquatableInterface
 {
     #[ORM\Id]
 	#[ORM\GeneratedValue(strategy: 'CUSTOM')]
@@ -29,6 +33,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $apiToken = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $totpSecret = null;
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $googleSecret = null;
 	
 	/**
 	 * @var array $roles list<string> The user roles
@@ -46,7 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 		private ?string $password = null,
 		#[ORM\Column()]
 		private bool $switchUserAble = false,
-		#[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
+		#[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EAGER')]
 		private ?GitHub $gitHub = null,
 		//private ?string $_hiddenPoly = null,
 	) {}
@@ -138,28 +148,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     }
 	
 	public function isEqualTo(UserInterface $dbUser): bool {
-                  		//\dd($dbUser, $this, $dbUser === $this);
-                  		
-                  		return true
-                  			//&& $dbUser->getUserIdentifier() === $this->getUserIdentifier()
-                  			//&& $dbUser->getId() === $this->getId()
-                  			//&& $dbUser->getRoles() === $this->getRoles()
-                  			//&& $dbUser->isSwitchUserAble() === $this->isSwitchUserAble()
-                  		;
-                  	}
+		//\dd($dbUser, $this, $dbUser === $this);
+		
+		return true
+			//&& $dbUser->getUserIdentifier() === $this->getUserIdentifier()
+			//&& $dbUser->getId() === $this->getId()
+			//&& $dbUser->getRoles() === $this->getRoles()
+			//&& $dbUser->isSwitchUserAble() === $this->isSwitchUserAble()
+		;
+	}
 	
 	/**
 	* PasswordHasherAwareInterface
 	*/
 	public function getPasswordHasherName(): ?string {
-                  		$hasher = null;
-                  		
-                  		if (\in_array('ROLE_ADMIN', $this->getRoles())) {
-                  			$hasher = 'admin_hasher';
-                  		}
-                  		
-                  		return $hasher;
-                  	}
+		$hasher = null;
+		
+		if (\in_array('ROLE_ADMIN', $this->getRoles())) {
+			$hasher = 'admin_hasher';
+		}
+		
+		return $hasher;
+	}
 
     public function isSwitchUserAble(): bool
     {
@@ -185,29 +195,99 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         return $this;
     }
 
-/*
-    public function getHiddenPoly(): ?string
-    {
-        return $this->_hiddenPoly;
-    }
+	/*
+		public function getHiddenPoly(): ?string
+		{
+			return $this->_hiddenPoly;
+		}
+		
+		public function setHiddenPoly(?string $_hiddenPoly): static
+		{
+			$this->_hiddenPoly = $_hiddenPoly;
+
+			return $this;
+		}
+	*/
+
+	public function getGitHub(): ?GitHub
+	{
+		return $this->gitHub;
+	}
+
+	public function setGitHub(?GitHub $gitHub): static
+	{
+		$this->gitHub = $gitHub;
+  
+		return $this;
+	}
 	
-    public function setHiddenPoly(?string $_hiddenPoly): static
+    /**
+     * Return true if the user should do TOTP authentication.
+     */
+    public function isTotpAuthenticationEnabled(): bool {
+		return $this->totpSecret ? true : false;
+	}
+
+    /**
+     * Return the user name.
+     */
+    public function getTotpAuthenticationUsername(): string {
+		return $this->getUserIdentifier();
+	}
+
+    /**
+     * Return the configuration for TOTP authentication.
+     */
+    public function getTotpAuthenticationConfiguration(): TotpConfigurationInterface|null {
+		return new TotpConfiguration(
+			secret: $this->totpSecret,
+			algorithm: TotpConfiguration::ALGORITHM_SHA1,
+			period: 30,
+			digits: 6,
+		);
+	}
+
+    public function getTotpSecret(): ?string
     {
-        $this->_hiddenPoly = $_hiddenPoly;
+        return $this->totpSecret;
+    }
+
+    public function setTotpSecret(?string $totpSecret): static
+    {
+        $this->totpSecret = $totpSecret;
 
         return $this;
     }
-*/
+	
+	public function isGoogleAuthenticatorEnabled(): bool
+    {
+        return null !== $this->googleSecret;
+    }
 
-public function getGitHub(): ?GitHub
-{
-    return $this->gitHub;
-}
+    public function getGoogleAuthenticatorUsername(): string
+    {
+        return $this->getUserIdentifier();
+    }
 
-public function setGitHub(?GitHub $gitHub): static
-{
-    $this->gitHub = $gitHub;
+    public function getGoogleSecret(): ?string
+    {
+        return $this->googleSecret;
+    }
 
-    return $this;
-}
+    public function setGoogleSecret(?string $googleSecret): static
+    {
+        $this->googleSecret = $googleSecret;
+
+        return $this;
+    }
+
+    public function getGoogleAuthenticatorSecret(): ?string
+    {
+        return $this->googleSecret;
+    }
+
+    public function setGoogleAuthenticatorSecret(?string $googleSecret): void
+    {
+        $this->googleSecret = $googleSecret;
+    }
 }

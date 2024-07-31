@@ -7,6 +7,16 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Endroid\QrCode\Color\Color;
+use Endroid\QrCode\Encoding\Encoding;
+use Endroid\QrCode\ErrorCorrectionLevel;
+use Endroid\QrCode\QrCode;
+use Endroid\QrCode\Label\Label;
+use Endroid\QrCode\Logo\Logo;
+use Endroid\QrCode\RoundBlockSizeMode;
+use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Writer\ValidationException;
+use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Routing\Requirement\Requirement;
@@ -287,7 +297,9 @@ class HomeController extends AbstractController
 		#[Autowire('@form.server_params')]
 		$formServerParams,
 		?User $user,
+		?TotpAuthenticatorInterface $totpAuthenticator,
     ) {
+		
 		/*
 		\dump(
 			$formServerParams->hasPostMaxSizeBeenExceeded(),
