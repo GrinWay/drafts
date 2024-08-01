@@ -2,6 +2,8 @@
 
 namespace App\Security\Authenticator\Auth2FA;
 
+use function Symfony\component\string\u;
+
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -43,7 +45,7 @@ class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 			'csrf_token_id' => $this->pa->getValue($templateVars, '[csrfTokenId]'),
 		]);
 		
-		$qrCodeUri = $this->getQRCodeUri();
+		$qrCodeUri = $this->getQRCodeUri($templateVars);
         
 		$vars = \array_merge(
 			$templateVars,
@@ -60,19 +62,23 @@ class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 		return $response;
     }
 	
-	private function getQRCodeUri(): string {
+	private function getQRCodeUri(array $templateVars): string {
 		$user = $this->tokenStorage->getToken()?->getUser();
 		
 		if (null === $user) {
 			throw new \LogicException('User must exist in the token storage.');
 		}
 		
+		$providerName = $this->pa->getValue($templateVars, '[twoFactorProvider]');
+		
 		$qrCodeContent = null;
 		
-		if (null !== $this->totpAuthenticator) {
-			$qrCodeContent = $this->totpAuthenticator->getQRContent($user);			
-		} elseif (null !== $this->googleAuthenticator) {
+		if ('google' === $providerName) {
 			$qrCodeContent = $this->googleAuthenticator->getQRContent($user);
+		}
+		
+		if ('totp' === $providerName) {
+			$qrCodeContent = $this->totpAuthenticator->getQRContent($user);			
 		}
 		
 		if (null === $qrCodeContent) {
@@ -98,11 +104,11 @@ class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 		*/
 
 		// Create generic label
-		$label = Label::create('Google Authenticator')
+		$label = Label::create(u($providerName)->title()->ensureEnd(' Auth').'')
 			->setTextColor(new Color(0, 0, 0))
 		;
 		
-		$result = $writer->write(qrCode: $qrCode);
+		$result = $writer->write(qrCode: $qrCode, label: $label);
 		$qrCodeUri = $result->getDataUri();
 		
 		return $qrCodeUri;

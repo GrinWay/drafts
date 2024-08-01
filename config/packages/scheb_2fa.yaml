@@ -32,15 +32,15 @@ scheb_two_factor:
     
     google:
         enabled: true                  # If Google Authenticator should be enabled, default false
-        server_name: Localhost       # Server name used in QR code
-        issuer: Topic            # Issuer name used in QR code
+        issuer: Localhost
+        server_name: Google
         form_renderer: 'App\Security\Authenticator\Auth2FA\DefaultTwoFactorFormRenderer'
         leeway: 5
         
     totp:
         enabled: true
-        server_name: Server Name       # Server name used in QR code
-        issuer: Issuer Name            # Issuer name used in QR code
+        issuer: Localhost
+        server_name: TOTP
         leeway: 0                      # Acceptable time drift in seconds, must be less or equal than the TOTP period
         #parameters:
         #    image: 'https://my-service/img/logo.png'

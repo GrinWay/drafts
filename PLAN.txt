@@ -344,11 +344,13 @@ SYMFONY MAILER https://symfony.com/doc/current/mailer.html
 	clear && bin/console make:reset-password --with-ulid
 		https://symfony.com/doc/current/security/passwords.html#reset-password
 		https://github.com/symfonycasts/reset-password-bundle
+	REQUIRED: LOGIN WITH EMAIL CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на почту
 	https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/email.html
 	?
 SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
 	?
+	???LOGIN WITH PUSH CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на push уведомление
 	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
 SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
 	?
