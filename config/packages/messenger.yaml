@@ -17,6 +17,7 @@ framework:
                     allow_no_senders: true
                 middleware:
                 -   id:         'validation'
+                -   id:         'App\Messenger\Middleware\HowStampWorksMiddleware'
                 -   id:         'doctrine_open_transaction_logger' # DOCTRINE TRANSACTION LOG
                 -   id:         'doctrine_transaction' # AUTO FLUSH
             
@@ -28,6 +29,7 @@ framework:
                     allow_no_senders: true
                 middleware:
                 -   id:         'validation'
+                -   id:         'App\Messenger\Middleware\HowStampWorksMiddleware'
                 -   id:         'doctrine_open_transaction_logger' # DOCTRINE TRANSACTION LOG
                 -   id:         'doctrine_transaction' # AUTO FLUSH
             
@@ -81,6 +83,9 @@ framework:
         routing:
             'App\Messenger\*': async
             'App\Messenger\Command\*': sync
+            
+            'App\Messenger\Command\Message\HowStampWorks': sync
+            'App\Messenger\Event\Message\TestUserWasCreated': async
             # GrinWay\WebApp\Contract\Messenger\HasSyncTransportInterface
             
 # when@test:

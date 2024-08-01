@@ -38,6 +38,24 @@ SYMFONY DOCTRINE
 	make:fixtures
 SYMFONY MESSENGER
 	?
+	??? не до конца понятно как работает Symfony\Component\Messenger\Middleware\DispatchAfterCurrentBusMiddleware
+	+ ?stamp это обмен информацией между middlewares определённого обработчика. (Stamp нужен просто для обмена информацией между middlewares, обработчики не при чём)
+	+ middlewares вызываются при BUS::dispatch, (когда Envelope отправлен нами или после Received) (middlewares определяют будут или не будут вызываться handlers)
+	+ Как Handlers выполняются при исключениях (Независимо от исключений выполняются все handlers)
+	+ Что вернётся если сработало 2 синхронных обработчика?? Dispatched синхронное сообщение, на которое нашлось 2 обработчика, по идее должно назначиться 2 handled stamp
+		Да, и более того если конверт имеет определённый тип марки, то это всегда массив
+		Синхронным или асинхронным может быть сообщение(за счёт транспорта), а не обработчик.
+		Таким образом для одного и того же сообщения обработка идёт либо везде синхронно или асинхронно
+	+ Удалиться или останется сообщение, которое было обработано не всеми обработчиками (выбрасывать repeatable) мне кажется что останется, так это значит при следующем приёме вызываются те же самые обработчики?!
+		Сообщение обработается всеми обработчиками в любом случае. Останется сообщение или нет зависит от обработчика(успеха, исключения)
+		Есть риск многократного исполнения одного и того же Handler при неудаче в другом Handler одного и того же сообщения, так как сообщение может не удалиться (если только в обработчике не выбрашено UnrecoverableMessageHandlingException)
+		Так что лучше делать bus::dispatch внутри другого handler with DispatchAfterCurrentBusStamp (вложенно) это гарантирует обработку next handler после успешного выполнения текущего
+	+ Зачем нужна коллекция id сообщений в транспорте Symfony\Component\Messenger\Stamp\TransportMessageIdStamp
+		Коллекция id с БД (копятся при неудаче)
+	+ middlewares (вызываются bus::dispatch или когда worker calls bus::dispatch)
+	+ ?StackInterface::next()::handle() (вызывает следующий middleware)
+	???Symfony\Component\Messenger\Stamp\AckStamp
+	???SendMessageMiddleware
 	Прервать вызов MessageHandler по SomeStamp, когда был вызван особый обработчик (после которого других обработчиков вызывать не нужно)
 	bin/console messenger:stats Transport implements MessageCountAwareInterface
 	MyTransport implements QueueReceiverInterface bin/console messenger:consume —all —queues=h
