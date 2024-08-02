@@ -9,6 +9,7 @@ use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Exception\ExceptionInterface;
 use Symfony\Component\Messenger\Middleware\StackInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
+use Symfony\Component\Messenger\Stamp\SentStamp;
 use Symfony\Component\Messenger\Stamp\RouterContextStamp;
 use Symfony\Component\Messenger\Stamp\HandlerArgumentsStamp;
 
@@ -16,24 +17,23 @@ class HowStampWorksMiddleware implements MiddlewareInterface
 {
 	private static $idx = 0;
 	
-	/**
-	* @var $envelope sync    when called by worker: SentStamp ReceivedStamp
-	* @var $envelope async   when called by worker: ReceivedStamp ONLY
-	*/
     public function handle(
         Envelope $envelope,
         StackInterface $stack,
     ): Envelope {
-		\dump('GOT MIDDLEWARE', $envelope->all());
+		$responseEnvelope = null;
 		
-		/**
-		* @var $responseEnvelope sync    SentStamp ReceivedStamp
-		* @var $responseEnvelope async   ReceivedStamp ONLY
+		/*
+		if (self::$idx++ > 0) {
+			return $envelope;
+		}
 		*/
-		$responseEnvelope = $stack->next()->handle($envelope, $stack);
 		
-		\dump('AFTER ALL MIDDLEWARES', $responseEnvelope);
-
-        return $responseEnvelope;
+		\dump('ENTERED INTO CUSTOM MIDDLEWARE');
+		//$envelope = $envelope->with(new DelayStamp(1));
+		$responseEnvelope = $stack->next()->handle($envelope, $stack);
+		\dump(\get_debug_type($responseEnvelope->getMessage()), $responseEnvelope);
+		
+        return $responseEnvelope ?? $stack->next()->handle($envelope, $stack);
     }
 }

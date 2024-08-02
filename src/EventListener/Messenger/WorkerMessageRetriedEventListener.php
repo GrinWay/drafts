@@ -15,6 +15,6 @@ class WorkerMessageRetriedEventListener extends AbstractMessengerEventListener
 {
     protected function getMessage(): string
     {
-        return 'x x x RETRIED x x x';
+        return '- - - RETRIED - - -';
     }
 }

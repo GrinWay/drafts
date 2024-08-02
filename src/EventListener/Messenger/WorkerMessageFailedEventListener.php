@@ -15,6 +15,6 @@ class WorkerMessageFailedEventListener extends AbstractMessengerEventListener
 {
     protected function getMessage(): string
     {
-        return '- - - FAILED - - -';
+        return 'x x x FAILED x x x';
     }
 }

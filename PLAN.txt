@@ -38,7 +38,37 @@ SYMFONY DOCTRINE
 	make:fixtures
 SYMFONY MESSENGER
 	?
-	??? не до конца понятно как работает Symfony\Component\Messenger\Middleware\DispatchAfterCurrentBusMiddleware
+	? на сколько понимаю middleware send_message играет очень важную роль так как:
+		вызывает stack::next() если есть ReceivedStamp (receive message -> worker bus::dispatch(envelope with state, ReceivedStamp))
+		receive вызывает worker::dispatch
+		что провоцирует повторный вызов всей цепочки middlewares
+		в этот момент если не вызвать в НАШЕМ middleware stack::next middleware handle_message достигнут не будет
+		и обработчики не вызывутся
+	? как messenger.middleware.reject_redelivered_message_middleware предотвращает повторный вызов остальных middlewares если это worker вызвал bus::dispatch после received from transport
+		скорее всего он пологается на SentStamp, так как:
+			SYNC worker called dispatch: has SentStamp (проблемка определения, так как есть и при нашей отправке и при отправке by worker)
+			ASYNC worker called dispatch: has NO SentStamp (тут можно определить, так как вызов от worker не несёт в себе SentStamp)
+	+ ??? не до конца понятно как работает Symfony\Component\Messenger\Middleware\DispatchAfterCurrentBusMiddleware
+		(
+			принцип => middleware может не закончить до конца свою работу
+			а все handlers для envelope были вызваны
+		
+			так как этот middleware есть у каждого bus
+			когда bus::dispatch -> bus(middleware[all]::handle)
+			входя в первый раз в DispatchAfterCurrentBusMiddleware это не считается, так как это первый вызов
+			затем "рекурсивно"(we bus::dispatch, worker bus::dispatch) дважды вызывается
+			$stack->next()->handle() что вызывает все handlers первого dispatched Envelope
+			а если были bus::dispatch внутри просто сохроняем их и выходим возвращая $envelope
+			так как для вложенного $envelope не было ни единого вызова $stack->next()->handle()
+			middlewares ниже DispatchAfterCurrentBusMiddleware вызваны не были
+			то есть даже отправки не произошло, а
+			__внешний envelope уже был обработан всеми handlers__
+			после этого из стека достаются $stack и $envelope и делается $stack->next()->handle()
+			после чего происходит их отправка причём если это sync транспорт
+			повторный вызов middlewares выполняется немедленно
+			DispatchAfterCurrentBusMiddleware вызывает $stack->next()->handle() второй раз
+			__все вложенные handlers выполнены__
+		)
 	+ ?stamp это обмен информацией между middlewares определённого обработчика. (Stamp нужен просто для обмена информацией между middlewares, обработчики не при чём)
 	+ middlewares вызываются при BUS::dispatch, (когда Envelope отправлен нами или после Received) (middlewares определяют будут или не будут вызываться handlers)
 	+ Как Handlers выполняются при исключениях (Независимо от исключений выполняются все handlers)
@@ -358,23 +388,6 @@ SYMFONY SECURITY
 	как запустить другой аутентификатор при неудаче предыдущего
 	??залогиниться через X.509 Client Certificates не получилось https://symfony.com/doc/current/reference/configuration/security.html#x-509-authentication
 	?используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
-SYMFONY MAILER https://symfony.com/doc/current/mailer.html
-	clear && bin/console make:reset-password --with-ulid
-		https://symfony.com/doc/current/security/passwords.html#reset-password
-		https://github.com/symfonycasts/reset-password-bundle
-	REQUIRED: LOGIN WITH EMAIL CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на почту
-	https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/email.html
-	?
-SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
-	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
-	?
-	???LOGIN WITH PUSH CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на push уведомление
-	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
-SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
-	?
-	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
-	создать своего лимитера для логина login_throttling limiter
-		https://symfony.com/doc/current/security.html#limiting-login-attempts
 SYMFONY TESTS https://symfony.com/doc/current/testing.html
 	https://symfony.com/doc/current/translation.html#locale-switcher
 	?
@@ -393,6 +406,23 @@ SYMFONY TESTS https://symfony.com/doc/current/testing.html
 		https://symfony.com/doc/current/components/clock.html#mockclock
 		https://symfony.com/doc/current/components/clock.html#writing-time-sensitive-tests
 	https://symfony.com/doc/current/components/console/helpers/questionhelper.html#testing-a-command-that-expects-input
+SYMFONY MAILER https://symfony.com/doc/current/mailer.html
+	clear && bin/console make:reset-password --with-ulid
+		https://symfony.com/doc/current/security/passwords.html#reset-password
+		https://github.com/symfonycasts/reset-password-bundle
+	REQUIRED: LOGIN WITH EMAIL CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на почту
+	https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/email.html
+	?
+SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
+	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
+	?
+	???LOGIN WITH PUSH CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на push уведомление
+	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
+SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
+	?
+	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
+	создать своего лимитера для логина login_throttling limiter
+		https://symfony.com/doc/current/security.html#limiting-login-attempts
 SYMFONY UX TURBO https://symfony.com/bundles/ux-turbo/current/index.html
 	HOTWIRE: STIMULUS
 	?
@@ -480,6 +510,7 @@ SYMFONY MAKER BUNDLE https://symfony.com/bundles/SymfonyMakerBundle/current/inde
 SYMFONY BEST PRACTIES https://symfony.com/doc/current/best_practices.html
 CHART JS
 CROP JS
+PHP SYMFONY CREATE PICTURES
 	?
 	https://symfony.com/doc/current/form/bootstrap5.html
 	реализовать полностью свою тему форм

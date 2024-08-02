@@ -27,7 +27,8 @@ class MessengerController extends AbstractController
 			]
 		);
 		
-		//\dump($response); // + ?response last handler (response of all handlers)
+		//\dd($response);
+		//\dump($response);
 		
         return $this->render('messenger/index.html.twig', [
             'controller_name' => 'MessengerController',

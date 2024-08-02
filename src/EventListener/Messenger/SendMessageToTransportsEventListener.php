@@ -15,6 +15,6 @@ class SendMessageToTransportsEventListener extends AbstractMessengerEventListene
 {
     protected function getMessage(): string
     {
-        return '(DISPATCH MESSAGE) -(SEND)-> (TRANSPORT)';
+        return '(DISPATCH MESSAGE) -(SENT)-> (TRANSPORT)';
     }
 }

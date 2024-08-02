@@ -18,10 +18,13 @@ abstract class AbstractMessengerEventListener
         if (\method_exists($event, 'getEnvelope')) {
             $ref = new \ReflectionClass($event->getEnvelope()->getMessage());
             $dop .= ' message(' . $ref->getShortName() . ')';
+			if (!\method_exists($event, 'getReceiverName')) {
+				$dop .= ' transport(sync://)';
+			}
         }
-        if (\method_exists($event, 'getReceiverName')) {
+		if (\method_exists($event, 'getReceiverName')) {
             $dop .= ' transport(' . $event->getReceiverName() . ')';
-        }
+		}
 
         $mess = self::PREFIX . ': "' . $this->getMessage() . '"' . $dop;
 

@@ -2,6 +2,7 @@
 
 namespace App\Messenger\Command\Handler;
 
+use App\Messenger\Stamp\StopPropagationStamp;
 use Symfony\Component\Messenger\MessageBusInterface;
 use App\Messenger\Command\Message\HowStampWorks;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -26,6 +27,7 @@ class HowStampWorks1Handler extends AbstractHandler
 	
     public function __invoke(HowStampWorks $message) {
 		$this->eventBus->dispatch(new TestUserWasCreated(), [
+			//new StopPropagationStamp(),
 			new DispatchAfterCurrentBusStamp(),
 		]);
 		
