@@ -38,6 +38,7 @@ SYMFONY DOCTRINE
 	make:fixtures
 SYMFONY MESSENGER
 	?
+	? попробовать выкинуть свой App\Exception\Messenger\StopPropagationException в handler чтобы не обрабатывать envelope оставшимися handler в своём EnvelopeStopPropagationMiddleware(вернуть просто изначальный $envelope, что нам мешает это сделать) (priority будет нужна как никогда)
 	? на сколько понимаю middleware send_message играет очень важную роль так как:
 		вызывает stack::next() если есть ReceivedStamp (receive message -> worker bus::dispatch(envelope with state, ReceivedStamp))
 		receive вызывает worker::dispatch
@@ -494,26 +495,26 @@ SYMFONY COMMAND
 	возможно ли динамически переименовывать команды, задавать алиасы
 	command --param --param: InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY
 	Autowire RequestStack -> RequestStack::getCurrentRequest() === null
+SYMFONY ROUTE
+	CMF Routing Bundle
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/index.html
+		https://symfony.com/bundles/CMFRoutingBundle/current/index.html
 SYMFONY COMPONENTS: https://symfony.com/components
 https://symfony.com/doc/current/reference/index.html
 The Runtime Component https://symfony.com/doc/current/components/runtime.html
 REFERENCE https://symfony.com/doc/current/reference/index.html
 BOOTSTRAP (not deep)
+	https://symfony.com/doc/current/form/bootstrap5.html
 	?
 	опираясь на пример темы ".\vendor\symfony\twig-bridge\Resources\views\Form\form_div_layout.html.twig"
-		сделать свою тему на bootstrap (form/theme/grinway/index.html.twig)
-SYMFONY ROUTE
-	CMF Routing Bundle
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/index.html
-		https://symfony.com/bundles/CMFRoutingBundle/current/index.html
+		сделать свою тему на bootstrap (form/theme/grinway/light/index.html.twig)
 SYMFONY MAKER BUNDLE https://symfony.com/bundles/SymfonyMakerBundle/current/index.html
 SYMFONY BEST PRACTIES https://symfony.com/doc/current/best_practices.html
 CHART JS
 CROP JS
-PHP SYMFONY CREATE PICTURES
-	?
-	https://symfony.com/doc/current/form/bootstrap5.html
-	реализовать полностью свою тему форм
+PHP CREATE PICTURES https://github.com/moust/Paint
+	https://github.com/Gregwar/Image
+	https://www.youtube.com/watch?v=ek1TCYqAvbg&ab_channel=CodeWithDary
 SYMFONY DOCTRINE
 	https://symfony.com/doc/current/reference/configuration/doctrine.html
 	https://github.com/KnpLabs/DoctrineBehaviors
