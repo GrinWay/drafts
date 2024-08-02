@@ -2,6 +2,7 @@
 
 namespace App\Tests\Application\Controller;
 
+use function Symfony\Component\String\u;
 use App\Tests\Application\AbstractApplicationCase;
 
 class MessengerControllerTest extends AbstractApplicationCase {
@@ -17,14 +18,14 @@ class MessengerControllerTest extends AbstractApplicationCase {
 		$client->followRedirects(true);
 		$crawler = $client->request('GET', '/messenger');
 		
-		$callbackEach = static function($node, $i) {
+		$callbackEachNodeHasMessanger = static function($node, $i) {
 			return $node->nodeName() . ' [class="'.$node->attr('class').'"] text=' . $node->text();
 		};
-		$callbackEachLink = static function($link, $i) {
+		$callbackEachNodeHasMessangerLink = static function($link, $i) {
 			return $link->getUri();
 		};
 		$callbackReduce = static function($node, $i) {
-			return $node->text();
+			return isset(u($node->text())->match('~(?<topic>.*messenger)~i')['topic']);
 		};
 		$result = $crawler->filter('html div')
 			//->filter('html .container')
@@ -69,22 +70,26 @@ class MessengerControllerTest extends AbstractApplicationCase {
 			
 			//->html()
 			//->matches('.example-wrapper')
-			//?->each($callbackEachLink)
-			//?->each($callbackEach)
+			//?->each($callbackEachNodeHasMessangerLink)
+			//?->each($callbackEachNodeHasMessanger)
 			//?->text()
 		;
 		
+		$containerText = $crawler->filter('.container')->text(normalizeWhitespace: false);
+		$bodyChildrenWithMessangerText = $crawler->filter('html body')->children()
+			->reduce($callbackReduce)
+			->each($callbackEachNodeHasMessanger)
+		;
 		$images = $crawler->filter('img');
 		$links = $crawler->filter('a');
 		$linksCount = $links->count();
 		$linksArray = $links->links();
-		$allLinksUri = \array_map(static fn($l) => \rtrim($l->getUri(), '/'), $links->links());
+		$allLinksUri = \array_map(static fn($l) => \rtrim($l->getUri(), '/'), $linksArray);
 		$textHtml = $crawler->filter('html')->text();
 		$titleHtml = $crawler->filter('html title')->text();
 		
-		//TODO: current 
-		//clear && bin/phpunit tests/Application/Controller/MessengerControllerTest.php
 		$this->assertCount(1, $images);
+		$this->assertGreaterThanOrEqual(1, $bodyChildrenWithMessangerText);
 		$this->assertContains('https://127.0.0.1/login', $allLinksUri);
 		$this->assertGreaterThanOrEqual(5, $linksCount);
 		$this->assertStringContainsStringIgnoringCase('messenger', $textHtml);

@@ -396,7 +396,6 @@ SYMFONY SECURITY
 	?используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
 ***
 SYMFONY TESTS
-	https://symfony.com/doc/current/testing/dom_crawler.html
 	https://symfony.com/doc/current/testing/end_to_end.html
 	https://symfony.com/doc/current/testing/http_authentication.html
 	https://symfony.com/doc/current/testing/insulating_clients.html
@@ -449,7 +448,7 @@ SYMFONY TESTS
 	https://symfony.com/doc/current/testing/end_to_end.html
 	https://symfony.com/doc/current/components/http_foundation.html#component-foundation-attributes
 	?
-	как пользоваться Crawler::reduce
+	+ как пользоваться Crawler::reduce (возвращай false на коллекцию Crawler если элемент не нужен)
 	что происходить при перегрузке namespace Crawler::setDefaultNamespacePrefix
 	как пользоваться Crawler::registerNamespace
 	как работать с XPath Crawler::evaluate

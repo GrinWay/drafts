@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240723154314 extends AbstractMigration
+final class Version20240802050048 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -23,6 +23,7 @@ final class Version20240723154314 extends AbstractMigration
         $this->addSql('CREATE TABLE avatar (id INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE food_product (expires_at DATETIME(6) NOT NULL, id INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE furniture_product (color VARCHAR(255) NOT NULL, id INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE git_hub (id INT NOT NULL, profile_picture VARCHAR(255) DEFAULT NULL, access_token VARCHAR(255) DEFAULT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE image (file_dimensions LONGTEXT DEFAULT NULL, id INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE media (id INT AUTO_INCREMENT NOT NULL, filepath VARCHAR(255) NOT NULL, file_original_name VARCHAR(255) NOT NULL, created_at DATETIME(6) NOT NULL, updated_at DATETIME(6) DEFAULT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE product (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, description LONGTEXT NOT NULL, price VARCHAR(255) NOT NULL, is_public TINYINT(1) DEFAULT 0 NOT NULL, updated_at DATETIME(6) DEFAULT NULL, created_at DATETIME(6) NOT NULL, passport_id INT DEFAULT NULL, user_id BINARY(16) DEFAULT NULL, type VARCHAR(255) NOT NULL, UNIQUE INDEX UNIQ_D34A04ADABF410D0 (passport_id), INDEX IDX_D34A04ADA76ED395 (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
@@ -31,7 +32,7 @@ final class Version20240723154314 extends AbstractMigration
         $this->addSql('CREATE TABLE task_food_topic (id INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE task_topic (id INT AUTO_INCREMENT NOT NULL, name VARCHAR(255) NOT NULL, type VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE toy_product (for_kids_more_than INT NOT NULL, id INT NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
-        $this->addSql('CREATE TABLE user (id BINARY(16) NOT NULL, email VARCHAR(255) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, switch_user_able TINYINT(1) NOT NULL, passport_id INT NOT NULL, UNIQUE INDEX UNIQ_USER_EMAIL (email), UNIQUE INDEX UNIQ_USER_PASSPORT (passport_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
+        $this->addSql('CREATE TABLE user (email_auth_code VARCHAR(255) DEFAULT NULL, id BINARY(16) NOT NULL, api_token VARCHAR(255) DEFAULT NULL, totp_secret VARCHAR(255) DEFAULT NULL, google_secret VARCHAR(255) DEFAULT NULL, backup_codes JSON DEFAULT NULL, trusted_version INT NOT NULL, email VARCHAR(255) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, switch_user_able TINYINT(1) NOT NULL, passport_id INT NOT NULL, git_hub_id INT DEFAULT NULL, UNIQUE INDEX UNIQ_8D93D6494C8796 (git_hub_id), UNIQUE INDEX UNIQ_USER_EMAIL (email), UNIQUE INDEX UNIQ_USER_PASSPORT (passport_id), UNIQUE INDEX UNIQ_USER_API_TOKEN (api_token), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE user_passport (id INT AUTO_INCREMENT NOT NULL, remember_me_updated_at DATETIME(6) NOT NULL, last_name VARCHAR(255) NOT NULL, timezone VARCHAR(30) DEFAULT NULL, lang VARCHAR(10) DEFAULT NULL, banned TINYINT(1) NOT NULL, updated_at DATETIME(6) DEFAULT NULL, created_at DATETIME(6) NOT NULL, first_name VARCHAR(255) NOT NULL, PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('CREATE TABLE messenger_messages (id BIGINT AUTO_INCREMENT NOT NULL, body LONGTEXT NOT NULL, headers LONGTEXT NOT NULL, queue_name VARCHAR(190) NOT NULL, created_at DATETIME(6) NOT NULL, available_at DATETIME(6) NOT NULL, delivered_at DATETIME(6) DEFAULT NULL, INDEX IDX_75EA56E0FB7336F0 (queue_name), INDEX IDX_75EA56E0E3BD61CE (available_at), INDEX IDX_75EA56E016BA31DB (delivered_at), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4');
         $this->addSql('ALTER TABLE avatar ADD CONSTRAINT FK_1677722FBF396750 FOREIGN KEY (id) REFERENCES media (id) ON DELETE CASCADE');
@@ -44,6 +45,7 @@ final class Version20240723154314 extends AbstractMigration
         $this->addSql('ALTER TABLE task_food_topic ADD CONSTRAINT FK_7032505EBF396750 FOREIGN KEY (id) REFERENCES task_topic (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE toy_product ADD CONSTRAINT FK_9BB08057BF396750 FOREIGN KEY (id) REFERENCES product (id) ON DELETE CASCADE');
         $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D649ABF410D0 FOREIGN KEY (passport_id) REFERENCES user_passport (id)');
+        $this->addSql('ALTER TABLE user ADD CONSTRAINT FK_8D93D6494C8796 FOREIGN KEY (git_hub_id) REFERENCES git_hub (id)');
     }
 
     public function down(Schema $schema): void
@@ -59,9 +61,11 @@ final class Version20240723154314 extends AbstractMigration
         $this->addSql('ALTER TABLE task_food_topic DROP FOREIGN KEY FK_7032505EBF396750');
         $this->addSql('ALTER TABLE toy_product DROP FOREIGN KEY FK_9BB08057BF396750');
         $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D649ABF410D0');
+        $this->addSql('ALTER TABLE user DROP FOREIGN KEY FK_8D93D6494C8796');
         $this->addSql('DROP TABLE avatar');
         $this->addSql('DROP TABLE food_product');
         $this->addSql('DROP TABLE furniture_product');
+        $this->addSql('DROP TABLE git_hub');
         $this->addSql('DROP TABLE image');
         $this->addSql('DROP TABLE media');
         $this->addSql('DROP TABLE product');
