@@ -311,12 +311,9 @@ SYMFONY OPTIONS RESOLVER
 SYMFONY CONFIG COMPONENT https://symfony.com/doc/current/components/config.html
 SYMFONY EXTENTIONS
 	?
-***
 SYMFONY SECURITY
-	https://habr.com/ru/articles/538662/
-	https://symfony.com/doc/current/security/ldap.html
-	https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
 	?
+	????аутентификация на основе токена JWT
 	?https://symfony.com/doc/current/security/remember_me.html
 		1) workflow REMEMBER_ME
 		2) workflow Token lifecycle
@@ -389,6 +386,7 @@ SYMFONY SECURITY
 	как запустить другой аутентификатор при неудаче предыдущего
 	??залогиниться через X.509 Client Certificates не получилось https://symfony.com/doc/current/reference/configuration/security.html#x-509-authentication
 	?используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
+***
 SYMFONY TESTS https://symfony.com/doc/current/testing.html
 	https://symfony.com/doc/current/translation.html#locale-switcher
 	?
@@ -556,6 +554,12 @@ TWIG
 SYMFONY SESSION
 	не получилось https://symfony.com/doc/current/session.html#encryption-of-session-data
 SYMFONY VARDUMPER https://symfony.com/doc/current/components/var_dumper.html#components-var-dumper-dump
+SYMFONY SECURITY
+	LDAP
+		https://www.youtube.com/watch?v=0FwOcZNjjQA&t=55s&ab_channel=TalentedDeveloper
+		https://www.youtube.com/watch?v=Xj6FtOvlRCg&ab_channel=AFIDistribution
+		https://symfony.com/doc/current/security/ldap.html
+		https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
 EmojiTransliterator::create('text-emoji')->transliterate() used it https://github.com/unicode-org/cldr?tab=readme-ov-file
 security через передачу заголовка impersonator не сработал https://symfony.com/doc/current/security/impersonating_user.html
 SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
