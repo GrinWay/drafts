@@ -40,7 +40,10 @@ class RegistrationController extends AbstractController
 			email: 'ss',
 			//_hiddenPoly: '_hidden',
 		);
-        $form = $this->createForm(RegistrationFormType::class, $user);
+        $form = $this->createForm(
+			RegistrationFormType::class,
+			// $user,
+		);
 		//\dump($form->get('_csrf_token')?->getData());		
 		$form->handleRequest($request);
 		if ($form->isSubmitted() && $form->isValid()) {
@@ -53,8 +56,10 @@ class RegistrationController extends AbstractController
 			);
 			$user->setPassword($hashedPassword);
 			*/
+			$user = $form->getData();
 
             $entityManager->persist($user);
+			//\dd($user);
             $entityManager->flush();
 
 			$response = $security->login(

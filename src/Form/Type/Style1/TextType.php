@@ -6,7 +6,7 @@ use Symfony\Component\Form\Extension\Core\Type as FormType;
 
 class TextType extends AbstractFormType
 {	
-    public function getParent()
+    public function getParent(): ?string
     {
         return FormType\TextType::class;
     }

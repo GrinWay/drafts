@@ -1,91 +1,13 @@
-imports:    
-    -   resource: 'services_yaml/'
-    #-   resource: 'services_yaml/parameters/'  # better
-    #-   resource: 'services_yaml/services/'    # better
+when@test: &when_test
+    imports:
+        -   resource: 'services_yaml/test/services/'
+        -   resource: 'services_yaml/test/parameters/'
 
-services:
-    _defaults:
-        autowire: true
-        autoconfigure: true
-        
-        bind:
-            
-            ###> KERNEL ###
-            $projectDir: '%kernel.project_dir%'
-            ###< KERNEL ###
-            
-            ###> SERVICES ###
-            $t:                 '@Symfony\Contracts\Translation\TranslatorInterface'
-            ###< SERVICES ###
-            
-            ###> LANG ###
-            $appEnabledLocales: '%app.enabled_locales%'
-            ###< LANG ###
-            
-            ###> ASCII ###
-            $emojiSlugger: '@app.slugger_with_emoji'
-            ###< ASCII ###
-            
-            ###> grinway ###
-            $ru12Carbon:  '@app.ru_12_carbon'
-            $enUtcCarbon: '@app.en_utc_carbon'
-            $faker:             '@grin_way_service.faker'
-            ###< grinway ###
-            
-            
-            ###> PARAMS ###
-            $kernelProjectDir:  '%kernel.project_dir%'
-            $adminEmail:        '%env(APP_ADMIN_EMAIL)%'
-            ###< PARAMS ###
-            
-            
-            ###> MESSENGER ###
-            $adminSendEmailMessage: '@app.messenger.notifier.admin_send_email'
-            
-            $get: '@grin_way_web_app.messenger.query'
-            
-            $messengerServiceLocator: '@app.messenger.service_locator'
-            ###< MESSENGER ###
-            
-            
-            ###> PROMOCODE ###
-            $promocodes: !tagged_locator
-                tag: 'app.promocode'
-            ###< PROMOCODE ###
-            
-            
-            #//TODO (NewClosureDefinitionWithTagPass) USAGE:
-            ###> HASH ###
-            $callableHashLocator: !tagged_locator
-                tag: !php/const 'App\Type\Hash\HashType::TAG'
-                index_by: index
-            ###< HASH ###
-            
-            
-            ###> PATHS ###
-            $absPublicDir: '%app.abs_public_dir%'
-            ###< PATHS ###
-        
-    App\:
-        resource: '../src/'
-        exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Attribute/'
-            - '../src/Entity/'
-            - '../src/Exception/'
-            - '../src/Contract/'
-            - '../src/EventSubscriber/'
-            - '../src/Kernel.php'
-            - '../src/Service/Anonymous/'
-            - '../src/Service/Validator/TextValidatorNormalizer.php'
-            - '../src/Messenger/MessengerManager.php'
-            - '../src/Messenger/Notifier/NotifierHandlers.php'
-            - '../src/Service/Router/AttributeRouterReader.php'
-            - '../src/Service/Doctrine/PurgerTruncateFactory.php'
-            - '../src/Service/SomeService.php'
-            - '../src/Service/SomeService2.php'
-            - '../src/Extension/ExpressionLanguage/Decorator/ValidatorExpLangFunctionProvider.php'
-            - '../src/Service/Naming/SlugNamer.php'
-            - '../src/Security/Voter/ModifyAdminVoter.php'
-            - '../src/Security/UserChecker/UserChecker.php'
-            - '../src/Security/Authenticator/LoginLink/LoginLinkSignatureHasher.php'
+###> imports are loaded first (imports not overrides existing services) ###
+imports:
+    -   resource: 'services_yaml/resource_services.yaml'    # PRIORITY 1 (last)
+    -   resource: 'services_yaml/services/'                 # PRIORITY 2
+    -   resource: 'services_yaml/parameters/'               # PRIORITY 3 (first)
+
+###> then services.yaml (what below overrides imports) ###
+###>... it's better to use only imports

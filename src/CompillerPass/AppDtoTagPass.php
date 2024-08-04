@@ -32,7 +32,10 @@ class AppDtoTagPass implements CompilerPassInterface
         );
     }
 
-    public function process(ContainerBuilder $container)
+	/**
+	* @return void
+	*/
+    public function process(ContainerBuilder $container): void
     {
 
         $ids = $container->findTaggedServiceIds('app.dto');

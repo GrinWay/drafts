@@ -27,7 +27,10 @@ abstract class AbstractFormType extends AbstractType
         protected readonly PropertyAccessorInterface $pa,
 	) {
 	}
-	
+
+	/**
+	* @return void
+	*/
 	public function configureOptions(OptionsResolver $resolver)
     {
 		$resolver
@@ -40,6 +43,9 @@ abstract class AbstractFormType extends AbstractType
 		;
     }
 	
+	/**
+	* @return void
+	*/
 	public function buildView(FormView $view, FormInterface $form, array $options)
     {
 		$this->customizeStyle1(
@@ -54,6 +60,9 @@ abstract class AbstractFormType extends AbstractType
 		}
 	}
 	
+	/**
+	* @return string
+	*/
 	public function getBlockPrefix(): string
     {
 		$resultBlockPrefix = 'app_'.parent::getBlockPrefix();

@@ -16,29 +16,29 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 
 class TwigExtension extends AbstractExtension
 {
-    public function getFilters()
+    public function getFilters(): array
     {
         return [
             new TwigFilter('for_user', [TwigFilterExtension::class, 'forUser']),
         ];
     }
 
-    public function getTokenParsers()
+    public function getTokenParsers(): array
     {
         return [];
     }
 
-    public function getNodeVisitors()
+    public function getNodeVisitors(): array
     {
         return [];
     }
 
-    public function getTests()
+    public function getTests(): array
     {
         return [];
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return [
 			new TwigFunction('get_debug_type', \get_debug_type(...)),
@@ -46,7 +46,7 @@ class TwigExtension extends AbstractExtension
 		];
     }
 
-    public function getOperators()
+    public function getOperators(): array
     {
         return [];
     }

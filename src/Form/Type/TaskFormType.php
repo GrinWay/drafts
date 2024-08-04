@@ -43,7 +43,7 @@ class TaskFormType extends AbstractFormType
 		);
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$mTF = static function($v) {
 			\dump('(MODEL trans) to form');

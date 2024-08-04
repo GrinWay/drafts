@@ -27,6 +27,9 @@ class AutowireMyMethodOfPass extends AbstractCompilerPass
     {
     }
 
+	/**
+	* @return void
+	*/
     public function process(ContainerBuilder $container): void
     {
 

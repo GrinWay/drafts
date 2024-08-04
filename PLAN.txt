@@ -109,6 +109,10 @@ SYMFONY YAML PARSER (TAGS)
 	kernel.default_locale от чего зависит
 SYMFONY SERVICE CONTAINER
 	?
+	? возможно стоит использовать bind только в автоматически протянутых сервисах services.yaml.imports.services.auto когда в services.yaml нет ничего кроме imports
+	+ ? может ли container->getParameterBag()->resolveValue разрешить env (разрешает в вид: env_b6b8ae882b5a6588_APP_ENV_33ecddc04a0f12187e466dc7d02e9db6)
+	+ ? services.yaml: при использовании imports when@(dev, prod, test) доступно ли то, что определено без when@ конструкции (естественно)
+	+ ? services.yaml: есть ли способ перезаписать сервисы, определённые в services.yaml (элементарно через when@dev, prod, test те же самы imports которые не переопределяют свервисы внутри себя, но так как был указан environment одно переопределние на сервис возможно)
 	что делает services.yaml>services>SOME_SERVICE> properties настройка
 	+ Как сервис может получить доступ ко всем аргументам метода контроллера (слушая ControllerArgumentsEvent)
 	??В каком случае сервис нельзя подтянуть как аргумент контроллера
@@ -148,7 +152,7 @@ SYMFONY SERVICE CONTAINER
 	decorator pattern https://symfony.com/doc/current/service_container/service_decoration.html
 	!!! КАК В COMPILER PASS ПЕРЕДАТЬ \Closure например от метода сервиса в аргумент у Definition (создать Definition(Closure))
 SYMFONY DependencyInjection Component
-SYMFONY CONFIGURING SYMFONY
+SYMFONY CONFIGURING SYMFONY 
 	?
 	извлечь используя extractor docBlock @return
 SYMFONY EXPRESSION LANGUAGE
@@ -310,10 +314,13 @@ SYMFONY OPTIONS RESOLVER
 	не передавать массив значений в callback только чтобы установить по умолчанию $resolver->setIgnoreUndefined(true);
 	определить разрешённый набор ЗНАЧЕНИЙ choices => [ anyKey => stringValue, anyKey2 => stringValue2 ] Как прототип НО с ключевыми значениями
 SYMFONY CONFIG COMPONENT https://symfony.com/doc/current/components/config.html
-SYMFONY EXTENTIONS
 	?
+	?зачем для TreeBuilder(name: 'ЗАЧЕМ ИМЯ') иметь имя
+SYMFONY EXTENTIONS
 SYMFONY SECURITY
 	?
+	? структура JWT
+	? как создать токен JWT (по каким входным данным)
 	????аутентификация на основе токена JWT
 	?https://symfony.com/doc/current/security/remember_me.html
 		1) workflow REMEMBER_ME
@@ -388,9 +395,15 @@ SYMFONY SECURITY
 	??залогиниться через X.509 Client Certificates не получилось https://symfony.com/doc/current/reference/configuration/security.html#x-509-authentication
 	?используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
 ***
-SYMFONY TESTS https://symfony.com/doc/current/testing.html
+SYMFONY TESTS
+	https://symfony.com/doc/current/testing/dom_crawler.html
+	https://symfony.com/doc/current/testing/end_to_end.html
+	https://symfony.com/doc/current/testing/http_authentication.html
+	https://symfony.com/doc/current/testing/insulating_clients.html
+	https://symfony.com/doc/current/testing/profiling.html
+	https://symfony.com/doc/current/components/dom_crawler.html
+	https://symfony.com/doc/current/components/css_selector.html
 	https://symfony.com/doc/current/translation.html#locale-switcher
-	?
 	определи mount и не устанавливай в класс значение параметра https://symfony.com/bundles/ux-twig-component/current/index.html#test-helpers
 	Don't add the void return type to methods in tests;
 	https://symfony.com/doc/current/components/http_foundation.html#simulating-a-request
@@ -406,16 +419,87 @@ SYMFONY TESTS https://symfony.com/doc/current/testing.html
 		https://symfony.com/doc/current/components/clock.html#mockclock
 		https://symfony.com/doc/current/components/clock.html#writing-time-sensitive-tests
 	https://symfony.com/doc/current/components/console/helpers/questionhelper.html#testing-a-command-that-expects-input
+	
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bundle/FrameworkBundle/KernelBrowser.php#:~:text=function%20disableReboot
+	https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-test
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/BrowserKit/AbstractBrowser.php#:~:text=function%20request
+	https://symfony.com/doc/current/testing/dom_crawler.html
+	https://symfony.com/doc/current/testing.html#integration-tests
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php
+	https://symfony.com/doc/current/testing.html#testing-applications-arrange
+	https://symfony.com/doc/current/testing.html#testing-applications-act
+	https://symfony.com/doc/current/testing.html#testing-application-assertions
+	https://github.com/dmaicher/doctrine-test-bundle
+	https://symfony.com/doc/current/testing/bootstrap.html
+	https://symfony.com/doc/current/configuration.html#configuration-environments
+	https://symfony.com/doc/current/configuration.html#configuration-multiple-env-files
+	https://symfony.com/doc/current/configuration.html#configuration-environments
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bundle/FrameworkBundle/Test/KernelTestCase.php
+	https://en.wikipedia.org/wiki/Unit_testing
+	https://docs.phpunit.de/en/10.5/writing-tests-for-phpunit.html
+	https://docs.phpunit.de/en/11.3/
+	https://symfony.com/doc/current/components/dom_crawler.html#components-dom-crawler-invalid
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/DomCrawler/Form.php#:~:text=function%20getName
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/DomCrawler/Link.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/DomCrawler/Form.php
+	https://symfony.com/doc/current/testing/profiling.html
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bundle/FrameworkBundle/Test/TestBrowserToken.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Security/Core/User/UserInterface.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bundle/FrameworkBundle/KernelBrowser.php#:~:text=function%20loginUser
+	https://symfony.com/doc/current/testing/end_to_end.html
+	https://symfony.com/doc/current/components/http_foundation.html#component-foundation-attributes
+	?
+	как пользоваться Crawler::reduce
+	что происходить при перегрузке namespace Crawler::setDefaultNamespacePrefix
+	как пользоваться Crawler::registerNamespace
+	как работать с XPath Crawler::evaluate
+		Crawler::filterXPath
+	+ что конкретно выводит Crawler::siblings (элементы того же уровня не включая выбранный)
+		+ что конкретно выводит Crawler::nextAll (следующие элементы того же уровня вложенности)
+	+ где можно в тестах исполнить команду на отчистку дазы данных (в tests/bootstrap)
+	+ возможно ли установить $_SERVER переменные запуская tests/bootstrap (Да, через файл phpunit.xml.dist)
+	как разрешить $client->enableProfiler(); если произошли редиректы
+	как пользоваться assertThatForClient
+	почему assertResponseHasCookie('PHPSESSID') ответ не имеет куки при логине пользователя
+	PHPUnit: почему-то нет метода (может быть из-за версии):
+		assertArrayIsIdenticalToArrayOnlyConsideringListOfKeys
+		assertArrayIsIdenticalToArrayIgnoringListOfKeys
+		assertIsList
+		assertStringEqualsStringIgnoringLineEndings
+	+ используя объект DomCrawler\Form как установить метод отправки (crawler->selectButton->form(method: ''))
+	где автоматически создаётся dbName_test
+	не понятно зачем client->catchExceptions
+	есть ли какая-то существенная разница между get(Request|Response) & getInternal(Request|Response)
+	+ где указать протокол (https) чтобы client->xmlHttpRequest обращался по нему (createClient(server: HTTPS true))
+	что делает $client->reload()
+	что делает $client->reset()
+	какая разница между reset and reboot the kernel(ядра)
+	что за тэг kernel.reset
+	попытался достать из контейнера в тесте 'test.client' но это всё же отличается от createClient
+	+ какая-то ерунда, просто не могу сделать прослойку чтобы отнаследовать KernelTestCase и переопределить метод createKernel... (App\Tests namespace для тестов а не как ты написал Tests)
+	+ mockService->...->willReturn('СТРОКА НЕ ПРОВЕРЯЕТСЯ') (потому что ты говоришь что по факту вернётся)
+	?а зачем нам тогда такой странный mockService если он возвращает что я написал в тесте, и не проверяет реальной функциональности
 SYMFONY MAILER https://symfony.com/doc/current/mailer.html
 	clear && bin/console make:reset-password --with-ulid
 		https://symfony.com/doc/current/security/passwords.html#reset-password
 		https://github.com/symfonycasts/reset-password-bundle
 	REQUIRED: LOGIN WITH EMAIL CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на почту
 	https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/email.html
+	что делает assertEmailIsQueued (как-то связан с getMailerEvent)
+	написатать тест, что mail был отправлен https://symfony.com/doc/current/testing.html#mailer-assertions
+		assertEmailAttachmentCount
+		assertEmailTextBodyContains
+		assertEmailHtmlBodyContains
+		assertEmailHasHeader
+		assertEmailHeaderSame
+		assertEmailAddressContains
+		assertEmailSubjectContains
 	?
+	неужели тест может понять что в MessageHandler будет отпарвляться письмо, или это внутренняя реализация асинхронной отправки письма, то есть если в БД записан объект именно Email
 SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
 	?
+	написать тест https://symfony.com/doc/current/testing.html#notifier-assertions
 	???LOGIN WITH PUSH CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на push уведомление
 	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
 SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
@@ -561,12 +645,16 @@ SYMFONY SECURITY
 		https://www.youtube.com/watch?v=Xj6FtOvlRCg&ab_channel=AFIDistribution
 		https://symfony.com/doc/current/security/ldap.html
 		https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
+Endroid\QrCode
+	?
+	выдаёт исключение imagettfbbox(): Could not find/open font (label)
 EmojiTransliterator::create('text-emoji')->transliterate() used it https://github.com/unicode-org/cldr?tab=readme-ov-file
 security через передачу заголовка impersonator не сработал https://symfony.com/doc/current/security/impersonating_user.html
 SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
 SYMFONY RESPONSE сохранить куки
 	зависящую от параметра Entity чтобы можно было инвалидировать
-
+PHPUnit assertEqualsWithDelta
+	https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
 
 TODO
 	Все переводы бандлов поместить в домен grinway, то есть имя домена === имя бандла

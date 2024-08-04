@@ -5,6 +5,7 @@ namespace App;
 use function Symfony\component\string\u;
 
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use GrinWay\Extension\GlobalInstanceOfExtension\GrinWayGlobalInstanceOfExtension;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\Validator\Validation;
 use Symfony\Component\Yaml\Yaml;
@@ -53,7 +54,9 @@ class Kernel extends BaseKernel implements CompilerPassInterface
     {
 		$this->addEventAliasesPass($container);
 
-        $container->registerExtension($e = new ExtensionExample());
+        $container->registerExtension(new GrinWayGlobalInstanceOfExtension);
+        
+		$container->registerExtension($e = new ExtensionExample());
         $container->loadFromExtension($e->getAlias());
         $container->addCompilerPass(new AppDtoTagPass());
         $container->addCompilerPass(new AutowireMyMethodOfPass());
@@ -104,6 +107,11 @@ class Kernel extends BaseKernel implements CompilerPassInterface
 	
     public function process(ContainerBuilder $container): void
     {
+		if ('test' === $this->environment) {
+			//$container->findDefinition('security.token_storage')->clearTag('kernel.reset');
+			//$container->findDefinition('doctrine')->clearTag('kernel.reset');
+		}
+		
 		$serviceId = 'App\Service\SomeService';
 
 		$ids = $container->findTaggedServiceIds('app.promocode');

@@ -20,7 +20,7 @@ class RegisterInvokeableFormEventListenerPass implements CompilerPassInterface
 	) {
     }
 
-    public function process(ContainerBuilder $container)
+    public function process(ContainerBuilder $container): void
     {
 		//return;
 		$id = 'event_dispatcher';

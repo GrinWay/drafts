@@ -1,0 +1,8 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\Service\ServiceForTesting:
+        class: App\Service\ServiceForTesting
+        public: true

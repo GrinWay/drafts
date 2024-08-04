@@ -19,12 +19,9 @@ class AdminController extends AbstractController
 		//statusCode: Response::HTTP_UNAUTHORIZED,
 		//exceptionCode: 180898,
 	)]
-    #[Route(path: '/admin/{id?1}', defaults: [
+    #[Route(path: '/admin', defaults: [
 	])]
-	public function index(
-		$id,
-		?Product $product,
-	): Response {
+	public function index(): Response {
         return $this->render('@admin/index.html.twig', [
             'controller_name' => 'AdminController',
         ]);

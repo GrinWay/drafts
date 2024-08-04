@@ -49,6 +49,30 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
         $this->getEntityManager()->flush();
     }
 
+	public function findOneByPassport($criteria): ?User
+	{
+		$qb = $this->createQueryBuilder('u')
+			->join('u.passport', 'p')
+		;
+		
+		foreach($criteria as $key => $val) {
+			$qb
+				->andWhere('p.'.$key.' = :'.$key)
+				->setParameter(':'.$key, $val)
+			;
+		}
+		
+		return $qb
+			->setMaxResults(1)
+			->getQuery()
+			->getOneOrNullResult()
+		;
+	}
+
+	public function findOneByEmail(string $email): ?User {
+		return parent::findOneByEmail($email);
+	}
+
 //    /**
 //     * @return User[] Returns an array of User objects
 //     */

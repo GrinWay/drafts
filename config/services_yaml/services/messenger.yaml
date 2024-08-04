@@ -1,5 +1,9 @@
 services:
 
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
     App\Messenger\MessengerManager:
         class: App\Messenger\MessengerManager
         arguments:

@@ -98,7 +98,7 @@ class RegistrationFormType extends AbstractFormType
 				//не читается
 				//'data' => '123123',
 				'attr' => [
-					'value' => $pass = '123123',
+					//'value' => $pass = '123123',
 					'autocomplete' => 'new-password',
 				],
 				'constraints' => [
@@ -111,7 +111,7 @@ class RegistrationFormType extends AbstractFormType
 						'min' => 6,
 						'minMessage' => 'Your password should be at least {{ limit }} characters',
 						// max length allowed by Symfony for security reasons
-						'max' => 10,
+						//'max' => 10,
 					], groups: [
 						'register',
 					]),
@@ -119,10 +119,13 @@ class RegistrationFormType extends AbstractFormType
             ])
             ->add('agreeTerms', CheckboxType::class, [
 				'mapped' => false,
-				'data' => true,
+				//'data' => true,
 				'constraints' => [
                     new IsTrue([
                         'message' => 'Согласись.',
+						'groups' => [
+							'register',
+						],
                     ]),
                 ],
             ])
@@ -131,8 +134,10 @@ class RegistrationFormType extends AbstractFormType
 				'mapped' => false,
             ])
 			*/
-            ->add('submit', FormType\SubmitType::class, [])
-			->setMethod('PATCH')
+            ->add('submit', FormType\SubmitType::class, [
+				'label' => 'Register',
+			])
+			->setMethod('POST')
         ;
     }
 	

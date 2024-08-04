@@ -16,6 +16,7 @@
         "grinway/command-bundle": ">=1.0",
         "grinway/env-processor-bundle": "^1.0",
         "grinway/service-bundle": ">=2.0",
+        "grinway/symfony-extensions": "^1.0",
         "grinway/web-app-bundle": "^1.0",
         "hwi/oauth-bundle": "^2.2",
         "knpuniversity/oauth2-client-bundle": "^2.18",
@@ -102,13 +103,22 @@
 			"url": "./bundles/grinway/web-app-bundle"
 		},
 		{
+			"type": "path",
+			"url": "./bundles/grinway/symfony-extensions"
+		},
+		{
 			"type": "vcs",
 			"url": "https://github.com/GrinWay/Faker.git"
 		}
 	],
     "require-dev": {
+        "dama/doctrine-test-bundle": "^8.2",
         "doctrine/doctrine-fixtures-bundle": "^3.6",
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "7.1.*",
+        "symfony/css-selector": "7.1.*",
         "symfony/maker-bundle": "^1.60",
+        "symfony/phpunit-bridge": "^7.1",
         "symfony/stopwatch": "7.1.*",
         "symfony/web-profiler-bundle": "7.1.*"
     },

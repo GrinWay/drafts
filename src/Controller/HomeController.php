@@ -7,6 +7,7 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use App\Service;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Trusted\TrustedDeviceTokenStorage;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGeneratorInterface;
 use Endroid\QrCode\Color\Color;
@@ -303,6 +304,8 @@ class HomeController extends AbstractController
 		?CodeGeneratorInterface $emailCodeGenerator,
 		#[Autowire('@scheb_two_factor.trusted_token_storage')]
 		?TrustedDeviceTokenStorage $trustedTokenStorage,
+		// just don't remove it from the container
+		//?Service\ServiceForTesting $serviceForTesting,
     ) {
 		if (null !== $trustedTokenStorage && null !== $user) {
 			//$trustedTokenStorage->clearTrustedToken($user->getUserIdentifier(), 'main');
@@ -856,10 +859,10 @@ class HomeController extends AbstractController
 				*/
 				
 				$obj = $form->getData();
+					/*
 				\dd(
 					$form->getData(),
 					$form->get('id')->getData(),
-					/*
 					$payload,
 					
 					$obj->getFileSize(),
@@ -871,8 +874,8 @@ class HomeController extends AbstractController
 					$obj->getVichFile(),
 				$em->persist($obj);
 				$em->remove($obj);
-					*/
 				);
+					*/
 				$em->flush();
 				//\dd($payload, $data);
 				return $this->redirectToRoute('app_home_producttypes', $r->attributes->get('_route_params', []));

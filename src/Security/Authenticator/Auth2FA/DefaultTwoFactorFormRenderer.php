@@ -4,6 +4,7 @@ namespace App\Security\Authenticator\Auth2FA;
 
 use function Symfony\component\string\u;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Endroid\QrCode\Color\Color;
 use Endroid\QrCode\Encoding\Encoding;
 use Endroid\QrCode\ErrorCorrectionLevel;
@@ -33,6 +34,8 @@ class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 		private readonly PropertyAccessorInterface $pa,
 		private readonly ?TotpAuthenticatorInterface $totpAuthenticator = null,
 		private readonly ?GoogleAuthenticator $googleAuthenticator = null,
+		#[Autowire('%app.abs_img_dir%')]
+		private readonly string $absImgDir,
 	) {}
 	
 	public function renderForm(Request $request, array $templateVars): Response
@@ -75,9 +78,7 @@ class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 		
 		if ('google' === $providerName) {
 			$qrCodeContent = $this->googleAuthenticator->getQRContent($user);
-		}
-		
-		if ('totp' === $providerName) {
+		} elseif ('totp' === $providerName) {
 			$qrCodeContent = $this->totpAuthenticator->getQRContent($user);			
 		}
 		
@@ -97,18 +98,19 @@ class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 			->setBackgroundColor(new Color(255, 255, 255))
 		;
 		/*
-		$logo = Logo::create(__DIR__.'/assets/symfony.png')
+		*/
+		$logo = Logo::create($this->absImgDir.'/symfony.png')
 			->setResizeToWidth(50)
 			->setPunchoutBackground(true)
 		;
-		*/
 
 		// Create generic label
 		$label = Label::create(u($providerName)->title()->ensureEnd(' Auth').'')
 			->setTextColor(new Color(0, 0, 0))
-		;
+		;			
 		
-		$result = $writer->write(qrCode: $qrCode, label: $label);
+		$result = $writer->write(qrCode: $qrCode, logo: $logo);			
+		
 		$qrCodeUri = $result->getDataUri();
 		
 		return $qrCodeUri;

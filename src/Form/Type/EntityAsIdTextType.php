@@ -40,14 +40,14 @@ class EntityAsIdTextType extends AbstractFormType
 		;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$builder
 			->addModelTransformer($this->foreignKeyAsTextIdDataTransformer)
 		;
     }
 	
-	public function getParent() {
+	public function getParent(): ?string {
 		return FormType\TextType::class;
 	}
 }

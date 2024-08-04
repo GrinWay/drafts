@@ -1,0 +1,3 @@
+parameters:
+
+    app.csrf_name: '_csrf_token'

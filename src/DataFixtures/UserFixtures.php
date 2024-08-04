@@ -18,6 +18,8 @@ class UserFixtures extends AbstractFixtures implements DependentFixtureInterface
         $faker,
         #[Autowire(param: 'app.fixture.users')]
         private readonly int $count,
+        #[Autowire('%env(APP_ENV)%')]
+        private readonly string $env,
     ) {
         parent::__construct(
             faker: $faker,
@@ -29,18 +31,61 @@ class UserFixtures extends AbstractFixtures implements DependentFixtureInterface
     ): void {
 		$this->securityLogger()->info('NEW USER FIXTURES'.\PHP_EOL);
 		
+		$testUserFlag = false;
+		$testAdminFlag = false;
+		$testOwnerFlag = false;
+		if ('test' === $this->env) {
+			$testUserFlag = true;
+			$testAdminFlag = true;
+			$testOwnerFlag = true;
+		}
+		
         for ($i = 0; $i < $this->count; ++$i) {
-            $email = $this->faker->unique()->email;
+			if (true === $testUserFlag) {
+				$testUserFlag = false;
+				
+				$email = 'test@user.test';
 
-			$passport = $this->getReference(UserPassport::class . $i);
-			
-			$roles = $this->faker->randomElement([
-				[],
-				[],
-				[],
-				[],
-				[Role::ADMIN],
-			]);
+				$passport = $this->getReference(UserPassport::class . $i);
+				
+				$roles = [Role::USER];
+				
+				$plainPassword = '123123';
+			} elseif (true === $testAdminFlag) {
+				$testAdminFlag = false;
+				
+				$email = 'test@admin.test';
+
+				$passport = $this->getReference(UserPassport::class . $i);
+				
+				$roles = [Role::ADMIN];
+				
+				$plainPassword = '123123';
+			} elseif (true === $testOwnerFlag) {
+				$testOwnerFlag = false;
+				
+				$email = 'test@owner.test';
+
+				$passport = $this->getReference(UserPassport::class . $i);
+				
+				$roles = [Role::OWNER];
+				
+				$plainPassword = '123123';
+			} else {
+				$email = $this->faker->unique()->email;
+
+				$passport = $this->getReference(UserPassport::class . $i);
+				
+				$roles = $this->faker->randomElement([
+					[],
+					[],
+					[],
+					[],
+					[Role::ADMIN],
+				]);
+				
+				$plainPassword = $this->faker->password;
+			}
 			
 			$user = new User(
                 email: $email,
@@ -48,7 +93,6 @@ class UserFixtures extends AbstractFixtures implements DependentFixtureInterface
                 roles: $roles,
             );
 			
-			$plainPassword = $this->faker->password;
 			$hashedPassword = $this->userPasswordHasher()->hashPassword($user, $plainPassword);
 			$info = \sprintf('User\'s plain: "%s" and hashed password: "%s"', $plainPassword, $hashedPassword);
 			$this->securityLogger()->info($info);
