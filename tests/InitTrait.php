@@ -6,43 +6,33 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Console\Messenger\RunCommandMessage;
+use Doctrine\ORM\EntityManagerInterface;
 
 trait InitTrait {
-	protected function init(
-		bool $isDeleteCache = true,
-		bool $isRebuildDb = true,
-	): void {
-		if (true === $isDeleteCache) {
-			(new Filesystem())->remove(__DIR__.'/../var/cache/test');
+	protected ?MessageBusInterface $bus = null;
+	protected ?EntityManagerInterface $em = null;
+	
+    protected function setUp(): void
+    {
+		parent::setUp();
+		$container = static::getContainer();
+		
+		$this->bus = $container->get(MessageBusInterface::class);
+		$this->em = $container->get(EntityManagerInterface::class);
+    }
+	
+	protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        // doing this is recommended to avoid memory leaks
+        if (null !== $this->em) {
+			$this->em->close();
+			$this->em = null;		
 		}
 		
-		$bus = static::getContainer()->get(MessageBusInterface::class);
-		if (null !== $bus && true === $isRebuildDb) {			
-			foreach([
-				[
-					'doctrine:database:drop',
-					'--env=test',
-					'-f',
-					'-q',
-				],
-				[
-					'doctrine:database:create',
-					'--env=test',
-					'-q',
-				],
-				[
-					'doctrine:schema:create',
-					'--env=test',
-					'-q',
-				],
-				[
-					'doctrine:fixture:load',
-					'--env=test',
-					'-q',
-				],
-			] as $command) {
-				$bus->dispatch(new RunCommandMessage(\implode(' ', $command)));			
-			}
+        if (null !== $this->bus) {
+			$this->bus = null;		
 		}
     }
 }

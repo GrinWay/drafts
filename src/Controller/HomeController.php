@@ -7,6 +7,7 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use App\Service;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Trusted\TrustedDeviceTokenStorage;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Email\Generator\CodeGeneratorInterface;
@@ -284,8 +285,7 @@ class HomeController extends AbstractController
         //$someValue,
         #[Autowire('@twig')]
         $twig,
-        #[Autowire('@security.csrf.token_manager')]
-        $csrfTokenManager,
+        CsrfTokenManagerInterface $csrfTokenManager,
 		?TokenInterface $token,
 		LoginLinkHandlerInterface $loginLinkHandler,
 		PropertyAccessorInterface $pa,

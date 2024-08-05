@@ -11,5 +11,9 @@ when@dev: &when_dev
     framework:
         form:
             csrf_protection:
+                enabled: false
+when@test: &when_test
+    framework:
+        form:
+            csrf_protection:
                 enabled: true
-when@test: *when_dev            

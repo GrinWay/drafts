@@ -17,6 +17,7 @@ if ($_SERVER['APP_DEBUG']) {
 
 if ($_SERVER['APP_CLEAR_CACHE']) {
 	(new Filesystem())->remove($__DIR__.'/../var/cache/test');
+	(new Filesystem())->remove($__DIR__.'/../var/cache/panther');
 }
 
 if ($_SERVER['APP_TRUNCATE_DB']) {

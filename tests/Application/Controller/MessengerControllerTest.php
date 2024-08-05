@@ -15,7 +15,7 @@ class MessengerControllerTest extends AbstractApplicationCase {
 		);
 		
 		//$client->enableProfiler();
-		$client->followRedirects(true);
+		$client->followRedirects(false);
 		$crawler = $client->request('GET', '/messenger');
 		
 		$callbackEachNodeHasMessanger = static function($node, $i) {

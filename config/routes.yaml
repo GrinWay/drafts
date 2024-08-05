@@ -5,7 +5,9 @@ controllers:
     #type: attribute_route_reader
     type: attribute
     
-    schemes: ['https']
+    schemes:
+    -   'http'
+    -   'https'
 
     #name_prefix: 'null_'
 

@@ -1,5 +1,6 @@
 SYMFONY ROUTE
 	?
+	+ почему меня перебрасывает на https (потому что срабатывает resource schemes для аттрибутов Route)
 	+ ?как установить _fragment в Route (при генерации пути передай _fragment в переменные роута)
 	зачем options в route и можно ли их модифицировать в ControllerEventListener
 	+ RequestStack or Request (Request)
@@ -319,6 +320,8 @@ SYMFONY CONFIG COMPONENT https://symfony.com/doc/current/components/config.html
 SYMFONY EXTENTIONS
 SYMFONY SECURITY
 	?
+	+ ? куда пропал сервис CsrfTokenManagerInterface (Он не добавился потому что packages[framework.csrf_protection.enabled = false])
+	+ ? где CsrfTokenManagerInterface (не всегда проводиться)
 	? структура JWT
 	? как создать токен JWT (по каким входным данным)
 	????аутентификация на основе токена JWT
@@ -396,7 +399,7 @@ SYMFONY SECURITY
 	?используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
 ***
 SYMFONY TESTS
-	https://symfony.com/doc/current/testing/end_to_end.html
+	https://symfony.com/doc/current/testing/end_to_end.html#using-an-external-web-server
 	https://symfony.com/doc/current/testing/http_authentication.html
 	https://symfony.com/doc/current/testing/insulating_clients.html
 	https://symfony.com/doc/current/testing/profiling.html
@@ -448,6 +451,21 @@ SYMFONY TESTS
 	https://symfony.com/doc/current/testing/end_to_end.html
 	https://symfony.com/doc/current/components/http_foundation.html#component-foundation-attributes
 	?
+	E2E зачем Client::createSeleniumClient
+	при вызове static::createClient говорит что я его уже вызывал (создавать клиента можно 1 раз) но я этого не делал
+		Booting the kernel before calling "Symfony\Bundle\FrameworkBundle\Test\WebTestCase::createClient()" is not supported, the kernel should only be booted once.
+	E2E после waitForVisibility
+		нет title $crawler->filter('head title')->attr('_text') хотя естественно он есть
+	при создании клиента или в более глобальном месте как указать _порт 8000_ и _https true|false_
+	E2E Panther создаёт картинку в kernel.project_dir, я как-то неправильно описал PANTHER_ERROR_SCREENSHOT_DIR
+	E2E как отключить проверку SSL сертификата
+		SSL certificate problem: self-signed certificate in certificate chain for "https://127.0.0.1/".
+	E2E createPantherClient как указать порт, так как не обращается на порт 8000, а обращается на 443
+	E2E не получается использовать PHPUnit assertions
+		E2E не получается сделать assertResponseStatusCodeSame (стандартные назначения требуют вызова static::createClient)
+		жалуется на то, что не был вызван request() method
+			The "request()" method must be called before "Symfony\Component\BrowserKit\AbstractBrowser::getResponse()".
+	E2E что-то не так с методом создания клиента
 	+ как пользоваться Crawler::reduce (возвращай false на коллекцию Crawler если элемент не нужен)
 	что происходить при перегрузке namespace Crawler::setDefaultNamespacePrefix
 	как пользоваться Crawler::registerNamespace
@@ -506,6 +524,14 @@ SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-lim
 	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
 	создать своего лимитера для логина login_throttling limiter
 		https://symfony.com/doc/current/security.html#limiting-login-attempts
+HOTWIRE: STIMULUS https://stimulus.hotwired.dev/
+	написать тест где проверяется
+		$crawler = $client->waitForVisibility
+		... with https://symfony.com/doc/current/testing/end_to_end.html#creating-a-testcase
+	?придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
+HOTWIRE: TURBO https://turbo.hotwired.dev/
+	реализовать и протестировать чат
+		https://symfony.com/doc/current/testing/end_to_end.html#testing-real-time-applications
 SYMFONY UX TURBO https://symfony.com/bundles/ux-turbo/current/index.html
 	HOTWIRE: STIMULUS
 	?
@@ -513,16 +539,13 @@ SYMFONY UX TURBO https://symfony.com/bundles/ux-turbo/current/index.html
 		посмотреть после реализации
 		https://symfony.com/doc/current/form/form_collections.html#javascript-with-stimulus
 	есть ли разница между зафейленой обработанной формой (422) и необработанной формой для UX TURBO
-SYMFONY STIMULUS https://symfony.com/bundles/StimulusBundle/current/index.html
-	HOTWIRE: TURBO
-	?придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
 SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/index.html
 	https://ux.symfony.com/demos/live-component/form-collection-type/2299
 	https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
 	https://symfony.com/doc/current/reference/forms/types.html#symfony-ux-fields
 	?
 	вызывается или нет PreCreateForRenderEvent при обновлении re-render
-HOTWIRE: STRADA
+HOTWIRE: STRADA https://strada.hotwired.dev/
 SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
 SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
 SYMFONY CACHE
@@ -616,6 +639,8 @@ SYMFONY TRANSLATION
 	Использовать провайдера Loco зарегайся с VPN: https://symfony.com/doc/current/translation.html#installing-and-configuring-a-third-party-provider
 SYMFONY DEPLOYMENT https://symfony.com/doc/current/deployment.html
 PRODUCTION
+	как сделать скриншот монитора
+	как сделать pdf
 	https://symfony.com/doc/current/reference/configuration/kernel.html
 	?
 	process manager Supervisor or systemd for messenger	
@@ -710,7 +735,8 @@ TODO
 		//TODO: take isEnabledLocale
 		//TODO: AccessService (Философия такая, что Symfony говорит всегда выкидывай AccessDeniedException и не выбрасывай AuthenticationException вручную(оно перевыброситься если ты ещё не авторизован), так как логика попадания в EntryPoint уже описана)
 		// TODO: IpRangeRequestMatcher
-
+		//TODO: TestUtil (не совсем уверен что именно в этот пакет)
+		
 SYMFONY TRANSLATION
 	phrase https://phrase.com/
 		bundle for it https://github.com/wickedOne/phrase-tag-bundle
