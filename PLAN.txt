@@ -736,7 +736,10 @@ TODO
 		//TODO: AccessService (Философия такая, что Symfony говорит всегда выкидывай AccessDeniedException и не выбрасывай AuthenticationException вручную(оно перевыброситься если ты ещё не авторизован), так как логика попадания в EntryPoint уже описана)
 		// TODO: IpRangeRequestMatcher
 		//TODO: TestUtil (не совсем уверен что именно в этот пакет)
-		
+	film
+		remove .exe from repository (make command that downloads the appropriate ffmpeg file)
+			add STEP to execute this command
+	
 SYMFONY TRANSLATION
 	phrase https://phrase.com/
 		bundle for it https://github.com/wickedOne/phrase-tag-bundle
