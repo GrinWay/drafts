@@ -451,15 +451,38 @@ SYMFONY TESTS
 	https://symfony.com/doc/current/testing/end_to_end.html
 	https://symfony.com/doc/current/components/http_foundation.html#component-foundation-attributes
 	?
+	+странность, я не могу получить из контейнера env переменные, определённые в .env.test
+		определи ссылки на них в services.yaml when@test parameters
+	парадокс, значение из .env.test не устанавливается в контейнер:
+		в .env.test:  PANTHER_CHROME_ARGUMENTS='--ignore-certificate-errors' не попадает в контейнер при bootKernel
+		а значение по умолчанию в services.yaml parameters устанавливается
+	+ просто не читаются переменные env
+		допустим panther не может элементарно увидеть установленную директорию для скриншотов
+		PANTHER_ERROR_SCREENSHOT_DIR я установил везде .env, .env.test, services.yaml when@test parameters env()
+		(
+			читается .env, .env.test
+			но по умолчанию services.yaml parameters не видит, зато в контейнер попадает именно она
+		)
+	+ E2E не увидел разницы https://symfony.com/doc/current/testing/end_to_end.html#configuring-panther-through-environment-variables
+		PANTHER_NO_HEADLESS (если 1 открывает браузер и делает что в тесте)
+	+ E2E не увидел разницы https://symfony.com/doc/current/testing/end_to_end.html#configuring-panther-through-environment-variables
+		PANTHER_WEB_SERVER_ROUTER (относительный путь к своему файлу bootstrap.php)
+	E2E не увидел разницы https://symfony.com/doc/current/testing/end_to_end.html#configuring-panther-through-environment-variables
+		PANTHER_ERROR_SCREENSHOT_ATTACH
+	Не понятно зачем https://symfony.com/doc/current/testing/end_to_end.html#chrome-specific-environment-variables
+		PANTHER_NO_SANDBOX
+	Не понятно как с флагом --debug & PANTHER_NO_HEADLESS="1" дебажить ошибки в браузере
+		никуда ничего вроде как не выводится
 	E2E зачем Client::createSeleniumClient
 	при вызове static::createClient говорит что я его уже вызывал (создавать клиента можно 1 раз) но я этого не делал
 		Booting the kernel before calling "Symfony\Bundle\FrameworkBundle\Test\WebTestCase::createClient()" is not supported, the kernel should only be booted once.
 	E2E после waitForVisibility
 		нет title $crawler->filter('head title')->attr('_text') хотя естественно он есть
 	при создании клиента или в более глобальном месте как указать _порт 8000_ и _https true|false_
-	E2E Panther создаёт картинку в kernel.project_dir, я как-то неправильно описал PANTHER_ERROR_SCREENSHOT_DIR
-	E2E как отключить проверку SSL сертификата
+	+ E2E Panther создаёт картинку в kernel.project_dir, я как-то неправильно описал PANTHER_ERROR_SCREENSHOT_DIR (PANTHER_ERROR_SCREENSHOT_DIR это только для картинок при ошибках описывать нужно в .env, .env.test)
+	+ E2E как отключить проверку SSL сертификата
 		SSL certificate problem: self-signed certificate in certificate chain for "https://127.0.0.1/".
+		(через env параметр самого PANTHER, которые передадуться в аргументы браузера)
 	E2E createPantherClient как указать порт, так как не обращается на порт 8000, а обращается на 443
 	E2E не получается использовать PHPUnit assertions
 		E2E не получается сделать assertResponseStatusCodeSame (стандартные назначения требуют вызова static::createClient)
@@ -628,6 +651,12 @@ SYMFONY DOCTRINE
 	?
 	как найти имя сущности в Repository
 	реализовать (MappedSuperClass)Authentication и её сущность UserAuthentication(сущность CustomAuth[access_token], сущность Auth2FA[totp, google code, email, backup codes], сущность OAuth[github, telegram, google])
+DOCKER
+	https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
+TESTS
+	GitHub Actions https://help.github.com/en/actions
+	Travis CI https://www.travis-ci.com/
+	Gitlab CI https://docs.gitlab.com/ee/ci/
 AMQP
 	?
 	https://habr.com/ru/articles/62502/

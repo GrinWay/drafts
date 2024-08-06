@@ -4,6 +4,7 @@ namespace App\Tests\E2E\Controller;
 
 use function Symfony\Component\String\u;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Panther\PantherTestCase;
 use Symfony\Component\Panther\Client;
 use App\Tests\E2E\AbstractE2ECase;
@@ -13,6 +14,7 @@ class HomeControllerTest extends AbstractE2ECase
 {
     public function testHome(): void
     {
+		$container = self::bootKernel()->getContainer();
 		// no
 		//self::bootKernel();
 		// no
@@ -41,6 +43,7 @@ class HomeControllerTest extends AbstractE2ECase
 				],
 			],
 		);
+		
 		$client->followRedirects(true);
 		
 		$client->request('GET', '/');
@@ -55,6 +58,7 @@ class HomeControllerTest extends AbstractE2ECase
 		$crawler = $client->waitForVisibility('form');
 		
 		//###> FETCH
+		$crawler->filter('form[name=lsadkf]')->text();
 		$formChildren = $crawler->filter('form input')->extract(['name']);
 		
 		/*
@@ -90,8 +94,7 @@ class HomeControllerTest extends AbstractE2ECase
 		//###< PANTHER ###
 		
 		$consoleLogs = $client->getWebDriver()->manage()->getLog('performance');
-		\dump($consoleLogs);
 		
-		//$client->takeScreenshot('home.png');
+		$this->takeScreenshot($client);
     }
 }

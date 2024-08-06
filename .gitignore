@@ -1,5 +1,8 @@
 /t.txt
 
+/drivers/*
+!/drivers/.gitignore
+
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php

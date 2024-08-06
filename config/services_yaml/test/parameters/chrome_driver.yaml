@@ -1,0 +1,8 @@
+parameters:
+    #env(PANTHER_WEB_SERVER_DIR): '.'
+    #env(PANTHER_ERROR_SCREENSHOT_DIR): './var/cache/panther/screenshots'
+    #env(PANTHER_CHROME_ARGUMENTS): '--ignore-certificate-errors'
+    #env(PANTHER_WEB_SERVER_PORT): 9080
+    #env(PANTHER_EXTERNAL_BASE_URI): '%env(APP_DEFAULT_URI)%'
+    #env(PANTHER_WEB_SERVER_ROUTER): '%env(APP_DEFAULT_URI)%/messenger'
+    #env(PANTHER_NO_HEADLESS): 1

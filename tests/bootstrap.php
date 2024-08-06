@@ -7,14 +7,6 @@ $__DIR__ = __DIR__;
 
 require dirname($__DIR__).'/vendor/autoload.php';
 
-if (method_exists(Dotenv::class, 'bootEnv')) {
-    (new Dotenv())->bootEnv(dirname($__DIR__).'/.env');
-}
-
-if ($_SERVER['APP_DEBUG']) {
-    umask(0000);
-}
-
 if ($_SERVER['APP_CLEAR_CACHE']) {
 	(new Filesystem())->remove($__DIR__.'/../var/cache/test');
 	(new Filesystem())->remove($__DIR__.'/../var/cache/panther');
@@ -50,4 +42,12 @@ if ($_SERVER['APP_TRUNCATE_DB']) {
 	] as $command) {
 		\exec(\implode(' ', $command));			
 	}
+}
+
+if (method_exists(Dotenv::class, 'bootEnv')) {
+    (new Dotenv())->bootEnv(dirname($__DIR__).'/.env');
+}
+
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
 }
