@@ -7,6 +7,8 @@ $__DIR__ = __DIR__;
 
 require dirname($__DIR__).'/vendor/autoload.php';
 
+\exec("php \"${__DIR__}/../vendor/bin/bdi\" detect drivers");
+
 if ($_SERVER['APP_CLEAR_CACHE']) {
 	(new Filesystem())->remove($__DIR__.'/../var/cache/test');
 	(new Filesystem())->remove($__DIR__.'/../var/cache/panther');

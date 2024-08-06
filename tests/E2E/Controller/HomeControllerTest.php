@@ -58,7 +58,6 @@ class HomeControllerTest extends AbstractE2ECase
 		$crawler = $client->waitForVisibility('form');
 		
 		//###> FETCH
-		$crawler->filter('form[name=lsadkf]')->text();
 		$formChildren = $crawler->filter('form input')->extract(['name']);
 		
 		/*
