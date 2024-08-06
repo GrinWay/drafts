@@ -461,6 +461,7 @@ SYMFONY TESTS
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bundle/FrameworkBundle/KernelBrowser.php#:~:text=function%20loginUser
 	https://symfony.com/doc/current/testing/end_to_end.html
 	https://symfony.com/doc/current/components/http_foundation.html#component-foundation-attributes
+	!IMPORTANT! https://getcomposer.org/doc/articles/scripts.md
 	?
 	+странность, я не могу получить из контейнера env переменные, определённые в .env.test
 		определи ссылки на них в services.yaml when@test parameters
@@ -499,7 +500,7 @@ SYMFONY TESTS
 		E2E не получается сделать assertResponseStatusCodeSame (стандартные назначения требуют вызова static::createClient)
 		жалуется на то, что не был вызван request() method
 			The "request()" method must be called before "Symfony\Component\BrowserKit\AbstractBrowser::getResponse()".
-	E2E что-то не так с методом создания клиента
+	E2E что-то не так с методом создания клиента
 	+ как пользоваться Crawler::reduce (возвращай false на коллекцию Crawler если элемент не нужен)
 	что происходить при перегрузке namespace Crawler::setDefaultNamespacePrefix
 	как пользоваться Crawler::registerNamespace
