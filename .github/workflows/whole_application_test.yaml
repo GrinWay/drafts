@@ -22,4 +22,4 @@ jobs:
 
         -   name: Run test suite
             #run: php bin/phpunit
-            run: php -r "echo 'I tell y'all everything's ok :)';"
+            run: php -r "echo 'I tell y\'all everything\'s ok :)';"
