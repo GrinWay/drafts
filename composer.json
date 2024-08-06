@@ -13,11 +13,11 @@
         "dragonmantank/cron-expression": "^3.3",
         "endroid/qr-code": "^5.0",
         "fzaninotto/faker": "dev-bugfix",
-        "grinway/command-bundle": ">=1.0",
-        "grinway/env-processor-bundle": "^1.0",
-        "grinway/service-bundle": ">=2.0",
-        "grinway/symfony-extensions": "^1.0",
-        "grinway/web-app-bundle": "^1.0",
+        "grinway/command-bundle": "v1.x-dev",
+        "grinway/env-processor-bundle": "v1.x-dev",
+        "grinway/service-bundle": "v3.0.x-dev",
+        "grinway/symfony-extensions": "dev-main",
+        "grinway/web-app-bundle": "v1.x-dev",
         "hwi/oauth-bundle": "^2.2",
         "knpuniversity/oauth2-client-bundle": "^2.18",
         "league/oauth2-github": "*",
@@ -87,24 +87,24 @@
     },
 	"repositories": [
 		{
-			"type": "path",
-			"url": "./bundles/grinway/service-bundle"
+			"type": "vcs",
+			"url": "https://github.com/GrinWay/service-bundle.git"
 		},
 		{
-			"type": "path",
-			"url": "./bundles/grinway/command-bundle"
+			"type": "vcs",
+			"url": "https://github.com/GrinWay/command-bundle.git"
 		},
 		{
-			"type": "path",
-			"url": "./bundles/grinway/env-processor-bundle"
+			"type": "vcs",
+			"url": "https://github.com/GrinWay/env-processor-bundle.git"
 		},
 		{
-			"type": "path",
-			"url": "./bundles/grinway/web-app-bundle"
+			"type": "vcs",
+			"url": "https://github.com/GrinWay/web-app-bundle.git"
 		},
 		{
-			"type": "path",
-			"url": "./bundles/grinway/symfony-extensions"
+			"type": "vcs",
+			"url": "https://github.com/GrinWay/symfony-extensions.git"
 		},
 		{
 			"type": "vcs",
