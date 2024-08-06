@@ -10,6 +10,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use App\Tests\InitTrait;
 
-class AbstractIntegrationCase extends KernelTestCase {
+abstract class AbstractIntegrationCase extends KernelTestCase {
 	use InitTrait;
 }

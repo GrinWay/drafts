@@ -18,6 +18,7 @@ trait InitTrait {
     protected function setUp(): void
     {
 		parent::setUp();
+		return;
 		$container = static::getContainer();
 		
 		###> PARAMETERS ###

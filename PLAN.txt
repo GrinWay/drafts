@@ -399,8 +399,6 @@ SYMFONY SECURITY
 	?используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
 ***
 SYMFONY TESTS
-	https://symfony.com/doc/current/testing/end_to_end.html#using-an-external-web-server
-	https://symfony.com/doc/current/testing/http_authentication.html
 	https://symfony.com/doc/current/testing/insulating_clients.html
 	https://symfony.com/doc/current/testing/profiling.html
 	https://symfony.com/doc/current/components/dom_crawler.html
@@ -422,6 +420,19 @@ SYMFONY TESTS
 		https://symfony.com/doc/current/components/clock.html#writing-time-sensitive-tests
 	https://symfony.com/doc/current/components/console/helpers/questionhelper.html#testing-a-command-that-expects-input
 	
+	https://symfony.com/doc/current/components/browser_kit.html
+	https://symfony.com/doc/current/components/dom_crawler.html
+	https://github.com/php-webdriver/php-webdriver
+	https://symfony.com/doc/current/testing/end_to_end.html#panther_phpunit-extension
+	https://github.com/liip/LiipFunctionalTestBundle
+	https://github.com/dbrekelmans/browser-driver-installer
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/BrowserKit/HttpBrowser.php
+	https://symfony.com/doc/current/http_client.html
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bundle/FrameworkBundle/Test/WebTestCase.php
+	https://symfony.com/doc/current/testing.html#testing-application-assertions
+	https://phpunit.de/index.html
+	https://symfony.com/doc/current/testing/end_to_end.html#panther_interactive-mode
+	https://sites.google.com/chromium.org/driver/
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bundle/FrameworkBundle/KernelBrowser.php#:~:text=function%20disableReboot
 	https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-test
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/BrowserKit/AbstractBrowser.php#:~:text=function%20request
@@ -655,6 +666,7 @@ DOCKER
 	https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
 TESTS
 	GitHub Actions https://help.github.com/en/actions
+		https://www.youtube.com/watch?v=WW6ZUw9IExA
 	Travis CI https://www.travis-ci.com/
 	Gitlab CI https://docs.gitlab.com/ee/ci/
 AMQP

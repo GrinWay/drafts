@@ -7,7 +7,13 @@ $__DIR__ = __DIR__;
 
 require dirname($__DIR__).'/vendor/autoload.php';
 
-\exec("php \"${__DIR__}/../vendor/bin/bdi\" detect drivers");
+//###> Must be at least 1 driver ###
+$pathToDriver = "${__DIR__}/../drivers";
+\exec("cd ${pathToDriver} && ls | wc -l", output: $result);
+if (isset($result[0]) && (!\is_numeric($result[0]) || 1 > $result[0])) {
+	\exec("php \"${__DIR__}/../vendor/bin/bdi\" detect drivers");
+}
+//###< Must be at least 1 driver ###
 
 if ($_SERVER['APP_CLEAR_CACHE']) {
 	(new Filesystem())->remove($__DIR__.'/../var/cache/test');
