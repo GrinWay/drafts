@@ -2,6 +2,7 @@
 
 namespace App\Tests\Application\Profiler;
 
+use Symfony\Component\VarDumper\Cloner\Data;
 use App\Tests\Application\AbstractApplicationCase;
 
 class ProfilerCollectorTest extends AbstractApplicationCase {
@@ -22,7 +23,9 @@ class ProfilerCollectorTest extends AbstractApplicationCase {
 		
 		$profiler = $client->getProfile();
 		if ($profiler) {
+			//session
 			$requestDataCollector = $profiler->getCollector('request');
+			
 			$commandDataCollector = $profiler->getCollector('command');
 			$timeDataCollector = $profiler->getCollector('time');
 			$memoryDataCollector = $profiler->getCollector('memory');
@@ -45,6 +48,18 @@ class ProfilerCollectorTest extends AbstractApplicationCase {
 			$workflowDataCollector = $profiler->getCollector('workflow');
 			$vichUploaderMappingCollectorDataCollector = $profiler->getCollector('vich_uploader.mapping_collector');
 			$configDataCollector = $profiler->getCollector('config');
+			
+			$getData = static fn($arrayOfData, $m = 'getValue') => \array_map(static fn($data) => $data->$m(), $arrayOfData);
+			
+			//###> ASSERTIONS
+			$this->assertFalse($requestDataCollector->getStatelessCheck());
+			
+			$this->assertTrue($client->getRequest()->getSession()->has('_locale'));
+			$this->assertArrayHasKey('_locale', $getData($requestDataCollector->getSessionAttributes()));
+			
+			$contentType = $requestDataCollector->getContentType();
+			$this->assertStringContainsStringIgnoringCase('text/html', $contentType);
+			
 			\dd(
 				/*
 				'profiler:',
@@ -75,7 +90,41 @@ class ProfilerCollectorTest extends AbstractApplicationCase {
 				*/
 				'requestDataCollector:',
 				\get_debug_type($requestDataCollector),
+				/*
 				$requestDataCollector->getMethod(),
+				$requestDataCollector->getPathInfo(),
+				$requestDataCollector->getRequestRequest()->all(),
+				$requestDataCollector->getRequestQuery()->all(),
+				$requestDataCollector->getRequestFiles()->all(),
+				$requestDataCollector->getRequestServer()->all(),
+				$requestDataCollector->getRequestHeaders()->all(),
+				$requestDataCollector->getRequestCookies()->all(),
+				$requestDataCollector->getRequestAttributes()->all(),
+				$requestDataCollector->getResponseHeaders(),
+				$requestDataCollector->getResponseCookies()->all(),
+				$requestDataCollector->getFlashes(),
+				$getData($requestDataCollector->getResponseHeaders()->all(), 'getValue'),
+				$getData($requestDataCollector->getSessionAttributes()),
+				$requestDataCollector->getStatelessCheck(),
+				$requestDataCollector->getSessionUsages()->getValue(),
+				$requestDataCollector->getContent(),
+				$requestDataCollector->isJsonRequest(),
+				$requestDataCollector->getPrettyJson(),
+				$requestDataCollector->getContentType(),
+				$requestDataCollector->getStatusText(),
+				$requestDataCollector->getStatusCode(),
+				$requestDataCollector->getFormat(),
+				$requestDataCollector->getLocale(),
+				*/
+				/*
+				$getData($requestDataCollector->getDotenvVars()->all()),
+				$requestDataCollector->getRoute(),
+				$requestDataCollector->getIdentifier(),
+				$requestDataCollector->getRouteParams(),
+				$requestDataCollector->getController(),
+				$requestDataCollector->getRedirect(),
+				$requestDataCollector->getForwardToken(),
+				$requestDataCollector->getSubscribedEvents(),
 				'commandDataCollector:',
 				\get_debug_type($commandDataCollector),
 				'timeDataCollector:',
@@ -124,6 +173,7 @@ class ProfilerCollectorTest extends AbstractApplicationCase {
 				\get_debug_type($vichUploaderMappingCollectorDataCollector),
 				'configDataCollector:',
 				\get_debug_type($configDataCollector),
+				*/
 			);			
 		}
 	}

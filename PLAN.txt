@@ -110,7 +110,9 @@ SYMFONY YAML PARSER (TAGS)
 	kernel.default_locale от чего зависит
 SYMFONY SERVICE CONTAINER
 	?
-	? как в сервисе получить env переменную, так как в ParameterBagInterface её нет
+	+ ? как в сервисе получить env переменную, так как в ParameterBagInterface её нет
+		ENV получаем через запрос $request->server->get
+		даже в parameters ненужно протягивать
 	? возможно стоит использовать bind только в автоматически протянутых сервисах services.yaml.imports.services.auto когда в services.yaml нет ничего кроме imports
 	+ ? может ли container->getParameterBag()->resolveValue разрешить env (разрешает в вид: env_b6b8ae882b5a6588_APP_ENV_33ecddc04a0f12187e466dc7d02e9db6)
 	+ ? services.yaml: при использовании imports when@(dev, prod, test) доступно ли то, что определено без when@ конструкции (естественно)
@@ -471,7 +473,7 @@ SYMFONY TESTS
 		(
 			всё правильно, тесты ни при чём,
 			просто env переменные не храняться в ParameterBagInterface
-			протащи env переменную через параметр
+			достать env переменную можно через $request->server->get
 		)
 	+ просто не читаются переменные env
 		допустим panther не может элементарно увидеть установленную директорию для скриншотов
