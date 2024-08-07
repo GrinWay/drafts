@@ -110,6 +110,7 @@ SYMFONY YAML PARSER (TAGS)
 	kernel.default_locale от чего зависит
 SYMFONY SERVICE CONTAINER
 	?
+	? как в сервисе получить env переменную, так как в ParameterBagInterface её нет
 	? возможно стоит использовать bind только в автоматически протянутых сервисах services.yaml.imports.services.auto когда в services.yaml нет ничего кроме imports
 	+ ? может ли container->getParameterBag()->resolveValue разрешить env (разрешает в вид: env_b6b8ae882b5a6588_APP_ENV_33ecddc04a0f12187e466dc7d02e9db6)
 	+ ? services.yaml: при использовании imports when@(dev, prod, test) доступно ли то, что определено без when@ конструкции (естественно)
@@ -399,7 +400,6 @@ SYMFONY SECURITY
 	?используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
 ***
 SYMFONY TESTS
-	https://symfony.com/doc/current/testing/insulating_clients.html
 	https://symfony.com/doc/current/testing/profiling.html
 	https://symfony.com/doc/current/components/dom_crawler.html
 	https://symfony.com/doc/current/components/css_selector.html
@@ -465,9 +465,14 @@ SYMFONY TESTS
 	?
 	+странность, я не могу получить из контейнера env переменные, определённые в .env.test
 		определи ссылки на них в services.yaml when@test parameters
-	парадокс, значение из .env.test не устанавливается в контейнер:
-		в .env.test:  PANTHER_CHROME_ARGUMENTS='--ignore-certificate-errors' не попадает в контейнер при bootKernel
+	+ значение из .env.test не устанавливается в контейнер:
+		в .env.test:  PANTHER_CHROME_ARGUMENTS='--ignore-certificate-errors' не попадает в контейнер(ParameterBagInterface) при bootKernel
 		а значение по умолчанию в services.yaml parameters устанавливается
+		(
+			всё правильно, тесты ни при чём,
+			просто env переменные не храняться в ParameterBagInterface
+			протащи env переменную через параметр
+		)
 	+ просто не читаются переменные env
 		допустим panther не может элементарно увидеть установленную директорию для скриншотов
 		PANTHER_ERROR_SCREENSHOT_DIR я установил везде .env, .env.test, services.yaml when@test parameters env()
@@ -611,7 +616,8 @@ SYMFONY BUNDLES https://symfony.com/doc/current/bundles.html
 	?
 	Configuration addDefaultChildrenIfNoneSet
 SYMFONY WORKFLOW
-SYMFONY PROFILER
+SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
+	реализовать свой DataCollectorInterface, *Pass который добавит в сервис Profiler, если он есть, addCollector
 	?
 	Почему сервис @Psr\Container\ContainerInterface не доступен из services.yaml
 https://symfony.com/doc/current/reference/dic_tags.html
