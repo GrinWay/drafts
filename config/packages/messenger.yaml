@@ -19,7 +19,7 @@ framework:
                 -   id:         'validation'
                 #-   id:         'App\Messenger\Middleware\HowStampWorksMiddleware'
                 -   id:         'doctrine_open_transaction_logger' # DOCTRINE TRANSACTION LOG
-                -   id:         'doctrine_transaction' # AUTO FLUSH
+                #-   id:         'doctrine_transaction' # AUTO FLUSH
             
             ###> EVENT: $eventBus
             event.bus:

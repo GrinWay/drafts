@@ -24,6 +24,11 @@ class ProfilerCollectorTest extends AbstractApplicationCase {
 		$profiler = $client->getProfile();
 		if ($profiler) {
 			//session
+			
+			/**
+			* getStatelessCheck
+			* getContentType
+			*/
 			$requestDataCollector = $profiler->getCollector('request');
 			
 			$commandDataCollector = $profiler->getCollector('command');
@@ -87,48 +92,20 @@ class ProfilerCollectorTest extends AbstractApplicationCase {
 				
 				'profiler getCollectors:',
 				\array_map(static fn($collector) => $collector->getName(), $profiler->getCollectors()),
-				*/
 				'requestDataCollector:',
 				\get_debug_type($requestDataCollector),
-				/*
-				$requestDataCollector->getMethod(),
-				$requestDataCollector->getPathInfo(),
-				$requestDataCollector->getRequestRequest()->all(),
-				$requestDataCollector->getRequestQuery()->all(),
-				$requestDataCollector->getRequestFiles()->all(),
-				$requestDataCollector->getRequestServer()->all(),
-				$requestDataCollector->getRequestHeaders()->all(),
-				$requestDataCollector->getRequestCookies()->all(),
-				$requestDataCollector->getRequestAttributes()->all(),
-				$requestDataCollector->getResponseHeaders(),
-				$requestDataCollector->getResponseCookies()->all(),
-				$requestDataCollector->getFlashes(),
-				$getData($requestDataCollector->getResponseHeaders()->all(), 'getValue'),
-				$getData($requestDataCollector->getSessionAttributes()),
-				$requestDataCollector->getStatelessCheck(),
-				$requestDataCollector->getSessionUsages()->getValue(),
-				$requestDataCollector->getContent(),
-				$requestDataCollector->isJsonRequest(),
-				$requestDataCollector->getPrettyJson(),
-				$requestDataCollector->getContentType(),
-				$requestDataCollector->getStatusText(),
-				$requestDataCollector->getStatusCode(),
-				$requestDataCollector->getFormat(),
-				$requestDataCollector->getLocale(),
-				*/
-				/*
-				$getData($requestDataCollector->getDotenvVars()->all()),
-				$requestDataCollector->getRoute(),
-				$requestDataCollector->getIdentifier(),
-				$requestDataCollector->getRouteParams(),
-				$requestDataCollector->getController(),
-				$requestDataCollector->getRedirect(),
-				$requestDataCollector->getForwardToken(),
-				$requestDataCollector->getSubscribedEvents(),
 				'commandDataCollector:',
 				\get_debug_type($commandDataCollector),
 				'timeDataCollector:',
 				\get_debug_type($timeDataCollector),
+				$timeDataCollector->getDuration(),
+				*/
+				'dbDataCollector:',
+				\get_debug_type($dbDataCollector),
+				$dbDataCollector->getCacheEnabled(),
+				/*
+				'dbDataCollector getQueryCount:',
+				$dbDataCollector->getQueryCount(),
 				'memoryDataCollector:',
 				\get_debug_type($memoryDataCollector),
 				'validatorDataCollector:',
@@ -158,10 +135,6 @@ class ProfilerCollectorTest extends AbstractApplicationCase {
 				'httpClientComponentDataCollector:',
 				\get_debug_type($httpClientComponentDataCollector),
 				
-				'dbDataCollector:',
-				\get_debug_type($dbDataCollector),
-				'dbDataCollector getQueryCount:',
-				$dbDataCollector->getQueryCount(),
 				
 				'messengerDataCollector:',
 				\get_debug_type($messengerDataCollector),

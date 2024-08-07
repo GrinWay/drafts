@@ -7,6 +7,8 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\DomCrawler\Crawler;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use App\Service;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Trusted\TrustedDeviceTokenStorage;
@@ -206,7 +208,6 @@ use Symfony\Component\PropertyInfo\Extractor\SerializerExtractor;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AttributeLoader;
 use Symfony\Component\DependencyInjection\Container;
-use Psr\Container\ContainerInterface;
 use Symfony\Component\DependencyInjection\Attribute\AutowireCallable;
 use Symfony\Component\Dotenv\Dotenv;
 use App\Service\Anonymous\SomeAnonymousService;
@@ -307,6 +308,23 @@ class HomeController extends AbstractController
 		// just don't remove it from the container
 		//?Service\ServiceForTesting $serviceForTesting,
     ) {
+		$html = <<<'END'
+		<html class="any">
+			<head>
+				<title>Title Welcome!</title>
+			</head>
+			<body>
+				Body content
+			</body>
+		</html>
+		END;
+		
+		$crawler = new Crawler($html);
+		
+		\dd(
+			$crawler->filter('body')->closest('.any')->nodeName(),
+		);
+		
 		if (null !== $trustedTokenStorage && null !== $user) {
 			//$trustedTokenStorage->clearTrustedToken($user->getUserIdentifier(), 'main');
 		}
