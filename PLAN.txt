@@ -402,10 +402,6 @@ SYMFONY SECURITY
 	?используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
 ***
 SYMFONY TESTS
-	https://symfony.com/doc/current/components/dom_crawler.html#accessing-node-values
-	https://symfony.com/doc/current/components/css_selector.html
-	https://symfony.com/doc/current/translation.html#locale-switcher
-	определи mount и не устанавливай в класс значение параметра https://symfony.com/bundles/ux-twig-component/current/index.html#test-helpers
 	Don't add the void return type to methods in tests;
 	https://symfony.com/doc/current/components/http_foundation.html#simulating-a-request
 	https://symfony.com/doc/current/controller/error_pages.html#testing-error-pages-during-development
@@ -421,6 +417,7 @@ SYMFONY TESTS
 		https://symfony.com/doc/current/components/clock.html#writing-time-sensitive-tests
 	https://symfony.com/doc/current/components/console/helpers/questionhelper.html#testing-a-command-that-expects-input
 	
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/DomCrawler/UriResolver.php
 	https://symfony.com/doc/current/components/browser_kit.html
 	https://symfony.com/doc/current/components/dom_crawler.html
 	https://github.com/php-webdriver/php-webdriver
@@ -464,7 +461,8 @@ SYMFONY TESTS
 	https://symfony.com/doc/current/components/http_foundation.html#component-foundation-attributes
 	!IMPORTANT! https://getcomposer.org/doc/articles/scripts.md
 	?
-	+странность, я не могу получить из контейнера env переменные, определённые в .env.test
+	+ неужели единственным способом задать локаль запроса является передача через url (конечно нет, для удобства в тестах можно передавать HTTP_<LOCALE> request->server параметр, который установиться в request->headers как <locale>)
+	+ странность, я не могу получить из контейнера env переменные, определённые в .env.test
 		определи ссылки на них в services.yaml when@test parameters
 	+ значение из .env.test не устанавливается в контейнер:
 		в .env.test:  PANTHER_CHROME_ARGUMENTS='--ignore-certificate-errors' не попадает в контейнер(ParameterBagInterface) при bootKernel
@@ -589,7 +587,6 @@ SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/in
 HOTWIRE: STRADA https://strada.hotwired.dev/
 SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
 SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
-SYMFONY CSS SELECTOR https://symfony.com/doc/current/components/css_selector.html
 SYMFONY CACHE
 	?
 	$request->getETags()

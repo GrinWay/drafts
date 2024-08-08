@@ -7,6 +7,9 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\CssSelector\CssSelectorConverter;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\BrowserKit\HttpBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -308,23 +311,6 @@ class HomeController extends AbstractController
 		// just don't remove it from the container
 		//?Service\ServiceForTesting $serviceForTesting,
     ) {
-		$html = <<<'END'
-		<html class="any">
-			<head>
-				<title>Title Welcome!</title>
-			</head>
-			<body>
-				Body content
-			</body>
-		</html>
-		END;
-		
-		$crawler = new Crawler($html);
-		
-		\dd(
-			$crawler->filter('body')->closest('.any')->nodeName(),
-		);
-		
 		if (null !== $trustedTokenStorage && null !== $user) {
 			//$trustedTokenStorage->clearTrustedToken($user->getUserIdentifier(), 'main');
 		}

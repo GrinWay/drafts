@@ -2,6 +2,7 @@
 
 namespace App\EventListener\Kernel;
 
+use Symfony\Component\PropertyAccess\PropertyAccess;
 use Symfony\Component\Translation\LocaleSwitcher;
 use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
@@ -21,14 +22,18 @@ class AcceptLanguageLocaleEventListener implements KernelEventListenerInterface
 		$request = $event->getRequest();
 		$session = $request->getSession();
 		
-		if ($locale = $session->get('_locale', null)) {
-			$request->setLocale($locale);
+		$sessionLocale = $session->get('_locale', null);
+		
+		if (null !== $sessionLocale) {
+			$request->setLocale($sessionLocale);
 			return;
 		}
 
-		$locale = $request->getPreferredLanguage(
+		$preferredLocale = $request->getPreferredLanguage(
 			$this->appEnabledLocales,
 		);
+		// maybe someone passed (HTTP_LOCALE -> locale) header
+		$locale = $request->headers->get('locale', $preferredLocale);
 		$session->set('_locale', $locale);
 		$request->setLocale($locale);
 		

@@ -14,9 +14,6 @@ class TestUtil
 	//###> API ###
 	
 	/**
-	* SPECIAL "Attributes":
-	*     -    '_node'
-	* 
 	* Usage:
 	* 
 	*  $return = $crawler->filter('PARENT CSS FILTER')->children()->each(
@@ -26,28 +23,30 @@ class TestUtil
 	*     TestUtil::extract(true)
 	* );
 	*  $return = $crawler->filter('CSS FILTER')->each(
-	*     TestUtil::extract(false, ['_node', '_text'])
+	*     TestUtil::extract(false, ['_name', '_text'])
 	* ); // same as below
 	*  $return = $crawler->filter('CSS FILTER')->each(
-	*     TestUtil::extract(false, ['_node'], '_text')
+	*     TestUtil::extract(false, ['_name'], '_text')
 	* ); // same as above
 	* 
 	* This function is particularly for Crawler::each method
 	* 
-	* @return callable that return array (attributes of Crawler + _node returns Crawler::nodeName)
+	* @return callable that return array (attributes of Crawler + _name returns Crawler::nodeName)
 	*/
 	public static function extract(
 		bool $isIncludeDefault = true,
 		array|string $attributesAsArray = [],
 		string...$attributes,
 	): callable {
+		$default = [];
+		
 		if (\is_string($attributesAsArray)) {
 			$attributesAsArray = [$attributesAsArray];
 		}
 		
 		if (true === $isIncludeDefault) {
 			$default = [
-				'_node',
+				'_name',
 				'class',
 				'_text',
 			];
@@ -61,11 +60,8 @@ class TestUtil
 		) use($attributes): array {
 			$result = [];
 			foreach($attributes as $attribute) {
-				if ('_node' === $attribute) {
-					$result[$attribute] = $node->nodeName();
-					continue;
-				}
-				$result[$attribute] = $node->attr($attribute);
+				$results = $node->extract([$attribute]);
+				$result[$attribute] = \array_shift($results);
 			}
 			return $result;
 		};

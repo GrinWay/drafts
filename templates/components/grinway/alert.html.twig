@@ -20,16 +20,16 @@
 			light: 'alert-light',
 			dark: 'alert-dark',
 		},
+		alert_alignment: {
+			left: 'text-left',
+			center: 'text-center',
+			right: 'text-right',
+		},
 		alert_size: {
 			lg: 'font-size-lg',
 			md: 'font-size-md',
 			sm: 'small',
 			normal: '',
-		},
-		alert_alignment: {
-			left: 'text-left',
-			center: 'text-center',
-			right: 'text-right',
 		},
 		alert_position: {
 			top: 'position-absolute top-0 start-0 end-0',
@@ -49,7 +49,7 @@
 	],
 }) %}
 
-<div class="{{ class.apply({alert_type, alert_size, alert_alignment, alert_position}, attributes.nested(nestedAlertName).render('class')) }}" {{ attributes.nested(nestedAlertName).defaults({ role: 'alert' }) }}>
+<div class="{{- class.apply({alert_type, alert_size, alert_alignment, alert_position}, attributes.nested(nestedAlertName).render('class')) -}}" {{- attributes.nested(nestedAlertName).defaults({ role: 'alert' }) -}}>
 	{%- block content -%}
 		EMPTY ALERT
 	{%- endblock content -%}
