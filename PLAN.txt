@@ -402,7 +402,7 @@ SYMFONY SECURITY
 	??залогиниться через X.509 Client Certificates не получилось https://symfony.com/doc/current/reference/configuration/security.html#x-509-authentication
 	?используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
 ***
-SYMFONY TESTS
+SYMFONY TESTS 
 	https://symfony.com/doc/current/service_container/service_subscribers_locators.html#testing-a-service-subscriber
 	https://symfony.com/doc/current/form/unit_testing.html
 	https://symfony.com/doc/current/validation/custom_constraint.html#testing-custom-constraints
