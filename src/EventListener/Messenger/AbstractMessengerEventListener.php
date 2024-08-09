@@ -19,7 +19,7 @@ abstract class AbstractMessengerEventListener
             $ref = new \ReflectionClass($event->getEnvelope()->getMessage());
             $dop .= ' message(' . $ref->getShortName() . ')';
 			if (!\method_exists($event, 'getReceiverName')) {
-				$dop .= ' transport(sync://)';
+				$dop .= ' transport(sync|in-memory)';
 			}
         }
 		if (\method_exists($event, 'getReceiverName')) {

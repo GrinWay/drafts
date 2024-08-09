@@ -3,10 +3,12 @@
 namespace App\Validation\Validator;
 
 use function Symfony\Component\String\u;
+
 use App\Validation\Constraint\WordCount;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\Exception\UnexpectedTypeException;
+use App\Service;
 
 class WordCountValidator extends ConstraintValidator {
 	
@@ -19,28 +21,31 @@ class WordCountValidator extends ConstraintValidator {
 			return;
 		}
 		
-		$words = \explode(' ', u($value)->collapseWhitespace().'');
-		$wordsCount = \count($words);
+		if (!\is_scalar($value)) {
+			throw new UnexpectedTypeException($constraint, 'scalar');
+		}
 		
-		if ($constraint->min === $constraint->max && $constraint->min > $wordsCount) {
+		$countWords = Service\WordUtil::countWords((string) $value);
+		
+		if ($constraint->min === $constraint->max && $constraint->min > $countWords) {
 			$this->context->buildViolation($constraint->exactlyMessage)
-				->setParameter('{passed_len}', $wordsCount)
+				->setParameter('{passed_len}', $countWords)
 				->setParameter('{must_len}', $constraint->min)
 				->addViolation()
 			;
 		}
 		
-		if ($constraint->min > $wordsCount) {
+		if ($constraint->min > $countWords) {
 			$this->context->buildViolation($constraint->minMessage)
-				->setParameter('{passed_len}', $wordsCount)
+				->setParameter('{passed_len}', $countWords)
 				->setParameter('{must_len}', $constraint->min)
 				->addViolation()
 			;
 		}
 		
-		if ($constraint->max < $wordsCount) {
+		if ($constraint->max < $countWords) {
 			$this->context->buildViolation($constraint->maxMessage)
-				->setParameter('{passed_len}', $wordsCount)
+				->setParameter('{passed_len}', $countWords)
 				->setParameter('{must_len}', $constraint->max)
 				->addViolation()
 			;

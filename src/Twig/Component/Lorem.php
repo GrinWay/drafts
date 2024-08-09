@@ -8,6 +8,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use App\Repository\ProductRepository;
 use Symfony\UX\TwigComponent\Attribute\ExposeInTemplate;
 use Symfony\UX\TwigComponent\Attribute\PostMount;
+use App\Service;
 
 #[AsTwigComponent]
 class Lorem
@@ -23,7 +24,7 @@ class Lorem
 		$lorem_len = 30,
 	): void {
 		$faker = $this->faker;
-		$word = static fn() => $faker->word(1);
+		$word = static fn() => $faker->word();
 		
 		$lorem = '';
 		

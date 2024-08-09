@@ -88,10 +88,9 @@ framework:
             'App\Messenger\Event\Message\TestUserWasCreated': sync
             # GrinWay\WebApp\Contract\Messenger\HasSyncTransportInterface
             
-# when@test:
-#    framework:
-#        messenger:
-#            transports:
-#                # replace with your transport name here (e.g., my_transport: 'in-memory://')
-#                # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
-#                async: 'in-memory://'
+when@test:
+    framework:
+        messenger:
+            transports:
+                sync: '%env(APP_MESSENGER_TEST)%'
+                async: '%env(APP_MESSENGER_TEST)%'

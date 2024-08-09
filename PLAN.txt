@@ -39,6 +39,7 @@ SYMFONY DOCTRINE
 	make:fixtures
 SYMFONY MESSENGER
 	?
+	? реализовать собственный транспорт и понять зачем такие методы как ack()
 	? если есть doctrine_transaction middleware выкидывает исключение нет активной транзакции при $bus->dispatch(new RunCommandMessage()) а зачем интересно было бы знать
 	? попробовать выкинуть свой App\Exception\Messenger\StopPropagationException в handler чтобы не обрабатывать envelope оставшимися handler в своём EnvelopeStopPropagationMiddleware(вернуть просто изначальный $envelope, что нам мешает это сделать) (priority будет нужна как никогда)
 	? на сколько понимаю middleware send_message играет очень важную роль так как:
@@ -402,13 +403,6 @@ SYMFONY SECURITY
 	?используя программный выход $security->logout() проверяется csrf, но... это же не форма и не POST, зачем csrf???
 ***
 SYMFONY TESTS
-	Don't add the void return type to methods in tests;
-	https://symfony.com/doc/current/components/http_foundation.html#simulating-a-request
-	https://symfony.com/doc/current/controller/error_pages.html#testing-error-pages-during-development
-	https://symfony.com/doc/current/components/clock.html
-	https://symfony.com/doc/current/testing/database.html
-	https://symfony.com/doc/current/messenger.html#in-memory-transport
-	($twig->getLoader()->exists('home/index.html.twig'))
 	https://symfony.com/doc/current/service_container/service_subscribers_locators.html#testing-a-service-subscriber
 	https://symfony.com/doc/current/form/unit_testing.html
 	https://symfony.com/doc/current/validation/custom_constraint.html#testing-custom-constraints
