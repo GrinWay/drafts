@@ -1,0 +1,30 @@
+{# Usage: "compatible with constraint.payload.level: !php/const App\Type\Note\NoteType::TYPES"
+	
+	<twig:grinway:form:error :level="level">
+		{{- error.message -}}
+	</twig:grinway:form:error>
+#}
+
+{% props level = null %}
+
+{% set class_cva = cva({
+	base: 'alert alert-danger p-0 m-0 px-2 py-1 mb-3',
+	defaultVariants: {
+		level: error.cause.constraint.payload.level ?? 'notice',
+	},
+	variants: {
+		level: {
+			notice: 'fs-6',
+			warning: 'fs-5',
+			error: 'lead',
+		},
+	},
+}) %}
+
+<div {{ attributes.defaults({ class: class_cva.apply({level}) }) -}}>
+	<div {{ attributes.nested('inner').defaults({}) -}}>
+		{%- block content -%}
+			Error happened
+		{%- endblock -%}
+	</div>
+</div>

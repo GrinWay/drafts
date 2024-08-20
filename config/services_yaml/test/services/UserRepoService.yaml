@@ -1,0 +1,8 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\Service\UserRepoService:
+        class: App\Service\UserRepoService
+        public: true

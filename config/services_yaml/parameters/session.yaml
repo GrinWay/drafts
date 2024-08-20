@@ -1,0 +1,3 @@
+parameters:
+
+    app.session.max_idle_sec: 259200

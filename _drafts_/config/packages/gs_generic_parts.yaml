@@ -1,0 +1,8 @@
+###> JUST EXAMPLE, copy it into your config ###
+
+grin_way_generic_parts:
+    locale:                     '%env(LOCALE)%'
+
+    timezone:                   '%env(TIMEZONE)%'
+    
+    timezone_session_name:      '%env(TIMEZONE_SESSION_NAME)%'

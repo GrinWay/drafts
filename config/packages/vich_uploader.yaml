@@ -1,0 +1,28 @@
+vich_uploader:
+    db_driver: orm
+    
+    metadata:
+        type: attribute
+    
+    mappings:
+        media:
+            uri_prefix: '/%app.public_media_dir%'
+            upload_destination: '%app.abs_media_dir%'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+        
+        image:
+            uri_prefix: '/%app.public_img_dir%'
+            upload_destination: '%app.abs_img_dir%'
+            #namer: Vich\UploaderBundle\Naming\SlugNamer
+            namer: App\Service\Naming\SlugNamer
+            
+            delete_on_remove: true # delete file on remove entity
+            delete_on_update: true # delete file on update entity
+            inject_on_load: true # inject File object when fetch entity
+            
+        avatar:
+            uri_prefix: '/%app.public_avatar_dir%'
+            upload_destination: '%app.abs_avatar_dir%'
+            namer:
+                service: Vich\UploaderBundle\Naming\PropertyNamer
+                options: { property: 'id' }

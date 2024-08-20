@@ -1,0 +1,36 @@
+###> MESSENGER ###
+App\Contract\Messenger\CommandBusHandlerInterface:
+    tags:
+    -   name:   'messenger.message_handler'
+        bus:    'command.bus'
+    -   name:   'app.command_bus_handler'
+
+App\Contract\Messenger\EventBusHandlerInterface:
+    tags:
+    -   name:   'messenger.message_handler'
+        bus:    'event.bus'
+    -   name:   'app.event_bus_handler'
+###< MESSENGER ###
+
+###> PROMOCODE ###
+App\Contract\Doctrine\Promocode\PromocodeInterface:
+    tags:
+    -   name: 'app.promocode'
+    -   name: 'app.messenger'
+###< PROMOCODE ###
+
+###> DTO ###
+App\Contract\Dto\DtoInterface:
+    tags:
+    -   name: app.dto
+    -   name: 'app.messenger'
+###< DTO ###
+
+###> EVENT LISTENER ###
+
+App\Contract\EventListener\KernelEventListenerInterface:
+    tags:
+    -   name: kernel.event_listener
+        priority: 127
+
+###< EVENT LISTENER ###

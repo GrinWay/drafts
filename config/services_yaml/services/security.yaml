@@ -1,0 +1,35 @@
+services:
+
+    App\Security\Voter\ModifyAdminVoter:
+        class: App\Security\Voter\ModifyAdminVoter
+        tags:
+        -   name: security.voter
+        arguments:
+            $container: !service_locator
+                authChecker: '@Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface'
+                accessService: '@App\Service\AccessService'
+                em: '@Doctrine\ORM\EntityManagerInterface'
+
+    App\Security\UserChecker\UserChecker:
+        class: App\Security\UserChecker\UserChecker
+        tags:
+        -   name: security.user_checker.main
+            priority: 0
+    
+    app.security.expression_language:
+        decorates: security.expression_language
+        class: App\Security\ExpressionLanguage\SecurityExpressionLanguageDecorator
+    
+    app.security.is_granted_attribute_expression_language:
+        decorates: security.is_granted_attribute_expression_language
+        class: App\Security\ExpressionLanguage\SecurityExpressionLanguageDecorator
+    
+    app.user_provider.doctrine_decorator:
+        class: App\Security\UserProvider\RememberMeSignatureUserProvider
+        #decorates: security.user.provider.concrete.app_user_provider
+        arguments:
+            $inner: '@.inner'
+            $userRepo: '@App\Repository\UserRepository'
+            $configService: '@App\Service\ConfigService'
+            $pa: '@property_accessor'
+            $securityLogger: '@monolog.logger.security'

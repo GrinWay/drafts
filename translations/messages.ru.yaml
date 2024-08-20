@@ -1,0 +1,17 @@
+
+app:
+
+    HOME: ДОМ
+
+    name: 'Variable: %var%'
+    exception:
+    
+        db:
+            not_found: 'Сущность не найдена'
+            
+    word:
+        hello:  'привет'
+        
+    validation:
+        test:
+            name: 'This value should not be blank.'

@@ -1,0 +1,18 @@
+services:
+
+    _defaults:
+        autowire: true
+
+    #// TODO: LabelFormatFormTypeExtension (через конфиг default_label_format)
+    App\Form\TypeExtension\Default\LabelFormatFormTypeExtension:
+        class: App\Form\TypeExtension\Default\LabelFormatFormTypeExtension
+        tags:
+        -   name: 'form.type_extension'
+            priority: -1
+            
+    #// TODO: TranlationDomainFormTypeExtension (через конфиг default_translation_domain)
+    App\Form\TypeExtension\Default\TranlationDomainFormTypeExtension:
+        class: App\Form\TypeExtension\Default\TranlationDomainFormTypeExtension
+        tags:
+        -   name: 'form.type_extension'
+            priority: -1

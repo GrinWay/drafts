@@ -1,0 +1,96 @@
+framework:
+    messenger:
+        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
+        #failure_transport: failed_default
+
+        default_bus: command.bus
+
+        buses:
+            
+            ###> MAIN BASES ###
+            
+            ###> COMMAND: $bus
+            command.bus:
+                default_middleware:
+                    enabled: true
+                    allow_no_handlers: false
+                    allow_no_senders: true
+                middleware:
+                -   id:         'validation'
+                #-   id:         'App\Messenger\Middleware\HowStampWorksMiddleware'
+                -   id:         'doctrine_open_transaction_logger' # DOCTRINE TRANSACTION LOG
+                #-   id:         'doctrine_transaction' # AUTO FLUSH
+            
+            ###> EVENT: $eventBus
+            event.bus:
+                default_middleware:
+                    enabled: true
+                    allow_no_handlers: true
+                    allow_no_senders: true
+                middleware:
+                -   id:         'validation'
+                #-   id:         'App\Messenger\Middleware\HowStampWorksMiddleware'
+                -   id:         'doctrine_open_transaction_logger' # DOCTRINE TRANSACTION LOG
+                -   id:         'doctrine_transaction' # AUTO FLUSH
+            
+            ###> QUERY
+            # grin_way_web_app.messenger.query.bus
+            
+            ###< MAIN BASES ###
+            
+            messenger.bus.handler_has_router_context:
+                middleware:
+                -   id: 'app.messenger.middleware.add_handler_argument_from'
+                    arguments:
+                        $stamps:
+                            -   id: 'Symfony\Component\Messenger\Stamp\RouterContextStamp'
+                                methods:
+                                    baseUrl:
+                                        name: 'getBaseUrl'
+                                        args: []
+                                    pathInfo:
+                                        name: 'getPathInfo'
+                                        args: []
+                -   id:         'router_context'
+                -   id:         'validation'
+                -   id:         'doctrine_open_transaction_logger' # DOCTRINE TRANSACTION LOG
+                -   id:         'doctrine_transaction' # AUTO FLUSH
+                
+        transports:
+            # https://symfony.com/doc/current/messenger.html#transport-configuration
+            sync: 'sync://'
+            
+            async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: async
+                retry_strategy:
+                    max_retries: 3
+                    delay: 3000
+                    multiplier: 2
+                    max_delay: 10000
+            
+            failed:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                options:
+                    queue_name: failed
+                retry_strategy:
+                    max_retries: 10
+                    delay: 1000
+                    multiplier: 5
+                    max_delay: 3600000
+            
+        routing:
+            'App\Messenger\*': async
+            'App\Messenger\Command\*': sync
+            
+            'App\Messenger\Command\Message\HowStampWorks': sync
+            'App\Messenger\Event\Message\TestUserWasCreated': sync
+            # GrinWay\WebApp\Contract\Messenger\HasSyncTransportInterface
+            
+when@test:
+    framework:
+        messenger:
+            transports:
+                sync: '%env(APP_MESSENGER_TEST)%'
+                async: '%env(APP_MESSENGER_TEST)%'

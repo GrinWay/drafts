@@ -1,0 +1,2 @@
+#grin_way_generic_parts_routes:
+#    resource:       '@GrinWayGenericPartsBundle/config/routes.yaml'

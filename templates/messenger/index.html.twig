@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello MessengerController!{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Hello {{ controller_name }}! ✅</h1>
+
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code>C:/Рабочий стол/PHP SYMFONY/__SANDBOX__/S7 (GrinWay)/src/Controller/MessengerController.php</code></li>
+        <li>Your template at <code>C:/Рабочий стол/PHP SYMFONY/__SANDBOX__/S7 (GrinWay)/templates/messenger/index.html.twig</code></li>
+    </ul>
+	
+	<img style="width: 40px" src="{{- asset('/media/image/symfony.png') -}}" alt="Symfony logo">
+	
+	<twig:grinway:btn type="submit" class="btn-lg btn-outline-danger"></twig:grinway:btn>
+</div>
+{% endblock %}

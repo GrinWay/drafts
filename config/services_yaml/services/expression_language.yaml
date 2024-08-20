@@ -1,0 +1,8 @@
+services:
+
+    app.validator.expression_language_provider:
+        class: App\Extension\ExpressionLanguage\Decorator\ValidatorExpLangFunctionProvider
+        decorates: 'validator.expression_language_provider'
+        arguments:
+            $inner: '@.inner'
+    #App\Extension\ExpressionLanguage\Decorator\ValidatorExpLangFunctionProvider: '@app.validator.expression_language_provider'

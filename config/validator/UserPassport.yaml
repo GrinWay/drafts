@@ -1,0 +1,14 @@
+App\Entity\UserPassport:
+
+    constraints:
+    
+    properties:
+        name:
+        -   NotBlank:
+                groups:
+                -   register
+        lastName:
+        -   NotBlank:
+                groups:
+                -   register
+    getters:

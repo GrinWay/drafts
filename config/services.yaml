@@ -1,0 +1,13 @@
+when@test: &when_test
+    imports:
+        -   resource: 'services_yaml/test/services/'
+        -   resource: 'services_yaml/test/parameters/'
+
+###> imports are loaded first (imports not overrides existing services) ###
+imports:
+    -   resource: 'services_yaml/resource_services.yaml'    # PRIORITY 1 (last)
+    -   resource: 'services_yaml/services/'                 # PRIORITY 2
+    -   resource: 'services_yaml/parameters/'               # PRIORITY 3 (first)
+
+###> then services.yaml (what below overrides imports) ###
+###>... it's better to use only imports

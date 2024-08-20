@@ -1,0 +1,36 @@
+{%- block menu -%}
+	<div {{ attributes.nested('menu').defaults({class: 'menu'}) }}>
+		{%- block content -%}{%- endblock -%}
+		<ul>
+			
+			{%- if is_granted('IS_AUTHENTICATED_2FA_IN_PROGRESS') -%}
+				<a href="{{- path('app_login_2fa_resend_code') -}}">RE SEND CODE TO EMAIL</a>
+			{%- endif -%}
+			
+			{%- if is_granted('VOTE_IS_AUTH') -%}
+				<li><a href="{{ path('app_github_delete_repo', {}) }}">DELETE GITHUB REPO</a></li>
+				<li><a href="{{ path('app_admin_index', {}) }}">admin</a></li>
+				<li><a href="{{ path('app_delete_current_user', {}) }}">Delete Account</a></li>
+				<li><a href="{{ path('app_logout', {}) }}">Log out</a></li>
+			{%- else -%}
+				<li><a href="{{ path('app_login_link', {}) }}">LOGIN LINK</a></li>
+				<li><a href="{{ path('app_auto_login', {}) }}">AUTO LOGIN</a></li>
+				<li><a href="{{ path('app_login', {}) }}">Login</a></li>
+				<li><a href="{{ path('app_register', {}) }}">Register</a></li>
+			{%- endif -%}
+			<li><a href="{{ path('app_session_clear', {}) }}">CLEAR SESSION</a></li>
+			<li><a href="{{ path('app_github_index', {}) }}">GitHub</a></li>
+			<li><a href="{{ path('app_home_producttypes', {}) }}">Type</a></li>
+			<li><a href="{{ path('app_home_home', {}) }}">Home</a></li>
+			<li><a href="{{ path('app_home_removeproduct', {}) }}">removeproduct</a></li>
+			<li><a href="{{ path('app_home_condition', {id: 1}) }}">condition</a></li>
+			<li><a href="{{ path('static') }}">static</a></li>
+		</ul>
+		<div class="text-bg-dark mx-1 rounded-2 p-2">
+			HWI OAuth:
+			<ul>
+				<li><a class="text-bg-dark" href="{{- path('hwi_oauth_service_redirect', {'service': 'github' }) -}}">GitHub</a></li>
+			</ul>
+		</div>
+	</div>
+{%- endblock -%}

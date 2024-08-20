@@ -1,0 +1,19 @@
+framework:
+    csrf_protection:
+        enabled: true
+
+    form:
+        csrf_protection:
+            enabled: true
+            field_name: '%app.csrf_name%'
+            
+when@dev: &when_dev
+    framework:
+        form:
+            csrf_protection:
+                enabled: false
+when@test: &when_test
+    framework:
+        form:
+            csrf_protection:
+                enabled: false

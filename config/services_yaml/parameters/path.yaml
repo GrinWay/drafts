@@ -1,0 +1,22 @@
+parameters:
+
+    app.abs_public_dir: '%kernel.project_dir%/public'
+    
+    ###> tests ###
+    app.panther.screenshots: './var/cache/panther/screenshots'
+    ###< tests ###
+    
+    ###> media ###
+    app.public_media_dir: 'media'
+    app.abs_media_dir: '%app.abs_public_dir%/%app.public_media_dir%'
+    ###< media ###
+    
+    ###> img ###
+    app.public_img_dir: '%app.public_media_dir%/image'
+    app.abs_img_dir: '%app.abs_public_dir%/%app.public_img_dir%'
+    ###< img ###
+    
+    ###> avatar ###
+    app.public_avatar_dir: '%app.public_img_dir%/avatar'
+    app.abs_avatar_dir: '%app.abs_public_dir%/%app.public_avatar_dir%'
+    ###< avatar ###

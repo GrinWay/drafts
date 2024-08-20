@@ -1,0 +1,10 @@
+{%- block form_errors -%}
+	{%- if 0 < errors.count -%}
+		{%- for error in errors -%}
+			<twig:grinway:form:error>
+				{{- error.message -}}
+			</twig:grinway:form:error>
+		{%- endfor -%}
+	{%- else -%}
+	{%- endif -%}
+{%- endblock -%}

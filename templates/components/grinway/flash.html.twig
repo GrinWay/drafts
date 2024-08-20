@@ -1,0 +1,45 @@
+{# Usage:
+    <body class="position-relative">
+		<twig:grinway:flash  alert_size="normal" alert:class=""  flash_position="sticky"/>
+	</body>
+#}
+
+{%- props flash_position = 'normal' -%}
+{%- set nestedFlashName = 'flash' -%}
+{%- set class_cva = cva({
+	base: '',
+	variants: {
+		flash_position: {
+			sticky: 'position-sticky top-0 end-0 start-0',
+			normal: '',
+		},
+	},
+}) -%}
+
+{%- if app.session.flashBag.peekAll|length > 0 -%}
+	<div class="{{ class_cva.apply({flash_position}, attributes.nested(nestedFlashName).render('class')) }}" {{ attributes }}>
+		{% block flash %}
+			<div class="">
+				{%- for flash in app.flashes(app_note_type.notice) -%}
+					<twig:grinway:alert {{ ...attributes }} alert_type="success">
+						{{ flash }}
+					</twig:grinway:alert>
+				{%- endfor -%}
+			</div>
+			<div class="">
+				{%- for flash in app.flashes(app_note_type.warning) -%}
+					<twig:grinway:alert {{ ...attributes }} alert_type="warning">
+						{{ flash }}
+					</twig:grinway:alert>
+				{%- endfor -%}
+			</div>
+			<div class="">
+				{%- for flash in app.flashes(app_note_type.erorr) -%}
+					<twig:grinway:alert {{ ...attributes }} alert_type="danger">
+						{{ flash }}
+					</twig:grinway:alert>
+				{%- endfor -%}
+			</div>
+		{% endblock %}
+	</div>
+{%- endif -%}

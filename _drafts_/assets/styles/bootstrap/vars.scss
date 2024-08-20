@@ -1,0 +1,83 @@
+// node_modules/bootstrap/scss/_variables.scss
+
+@import "~bootstrap/scss/mixins/banner";
+@include bsBanner("");
+
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/maps";
+@import "~bootstrap/scss/mixins";
+@import "bootstrap/scss/utilities";
+
+/*
+
+$position-values: (
+  0: 0,
+  25: 25%,
+  50: 50%,
+  75: 75%,
+  100: 100%
+);
+
+$modal-fade-transform: scale(1.2);
+
+$breadcrumb-divider: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='8' height='8'><path d='M2.5 0L1 1.5 3.5 4 1 6.5 2.5 8l4-4-4-4z' fill='#{$breadcrumb-divider-color}'/></svg>");
+	
+.list-group-item {
+	&:focus {
+		color: #{$dark} !important;
+		background-color: white !important;
+	}
+
+	&:hover {
+		background-color: var(--#{$prefix}list-group-action-hover-bg) !important;
+	}
+	
+	&:active .text-muted,
+	&:active {
+		color: #{$light} !important;
+		background-color: #{$secondary} !important;
+	}
+}
+*/
+
+//###> UTILITIES ###
+$utilities: map-merge($utilities, (
+
+	"width": (
+      property: width,
+      responsive: true,
+      class: w,
+      values: (
+        25: 25%,
+        50: 50%,
+		60: 60%,
+        75: 75%,
+        100: 100%,
+        auto: auto
+      )
+    ),
+	
+	"border": map-merge(map-get($utilities, "border"), (
+		"responsive": true,
+	)),
+	
+	"border-color": map-merge(map-get($utilities, "border-color"), (
+		"responsive": true,
+	)),
+	
+	"translate-start": (
+      class: translate-start,
+      property: transform,
+      values: (
+        null: translate(-100%, 100%),
+        x: translateX(-100%),
+        y: translateY(100%),
+      )
+  ),
+	
+));
+
+/* ###> GRID CLASSES ### */
+$enable-grid-classes: true;
+$enable-cssgrid: true;

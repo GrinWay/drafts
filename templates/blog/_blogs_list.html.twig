@@ -1,0 +1,10 @@
+<div class="blog_container container">
+	{% for blog in blogs %}
+		<div class="">
+			<div class="">name: "{{ blog.name|title }}"</div>
+			<div class="">created at: "{{ blog.createdAt.isoFormat('LLLL')|title }}"</div>
+			<div class="">is public: "{{ blog.isPublic ? 'YES' : 'NO' }}"</div>
+		</div>
+		<br>
+	{% endfor%}
+</div>

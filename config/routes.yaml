@@ -1,0 +1,95 @@
+controllers:
+    resource:
+        namespace: App\Controller
+        path: '../src/Controller/'
+    #type: attribute_route_reader
+    type: attribute
+    
+    schemes:
+    -   'http'
+    -   'https'
+
+    #name_prefix: 'null_'
+
+    #prefix:
+        # DEFAULT
+        #ru: '' 
+        #en: '/en'
+
+    trailing_slash_on_root: true
+
+###> Add path ###
+
+# set locale in uri statically
+#app_admin_index:
+#    alias: 'app_admin_index.ru'
+#app_home_home:
+#    alias: 'app_home_home.ru'
+#app_home_removeproduct:
+#    alias: 'app_home_removeproduct.ru'
+#app_home_condition:
+#    alias: 'app_home_condition.ru'
+#app_home_producttypes:
+#    alias: 'app_home_producttypes.ru'
+
+api_login:
+    path: /api/login
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: 'app_home_home'
+    methods:
+    -   GET
+    -   POST
+
+static:
+    path: /static/{id<[0-9]+>?1}
+    controller: Symfony\Bundle\FrameworkBundle\Controller\TemplateController
+    defaults:
+        template: 'static/index.html.twig'
+        context:
+            var: 1
+       
+app_cool:
+    path: /cool
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController    
+    defaults:
+        page: 666
+        route: app_home_home
+        permanent: false
+        keepQueryParams: true
+        keepRequestMethod: true
+        ignoreAttributes:
+        -   'version'
+        
+redirect:
+    path: '/red'
+    controller: 'App\Controller\HomeController::home'
+    
+    defaults:
+        page: 18
+###< Add path ###
+
+###> Add alias ###
+
+app_security_admin_login:
+    path: '/admin/login'
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController
+    defaults:
+        route: app_home_home
+app_security_admin_logout:
+    path: '/admin/logout'
+    controller: Symfony\Bundle\FrameworkBundle\Controller\RedirectController   
+    defaults:
+        route: app_home_home
+###> DEFAULT LANG ###
+###< DEFAULT LANG ###
+
+home:
+    alias: 'app_home_home'
+    deprecated:
+        message: "Don't use %alias_id% alias"
+        package: 'grin/symfony'
+        version: '8.0.0'
+condition:
+    alias: 'app_home_condition'
+###< Add alias ###

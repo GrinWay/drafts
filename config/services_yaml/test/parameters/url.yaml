@@ -1,0 +1,3 @@
+parameters:
+    env(DEFAULT_URI): '%env(DEFAULT_URI)%'
+    env(APP_DEFAULT_URI): '%env(APP_DEFAULT_URI)%'

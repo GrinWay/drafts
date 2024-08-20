@@ -1,0 +1,19 @@
+{% extends 'home/layout.html.twig' %}
+
+{%- trans_default_domain 'messages' -%}
+
+{%- block home_title ' index'|title -%}
+
+{% block body %}
+	
+	<div class="">
+		<a href="{{- login_link ?? '' -}}">LOGIN LINK</a>
+	</div>
+	
+	{{ dump(asset_version('media/image/symfony.png')) }}
+		
+	<twig:Lorem lorem_len="12" lorem:class="text-bg-dark p-1 rounded-1 text-center" />
+	
+	{{ 'app.HOME'|trans }}
+	
+{% endblock %}

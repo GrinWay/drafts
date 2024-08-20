@@ -1,0 +1,7 @@
+services:
+
+    app.slugger_with_emoji:
+        class: App\Service\SluggerWithEmoji
+        decorates: Symfony\Component\String\Slugger\SluggerInterface
+        arguments:
+            $inner: '@.inner'

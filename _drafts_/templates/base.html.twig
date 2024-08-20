@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        {#
+		<title>{% block grin_way_generic_parts_title %}{% endblock %}</title>
+		#}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('grin_way_generic_parts') }}
+        {% endblock %}
+        {% block javascripts %}
+            {{ encore_entry_script_tags('grin_way_generic_parts') }}
+        {% endblock %}
+    </head>
+    <body>
+        {% block grin_way_generic_parts_body_header %}{% endblock %}
+        {% block grin_way_generic_parts_body %}{% endblock %}
+    </body>
+</html>

@@ -1,0 +1,68 @@
+# Default configuration for extension with alias: "twig"
+twig:
+    autoescape_service:         ~
+    autoescape_service_method:  ~
+
+    #paths:
+        # Prototype
+        #paths:                ~
+    
+    form_themes:
+        # LOW PRIORITY
+        - form_div_layout.html.twig 
+        - bootstrap_5_layout.html.twig
+        - form/theme/grinway/index.html.twig
+        #- form/theme/user.html.twig
+        #- form/theme/file.html.twig
+        #- form/theme/choice.thml.twig
+        - form/theme/custom.html.twig
+        - form/theme/style1/index.html.twig
+        # HIGH PRIORITY
+
+        # Example:
+        # - '@My/form.html.twig'
+    globals:
+        app_note_type: !php/const App\Type\Note\NoteType::SNAKE_KEYS_TYPES
+    cache: '%kernel.project_dir%/var/cache/dev/twig'
+    charset:              '%kernel.charset%'
+    debug:                '%kernel.debug%'
+    strict_variables:     '%kernel.debug%'
+    auto_reload:          ~
+    optimizations:        1
+
+    # The default path used to load templates
+    default_path: '%kernel.project_dir%/templates'
+    paths:
+        templates/admin/index: admin
+    
+    # Pattern of file name used for cache warmer and linter
+    file_name_pattern: [
+        '*.twig'
+    ] # Example: '*.twig'
+    
+
+    # The default format options used by the date filter
+    date:
+        format:               'F j, Y H:i'
+        interval_format:      '%d days'
+
+        # The timezone used when formatting dates, when set to null, the timezone returned by date_default_timezone_get() is used
+        timezone:             '%env(APP_TIMEZONE)%'
+
+    # The default format options for the number_format filter
+    number_format:
+        decimals:             0
+        decimal_point:        .
+        thousands_separator:  "'"
+    mailer:
+
+        # A service implementing the "Symfony\Component\Mime\HtmlToTextConverter\HtmlToTextConverterInterface"
+        html_to_text_converter: null
+
+when@dev:
+    twig:
+        #strict_variables: false
+
+when@test:
+    twig:
+        strict_variables: true

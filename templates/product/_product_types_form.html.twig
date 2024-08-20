@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{#
+{% trans_default_domain 'validation' %}
+#}
+
+{% block body %}
+	
+	{% set s = 'Lorem :kiwi-fruit::interrobang: ipsum dolor sit amet, consectetur adipisicing elit. Omnis magni explicabo ab molestias     asperiores laboriosam quod sequi sed. Atque, harum.' %}
+	{% set len = s|u.length %}
+	
+	<div class="container mb-3">
+		<div class="">
+			{{ s|emojify|u.truncate(20, '...', false) }}
+		</div>
+		<div class="">
+			{{ s|u.splice('...', 5, (len - 20)) }}
+		</div>
+	</div>
+	
+	{% if form is defined %}
+		<div class="container">
+			{#
+			#}
+			{{- form_widget(form.updatedAt) -}}
+			{{- form_widget(form.createdAt) -}}
+		
+			{{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
+				{{- form_widget(form) -}}
+				
+				<twig:grinway:btn autofocus="autofocus" class="btn-outline-success" type="submit"></twig:grinway:btn>
+			{{ form_end(form, { render_rest: true }) }}
+		</div>
+	{% endif %}
+	
+{% endblock body %}

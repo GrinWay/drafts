@@ -1,0 +1,11 @@
+App\Doctrine\DTO\UserDto:
+
+    constraints:
+    
+    properties:
+        range:
+        #-   NotBlank:
+        name:
+        #-   NotBlank:
+    
+    getters:

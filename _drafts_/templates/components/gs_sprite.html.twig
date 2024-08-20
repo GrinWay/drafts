@@ -1,0 +1,7 @@
+{# Usage:
+	{{ component('grin_way_sprite', {id: '<>'}) }}
+#}
+
+<svg class="w-100 h-100">
+	<use xlink:href="{{ asset('bundles/grinwaygenericparts/images/svg/sprite.svg') }}#{{ id }}"></use>
+</svg>

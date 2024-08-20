@@ -1,0 +1,9 @@
+{%- block text_widget -%}
+	{%- if style1 is defined and true == style1 -%}
+		<div class="style1-text-widget">
+			<input value="{{ value }}" type="text" class="form-control shadow-none  w-100 p-2  rounded-3  bg-dark text-light"/>
+		</div>
+	{%- else -%}
+		{{- form_widget(form) -}}
+	{%- endif -%}
+{%- endblock -%}

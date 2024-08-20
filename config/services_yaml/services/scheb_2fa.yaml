@@ -1,0 +1,8 @@
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    app.two_factor_condition:
+        class: App\Security\Authenticator\Auth2FA\Condition\TwoFactorCondition

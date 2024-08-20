@@ -1,0 +1,8 @@
+GrinWay\Extension\DTO\DtoUser:
+    properties:
+        name:
+        -   Length:
+                min: 1
+                max: 2
+                groups:
+                -   AppDtoUser

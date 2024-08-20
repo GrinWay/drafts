@@ -1,0 +1,13 @@
+{% use 'form/func.twig' %}
+
+{%- block style1_collection_label -%}
+	<div class="style1-collection-label  text-center pb-1 text-bg-white h1 w-100">
+		{{- name|capitalize -}}
+	</div>
+{%- endblock -%}
+
+{%- block style1_collection_widget -%}
+	<div class="style1-collection-widget">
+		{{- form_widget(form) -}}
+	</div>
+{%- endblock -%}

@@ -1,0 +1,25 @@
+services:
+
+    App\Service\SomeService:
+        class: App\Service\SomeService
+        arguments:
+            $locator: !tagged_locator
+                tag: app.event_bus_handler
+                index_by: locatorIndex
+                default_index_method: getLocatorIndex
+    
+    app.some_abstract_service:
+        abstract: true
+        class: 'App\Service\AbstractStringService'
+        arguments:
+            $one: '@logger'
+            1: '@?loggerssss'
+            
+    app.some_service2:
+        parent: 'app.some_abstract_service'
+        class: 'App\Service\SomeService2'
+        arguments:
+            #index_0: '1'
+            $logger: !service_closure '@monolog.logger.php'
+            #$logger: !closure '@App\Service\CallableService'
+    App\Service\SomeService2: '@app.some_service2'
