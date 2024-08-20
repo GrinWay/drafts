@@ -13,21 +13,29 @@ use Symfony\Component\BrowserKit\CookieJar;
 
 class BrowserKitClient extends AbstractBrowser
 {
-	private readonly string $requiredScheme;
-	
     public function __construct(
-		string $host,
-		string $requiredScheme,
+		?string $host = null,
+		?string $requiredScheme = null,
 		array $server = [],
 		?History $history = null,
 		?CookieJar $cookieJar = null,
 	) {
-		$this->requiredScheme = \strtolower($requiredScheme);
+		$dopServer = [];
 		
-		$server = \array_merge([
-			'HTTPS' => 'https' === $this->requiredScheme,
-			'HTTP_HOST' => $host,
-		], $server);
+		if (null !== $requiredScheme) {
+			$requiredScheme = \strtolower($requiredScheme);
+			$dopServer = \array_merge([
+				'HTTPS' => 'https' === $requiredScheme,
+			], $dopServer);			
+		}
+		
+		if (null !== $host) {
+			$dopServer = \array_merge([
+				'HTTP_HOST' => $host,
+			], $dopServer);
+		}
+		
+		$server = \array_merge($dopServer, $server);
 		
         parent::__construct(
 			server: $server,
@@ -39,10 +47,7 @@ class BrowserKitClient extends AbstractBrowser
 	
 	protected function doRequest($request): Response
     {
-		$browser = new HttpBrowser(HttpClient::create([
-			//'verify_peer' => false, // lag
-			'verify_host' => false,
-		]));
+		$browser = new HttpBrowser(HttpClient::create(["verify_peer"=>false,"verify_host"=>false]));
         $browser->request($request->getMethod(), $request->getUri());
 		return $browser->getResponse();
     }

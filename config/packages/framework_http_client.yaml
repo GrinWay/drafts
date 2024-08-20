@@ -1,0 +1,5 @@
+#when@dev: &when_dev
+#    framework:
+#        http_client:
+#            default_options:
+#                verify_peer: false

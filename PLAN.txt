@@ -554,7 +554,7 @@ Composer Scripts
 		используя класс консольной команды (получится без зависимостей конструктора)
 ***
 SYMFONY BROWSER KIT
-	https://symfony.com/doc/current/components/browser_kit.html#creating-a-client
+	https://symfony.com/doc/current/components/browser_kit.html#clicking-links
 	
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/BrowserKit/HttpBrowser.php
 	https://symfony.com/doc/current/components/browser_kit.html#component-browserkit-external-requests
@@ -562,7 +562,11 @@ SYMFONY BROWSER KIT
 	https://symfony.com/doc/current/components/http_kernel.html
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/DomCrawler/Crawler.php
 	https://symfony.com/doc/current/components/dom_crawler.html
-	
+	?
+	?? SSL certificate problem
+		Передача клиентам ["verify_peer"=>false,"verify_host"=>false] не помогает
+	+ ? Как это на серверной стороне можно делать Client::xmlHttpRequest ?!
+		или это просто для заголовков (Да, автоматисески будет добавлен HTTP_X_REQUESTED_WITH)
 	
 SYMFONY HTTP CLIENT https://symfony.com/doc/current/http_client.html
 doctrine-test-bundle https://github.com/dmaicher/doctrine-test-bundle

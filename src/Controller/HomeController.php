@@ -336,15 +336,22 @@ class HomeController extends AbstractController
 		#[Autowire('%env(APP_REQUIRED_SCHEME)%')]
 		$requiredScheme,
 	) {
-		//TODO: current
 		$browserKitClient = new BrowserKitClient(
+			/*
 			host: $host,
 			requiredScheme: $requiredScheme,
+			*/
 		);
+		$browserKitClient->followRedirects(true);
 		
-		$crawler = $browserKitClient->request('GET', '/messenger');
+		$uri = 'https://symfony.com/doc/current/components/browser_kit.html';
+		$crawler = $browserKitClient->xmlHttpRequest('GET', $uri);
 		
-		$result = $crawler->find('html');
+		//$result = $browserKitClient->getResponse()->toArray();
+		
+		$link1 = $crawler->selectLink('Link')->link();
+		$crawler = $browserKitClient->click($link1);
+		$result = $crawler->filter('html')->each(\App\Service\CrawlerUtil::extract('_text'));
 		
 		\dd($result);
 		
