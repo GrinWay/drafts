@@ -7,6 +7,10 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\HttpClient\AmpHttpClient;
+use Symfony\Component\HttpClient\CurlHttpClient;
+use Symfony\Component\HttpClient\NativeHttpClient;
+use Symfony\Component\HttpClient\NoPrivateNetworkHttpClient;
 use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 use Symfony\Component\HttpClient\HttpOptions;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -345,16 +349,20 @@ class HomeController extends AbstractController
 			\dump($downloadedBytes, $totalBytes, $currentDownloadedInfo);
 		};
 		
+		$client = new CurlHttpClient();
 		$client = $client->withOptions(
 			(new HttpOptions())
-				->setOnProgress($callback)
-				//->setTimeout(3)
+				//->setOnProgress($callback)
+				->setTimeout(200)
+				//->setHeader('Content-Disposition', 'attachment; filename="php.zip"')
+				->setExtra('curl', [
+					
+				])
 				->toArray()
 		);
 		
-		$response = $client->request('GET', 'https://127.0.0.1:8000/messenger', [
-			'json' => ['string'],
-		]);
+		// https://windows.php.net/download#php-8.3
+		$response = $client->request('GET', 'https://github.com', []);
 		
 		$formDataPart = new FormDataPart([
 			'field' => 'field value',
@@ -368,12 +376,12 @@ class HomeController extends AbstractController
 		$result = \get_debug_type($response);
 		\dd(
 			$result,
+			$response->getStatusCode(),
 			/*
 			$response->getContent(),
 			$formDataPart->bodyToString(),
 			$formDataPart->getPreparedHeaders()->toArray(),
 			$response->getContent(),
-			$response->getStatusCode(),
 			$response->getHeaders(),
 			$response->getInfo(),
 			$response->toArray(),

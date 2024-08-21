@@ -564,7 +564,7 @@ SYMFONY BROWSER KIT
 	+ ? Как это на серверной стороне можно делать Client::xmlHttpRequest ?!
 		или это просто для заголовков (Да, автоматисески будет добавлен HTTP_X_REQUESTED_WITH)
 ***
-SYMFONY HTTP CLIENT https://symfony.com/doc/current/http_client.html#ssrf-server-side-request-forgery-handling
+SYMFONY HTTP CLIENT https://symfony.com/doc/current/http_client.html#streaming-responses
 
 	https://symfony.com/doc/current/reference/configuration/framework.html#reference-http-client
 	https://portswigger.net/web-security/ssrf
@@ -589,6 +589,9 @@ SYMFONY HTTP CLIENT https://symfony.com/doc/current/http_client.html#ssrf-server
 	https://symfony.com/doc/current/reference/configuration/framework.html#reference-http-client
 	
 	?
+	? когда отключен verify_peer, verify_host сначала выдаёт ошибку что вышло время подключения
+		а затем ПРОХОДИТ по ссылке
+		что-то задерживает приём ответа с сервера
 	? Retry Failed Requests https://symfony.com/doc/current/http_client.html#retry-failed-requests
 		когда решишь проблему с проверкой SSL
 		сделай запрос на свой API, закончи неудачей, посмотри куда будет сделан 2, 3... попытки при
@@ -597,8 +600,9 @@ SYMFONY HTTP CLIENT https://symfony.com/doc/current/http_client.html#ssrf-server
 	+ ?? не получилось по scoped_clients.scope установить заголовки запроса при httpClient::request (для scope автоматисески создаётся новый именованный client service, и он был виден через debug:auto просто искать нужно было аккуратней с твоим grep)
 	? как из ответа сервера узнать отправлялись ли куки в запросе
 	? verify_peer не работает, SSL ошибка продолжает выдаваться
-	? как указать самоподписанный SSL сертификат
-	нет вызова callback на прогресс HttpClient(HttpOptions::setOnProgress)
+	? как указать самоподписанный SSL сертификат, при обращении к другим сайтам: CAfile: C:/OSPanel/data/ssl/cacert.pem
+	? не понятно куда скачивается файл
+	+ нет вызова callback на прогресс HttpClient(HttpOptions::setOnProgress) (используя сервисный HttpClientInterface on_progress действительно не вызывается, но если создать вручную то вызывается)
 SYMFONY MAILER https://symfony.com/doc/current/mailer.html
 	clear && bin/console make:reset-password --with-ulid
 		https://symfony.com/doc/current/security/passwords.html#reset-password

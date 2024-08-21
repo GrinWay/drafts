@@ -4,10 +4,16 @@ when@dev: &when_dev
             default_options:
                 verify_peer: false
                 verify_host: false
+                extra:
+                    trace_content: true
 
 framework:
     http_client:
         default_options:
+            http_version: '2.0'
+        
             verify_peer: true
             verify_host: true
             max_redirects: 10
+            extra:
+                trace_content: false
