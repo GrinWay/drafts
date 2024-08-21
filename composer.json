@@ -153,16 +153,6 @@
         "symfony/polyfill-php81": "*",
         "symfony/polyfill-php82": "*"
     },
-    "scripts-descriptions": {
-		"app_reinstall_grinway_bundles": "[OWN] Reinstall GrinWay bundles."
-	},
-    "scripts-aliases": {
-		"echo": [
-			"echo1",
-			"echo2",
-			"echo3"
-		]
-	},
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
@@ -172,7 +162,8 @@
 			"rm -rf ./vendor/grinway",
 			"@composer require grinway/command-bundle grinway/env-processor-bundle grinway/service-bundle grinway/web-app-bundle"
 		],
-		"echo": [
+		"app_init": [
+			"php -r \"echo 'INIT';\""
 		],
 		
         "command": [

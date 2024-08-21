@@ -1,5 +1,13 @@
-#when@dev: &when_dev
-#    framework:
-#        http_client:
-#            default_options:
-#                verify_peer: false
+when@dev: &when_dev
+    framework:
+        http_client:
+            default_options:
+                verify_peer: false
+                verify_host: false
+
+framework:
+    http_client:
+        default_options:
+            verify_peer: true
+            verify_host: true
+            max_redirects: 10

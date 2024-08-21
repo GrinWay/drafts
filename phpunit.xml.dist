@@ -61,6 +61,10 @@
       <directory>tests/E2E</directory>
     </testsuite>
     
+    <testsuite name="grin_way_service.i">
+      <directory>vendor/grinway/service-bundle/tests/Integration</directory>
+    </testsuite>
+    
   </testsuites>
   
   <extensions>

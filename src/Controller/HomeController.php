@@ -7,9 +7,12 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Mime\Part\Multipart\FormDataPart;
+use Symfony\Component\HttpClient\HttpOptions;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Config\Resource\FileResource;
 use Symfony\Component\Config\ConfigCache;
-use App\Client\BrowserKit\BrowserKitClient;
+use App\Client\BrowserKit\BrowserClient;
 use Symfony\Component\Config\Definition\Processor;
 use App\Config\Configuration\FrameworkConfigurator;
 use App\Config\Loader\YamlLoader;
@@ -23,7 +26,7 @@ use App\Repository\TaskFoodTopicRepository;
 use App\Form\Type\YearMonthDayHourMinuteSecondType;
 use Symfony\Component\CssSelector\CssSelectorConverter;
 use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\BrowserKit\HttpBrowser;
+use App\Client\BrowserKit\HttpBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
@@ -335,25 +338,47 @@ class HomeController extends AbstractController
 		$host,
 		#[Autowire('%env(APP_REQUIRED_SCHEME)%')]
 		$requiredScheme,
+		HttpClientInterface $client,
 	) {
-		$browserKitClient = new BrowserKitClient(
+		
+		$callback = static function(int $downloadedBytes, int $totalBytes, array $currentDownloadedInfo): void {
+			\dump($downloadedBytes, $totalBytes, $currentDownloadedInfo);
+		};
+		
+		$client = $client->withOptions(
+			(new HttpOptions())
+				->setOnProgress($callback)
+				//->setTimeout(3)
+				->toArray()
+		);
+		
+		$response = $client->request('GET', 'https://127.0.0.1:8000/messenger', [
+			'json' => ['string'],
+		]);
+		
+		$formDataPart = new FormDataPart([
+			'field' => 'field value',
+			'choice' => [
+				'choice key1' => 'choice value 1',
+				'choice value 1',
+			],
+		]);
+		$data = $formDataPart->getParts();
+		
+		$result = \get_debug_type($response);
+		\dd(
+			$result,
 			/*
-			host: $host,
-			requiredScheme: $requiredScheme,
+			$response->getContent(),
+			$formDataPart->bodyToString(),
+			$formDataPart->getPreparedHeaders()->toArray(),
+			$response->getContent(),
+			$response->getStatusCode(),
+			$response->getHeaders(),
+			$response->getInfo(),
+			$response->toArray(),
 			*/
 		);
-		$browserKitClient->followRedirects(true);
-		
-		$uri = 'https://symfony.com/doc/current/components/browser_kit.html';
-		$crawler = $browserKitClient->xmlHttpRequest('GET', $uri);
-		
-		//$result = $browserKitClient->getResponse()->toArray();
-		
-		$link1 = $crawler->selectLink('Link')->link();
-		$crawler = $browserKitClient->click($link1);
-		$result = $crawler->filter('html')->each(\App\Service\CrawlerUtil::extract('_text'));
-		
-		\dd($result);
 		
 		//The Config Component
 		

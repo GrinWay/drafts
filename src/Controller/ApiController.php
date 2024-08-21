@@ -24,6 +24,13 @@ class ApiController extends AbstractController
 	) {
 	}
 	
+    public function test(): JsonResponse
+    {
+		return $this->json([
+			'current_utc_date' => \Carbon\Carbon::now('UTC')->isoFormat('LLLL'),
+		]);
+    }
+	
     #[Route('/get')]
     public function index(): JsonResponse
     {

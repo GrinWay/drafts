@@ -9,6 +9,8 @@ use App\Messenger\Command\Message\GitHubDeleteRepository;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use App\Messenger\AbstractHandler;
 use Symfony\Component\Process\Messenger\RunProcessMessage;
+use Symfony\Component\HttpClient\HttpOptions;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 #[AsMessageHandler(
     bus: 'command.bus',
@@ -18,6 +20,7 @@ class GitHubDeleteRepositoryHandler extends AbstractHandler
     public function __construct(
 		private readonly UserRepository $userRepo,
 		private readonly MessageBusInterface $bus,
+		private readonly HttpClientInterface $httpClient,
 	) {}
 	
     public function __invoke(GitHubDeleteRepository $message): void {
@@ -25,18 +28,26 @@ class GitHubDeleteRepositoryHandler extends AbstractHandler
 			'email' => $message->userIdentifier,
 		]);
 		
-		
 		$accessToken = $user->getGitHub()->getAccessToken();
 		$username = $user->getGitHub()->getId();
 		
 		$owner = 'GrinWay';
 		$repoName = $message->repoName;
-		$uri = \sprintf(
-			'https://api.github.com/repos/%s/%s',
-			$owner,
-			$repoName,
-		);
 		
+		$response = $this->httpClient->request('DELETE', \sprintf('repos/%s/%s', $owner, $repoName), options: [
+			'auth_bearer' => $accessToken,
+			'headers' => [
+				'Accept' => 'application/vnd.github+json',
+				'X-GitHub-Api-Version' => '2022-11-28',
+			],
+			/*
+			*/
+		]);
+		\dump(
+			$response->getInfo(),
+			$response->getStatusCode(),
+		);
+			/*
 		$process = [
 			'curl',
 			
@@ -47,10 +58,8 @@ class GitHubDeleteRepositoryHandler extends AbstractHandler
 			
 			'-H',
 			'Accept: application/vnd.github+json',
-			/*
-			'-H',
-			'Authorization: token '.$accessToken,
-			*/
+			//'-H',
+			//'Authorization: token '.$accessToken,
 			'-H',
 			'Authorization: Bearer '.$accessToken,
 			'-H',
@@ -60,7 +69,8 @@ class GitHubDeleteRepositoryHandler extends AbstractHandler
 			
 			$uri,
 		];
-		$answer = $this->bus->dispatch(new RunProcessMessage($process));
-		\dump($answer->last(HandledStamp::class)->getResult());
+			*/
+		//$answer = $this->bus->dispatch(new RunProcessMessage($process));
+		//\dump($answer->last(HandledStamp::class)->getResult());
 	}
 }
