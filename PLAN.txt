@@ -564,46 +564,15 @@ SYMFONY BROWSER KIT
 	+ ? Как это на серверной стороне можно делать Client::xmlHttpRequest ?!
 		или это просто для заголовков (Да, автоматисески будет добавлен HTTP_X_REQUESTED_WITH)
 ***
-SYMFONY HTTP CLIENT https://symfony.com/doc/current/http_client.html#streaming-responses
-
-	https://symfony.com/doc/current/reference/configuration/framework.html#reference-http-client
-	https://portswigger.net/web-security/ssrf
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/HttpClient/NoPrivateNetworkHttpClient.php
-	https://symfony.com/doc/current/reference/configuration/framework.html#reference-http-client-retry-failed
-	https://en.wikipedia.org/wiki/HTTP#Idempotent_methods
-	https://symfony.com/doc/current/reference/configuration/framework.html#reference-http-client-retry-failed
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/HttpClient/RetryableHttpClient.php
-	https://symfony.com/doc/current/reference/configuration/framework.html#reference-http-client-retry-jitter
-	https://symfony.com/doc/current/components/browser_kit.html#component-browserkit-sending-cookies
-	https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Cookie
-	https://symfony.com/doc/current/http_client.html#http-client-streaming-responses
-	https://symfony.com/doc/current/service_container.html#services-wire-specific-service
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/HttpClient/ScopingHttpClient.php
-	https://symfony.com/doc/current/http_client.html#authentication
-	https://symfony.com/doc/current/http_client.html#query-string-parameters
-	https://symfony.com/doc/current/http_client.html#headers
-	https://symfony.com/doc/current/http_client.html#redirects
-	https://symfony.com/doc/current/http_client.html#retry-failed-requests
-	https://symfony.com/doc/current/http_client.html#http-proxies
-	https://symfony.com/doc/current/http_client.html#using-uri-templates
-	https://symfony.com/doc/current/reference/configuration/framework.html#reference-http-client
+SYMFONY MAILER https://symfony.com/doc/current/mailer.html#creating-sending-messages
 	
-	?
-	? когда отключен verify_peer, verify_host сначала выдаёт ошибку что вышло время подключения
-		а затем ПРОХОДИТ по ссылке
-		что-то задерживает приём ответа с сервера
-	? Retry Failed Requests https://symfony.com/doc/current/http_client.html#retry-failed-requests
-		когда решишь проблему с проверкой SSL
-		сделай запрос на свой API, закончи неудачей, посмотри куда будет сделан 2, 3... попытки при
-		base_uri => [ПОСЛЕДНИЙ ЭЛЕМЕНТ МАССИВ, значит по идее каждый запрос должен быть случайным [url_1, url_2, ...]]
-	? в каких случаях можно при httpClient::request использовать options.body как closure
-	+ ?? не получилось по scoped_clients.scope установить заголовки запроса при httpClient::request (для scope автоматисески создаётся новый именованный client service, и он был виден через debug:auto просто искать нужно было аккуратней с твоим grep)
-	? как из ответа сервера узнать отправлялись ли куки в запросе
-	? verify_peer не работает, SSL ошибка продолжает выдаваться
-	? как указать самоподписанный SSL сертификат, при обращении к другим сайтам: CAfile: C:/OSPanel/data/ssl/cacert.pem
-	? не понятно куда скачивается файл
-	+ нет вызова callback на прогресс HttpClient(HttpOptions::setOnProgress) (используя сервисный HttpClientInterface on_progress действительно не вызывается, но если создать вручную то вызывается)
-SYMFONY MAILER https://symfony.com/doc/current/mailer.html
+	https://en.wikipedia.org/wiki/High_availability
+	https://symfony.com/doc/current/mailer.html#mail-catcher
+	https://symfony.com/doc/current/mailer.html#mailer-sending-messages-async
+	https://symfony.com/doc/current/messenger.html
+	
+	? https://symfony.com/doc/current/mailer.html#overriding-default-smtp-authenticators
+	
 	clear && bin/console make:reset-password --with-ulid
 		https://symfony.com/doc/current/security/passwords.html#reset-password
 		https://github.com/symfonycasts/reset-password-bundle
@@ -630,6 +599,8 @@ SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
 	???LOGIN WITH PUSH CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на push уведомление
 	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
 SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
+	Http Client декорировать client чтобы выполнялось max 3 запроса в минуту
+		https://symfony.com/doc/current/http_client.html#limit-the-number-of-requests
 	?
 	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
 	создать своего лимитера для логина login_throttling limiter
@@ -657,6 +628,8 @@ SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/in
 	?
 	вызывается или нет PreCreateForRenderEvent при обновлении re-render
 HOTWIRE: STRADA https://strada.hotwired.dev/
+	?
+	Поймать события сервера https://symfony.com/doc/current/http_client.html#consuming-server-sent-events
 SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
 SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
 SYMFONY CACHE
@@ -701,6 +674,7 @@ SYMFONY WEBPACK ENCORE
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-assets-version
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-version-format
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-json-manifest-path
+SYMFONY WEBHOOK https://symfony.com/doc/current/webhook.html
 Framework Configuration Reference https://symfony.com/doc/current/reference/configuration/framework.html#reference-cache-prefix-seed
 SYMFONY BUNDLE FOSJsRoutingBundle (route -> uri in js)
 SYMFONY BUNDLE FOSHttpCacheBundle (invalidate cache)
@@ -744,6 +718,24 @@ SYMFONY DOCTRINE
 DOCKER
 	https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
 	https://symfony.com/doc/current/setup.html
+SYMFONY HTTP CLIENT [DIFFICULT ONE MORE] https://symfony.com/doc/current/http_client.html
+	?
+	?? Декорировать клиента и возвращать chunk каким-то образом изменённым
+		https://symfony.com/doc/current/http_client.html#extensibility
+	? когда отключен verify_peer, verify_host сначала выдаёт ошибку что вышло время подключения
+		а затем ПРОХОДИТ по ссылке
+		что-то задерживает приём ответа с сервера
+	? Retry Failed Requests https://symfony.com/doc/current/http_client.html#retry-failed-requests
+		когда решишь проблему с проверкой SSL
+		сделай запрос на свой API, закончи неудачей, посмотри куда будет сделан 2, 3... попытки при
+		base_uri => [ПОСЛЕДНИЙ ЭЛЕМЕНТ МАССИВ, значит по идее каждый запрос должен быть случайным [url_1, url_2, ...]]
+	? в каких случаях можно при httpClient::request использовать options.body как closure
+	+ ?? не получилось по scoped_clients.scope установить заголовки запроса при httpClient::request (для scope автоматисески создаётся новый именованный client service, и он был виден через debug:auto просто искать нужно было аккуратней с твоим grep)
+	? как из ответа сервера узнать отправлялись ли куки в запросе
+	? verify_peer не работает, SSL ошибка продолжает выдаваться
+	? как указать самоподписанный SSL сертификат, при обращении к другим сайтам: CAfile: C:/OSPanel/data/ssl/cacert.pem
+	? не понятно куда скачивается файл
+	+ нет вызова callback на прогресс HttpClient(HttpOptions::setOnProgress) (используя сервисный HttpClientInterface on_progress действительно не вызывается, но если создать вручную то вызывается)
 TESTS
 	GitHub Actions https://help.github.com/en/actions
 		https://www.youtube.com/watch?v=WW6ZUw9IExA

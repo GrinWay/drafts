@@ -7,6 +7,10 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+use Symfony\Component\Mailer\Transport\Smtp\Auth\XOAuth2Authenticator;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Component\HttpClient\AmpHttpClient;
 use Symfony\Component\HttpClient\CurlHttpClient;
 use Symfony\Component\HttpClient\NativeHttpClient;
@@ -15,6 +19,9 @@ use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 use Symfony\Component\HttpClient\HttpOptions;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Component\Config\Resource\FileResource;
+use Symfony\Component\HttpClient\CachingHttpClient;
+use Symfony\Component\HttpClient\HttpClient;
+use Symfony\Component\HttpKernel\HttpCache\Store;
 use Symfony\Component\Config\ConfigCache;
 use App\Client\BrowserKit\BrowserClient;
 use Symfony\Component\Config\Definition\Processor;
@@ -29,7 +36,6 @@ use Symfony\Component\OptionsResolver\Options;
 use App\Repository\TaskFoodTopicRepository;
 use App\Form\Type\YearMonthDayHourMinuteSecondType;
 use Symfony\Component\CssSelector\CssSelectorConverter;
-use Symfony\Component\HttpClient\HttpClient;
 use App\Client\BrowserKit\HttpBrowser;
 use Symfony\Component\DomCrawler\Crawler;
 use Psr\Container\ContainerInterface;
@@ -343,13 +349,42 @@ class HomeController extends AbstractController
 		#[Autowire('%env(APP_REQUIRED_SCHEME)%')]
 		$requiredScheme,
 		HttpClientInterface $client,
+		MailerInterface $mailer,
+		#[Autowire('%env(APP_ADMIN_MAILER_LOGIN)%')]
+		$appAdminEmailLogin,
+		#[Autowire('%env(APP_ADMIN_EMAIL)%')]
+		$fromEmail,
+		#[Autowire('%env(APP_TO_TEST_EMAIL)%')]
+		$toEmail,
+		/*
+		*/
 	) {
+		\dd(
+			$appAdminEmailLogin,
+			$fromEmail,
+			$toEmail,
+		);
+		$email = (new Email())
+			->from($fromEmail)
+			->to($toEmail)
+			->subject('SUBJECT CONTENT')
+			->text('TEXT CONTENT')
+			->html('<p><small>HTML CONTENT</small></p>')
+		;
+		
+		$mailer->send($email);
+		
+		\dd('END');
 		
 		$callback = static function(int $downloadedBytes, int $totalBytes, array $currentDownloadedInfo): void {
 			\dump($downloadedBytes, $totalBytes, $currentDownloadedInfo);
 		};
 		
+		$store = new Store($stringService->getPath($projectDir, 'cache/dev/my/'));
 		$client = new CurlHttpClient();
+		$client = HttpClient::create();
+		$client = new CachingHttpClient($client, $store);
+		
 		$client = $client->withOptions(
 			(new HttpOptions())
 				//->setOnProgress($callback)
@@ -361,30 +396,58 @@ class HomeController extends AbstractController
 				->toArray()
 		);
 		
-		// https://windows.php.net/download#php-8.3
-		$response = $client->request('GET', 'https://github.com', []);
+		$responses = [];
 		
-		$formDataPart = new FormDataPart([
-			'field' => 'field value',
-			'choice' => [
-				'choice key1' => 'choice value 1',
-				'choice value 1',
-			],
-		]);
-		$data = $formDataPart->getParts();
+		for($i = 0; $i < 1; ++$i) {
+			$client = $client->withOptions(
+				(new HttpOptions())
+					->setUserData(\sprintf($requestDescription = 'request_idx_%s', $i))
+					->setTimeout(3)
+					->setMaxDuration(5)
+					->toArray()
+			);
+			
+			$responses[] = $client->request('GET', 'https://github.com', []);
+		}
+		
+		foreach($client->stream($responses) as $response => $chunk) {
+			if ($chunk->isTimeout()) {
+				\dump(\sprintf(
+					'TIMEOUT of "%s"',
+					$response->getInfo('user_data'),
+				));
+				$response->cancel();
+			} else if ($chunk->isLast()) {
+				\dump(
+					\sprintf(
+						'Got full response of "%s" with status code: "%s".',
+						$response->getInfo('user_data'),
+						$response->getStatusCode(),
+					)
+				);
+			} else {
+				\dump(\sprintf(
+					'Processing of "%s"... status code: "%s"', 
+					$response->getInfo('user_data'),
+					$response->getStatusCode(),
+					)
+				);				
+			}
+		}
 		
 		$result = \get_debug_type($response);
 		\dd(
 			$result,
-			$response->getStatusCode(),
 			/*
+			$response->getStatusCode(),
+			$response->getInfo('user_data'),
 			$response->getContent(),
-			$formDataPart->bodyToString(),
-			$formDataPart->getPreparedHeaders()->toArray(),
+			$response->getInfo(),
 			$response->getContent(),
 			$response->getHeaders(),
-			$response->getInfo(),
 			$response->toArray(),
+			$formDataPart->getPreparedHeaders()->toArray(),
+			$formDataPart->bodyToString(),
 			*/
 		);
 		

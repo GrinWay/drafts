@@ -1,6 +1,20 @@
-bash "./public/deploy/install-grinway-symfony-bundles.sh"
+#bash "./public/deploy/install-grinway-symfony-bundles.sh"
 
-php bin/console doctrine:migrations:migrate -q --env=dev
+echo 'APP_ADMIN_MAILER_LOGIN'
+php bin/console secrets:set APP_ADMIN_MAILER_LOGIN
+echo 'APP_ADMIN_MAILER_PASS'
+php bin/console secrets:set APP_ADMIN_MAILER_PASS
 
-yarn install
-yarn run dev
+echo 'APP_ADMIN_GOOGLE_LOGIN'
+php bin/console secrets:set APP_ADMIN_GOOGLE_LOGIN
+echo 'APP_ADMIN_GOOGLE_PASS'
+php bin/console secrets:set APP_ADMIN_GOOGLE_PASS
+
+echo 'APP_ADMIN_EMAIL'
+php bin/console secrets:set APP_ADMIN_EMAIL
+echo 'APP_TO_TEST_EMAIL'
+php bin/console secrets:set APP_TO_TEST_EMAIL
+
+#php bin/console doctrine:migrations:migrate -q --env=dev
+
+#yarn install && yarn run dev
