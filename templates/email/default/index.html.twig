@@ -1,0 +1,57 @@
+{%- extends 'email/base.html.twig' -%}
+
+{%- block body -%}
+	{%- set cid = email.image('@abs_img_dir/png.png') -%}
+   
+	<row>
+		<columns>			
+			{% apply markdown_to_html %}
+				Welcome {{ email.toName }}!
+				===========================
+			{% endapply %}
+		</columns>
+	</row>
+	<row>
+		<columns>
+			<div class="">
+				toName: {{ email.toName() }}
+			</div>
+		</columns>
+	</row>
+	<row>
+		<columns>
+			<div class="">
+				getSubject: {{ email.getSubject() }}
+			</div>
+		</columns>
+	</row>
+	<row>
+		<columns>
+			<div class="">
+				getReplyTo: {{ email.getReplyTo()|join(', ') }}
+			</div>
+		</columns>
+	</row>
+	<row>
+		<columns>
+			<div class="">
+				getPriority: {{ email.getPriority() }}
+			</div>
+		</columns>
+	</row>
+	<row>
+		<columns>
+			<div class="">
+				CID: {{ cid }}
+			</div>
+		</columns>
+	</row>
+	<row>
+		<columns>
+		<div class="">
+			<img src="{{- cid -}}" alt="Схема">
+		</div>
+		</columns>
+	</row>
+	
+{%- endblock  -%}

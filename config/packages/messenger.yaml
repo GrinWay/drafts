@@ -87,6 +87,7 @@ framework:
             'App\Messenger\Command\Message\HowStampWorks': sync
             'App\Messenger\Event\Message\TestUserWasCreated': sync
             # GrinWay\WebApp\Contract\Messenger\HasSyncTransportInterface
+            'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
             
 when@test:
     framework:

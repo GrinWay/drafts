@@ -20,8 +20,8 @@ class YearMonthDayHourMinuteSecondDataMapper implements DataMapperInterface {
 		if (!$viewData instanceof \DateTimeInterface) {
 			throw new UnexpectedTypeException($viewData, \DateTimeInterface::class);
 		}
+		if (!$viewData instanceof Carbon && !$viewData instanceof CarbonImmutable) {
 		//\dd($viewData);
-		if (!$viewData instanceof Carbon || !$viewData instanceof CarbonImmutable) {
 			$viewData = new CarbonImmutable($viewData);
 		}
 		

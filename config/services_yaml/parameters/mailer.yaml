@@ -1,0 +1,5 @@
+parameters:
+    #env(MAILER_DSN): 'smtp://%env(APP_ADMIN_GOOGLE_LOGIN)%:%env(APP_ADMIN_GOOGLE_PASS)%@smtp.gmail.com:25?verify_peer=0&local_domain=woodenalex.ru&restart_threshold=10&restart_threshold_sleep=1&max_per_second=2'
+    env(MAILER_DEFAULT_TRANSPORT): 'smtp://%env(APP_ADMIN_MAILER_LOGIN)%:%env(APP_ADMIN_MAILER_PASS)%@smtp.woodenalex.ru:25?verify_peer=0&local_domain=woodenalex.ru&restart_threshold=10&restart_threshold_sleep=1&max_per_second=2&auto_tls=false'
+    env(MAILER_GOOGLE_TRANSPORT): 'smtp://%env(APP_ADMIN_GOOGLE_LOGIN)%:%env(APP_ADMIN_GOOGLE_PASS)%@smtp.gmail.com:25?verify_peer=0&local_domain=woodenalex.ru&restart_threshold=10&restart_threshold_sleep=1&max_per_second=2&auto_tls=false'
+    env(MAILER_DSN): 'roundrobin(%env(MAILER_DEFAULT_TRANSPORT)% %env(MAILER_GOOGLE_TRANSPORT)%)'

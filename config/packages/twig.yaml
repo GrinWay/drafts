@@ -34,6 +34,8 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     paths:
         templates/admin/index: admin
+        '%app.abs_img_dir%': abs_img_dir
+        assets/styles: css
     
     # Pattern of file name used for cache warmer and linter
     file_name_pattern: [

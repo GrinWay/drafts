@@ -83,4 +83,4 @@ services:
             - '../../src/Service/PureStatic/'
             - '../../src/Panther/'
             - '../../src/Test/'
-            - '../../src/Translation/function.php'
+            - '../../src/Resources/'

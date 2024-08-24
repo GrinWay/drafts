@@ -10,6 +10,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpClient\HttpOptions;
 
 /**
  * @codeCoverageIgnore
@@ -21,6 +22,7 @@ class MessengerController extends AbstractController
 		MessageBusInterface $bus,
 		MessageBusInterface $eventBus,
 		$get,
+		\Symfony\Contracts\HttpClient\HttpClientInterface $thisClient,
 	): Response {
 		
 		$response = $bus->dispatch(

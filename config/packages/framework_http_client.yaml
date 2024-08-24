@@ -3,7 +3,8 @@ when@dev: &when_dev
         http_client:
             default_options:
                 verify_peer: false
-                verify_host: false
+                verify_host: true
+                timeout: 3
                 extra:
                     trace_content: true
 
@@ -17,3 +18,7 @@ framework:
             max_redirects: 10
             extra:
                 trace_content: false
+    
+        scoped_clients:
+            this.client:
+                base_uri: '%env(DEFAULT_URI)%'

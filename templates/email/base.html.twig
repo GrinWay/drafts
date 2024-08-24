@@ -1,0 +1,14 @@
+{%- apply inky_to_html|inline_css(source('@css/email/index.css')) -%}
+	{%- block container -%}
+		<container>
+			{%- block header -%}
+			{%- endblock -%}
+
+			{%- block body -%}
+			{%- endblock -%}
+
+			{%- block footer -%}
+			{%- endblock -%}
+		</container>
+	{%- endblock -%}
+{%- endapply -%}

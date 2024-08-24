@@ -564,13 +564,33 @@ SYMFONY BROWSER KIT
 	+ ? Как это на серверной стороне можно делать Client::xmlHttpRequest ?!
 		или это просто для заголовков (Да, автоматисески будет добавлен HTTP_X_REQUESTED_WITH)
 ***
-SYMFONY MAILER https://symfony.com/doc/current/mailer.html#creating-sending-messages
+SYMFONY MAILER https://symfony.com/doc/current/mailer.html#sending-messages-async
 	
 	https://en.wikipedia.org/wiki/High_availability
 	https://symfony.com/doc/current/mailer.html#mail-catcher
 	https://symfony.com/doc/current/mailer.html#mailer-sending-messages-async
 	https://symfony.com/doc/current/messenger.html
-	
+	https://symfony.com/doc/current/messenger.html#messenger-worker
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bridge/Twig/Mime/TemplatedEmail.php
+	https://symfony.com/doc/current/mailer.html#sending-messages-async
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bridge/Twig/Mime/TemplatedEmail.php
+	https://symfony.com/doc/current/messenger.html
+	https://commonmark.org/
+	https://get.foundation/emails/docs/inky.html
+	https://symfony.com/doc/current/mailer.html#mailer-css-namespace
+	https://github.com/foundation/foundation-emails/blob/develop/dist/foundation-emails.css
+	https://symfony.com/doc/current/mailer.html#mailer-twig
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Mailer/EventListener/MessageListener.php
+	https://symfony.com/doc/current/mailer.html#messageevent
+	https://symfony.com/doc/current/reference/configuration/twig.html#config-twig-html-to-text-converter
+	https://github.com/thephpleague/html-to-markdown
+	https://symfony.com/doc/current/mailer.html#mailer-twig-embedding-images
+	https://symfony.com/doc/current/mailer.html#mailer-configure-email-globally
+	https://symfony.com/doc/current/mailer.html#twig-html-css
+	https://symfony.com/doc/current/mailer.html#mailer-sending-messages-async
+	https://symfony.com/doc/current/messenger.html#messenger-handling-messages-synchronously
+	https://symfony.com/doc/current/messenger.html
+		
 	? https://symfony.com/doc/current/mailer.html#overriding-default-smtp-authenticators
 	
 	clear && bin/console make:reset-password --with-ulid
@@ -588,10 +608,14 @@ SYMFONY MAILER https://symfony.com/doc/current/mailer.html#creating-sending-mess
 		assertEmailAddressContains
 		assertEmailSubjectContains
 	?
+	??? ЗАЧЕМ и КАК ПОЛЬЗОВАТЬСЯ подписыванием и шифрованием писем https://symfony.com/doc/current/mailer.html#signing-and-encrypting-messages
+	? при подписании email with SMimeSigner пропадает html содержимое письма
+	+ ? говорят метод send у транспорта возвращает информацию о сообщении и доп. дебаг инф., но как получить этот транспорт (замени service EmailInterface на TransportInterface)
+	? что за метод cc
+	? что за метод bcc
+	+ ?Отправляя письма получаю ошибку 550 relay not permitted (не было авторизации!, .env файл конечно же не читает secrests так как это просто статичный файл)
+	+ Каким таким образом без авторизации я могу отправлять письма на почту админа (если почтовый ящик принадлежит почтовому домену, который ты и использовал для отправки писем, авторизация не нужна, так как ретрансляции не происходит)
 	неужели тест может понять что в MessageHandler будет отпарвляться письмо, или это внутренняя реализация асинхронной отправки письма, то есть если в БД записан объект именно Email
-doctrine-test-bundle https://github.com/dmaicher/doctrine-test-bundle
-browser-driver-installer https://github.com/dbrekelmans/browser-driver-installer
-LiipFunctionalTestBundle https://github.com/liip/LiipFunctionalTestBundle
 SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
 	?
@@ -605,6 +629,14 @@ SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-lim
 	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
 	создать своего лимитера для логина login_throttling limiter
 		https://symfony.com/doc/current/security.html#limiting-login-attempts
+OpenSSL:
+	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.
+	Как создать самоподписанные сертификаты
+	Куда класть самоподписанные сертификаты
+	Как разрешить самоподписанные сертификаты
+doctrine-test-bundle https://github.com/dmaicher/doctrine-test-bundle
+browser-driver-installer https://github.com/dbrekelmans/browser-driver-installer
+LiipFunctionalTestBundle https://github.com/liip/LiipFunctionalTestBundle
 HOTWIRE: STIMULUS https://stimulus.hotwired.dev/
 	написать тест где проверяется
 		$crawler = $client->waitForVisibility
@@ -868,7 +900,8 @@ TODO
 		//TODO: take isEnabledLocale
 		//TODO: AccessService (Философия такая, что Symfony говорит всегда выкидывай AccessDeniedException и не выбрасывай AuthenticationException вручную(оно перевыброситься если ты ещё не авторизован), так как логика попадания в EntryPoint уже описана)
 		// TODO: IpRangeRequestMatcher
-		//TODO: TestUtil (не совсем уверен что именно в этот пакет)
+		//TODO: TestUtil (не совсем уверен что именно в этот пакет, TestUtil -> CrawlerUtil)
+		//TODO: TwigUtil
 	Extensions
 		может перейти от OptionsResolver к Processor+TreeBuilder в global instance of
 	film
@@ -889,3 +922,4 @@ Composer
 	Что за команда status
 	Что за команда archive
 	Что за команда upgrade
+	

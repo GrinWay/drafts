@@ -7,8 +7,17 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Mime\Crypto\SMimeEncrypter;
+use Symfony\Component\Mime\Crypto\DkimSigner;
+use Symfony\Component\Mime\Crypto\SMimeSigner;
+use Symfony\Component\Mailer\Transport\TransportInterface;
+use Symfony\Component\Mime\Part\File as MimeFile;
+use Symfony\Component\Mime\Part\DataPart;
+use Symfony\Component\Mime\Address;
+use App\Form\Type as AppFormType;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Mime\Email;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\Mailer\Transport\Smtp\Auth\XOAuth2Authenticator;
 use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 use Symfony\Component\HttpClient\AmpHttpClient;
@@ -269,7 +278,7 @@ class HomeController extends AbstractController
 	/**
 	* @var Carbon $nowModified -1second
 	*/
-    #[Route(path: '/{email<\w{1}>?s}', methods: ['GET'])]
+    #[Route(path: '/{email<\w{1}>?s}', methods: ['GET', 'POST'])]
     //#[IsCsrfTokenValid(id: 'default', tokenKey: '_token')]
     //#[SomeAttribute]
     public function home(
@@ -349,30 +358,47 @@ class HomeController extends AbstractController
 		#[Autowire('%env(APP_REQUIRED_SCHEME)%')]
 		$requiredScheme,
 		HttpClientInterface $client,
-		MailerInterface $mailer,
+		//MailerInterface $mailer,
+		TransportInterface $mailer,
 		#[Autowire('%env(APP_ADMIN_MAILER_LOGIN)%')]
 		$appAdminEmailLogin,
 		#[Autowire('%env(APP_ADMIN_EMAIL)%')]
 		$fromEmail,
 		#[Autowire('%env(APP_TO_TEST_EMAIL)%')]
 		$toEmail,
+		#[Autowire('%app.abs_img_dir%')]
+		$absImgDir,
+		Service\TwigUtil $twigUtil,
 		/*
 		*/
 	) {
-		\dd(
-			$appAdminEmailLogin,
-			$fromEmail,
-			$toEmail,
-		);
-		$email = (new Email())
-			->from($fromEmail)
-			->to($toEmail)
-			->subject('SUBJECT CONTENT')
-			->text('TEXT CONTENT')
-			->html('<p><small>HTML CONTENT</small></p>')
+		$path = $twigUtil->getLocatedResource('@abs_img_dir/png.png');
+		$img = new MimeFile($path);
+		$imgDataPart = new DataPart($img, 'Схема.png', 'image/png');
+		//$imgDataPart->setContentId('scheme@woodenalex');
+		
+		$email = (new TemplatedEmail())
+			//->to('alex@woodenalex.ru')
+			//->bcc($toEmail)
+			->htmlTemplate('email/default/index.html.twig')
+			->locale($r->getLocale())
+			->context([])
+			->addPart($imgDataPart)
 		;
 		
-		$mailer->send($email);
+		/*
+		$email->getHeaders()
+			->addTextHeader('X-Transport', 'default')
+		;
+		*/
+		
+		$sentMessage = $mailer->send($email);
+		
+		\dump(
+			$sentMessage?->getOriginalMessage(),
+			$sentMessage?->getDebug(),
+			$sentMessage?->getMessageId(),
+		);
 		
 		\dd('END');
 		
