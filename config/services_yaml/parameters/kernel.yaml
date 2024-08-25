@@ -1,4 +1,4 @@
 parameters:
 
     router.request_context.scheme: '%env(APP_REQUIRED_SCHEME)%'
-    asset.request_context.secure: true
+    asset.request_context.secure: '%env(bool:APP_HTTPS)%'

@@ -26,6 +26,3 @@ framework:
 
     #esi: true
     #fragments: true
-    
-    router:
-        default_uri: '%env(DEFAULT_URI)%'

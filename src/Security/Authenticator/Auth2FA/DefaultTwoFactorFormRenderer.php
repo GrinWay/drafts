@@ -50,11 +50,14 @@ class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 		
 		$qrCodeUri = $this->getQRCodeUri($templateVars);
         
+		$providerName = $this->pa->getValue($templateVars, '[twoFactorProvider]');
+		
 		$vars = \array_merge(
 			$templateVars,
 			[
 				'qr_code_uri' => $qrCodeUri,
 				'form' => $form->createView(),
+				'provider_name' => $providerName,
 			],
 		);
 		$content = $this->twigEnvironment->render('2fa/2fa.thml.twig', $vars);

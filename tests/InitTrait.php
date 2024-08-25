@@ -30,6 +30,7 @@ trait InitTrait {
 		$request->setSession($session);
 		
 		$requestStack->push($request);
+		static::ensureKernelShutdown();
     }
 	
 	protected function tearDown(): void

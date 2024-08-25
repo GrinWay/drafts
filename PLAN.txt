@@ -187,6 +187,7 @@ SYMFONY TWIG COMPONENTS
 	как каждый раз вызвать метод а не получать computed, который по умолчанию (вызов через this)
 SYMFONY FORMS
 	?
+	+ ? неужели для того чтобы работали setter и getter опции необходимо чтобы базовой моделью был объект (ДА!, поэтому если твои базовые данные не объект используй слушателей событий)
 	+ ? как пользоваться form_attr ((PREREQUISITE)form#id=getBlockPrefix + form_attr = true)
 	+ ? Отправляю форму, а она !form::isSubmitted, это как-то связано с form_attr (данные в $_POST не отправляются потому что если элемент формы имеет form attribute со значением отсутствующего form id данные не отправляются)
 	+ почему в самом типе формы я не могу воспользоваться методом form::getName ($this->getName) (потому что этот метод принадлежит клиентскому объекту формы, а не типу формы)
@@ -564,50 +565,21 @@ SYMFONY BROWSER KIT
 	+ ? Как это на серверной стороне можно делать Client::xmlHttpRequest ?!
 		или это просто для заголовков (Да, автоматисески будет добавлен HTTP_X_REQUESTED_WITH)
 ***
-SYMFONY MAILER https://symfony.com/doc/current/mailer.html#sending-messages-async
-	
-	https://en.wikipedia.org/wiki/High_availability
-	https://symfony.com/doc/current/mailer.html#mail-catcher
-	https://symfony.com/doc/current/mailer.html#mailer-sending-messages-async
-	https://symfony.com/doc/current/messenger.html
-	https://symfony.com/doc/current/messenger.html#messenger-worker
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bridge/Twig/Mime/TemplatedEmail.php
-	https://symfony.com/doc/current/mailer.html#sending-messages-async
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bridge/Twig/Mime/TemplatedEmail.php
-	https://symfony.com/doc/current/messenger.html
-	https://commonmark.org/
-	https://get.foundation/emails/docs/inky.html
-	https://symfony.com/doc/current/mailer.html#mailer-css-namespace
-	https://github.com/foundation/foundation-emails/blob/develop/dist/foundation-emails.css
-	https://symfony.com/doc/current/mailer.html#mailer-twig
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Mailer/EventListener/MessageListener.php
-	https://symfony.com/doc/current/mailer.html#messageevent
-	https://symfony.com/doc/current/reference/configuration/twig.html#config-twig-html-to-text-converter
-	https://github.com/thephpleague/html-to-markdown
-	https://symfony.com/doc/current/mailer.html#mailer-twig-embedding-images
-	https://symfony.com/doc/current/mailer.html#mailer-configure-email-globally
-	https://symfony.com/doc/current/mailer.html#twig-html-css
-	https://symfony.com/doc/current/mailer.html#mailer-sending-messages-async
-	https://symfony.com/doc/current/messenger.html#messenger-handling-messages-synchronously
-	https://symfony.com/doc/current/messenger.html
-		
-	? https://symfony.com/doc/current/mailer.html#overriding-default-smtp-authenticators
-	
-	clear && bin/console make:reset-password --with-ulid
-		https://symfony.com/doc/current/security/passwords.html#reset-password
-		https://github.com/symfonycasts/reset-password-bundle
-	REQUIRED: LOGIN WITH EMAIL CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на почту
+SYMFONY MAILER
+	https://github.com/symfonycasts/reset-password-bundle?tab=readme-ov-file#advanced-usage
+	https://github.com/SymfonyCasts/reset-password-bundle/blob/main/docs/manual-setup.md
 	https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/email.html
 	что делает assertEmailIsQueued (как-то связан с getMailerEvent)
-	написатать тест, что mail был отправлен https://symfony.com/doc/current/testing.html#mailer-assertions
-		assertEmailAttachmentCount
-		assertEmailTextBodyContains
-		assertEmailHtmlBodyContains
-		assertEmailHasHeader
-		assertEmailHeaderSame
-		assertEmailAddressContains
-		assertEmailSubjectContains
+	REQUIRED: LOGIN WITH EMAIL CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на почту
 	?
+	throttle_limit это период, в течении которого нельзя запрашивать изменение пароля, как понять что можно сгенерировать новую ссылку
+		https://github.com/SymfonyCasts/reset-password-bundle/blob/main/docs/manual-setup.md
+	? как в MessageEventListener указать окончательный список получателей, может быть исключить global mailer.envelope.recipients
+	? вместо изменения глобального конфига в .yaml, позволь клиентам изменять их определив в базе данных глобальные настройки EmailHeaders и примени их к $event->getMessage() в MessageEventListener
+	? mailer::stop не отсоеденилась от smtp сервера
+	даже если написал в messenger.yaml 'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
+		письмо отправляется синхронно
+	? зачем &peer_fingerprint= в dsn
 	??? ЗАЧЕМ и КАК ПОЛЬЗОВАТЬСЯ подписыванием и шифрованием писем https://symfony.com/doc/current/mailer.html#signing-and-encrypting-messages
 	? при подписании email with SMimeSigner пропадает html содержимое письма
 	+ ? говорят метод send у транспорта возвращает информацию о сообщении и доп. дебаг инф., но как получить этот транспорт (замени service EmailInterface на TransportInterface)
@@ -629,6 +601,12 @@ SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-lim
 	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
 	создать своего лимитера для логина login_throttling limiter
 		https://symfony.com/doc/current/security.html#limiting-login-attempts
+SYMFONY SERIALIZER https://symfony.com/doc/current/components/serializer.html
+	https://symfony.com/doc/current/serializer.html
+	?
+	зачем сериализовывать объекты в сессии (? может быть дело в хранимом объёме, или что ещё...)
+	добавляет новые поля в json при serialize
+	grin_way_env_csv_multiline parse with serializer
 OpenSSL:
 	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.
 	Как создать самоподписанные сертификаты
@@ -668,12 +646,6 @@ SYMFONY CACHE
 	?
 	$request->getETags()
 	создать cache адаптер для ExpressionLanguage($adapter)
-SYMFONY SERIALIZER https://symfony.com/doc/current/components/serializer.html
-	https://symfony.com/doc/current/serializer.html
-	?
-	зачем сериализовывать объекты в сессии (? может быть дело в хранимом объёме, или что ещё...)
-	добавляет новые поля в json при serialize
-	grin_way_env_csv_multiline parse with serializer
 SYMFONY FILESYSTEM
 SYMFONY LOCK
 	?
@@ -731,6 +703,7 @@ BOOTSTRAP (not deep)
 	?
 	опираясь на пример темы ".\vendor\symfony\twig-bridge\Resources\views\Form\form_div_layout.html.twig"
 		сделать свою тему на bootstrap (form/theme/grinway/light/index.html.twig)
+EMAIL MESSENGES INKY https://get.foundation/emails/docs/inky.html
 SYMFONY MAKER BUNDLE https://symfony.com/bundles/SymfonyMakerBundle/current/index.html
 SYMFONY BEST PRACTIES https://symfony.com/doc/current/best_practices.html
 CHART JS
@@ -750,6 +723,8 @@ SYMFONY DOCTRINE
 DOCKER
 	https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
 	https://symfony.com/doc/current/setup.html
+	https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
+	https://symfony.com/doc/current/setup/symfony_server.html#symfony-server-docker
 SYMFONY HTTP CLIENT [DIFFICULT ONE MORE] https://symfony.com/doc/current/http_client.html
 	?
 	?? Декорировать клиента и возвращать chunk каким-то образом изменённым
@@ -831,7 +806,9 @@ php-webdriver (зачем если можно $client->click(HttpBrowser::reques
 SYMFONY FORMATS/STANDARDS
 	https://symfony.com/doc/current/contributing/documentation/format.html
 	https://symfony.com/doc/current/contributing/documentation/standards.html
-
+HTML-TO-MARKDOWN https://github.com/thephpleague/html-to-markdown?tab=readme-ov-file
+COMMONMARK https://github.com/thephpleague/commonmark
+SYMFONY SERVER https://symfony.com/doc/current/setup/symfony_server.html
 
 TODO
 	регайся https://packagist.org/

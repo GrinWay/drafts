@@ -2,6 +2,8 @@
 
 namespace App\Form\Type;
 
+use function Symfony\component\string\u;
+
 use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Event as FormEvent;
@@ -21,20 +23,29 @@ use App\Form\Type\ProductFormType;
 
 class Auth2FAFormType extends AbstractFormType
 {
+	public function __construct(
+		PropertyAccessorInterface $pa,
+	) {
+		parent::__construct(pa: $pa);
+	}
+	
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
+			'csrf_protection' => null,
+			'csrf_field_name' => null,
+			'csrf_token_id' => null,
         ]);
 	}
 	
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 		$otf = static function ($model) {
-			\dump('VIEW TRANS to FORM');
+			//\dump('VIEW TRANS to FORM');
 			return $model;
 		};
 		$fto = static function ($formFieldData) {
-			\dump('VIEW TRANS to OBJ');
+			//\dump('VIEW TRANS to OBJ');
 			return $formFieldData;
 		};
         
@@ -55,9 +66,34 @@ class Auth2FAFormType extends AbstractFormType
 			)
 			->addViewTransformer(new CallbackTransformer($otf, $fto))
 			->addEventListener(FormEvents::SUBMIT, static function (FormEvent\SubmitEvent $event): void {
-				\dump('SUBMIT');
+				//\dump('SUBMIT');
 			})
         ;
+    }
+	
+	public function buildView(FormView $view, FormInterface $form, array $options)
+    {
+		foreach([
+			[
+				'optionsKey' => 'csrf_protection',
+				'twigKey' => 'isCsrfProtectionEnabled',
+			],
+			[
+				'optionsKey' => 'csrf_field_name',
+				'twigKey' => 'csrfParameterName',
+			],
+			[
+				'optionsKey' => 'csrfTokenId',
+				'twigKey' => 'csrf_token_id',
+			],
+		] as [
+			'optionsKey' => $optionsKey,
+			'twigKey' => $twigKey,
+		]) {
+			if (null !== $value = $this->pa->getValue($options, (string) u($optionsKey)->ensureStart('[?')->ensureEnd(']'))) {
+				$view->vars[$twigKey] = $value;
+			}			
+		}
     }
 	
 	public function getBlockPrefix(): string {

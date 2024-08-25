@@ -1,0 +1,10 @@
+{%- extends 'email/base.html.twig' -%}
+
+{%- block body -%}
+	<div class="">
+		TEST with image
+	</div>
+	<div class="">
+		<img src="{{- email.image('@abs_img_dir/png.png') -}}" alt="test image">
+	</div>
+{%- endblock  -%}

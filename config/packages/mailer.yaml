@@ -1,15 +1,35 @@
 framework:
     mailer:
+        message_bus: command.bus
+        
         dsn: '%env(MAILER_DSN)%'
         #transports:
             #default: '%env(MAILER_DEFAULT_TRANSPORT)%'
             # Попробуй заставить google transport работать
             #google: '%env(MAILER_GOOGLE_TRANSPORT)%'
+        
         envelope:
             sender: '%env(APP_ADMIN_EMAIL)%'
             recipients:
             -   '%env(APP_ADMIN_EMAIL)%'
+            allowed_recipients:
+            -   '^.+$'
+        
         headers:
-            From: '[Мастер] %env(APP_TITLE)% <%env(APP_ADMIN_EMAIL)%>'
+            From: '%env(APP_MAILER_HEADER_FROM)%'
             To: '%env(APP_ADMIN_EMAIL)%'
-            Subject: '%env(APP_TITLE)%'
+            Subject: '%env(APP_MAILER_HEADER_SUBJECT)%'
+
+when@test: &test
+    framework:
+        mailer:
+            dsn: null://null
+            envelope:
+                sender: '%env(APP_ADMIN_EMAIL)%'
+                recipients:
+                -   '%env(APP_ADMIN_EMAIL)%'
+                allowed_recipients: []
+            headers:
+                From: '[TEST]%env(APP_MAILER_HEADER_FROM)%'
+                To: '%env(APP_ADMIN_EMAIL)%'
+                Subject: '[TEST]%env(APP_MAILER_HEADER_SUBJECT)%'

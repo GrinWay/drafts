@@ -27,10 +27,10 @@
 					<p class="widget"><label for="_trusted"><input id="_trusted" type="checkbox" name="{{ trustedParameterName }}" /> {{ "trusted"|trans({}, 'SchebTwoFactorBundle') }}</label></p>
 				{%- endif -%}
 				
-				{#
-				{%- if isCsrfProtectionEnabled -%}
+				{%- if isCsrfProtectionEnabled is defined and true == isCsrfProtectionEnabled -%}
 					<input type="hidden" name="{{ csrfParameterName }}" value="{{ csrf_token(csrfTokenId) }}">
 				{%- endif -%}
+				{#
 				#}
 				
 				<twig:grinway:btn class="btn-outline-primary">
@@ -41,6 +41,9 @@
 		</div>
 		
 		{%- if is_granted("IS_AUTHENTICATED_2FA_IN_PROGRESS") -%}
+			<div class="text-center">
+				QR Code for "{{- provider_name -}}"
+			</div>
 			<div class="d-flex">
 				<img class="mx-auto" src="{{- qr_code_uri -}}" alt="qr2fa">
 			</div>

@@ -7,6 +7,7 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Mime\BodyRendererInterface;
 use Symfony\Component\Mime\Crypto\SMimeEncrypter;
 use Symfony\Component\Mime\Crypto\DkimSigner;
 use Symfony\Component\Mime\Crypto\SMimeSigner;
@@ -278,7 +279,7 @@ class HomeController extends AbstractController
 	/**
 	* @var Carbon $nowModified -1second
 	*/
-    #[Route(path: '/{email<\w{1}>?s}', methods: ['GET', 'POST'])]
+    #[Route(path: '/{email<[a-z@.]+>?s}', methods: ['GET', 'POST'])]
     //#[IsCsrfTokenValid(id: 'default', tokenKey: '_token')]
     //#[SomeAttribute]
     public function home(
@@ -359,7 +360,8 @@ class HomeController extends AbstractController
 		$requiredScheme,
 		HttpClientInterface $client,
 		//MailerInterface $mailer,
-		TransportInterface $mailer,
+		//TransportInterface $mailer,
+		MailerInterface $mailer,
 		#[Autowire('%env(APP_ADMIN_MAILER_LOGIN)%')]
 		$appAdminEmailLogin,
 		#[Autowire('%env(APP_ADMIN_EMAIL)%')]
@@ -369,38 +371,19 @@ class HomeController extends AbstractController
 		#[Autowire('%app.abs_img_dir%')]
 		$absImgDir,
 		Service\TwigUtil $twigUtil,
+		$email,
+		\App\Repository\UserRepository $userRepo,
+		BodyRendererInterface $bodyRenderer,
+		#[Autowire('%env(APP_MAILER_HEADER_FROM)%')]
+		$mailerHeaderFrom,
 		/*
 		*/
 	) {
-		$path = $twigUtil->getLocatedResource('@abs_img_dir/png.png');
-		$img = new MimeFile($path);
-		$imgDataPart = new DataPart($img, 'Схема.png', 'image/png');
-		//$imgDataPart->setContentId('scheme@woodenalex');
 		
-		$email = (new TemplatedEmail())
-			//->to('alex@woodenalex.ru')
-			//->bcc($toEmail)
-			->htmlTemplate('email/default/index.html.twig')
-			->locale($r->getLocale())
-			->context([])
-			->addPart($imgDataPart)
-		;
+		$response = $this->render('home/index.html.twig', [
+		]);
 		
-		/*
-		$email->getHeaders()
-			->addTextHeader('X-Transport', 'default')
-		;
-		*/
-		
-		$sentMessage = $mailer->send($email);
-		
-		\dump(
-			$sentMessage?->getOriginalMessage(),
-			$sentMessage?->getDebug(),
-			$sentMessage?->getMessageId(),
-		);
-		
-		\dd('END');
+		return $response;
 		
 		$callback = static function(int $downloadedBytes, int $totalBytes, array $currentDownloadedInfo): void {
 			\dump($downloadedBytes, $totalBytes, $currentDownloadedInfo);
@@ -596,12 +579,6 @@ class HomeController extends AbstractController
 		$uri = 'https://127.0.0.1/?user=s&expires=123102380';
 		
 		$signedUri = $uriSigner->sign($uri, $now->add(1, 'second'));
-		
-		//$result = '';
-
-		$response = $this->render('home/index.html.twig', [
-			'login_link' => $loginLink,
-		]);
 		
         return $response;
 

@@ -3,6 +3,10 @@
 		{%- block content -%}{%- endblock -%}
 		<ul>
 			
+			{%- if is_granted('ROLE_ADMIN') -%}
+				<a href="{{- path('app_config_edit_mailer') -}}">Изменить настройки почты</a>
+			{%- endif -%}
+			
 			{%- if is_granted('IS_AUTHENTICATED_2FA_IN_PROGRESS') -%}
 				<a href="{{- path('app_login_2fa_resend_code') -}}">RE SEND CODE TO EMAIL</a>
 			{%- endif -%}
@@ -13,6 +17,7 @@
 				<li><a href="{{ path('app_delete_current_user', {}) }}">Delete Account</a></li>
 				<li><a href="{{ path('app_logout', {}) }}">Log out</a></li>
 			{%- else -%}
+				<li><a href="{{ path('app_forgot_password_request', {}) }}">ЗАБЫЛ ПАРОЛЬ</a></li>
 				<li><a href="{{ path('app_login_link', {}) }}">LOGIN LINK</a></li>
 				<li><a href="{{ path('app_auto_login', {}) }}">AUTO LOGIN</a></li>
 				<li><a href="{{ path('app_login', {}) }}">Login</a></li>
