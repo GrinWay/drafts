@@ -564,14 +564,9 @@ SYMFONY BROWSER KIT
 		Передача клиентам ["verify_peer"=>false,"verify_host"=>false] не помогает
 	+ ? Как это на серверной стороне можно делать Client::xmlHttpRequest ?!
 		или это просто для заголовков (Да, автоматисески будет добавлен HTTP_X_REQUESTED_WITH)
-***
 SYMFONY MAILER
-	https://github.com/symfonycasts/reset-password-bundle?tab=readme-ov-file#advanced-usage
-	https://github.com/SymfonyCasts/reset-password-bundle/blob/main/docs/manual-setup.md
-	https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/email.html
-	что делает assertEmailIsQueued (как-то связан с getMailerEvent)
-	REQUIRED: LOGIN WITH EMAIL CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на почту
 	?
+	? реализовать 2fa.email_code со сроком истечения
 	throttle_limit это период, в течении которого нельзя запрашивать изменение пароля, как понять что можно сгенерировать новую ссылку
 		https://github.com/SymfonyCasts/reset-password-bundle/blob/main/docs/manual-setup.md
 	? как в MessageEventListener указать окончательный список получателей, может быть исключить global mailer.envelope.recipients
@@ -588,12 +583,7 @@ SYMFONY MAILER
 	+ ?Отправляя письма получаю ошибку 550 relay not permitted (не было авторизации!, .env файл конечно же не читает secrests так как это просто статичный файл)
 	+ Каким таким образом без авторизации я могу отправлять письма на почту админа (если почтовый ящик принадлежит почтовому домену, который ты и использовал для отправки писем, авторизация не нужна, так как ретрансляции не происходит)
 	неужели тест может понять что в MessageHandler будет отпарвляться письмо, или это внутренняя реализация асинхронной отправки письма, то есть если в БД записан объект именно Email
-SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
-	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
-	?
-	написать тест https://symfony.com/doc/current/testing.html#notifier-assertions
-	???LOGIN WITH PUSH CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на push уведомление
-	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
+***
 SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
 	Http Client декорировать client чтобы выполнялось max 3 запроса в минуту
 		https://symfony.com/doc/current/http_client.html#limit-the-number-of-requests
@@ -601,6 +591,12 @@ SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-lim
 	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
 	создать своего лимитера для логина login_throttling limiter
 		https://symfony.com/doc/current/security.html#limiting-login-attempts
+SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
+	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
+	?
+	написать тест https://symfony.com/doc/current/testing.html#notifier-assertions
+	???LOGIN WITH PUSH CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на push уведомление
+	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
 SYMFONY SERIALIZER https://symfony.com/doc/current/components/serializer.html
 	https://symfony.com/doc/current/serializer.html
 	?
@@ -749,6 +745,12 @@ TESTS
 		https://symfony.com/doc/current/bundles/best_practices.html#continuous-integration
 	Travis CI https://www.travis-ci.com/
 	Gitlab CI https://docs.gitlab.com/ee/ci/
+Endroid\QrCode QR Code https://github.com/endroid/qr-code
+	?
+	выдаёт исключение imagettfbbox(): Could not find/open font (label)
+PHP TOTP LIB
+	https://github.com/Spomky-Labs/otphp/blob/11.4.x/doc/index.md#advanced-features
+JWT lcobucci
 AMQP
 	?
 	https://habr.com/ru/articles/62502/
@@ -790,10 +792,6 @@ SYMFONY SECURITY
 		https://www.youtube.com/watch?v=Xj6FtOvlRCg&ab_channel=AFIDistribution
 		https://symfony.com/doc/current/security/ldap.html
 		https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
-JWT lcobucci
-Endroid\QrCode
-	?
-	выдаёт исключение imagettfbbox(): Could not find/open font (label)
 EmojiTransliterator::create('text-emoji')->transliterate() used it https://github.com/unicode-org/cldr?tab=readme-ov-file
 security через передачу заголовка impersonator не сработал https://symfony.com/doc/current/security/impersonating_user.html
 SYMFONY PROFILER https://symfony.com/doc/current/profiler.html

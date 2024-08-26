@@ -7,6 +7,8 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use App\Carbon\ClockImmutable;
+use OTPHP\TOTP;
 use Symfony\Component\Mime\BodyRendererInterface;
 use Symfony\Component\Mime\Crypto\SMimeEncrypter;
 use Symfony\Component\Mime\Crypto\DkimSigner;
@@ -279,10 +281,11 @@ class HomeController extends AbstractController
 	/**
 	* @var Carbon $nowModified -1second
 	*/
-    #[Route(path: '/{email<[a-z@.]+>?s}', methods: ['GET', 'POST'])]
+    #[Route(path: '/{passedOtpNumber<\d+>?}', methods: ['GET', 'POST'])]
     //#[IsCsrfTokenValid(id: 'default', tokenKey: '_token')]
     //#[SomeAttribute]
     public function home(
+        $passedOtpNumber,
         Request $r,
         RequestStack $requestStack,
         ParameterBagInterface $parameters,
@@ -371,7 +374,6 @@ class HomeController extends AbstractController
 		#[Autowire('%app.abs_img_dir%')]
 		$absImgDir,
 		Service\TwigUtil $twigUtil,
-		$email,
 		\App\Repository\UserRepository $userRepo,
 		BodyRendererInterface $bodyRenderer,
 		#[Autowire('%env(APP_MAILER_HEADER_FROM)%')]
@@ -379,8 +381,52 @@ class HomeController extends AbstractController
 		/*
 		*/
 	) {
+		$secret = \base64_encode('123');
+		$clock = (new ClockImmutable('UTC'));
+		
+		//$otp = TOTP::generate($clock);
+		/*
+		 * HOTP
+		 * QR Code
+		 */
+		$sec = 120;
+		$expiresInHumanized = $clock->add($sec, 'second')->tz('+12:00')->locale($r->getLocale())->isoFormat('LLLL');
+		$otp = TOTP::createFromSecret($secret, $clock);
+		
+		$otp->setLabel('Wooden Alex');
+		$otp->setPeriod($sec);
+		$otp->setDigits(3);
+		$totpNumber = $otp->now();
+		$email = (new Email())
+			->html(\sprintf(<<<'__HTML__'
+			Code: "%s"
+			Expires in: "%s"
+			__HTML__, $totpNumber, $expiresInHumanized))
+		;
+		$mailer->send($email);
+
+		$qrCodeContent = $otp->getQrCodeUri();
+		$writer = new PngWriter();
+		$qrCode = QrCode::create($qrCodeContent)
+			->setEncoding(new Encoding('UTF-8'))
+			->setErrorCorrectionLevel(ErrorCorrectionLevel::Low)
+			->setSize(300)
+			->setMargin(10)
+			->setRoundBlockSizeMode(RoundBlockSizeMode::Margin)
+			->setForegroundColor(new Color(0, 0, 0))
+			->setBackgroundColor(new Color(255, 255, 255))
+		;
+		
+		$result = $writer->write(qrCode: $qrCode);
+		
+		$qrCodeUri = $result->getDataUri();
+		
+		if (null !== $passedOtpNumber) {
+			\dump($otp->verify($passedOtpNumber) ? 'OTP is VALID' : 'OTP is NOT VALID');
+		}
 		
 		$response = $this->render('home/index.html.twig', [
+			'qr_code_uri' => $qrCodeUri,
 		]);
 		
 		return $response;

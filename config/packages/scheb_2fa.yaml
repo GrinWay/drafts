@@ -23,12 +23,14 @@ scheb_two_factor:
     backup_codes:
         enabled: true
         
-    #email:
-        #digits: 3
-        #sender_email: '%env(APP_OWNER_EMAIL)%'
-        #sender_name: '%env(APP_OWNER_NAME)%'
-        #mailer: mailer.mailer
-        #code_generator: scheb_two_factor.security.email.code_generator
+    email:
+        #digits: 60
+        #mailer: 'App\Mailer\Auth2Fa\AuthCode2FaMailer'
+        code_generator: 'App\Security\Auth2FA\CodeGenerator\CodeGenerator'
+        
+        sender_email: '%env(APP_ADMIN_EMAIL)%'
+        sender_name: '%env(APP_MAILER_HEADER_FROM_TITLE)%'
+        form_renderer: 'App\Security\Authenticator\Auth2FA\DefaultTwoFactorFormRenderer'
     
     google:
         enabled: true                  # If Google Authenticator should be enabled, default false

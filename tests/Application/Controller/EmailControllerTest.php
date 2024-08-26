@@ -26,10 +26,9 @@ class EmailControllerTest extends AbstractApplicationCase
 		$event = $this->getMailerEvent(0);
 		$message = $this->getMailerMessage(0);
 
-		$this->assertEmailCount(1);
-		//$this->assertQueuedEmailCount(1);
-		
-		$this->assertEmailIsNotQueued($event);
+		$this->assertEmailCount(0);
+		$this->assertQueuedEmailCount(1);
+		$this->assertEmailIsQueued($event);
 
 		$this->assertEmailHasHeader($message, 'To');
 		$this->assertEmailHasHeader($message, 'From');

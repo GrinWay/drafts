@@ -1,0 +1,12 @@
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\Security\Auth2FA\CodeGenerator\CodeGenerator:
+        class: App\Security\Auth2FA\CodeGenerator\CodeGenerator
+        
+        arguments:  
+            $mailer: '@App\Mailer\Auth2Fa\AuthCode2FaMailer'
+            $digits: 60

@@ -50,7 +50,7 @@ class Kernel extends BaseKernel implements CompilerPassInterface
     }
 
     protected function build(ContainerBuilder $container): void
-    {
+    {	
 		$this->addEventAliasesPass($container);
 
 		$container->registerExtension($e = new ExtensionExample());

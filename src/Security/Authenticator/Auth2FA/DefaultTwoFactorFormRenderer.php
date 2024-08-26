@@ -68,7 +68,7 @@ class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 		return $response;
     }
 	
-	private function getQRCodeUri(array $templateVars): string {
+	private function getQRCodeUri(array $templateVars): ?string {
 		$user = $this->tokenStorage->getToken()?->getUser();
 		
 		if (null === $user) {
@@ -83,6 +83,8 @@ class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 			$qrCodeContent = $this->googleAuthenticator->getQRContent($user);
 		} elseif ('totp' === $providerName) {
 			$qrCodeContent = $this->totpAuthenticator->getQRContent($user);			
+		} else {
+			return null;
 		}
 		
 		if (null === $qrCodeContent) {
@@ -112,7 +114,7 @@ class DefaultTwoFactorFormRenderer implements TwoFactorFormRendererInterface {
 			->setTextColor(new Color(0, 0, 0))
 		;			
 		
-		$result = $writer->write(qrCode: $qrCode, logo: $logo);			
+		$result = $writer->write(qrCode: $qrCode, logo: $logo);
 		
 		$qrCodeUri = $result->getDataUri();
 		
