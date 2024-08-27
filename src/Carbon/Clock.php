@@ -5,12 +5,13 @@ namespace App\Carbon;
 use Carbon\CarbonImmutable;
 use Psr\Clock\ClockInterface;
 
+//TODO: ClockImmutable
 class ClockImmutable implements ClockInterface
 {
 	private readonly CarbonImmutable $carbonImmutable;
 	
-	public function __construct() {
-		$this->carbonImmutable = new CarbonImmutable('UTC');
+	public function __construct(string $tz = 'UTC') {
+		$this->carbonImmutable = new CarbonImmutable($tz);
 	}
 	
 	public function now(): \DateTimeImmutable {

@@ -9,6 +9,7 @@ use function Symfony\Component\Clock\now;
 
 use App\Carbon\ClockImmutable;
 use OTPHP\TOTP;
+use OTPHP\HOTP;
 use Symfony\Component\Mime\BodyRendererInterface;
 use Symfony\Component\Mime\Crypto\SMimeEncrypter;
 use Symfony\Component\Mime\Crypto\DkimSigner;
@@ -376,57 +377,59 @@ class HomeController extends AbstractController
 		Service\TwigUtil $twigUtil,
 		\App\Repository\UserRepository $userRepo,
 		BodyRendererInterface $bodyRenderer,
+		SessionInterface $session,
 		#[Autowire('%env(APP_MAILER_HEADER_FROM)%')]
 		$mailerHeaderFrom,
+		#[Autowire('%env(APP_TO_TEST_EMAIL)%')]
+		$testEmail,
 		/*
 		*/
 	) {
-		$secret = \base64_encode('123');
-		$clock = (new ClockImmutable('UTC'));
+		//###> USER: DATA (DB)
+		$clientTz = '+12:00';
+		//###> USER: OTP DATA (DB)
+		$clientSecret = '123';
+		$digits = 3;
+		\dump(\hash_algos());
+		$algo = 'sha256';
+		$otpLabel = 'Wooden Alex';
+		$period = 120; // TOTP
+		$counter = 3; // HOTP
 		
-		//$otp = TOTP::generate($clock);
-		/*
-		 * HOTP
-		 * QR Code
-		 */
-		$sec = 120;
-		$expiresInHumanized = $clock->add($sec, 'second')->tz('+12:00')->locale($r->getLocale())->isoFormat('LLLL');
-		$otp = TOTP::createFromSecret($secret, $clock);
+		$otpUtil = new Service\OTPUtil(
+			request: $r,
+			otpClass: HOTP::class, // HOTP TOTP
+			clientSecret: $clientSecret,
+			parameters: [
+				'period'  => $period,
+				'counter' => $counter,
+				'digits' => $digits,
+				//'label' => $otpLabel,
+				'algorithm' => $algo,
+			],
+		);
 		
-		$otp->setLabel('Wooden Alex');
-		$otp->setPeriod($sec);
-		$otp->setDigits(3);
-		$totpNumber = $otp->now();
+		$otp = $otpUtil->getOtp();
+		$clientsExpiresInCarbon = $otpUtil->getExpiresInCarbonForUser('+12:00');
+		
+		$otpNumber = $otp->at($input);
 		$email = (new Email())
-			->html(\sprintf(<<<'__HTML__'
-			Code: "%s"
-			Expires in: "%s"
-			__HTML__, $totpNumber, $expiresInHumanized))
+			->to($testEmail)
+			->html($template = \sprintf(<<<'__HTML__'
+			Сайт: %4$s
+			Код: "%s"
+			Действителен до: %s [%s]
+			__HTML__, $otpNumber, $clientsExpiresInCarbon->isoFormat('HH:mm:ss'), $clientsExpiresInCarbon?->tz, $otpLabel))
 		;
-		$mailer->send($email);
-
-		$qrCodeContent = $otp->getQrCodeUri();
-		$writer = new PngWriter();
-		$qrCode = QrCode::create($qrCodeContent)
-			->setEncoding(new Encoding('UTF-8'))
-			->setErrorCorrectionLevel(ErrorCorrectionLevel::Low)
-			->setSize(300)
-			->setMargin(10)
-			->setRoundBlockSizeMode(RoundBlockSizeMode::Margin)
-			->setForegroundColor(new Color(0, 0, 0))
-			->setBackgroundColor(new Color(255, 255, 255))
-		;
-		
-		$result = $writer->write(qrCode: $qrCode);
-		
-		$qrCodeUri = $result->getDataUri();
+		//$mailer->send($email);
+		\dump($template);
+		\dump($otp->getProvisioningUri());
 		
 		if (null !== $passedOtpNumber) {
-			\dump($otp->verify($passedOtpNumber) ? 'OTP is VALID' : 'OTP is NOT VALID');
+			\dump('OTP: ' . ($otp->verify($passedOtpNumber) ? '✅' : '❌'));
 		}
 		
 		$response = $this->render('home/index.html.twig', [
-			'qr_code_uri' => $qrCodeUri,
 		]);
 		
 		return $response;

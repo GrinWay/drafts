@@ -10,6 +10,10 @@
 		<a href="{{- login_link ?? '' -}}">LOGIN LINK</a>
 	</div>
 	
+	{%- if qr_code_data_uri is defined and qr_code_data_uri -%}
+		<img src="{{- qr_code_data_uri -}}" alt="img"></img>
+	{%- endif -%}
+	
 	{{ dump(asset_version('media/image/symfony.png')) }}
 		
 	<twig:Lorem lorem_len="12" lorem:class="text-bg-dark p-1 rounded-1 text-center" />

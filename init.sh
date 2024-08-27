@@ -12,6 +12,7 @@ php bin/console secrets:set APP_ADMIN_GOOGLE_PASS
 
 echo 'APP_ADMIN_EMAIL'
 php bin/console secrets:set APP_ADMIN_EMAIL
+
 echo 'APP_TO_TEST_EMAIL'
 php bin/console secrets:set APP_TO_TEST_EMAIL
 
