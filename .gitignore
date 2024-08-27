@@ -2,6 +2,7 @@
 /t.txt
 /tests/coverage
 /public/media/
+/public/downloads/
 
 /drivers/*
 !/drivers/.gitignore

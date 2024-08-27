@@ -1,4 +1,4 @@
-#bash "./public/deploy/install-grinway-symfony-bundles.sh"
+bash "./public/deploy/install-grinway-symfony-bundles.sh"
 
 echo 'APP_ADMIN_MAILER_LOGIN'
 php bin/console secrets:set APP_ADMIN_MAILER_LOGIN

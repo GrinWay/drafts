@@ -584,6 +584,11 @@ SYMFONY MAILER
 	+ Каким таким образом без авторизации я могу отправлять письма на почту админа (если почтовый ящик принадлежит почтовому домену, который ты и использовал для отправки писем, авторизация не нужна, так как ретрансляции не происходит)
 	неужели тест может понять что в MessageHandler будет отпарвляться письмо, или это внутренняя реализация асинхронной отправки письма, то есть если в БД записан объект именно Email
 ***
+Composer plugin https://github.com/endroid/installer/blob/main/src/Installer.php
+Composer installer https://getcomposer.org/doc/articles/custom-installers.md#the-custom-installer-class
+Composer get extra in scripts https://getcomposer.org/doc/04-schema.md#extra
+allow-plugins of bundle https://github.com/endroid/qr-code-bundle?tab=readme-ov-file
+QR Code Bundle https://github.com/endroid/qr-code-bundle?tab=readme-ov-file#configuration
 SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
 	Http Client декорировать client чтобы выполнялось max 3 запроса в минуту
 		https://symfony.com/doc/current/http_client.html#limit-the-number-of-requests
@@ -642,6 +647,7 @@ SYMFONY CACHE
 	?
 	$request->getETags()
 	создать cache адаптер для ExpressionLanguage($adapter)
+SYMFONY The Mime Component https://symfony.com/doc/current/components/mime.html
 SYMFONY FILESYSTEM
 SYMFONY LOCK
 	?
@@ -745,12 +751,19 @@ TESTS
 		https://symfony.com/doc/current/bundles/best_practices.html#continuous-integration
 	Travis CI https://www.travis-ci.com/
 	Gitlab CI https://docs.gitlab.com/ee/ci/
-Endroid\QrCode QR Code https://github.com/endroid/qr-code
+Endroid\QrCode QR Code for Symfony https://github.com/endroid/qr-code-bundle
 	?
 	выдаёт исключение imagettfbbox(): Could not find/open font (label)
+(QR Code)
+	GENERATE QR CODE: https://github.com/Bacon/BaconQrCode
+	DETECT AND READ QR CODE: https://github.com/khanamiryan/php-qrcode-detector-decoder
 PHP TOTP LIB
 	https://github.com/Spomky-Labs/otphp/blob/11.4.x/doc/index.md#advanced-features
 JWT lcobucci
+PHP FPDF
+	https://www.youtube.com/watch?v=aSTLAjLjJqk
+	__TOGETHER WITH__
+	http://www.fpdf.org/en/doc/index.php
 AMQP
 	?
 	https://habr.com/ru/articles/62502/
@@ -807,6 +820,7 @@ SYMFONY FORMATS/STANDARDS
 HTML-TO-MARKDOWN https://github.com/thephpleague/html-to-markdown?tab=readme-ov-file
 COMMONMARK https://github.com/thephpleague/commonmark
 SYMFONY SERVER https://symfony.com/doc/current/setup/symfony_server.html
+php GD installation for PngWriter(label)
 
 TODO
 	регайся https://packagist.org/
@@ -878,6 +892,7 @@ TODO
 		//TODO: TestUtil (не совсем уверен что именно в этот пакет, TestUtil -> CrawlerUtil)
 		//TODO: TwigUtil
 		//TODO: ClockImmutable
+		//TODO: OTPUtil
 	Extensions
 		может перейти от OptionsResolver к Processor+TreeBuilder в global instance of
 	film

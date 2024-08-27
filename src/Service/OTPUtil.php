@@ -13,6 +13,8 @@ use OTPHP\HOTP;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
 
+//TODO: OTPUtil
+//TODO: current
 class OTPUtil
 {
 	private OTP $otp;
@@ -71,7 +73,6 @@ class OTPUtil
 			$parameter,
 		);
 		$typeChecker = static fn($_otpClass): bool => $_otpClass === $otpClass || \is_subclass_of($otpClass, $_otpClass);
-		// TODO: current
 		$parametersResolver
 			->setDefined([
 				'label',

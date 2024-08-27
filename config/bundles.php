@@ -32,4 +32,5 @@ return [
     DAMA\DoctrineTestBundle\DAMADoctrineTestBundle::class => ['test' => true],
     GrinWay\EnvProcessor\GrinWayEnvProcessorBundle::class => ['all' => true],
     GrinWay\Command\GrinWayCommandBundle::class => ['all' => true],
+    Endroid\QrCodeBundle\EndroidQrCodeBundle::class => ['all' => true],
 ];

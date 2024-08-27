@@ -50,6 +50,9 @@
             "./migrations/.gitignore"
         ]
     },
+    "endroid/qr-code-bundle": {
+        "version": "5.0.2"
+    },
     "green-symfony/command-bundle": {
         "version": "1.1.1"
     },

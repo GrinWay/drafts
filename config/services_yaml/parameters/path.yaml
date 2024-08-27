@@ -13,8 +13,14 @@ parameters:
     
     ###> img ###
     app.public_img_dir: '%app.public_media_dir%/image'
+    app.public_qr_dir: '%app.public_media_dir%/qr_code'
     app.abs_img_dir: '%app.abs_public_dir%/%app.public_img_dir%'
+    app.abs_qr_dir: '%app.abs_public_dir%/%app.public_qr_dir%'
     ###< img ###
+    
+    ###> font ###
+    app.abs_font_dif: '%kernel.project_dir%/assets/styles/font'
+    ###< font ###
     
     ###> avatar ###
     app.public_avatar_dir: '%app.public_img_dir%/avatar'

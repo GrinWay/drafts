@@ -36,6 +36,10 @@ BUNDLE_FULL_NAME[3]="${OWNER_NAMESPACE}/${BUNDLE_NAMES[3]}"
 BUNDLE_NAMES[4]="symfony-extensions"
 BUNDLE_VERSIONS[4]="v1"
 BUNDLE_FULL_NAME[4]="${OWNER_NAMESPACE}/${BUNDLE_NAMES[4]}"
+
+BUNDLE_NAMES[5]="installer"
+BUNDLE_VERSIONS[5]="main"
+BUNDLE_FULL_NAME[5]="${OWNER_NAMESPACE}/${BUNDLE_NAMES[5]}"
 ###< BUNDLES/EXTENSIONS ###
 
 ###< !CHANGE ME! ###
@@ -82,6 +86,7 @@ cd "../.."
 
 ###< ALGO ###
 
+composer run-script app_before_composer_install
 
 composer install
 composer dump-autoload -o

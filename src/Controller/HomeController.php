@@ -7,6 +7,11 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Mime\MimeTypes;
+use Endroid\QrCode\Builder\Builder;
+use Endroid\QrCode\Label\LabelAlignment;
+use Endroid\QrCode\Label\Font as QRCodeFont;
+use App\QrCode\Label\Font as AppQRCodeFont;
 use App\Carbon\ClockImmutable;
 use OTPHP\TOTP;
 use OTPHP\HOTP;
@@ -66,6 +71,9 @@ use Endroid\QrCode\Label\Label;
 use Endroid\QrCode\Logo\Logo;
 use Endroid\QrCode\RoundBlockSizeMode;
 use Endroid\QrCode\Writer\PngWriter;
+use Endroid\QrCode\Writer\PdfWriter;
+use Endroid\QrCode\Writer\SvgWriter;
+use Endroid\QrCode\Writer\WebPWriter;
 use Endroid\QrCode\Writer\ValidationException;
 use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInterface;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
@@ -374,6 +382,8 @@ class HomeController extends AbstractController
 		$toEmail,
 		#[Autowire('%app.abs_img_dir%')]
 		$absImgDir,
+		#[Autowire('%app.abs_qr_dir%')]
+		$absQrDir,
 		Service\TwigUtil $twigUtil,
 		\App\Repository\UserRepository $userRepo,
 		BodyRendererInterface $bodyRenderer,
@@ -385,6 +395,54 @@ class HomeController extends AbstractController
 		/*
 		*/
 	) {
+		
+		
+		
+		\dd('END');
+		
+		$writer = new PngWriter();
+		$writerOptions = [
+			'compression_level' => 9,
+		];
+		$data = 'Very useful encoded info';
+		$encoding = new Encoding('UTF-8');
+		$errorCorrectionLevel = ErrorCorrectionLevel::High;
+		$roundBlockSizeMode = RoundBlockSizeMode::Margin;
+		$logoPath = $stringService->getPath($absImgDir, 'symfony.png');
+		$labelText = 'Symfony Logo';
+
+		$qrCodeResult = Builder::create()
+			->writer($writer)
+			->writerOptions($writerOptions)
+			->data($data)
+			->encoding($encoding)
+			->errorCorrectionLevel($errorCorrectionLevel)
+			->size($size = 300)
+			->margin(10)
+			->roundBlockSizeMode($roundBlockSizeMode)
+			->logoPath($logoPath)
+			->logoResizeToWidth((int) ($size*.10))
+			->logoPunchoutBackground(false)
+			/*
+			->labelText($labelText)
+			->labelFont(new AppQRCodeFont\SchadowBTRoman(20))
+			->labelAlignment(LabelAlignment::Center)
+			*/
+			->validateResult(false)
+			->build()
+		;
+		
+		$mimeTypes = new MimeTypes();
+		$exts = $mimeTypes->getExtensions($qrCodeResult->getMimeType());
+		$ext = \reset($exts);
+		$qrCodeResult->saveToFile($stringService->getPath($absQrDir, \sprintf('symfony_qr_code.%s', $ext)));
+		
+		\dump(
+			$qrCodeResult->getDataUri(),
+		);
+		
+		\dd('END');
+		
 		//###> USER: DATA (DB)
 		$clientTz = '+12:00';
 		//###> USER: OTP DATA (DB)
