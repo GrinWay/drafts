@@ -7,6 +7,7 @@ use Symfony\Component\HttpClient\HttpClient;
 class FpdfDownloader
 {
 	public static function download(): void {
+		return;
 		$client = HttpClient::create();
 		
 		$uri = 'http://www.fpdf.org/en/dl.php?v=186&f=zip';

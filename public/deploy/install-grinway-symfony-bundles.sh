@@ -86,9 +86,10 @@ cd "../.."
 
 ###< ALGO ###
 
-composer run-script app_before_composer_install
-
 composer install
+
+composer run-script app_after_composer_install
+
 composer dump-autoload -o
 php "./bin/console" "assets:install"
 php "./bin/console" "cache:clear"

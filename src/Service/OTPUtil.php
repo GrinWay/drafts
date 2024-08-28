@@ -12,122 +12,139 @@ use Carbon\CarbonImmutable;
 use OTPHP\HOTP;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Request;
+use App\Trait\SessionAwareTrait;
+use App\Contract\OTP\OTPStrategyInterface;
 
 //TODO: OTPUtil
-//TODO: current
+/*
+ * Usage:
+ *    $otpUtil = new OTPUtil(
+ *        request: $request,
+ *        otpStrategy: new TOTPStrategy(input: $secondPeriod),
+ *        clientSecret: $clientSecret,
+ *        clientParameters: [
+ *            'label'     => $label,
+ *            'digits'    => $digits,    // is not required
+ *            'algorithm' => $algorithm, // is not required
+ *        ],
+ *    );
+ *    
+ *    $otp = $otpUtil->getOtp();
+ *    $clientsExpiresInCarbon = $otpUtil->getExpiresInCarbonForUser(clientTz: '+01:00');
+ *    $code = $otpUtil->getCode();
+ *    $secret = $otpUtil->getSecret();
+ *    
+ *    In your sub classes of OTPUtil you can override: OVERRIDE SECTION
+ */
 class OTPUtil
 {
-	private OTP $otp;
+	use SessionAwareTrait;
+	
 	private ClockImmutable $clock;
 	
 	public function __construct(
 		protected readonly Request $request,
-		protected string $otpClass,
+		protected readonly OTPStrategyInterface $otpStrategy,
 		protected string $clientSecret,
-		protected array $parameters,
+		protected array $clientParameters,
 	) {
-		$this->otpClass     = $otpClass;
-		$this->clientSecret = $clientSecret;
-
 		$this->clock        = new ClockImmutable('UTC');
 		
 		$parametersResolver = new OptionsResolver();
-		$this->resolveParameters($parametersResolver, $parameters);
-		$this->parameters = $parametersResolver->resolve($parameters);
+		$this->defaultResolveParameters($parametersResolver, $clientParameters);
+		$this->resolveParameters($parametersResolver, $clientParameters);
+		$this->clientParameters = $parametersResolver->resolve($clientParameters);
 		
 		$this->doInitByState();
 	}
 	
+	
 	//###> API ###
 	
+	/*
+	 * @return OTP (OPT instance)
+	 */
 	public function getOtp(): OTP {
-		return $this->otp;
+		return $this->otpStrategy->getOtp();
 	}
 	
-	public function getExpiresInCarbonForUser(string $clientTz): ?Carbon {
-		if (null === $this->parameters['period']) {
+	/*
+	 * @return mixed (OPT secret)
+	 */
+	public function getSecret(): mixed {
+		return $this->otpStrategy->getOtp()->getSecret();
+	}
+	
+	/*
+	 * @return string (OPT code)
+	 */
+	public function getCode(): string {
+		return $this->otpStrategy->getOtp()->at($this->otpStrategy->getChangingFactor());
+	}
+	
+	/*
+	 * 
+	 */
+	public function getExpiresInCarbonForUser(string $clientTz): ?CarbonImmutable {
+		$expiresIn = $this->otpStrategy->expiresIn();
+		if (null === $expiresIn) {
 			return null;
 		}
 		
-		$session = $this->request->getSession();
+		$session = $this->getSession($this->request);
 		$defaultLocale = $this->request->getLocale();
 		
-		return $this->clock->add($this->otp->expiresIn(), 'second')
+		return $this->clock->add($expiresIn, 'second')
 			->tz($clientTz)
-			->locale($session?->get('_locale', $defaultLocale) ?? $defaultLocale)
+			->locale($session->get('_locale', $defaultLocale))
 		;
 	}
 	
 	//###< API ###
 	
-	protected function resolveParameters(OptionsResolver $parametersResolver, array $parameters): void {
-		$otpClass = $this->otpClass;
+	
+	//###> OVERRIDE SECTION ###
+	
+	/*
+	 * Define new options
+	 */
+	protected function resolveParameters(OptionsResolver $parametersResolver, array $clientParameters): void {}
+	
+	//###< OVERRIDE SECTION ###
+	
+	
+	protected function defaultResolveParameters(OptionsResolver $parametersResolver, array $clientParameters): void {
+		$otpClass = $this->otpStrategy->getOtpClass();
 		$messageHaveToPass = static fn($parameter) => \sprintf(
-			'Using optClass: "%s", you have to pass "%s" in parameters',
-			$optClass,
+			'Using otpClass: "%s", you have to pass "%s" in clientParameters',
+			$otpClass,
 			$parameter,
 		);
 		$messageDoNotHaveToPass = static fn($parameter) => \sprintf(
-			'Using optClass: "%s", you do NOT have to pass "%s" in parameters',
-			$optClass,
+			'Using otpClass: "%s", you do NOT have to pass "%s" in clientParameters',
+			$otpClass,
 			$parameter,
 		);
 		$typeChecker = static fn($_otpClass): bool => $_otpClass === $otpClass || \is_subclass_of($otpClass, $_otpClass);
+		
 		$parametersResolver
-			->setDefined([
+			->setRequired([
 				'label',
 			])
 			->setDefaults([
-				'algorithm' => 'sha1',
 				'digits'    => 6,
-				'period'    => null,
-				'counter'   => null,
+				'algorithm' => 'sha1',
 			])
-			->setAllowedTypes('period', ['null', 'int'])
-			->setAllowedTypes('counter', ['null', 'int'])
-			->setAllowedTypes('label', 'string')
-			->setAllowedTypes('algorithm', 'string')
-			->setAllowedTypes('digits', 'int')
-			->setNormalizer('period', static function (Options $options, $value) use ($otpClass, $messageDoNotHaveToPass, $typeChecker) {
-				if ($typeChecker(TOTP::class)) {
-					if (null !== $value) {
-						throw new \InvalidArgumentException($messageDoNotHaveToPass('counter'));						
-					}
-				}
-				return $value;
-			})
-			->setNormalizer($parameterName = 'period', static function (Options $options, $value) use ($otpClass, $messageHaveToPass, $parameterName, $typeChecker) {
-				if ($typeChecker(TOTP::class)) {
-					if (null === $value) {
-						throw new \InvalidArgumentException($messageHaveToPass($parameterName));						
-					}
-				}
-				return $value;
-			})
-			->setNormalizer('counter', static function (Options $options, $value) use ($otpClass, $messageDoNotHaveToPass, $typeChecker) {
-				if ($typeChecker(HOTP::class)) {
-					if (null !== $value) {
-						throw new \InvalidArgumentException($messageDoNotHaveToPass('period'));						
-					}
-				}
-				return $value;
-			})
-			->setNormalizer($parameterName = 'counter', static function (Options $options, $value) use ($otpClass, $messageHaveToPass, $parameterName, $typeChecker) {
-				if ($typeChecker(HOTP::class)) {
-					if (null === $value) {
-						throw new \InvalidArgumentException($messageHaveToPass($parameterName));						
-					}
-				}
-				return $value;
-			})
+			->setAllowedTypes('label',      'string')
+			->setAllowedTypes('digits',     'int')
+			->setAllowedTypes('algorithm',  'string')
 		;
 	}
 	
 	private function doInitByState(): void {
-		$baseSecret = \base64_encode($this->clientSecret);
-		$this->otp = $this->otpClass::createFromSecret($baseSecret, $this->clock);
-		foreach($this->parameters as $name => $parameter) {
-			$this->otp->setParameter($name, $parameter);
+		$this->otpStrategy->initOtp($this->clock, $this->clientSecret);
+		foreach($this->clientParameters as $name => $parameter) {
+			$this->otpStrategy->getOtp()->setParameter($name, $parameter);
 		}
 	}
 }

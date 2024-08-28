@@ -891,8 +891,17 @@ TODO
 		// TODO: IpRangeRequestMatcher
 		//TODO: TestUtil (не совсем уверен что именно в этот пакет, TestUtil -> CrawlerUtil)
 		//TODO: TwigUtil
+		//trait SessionAwareTrait + write test when service uses this method with (pass request is needless) and without autowiring (need to pass request or throw)
+		>IN ONE NAMESPACE
 		//TODO: ClockImmutable
 		//TODO: OTPUtil
+		//TODO: OTPStrategyInterface
+		//TODO: AbstractOtpStrategy
+		//TODO: HOTPStrategy
+		//TODO: TOTPStrategy
+		<IN ONE NAMESPACE
+		
+		
 	Extensions
 		может перейти от OptionsResolver к Processor+TreeBuilder в global instance of
 	film

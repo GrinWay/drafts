@@ -7,6 +7,8 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use App\OTP\TOTPStrategy;
+use App\OTP\HOTPStrategy;
 use Symfony\Component\Mime\MimeTypes;
 use Endroid\QrCode\Builder\Builder;
 use Endroid\QrCode\Label\LabelAlignment;
@@ -296,6 +298,7 @@ class HomeController extends AbstractController
     public function home(
         $passedOtpNumber,
         Request $r,
+        Request $request,
         RequestStack $requestStack,
         ParameterBagInterface $parameters,
         $t,
@@ -334,7 +337,6 @@ class HomeController extends AbstractController
         //#[Autowire('@FQCN $var')]
         $callableHashLocator,
         \Psr\EventDispatcher\EventDispatcherInterface $dispatcher,
-        Request $request,
         ?Carbon $now,
         $ru12Carbon,
         //$someValue,
@@ -395,11 +397,6 @@ class HomeController extends AbstractController
 		/*
 		*/
 	) {
-		
-		
-		
-		\dd('END');
-		
 		$writer = new PngWriter();
 		$writerOptions = [
 			'compression_level' => 9,
@@ -442,50 +439,6 @@ class HomeController extends AbstractController
 		);
 		
 		\dd('END');
-		
-		//###> USER: DATA (DB)
-		$clientTz = '+12:00';
-		//###> USER: OTP DATA (DB)
-		$clientSecret = '123';
-		$digits = 3;
-		\dump(\hash_algos());
-		$algo = 'sha256';
-		$otpLabel = 'Wooden Alex';
-		$period = 120; // TOTP
-		$counter = 3; // HOTP
-		
-		$otpUtil = new Service\OTPUtil(
-			request: $r,
-			otpClass: HOTP::class, // HOTP TOTP
-			clientSecret: $clientSecret,
-			parameters: [
-				'period'  => $period,
-				'counter' => $counter,
-				'digits' => $digits,
-				//'label' => $otpLabel,
-				'algorithm' => $algo,
-			],
-		);
-		
-		$otp = $otpUtil->getOtp();
-		$clientsExpiresInCarbon = $otpUtil->getExpiresInCarbonForUser('+12:00');
-		
-		$otpNumber = $otp->at($input);
-		$email = (new Email())
-			->to($testEmail)
-			->html($template = \sprintf(<<<'__HTML__'
-			Сайт: %4$s
-			Код: "%s"
-			Действителен до: %s [%s]
-			__HTML__, $otpNumber, $clientsExpiresInCarbon->isoFormat('HH:mm:ss'), $clientsExpiresInCarbon?->tz, $otpLabel))
-		;
-		//$mailer->send($email);
-		\dump($template);
-		\dump($otp->getProvisioningUri());
-		
-		if (null !== $passedOtpNumber) {
-			\dump('OTP: ' . ($otp->verify($passedOtpNumber) ? '✅' : '❌'));
-		}
 		
 		$response = $this->render('home/index.html.twig', [
 		]);
@@ -566,6 +519,8 @@ class HomeController extends AbstractController
 			$formDataPart->bodyToString(),
 			*/
 		);
+		
+		\dd('END');
 		
 		//The Config Component
 		
