@@ -18,7 +18,7 @@
         "fzaninotto/faker": "dev-bugfix",
         "grinway/command-bundle": "^1.2",
         "grinway/env-processor-bundle": "^1.0",
-        "grinway/installer": "^1.0",
+        "grinway/installer": "*",
         "grinway/service-bundle": "^3.0",
         "grinway/symfony-extensions": ">=1",
         "grinway/web-app-bundle": "^1.0",

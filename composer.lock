@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4dc34115f3a1ebbf2beadeb51bef4222",
+    "content-hash": "9fd03f4daf0a5717ebdc60ff1df67cd8",
     "packages": [
         {
             "name": "amphp/amp",
@@ -3109,7 +3109,7 @@
             "dist": {
                 "type": "path",
                 "url": "./bundles/grinway/installer",
-                "reference": "4857ed494e6a17e9dd8958f9cbacc73b58c71556"
+                "reference": "9b3afe8d7c5c187efa85d6b516c72cc25811adf8"
             },
             "require": {
                 "composer-plugin-api": "^2.0",
