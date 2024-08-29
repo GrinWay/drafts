@@ -3,9 +3,44 @@ framework:
         limiters:
         
             # Symfony\Component\RateLimiter\RateLimiterFactory $defaultLimiter
+            too_rare:
+                storage_service: app.rate_limiter_storage.default
+                policy: 'token_bucket'
+                limit: 1
+                rate:
+                    interval: '1 year'
+                    amount: 1
+            
             default:
+                storage_service: app.rate_limiter_storage.default
+                #cache_pool:
+                
                 policy: 'token_bucket'
                 limit: 2
                 rate:
                     interval: '30 days'
                     amount: 1
+            
+            default_request:
+                storage_service: app.rate_limiter_storage.default
+                policy: 'token_bucket'
+                limit: 1
+                rate:
+                    interval: '1 minute'
+                    amount: 10
+                    
+            async:
+                storage_service: app.rate_limiter_storage.default
+                policy: 'token_bucket'
+                limit: 10
+                rate:
+                    interval: '1 minute'
+                    amount: 10
+            
+            failed:
+                storage_service: app.rate_limiter_storage.default
+                policy: 'token_bucket'
+                limit: 10
+                rate:
+                    interval: '1 minute'
+                    amount: 10

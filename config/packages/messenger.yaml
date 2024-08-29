@@ -69,6 +69,7 @@ framework:
                     delay: 3000
                     multiplier: 2
                     max_delay: 10000
+                rate_limiter: async
             
             failed:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
@@ -79,13 +80,15 @@ framework:
                     delay: 1000
                     multiplier: 5
                     max_delay: 3600000
+                rate_limiter: failed
             
         routing:
             'App\Messenger\*': async
             'App\Messenger\Command\*': sync
             
-            'App\Messenger\Command\Message\HowStampWorks': sync
-            'App\Messenger\Event\Message\TestUserWasCreated': sync
+            'App\Messenger\Command\Message\HowStampWorks': async
+            'App\Messenger\Event\Message\TestUserWasCreated': async
+            
             'Symfony\Component\Mailer\Messenger\SendEmailMessage': sync
             
 when@test:

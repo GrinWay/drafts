@@ -120,6 +120,19 @@ SYMFONY YAML PARSER (TAGS)
 	kernel.default_locale от чего зависит
 SYMFONY SERVICE CONTAINER
 	?
+	???R: почему не работает моя инструкция stack, в отличии от исправной decorates
+		# NOT WORKS
+		app.throttling_http_client_decorator:
+			stack:
+			-   class: Symfony\Component\HttpClient\ThrottlingHttpClient
+				arguments: 'SAME_ARGS'
+			-   class: Symfony\Contracts\HttpClient\HttpClientInterface
+			
+		# WORKS
+		app.throttling_http_client_decorator:
+			decorates: Symfony\Contracts\HttpClient\HttpClientInterface
+			class: Symfony\Component\HttpClient\ThrottlingHttpClient
+			arguments: 'SAME_ARGS'
 	? сделать вариацию service aliases динамически, в зависимости от конфига (config -> containerBuilder::setAlias('TYPE $newAliasByConfigName', '.EXISTING_HIDDEN_SERVICE_ID')
 	+ ? как в сервисе получить env переменную, так как в ParameterBagInterface её нет
 		ENV получаем через @container.getenv closure
@@ -634,26 +647,20 @@ QR Code Bundle https://github.com/endroid/qr-code-bundle?tab=readme-ov-file#conf
 			result::getString причём для png это бинарное представление, а для svg это xml документ
 			result::getDataUri использует base64_encode(result::getString)
 		)
-***
 SYMFONY RATE LIMITER
-	https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html
-	https://httpd.apache.org/docs/current/mod/mod_ratelimit.html
-	https://blog.nginx.org/blog/rate-limiting-nginx
-	https://en.wikipedia.org/wiki/Token_bucket
-	сравнить методы (reservation имеет rateLimit)
-		https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/RateLimiter/RateLimit.php
-		https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/RateLimiter/Reservation.php
-	Http Client декорировать client чтобы выполнялось max 3 запроса в минуту
-		https://symfony.com/doc/current/http_client.html#limit-the-number-of-requests
-	R: создай свой storage implements StorageInterface для cache_pool дампни кеш в виде .yaml
-		limiterStateId:
-			all the data from LimiterStateInterface
-	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
-	создать своего лимитера для логина login_throttling limiter
-		https://symfony.com/doc/current/security.html#limiting-login-attempts
-		https://symfony.com/doc/current/security.html#security-login-throttling
 	?
-SYMFONY LOCK https://symfony.com/doc/current/components/lock.html
+	R!: Осознать философию использования ReteLimiter, в том смысле что когда использовать ::consume(), ::reserve()
+	ИНТЕРЕСНЫЙ МОМЕНТ: для security.firewall.login_throttling.limiter как и принято указывается полный SERVICE ID rate_limiter
+		а для framework.messenger.transports.<>.rate_limiter.только имя самой Factoroy
+	???R: настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
+		сделал, но только не совсем понятно почему при обновлении workers не обрабатываются сообщения, сохранённые раньше
+***
+SYMFONY LOCK
+	https://symfony.com/doc/current/components/lock.html#usage
+	
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/LockFactory.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/LockInterface.php
+	
 	https://symfony.com/doc/current/lock.html
 	Lock factory для Schedule
 	R: создать и определить свой rate_limiter.lock_factory
@@ -964,7 +971,7 @@ TODO
 		//TODO: TOTPStrategy
 		<IN ONE NAMESPACE
 		//TODO: MimeUtil
-		
+		//TODO: DefaultRateLimiterStorage
 		
 	Extensions
 		может перейти от OptionsResolver к Processor+TreeBuilder в global instance of

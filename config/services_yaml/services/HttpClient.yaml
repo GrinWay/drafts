@@ -1,0 +1,12 @@
+services:
+    
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    app.throttling_http_client_decorator:
+        class: Symfony\Component\HttpClient\ThrottlingHttpClient
+        decorates: Symfony\Contracts\HttpClient\HttpClientInterface
+        arguments:
+            -   '@.inner'
+            -   '@=service("limiter.default").create("http_client")'

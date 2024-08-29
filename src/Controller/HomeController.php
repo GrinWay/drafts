@@ -7,6 +7,9 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Lock\LockFactory;
+use Symfony\Component\Lock\Store\SemaphoreStore;
+use Symfony\Component\Lock\Store\FlockStore;
 use Symfony\Component\RateLimiter\RateLimiterFactory;
 use Endroid\QrCodeBundle\Response\QrCodeResponse;
 use Endroid\QrCode\Builder\BuilderInterface;
@@ -399,10 +402,28 @@ class HomeController extends AbstractController
 		$testEmail,
 		BuilderInterface $pngQrCodeBuilder,
 		BuilderInterface $svgQrCodeBuilder,
-		RateLimiterFactory $defaultLimiter,
+		RateLimiterFactory $tooRareLimiter,
 		/*
 		*/
 	) {
+		// Lock
+		
+		$store = new FlockStore();
+		$lockFactory = new LockFactory($store);
+		
+		$lock = $lockFactory->createLock($lockId = 'TEST');
+		
+		if ($lock->acquire()) {
+			\dump('Блокировка приобретена 👍');
+			$limit = $tooRareLimiter->create($limiterId = $lockId);
+			$limit->consume()->wait();
+			$lock->release();
+		} else {
+			\dump('Блокировка не приобретена 🤐');
+		}
+		
+		\dd('END');
+		
 		$clientIp = $request->getClientIp();
 		$limiter = $defaultLimiter->create($clientIp);
 		
@@ -419,26 +440,34 @@ class HomeController extends AbstractController
 		
 		// Rate limiter
 		
-		$response = $this->render('home/index.html.twig', [
+		$getInterval = static fn($dateInterval) => CarbonInterval::instance($dateInterval)->locale('ru')->forHumans([
+			'options' => \Carbon\CarbonInterface::JUST_NOW | \Carbon\CarbonInterface::ONE_DAY_WORDS,
 		]);
+		
+		$response = $this->render('home/index.html.twig', []);
 		
 		$limit = $limiter->consume();
 		
 		$dateInterval = (new \DateTime('UTC'))->diff($limit->getRetryAfter());
-		\dd(
-			\sprintf('%s', CarbonInterval::instance($dateInterval)->locale('ru')->forHumans([
-				'options' => \Carbon\CarbonInterface::JUST_NOW | \Carbon\CarbonInterface::ONE_DAY_WORDS,
-				//'syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW,
-			])),
-			$limiter->reserve(1)->getRateLimit()->getRetryAfter(),
-		);
 		
-		$limitHeaders = [
-			'X-RateLimit-Limit' => $limit->getLimit(),
-			'X-RateLimit-NextAttemptIn' => (string) CarbonInterval::instance($dateInterval),
-			'X-RateLimit-RemainedAttempts' => $limit->getRemainingTokens(),
-		];
-		$response->headers->add($limitHeaders);
+		$reserved = $limiter->reserve(0);
+		$timestamp = $reserved->getTimeToAct();
+		$duration = $reserved->getWaitDuration();
+		$result = $limit->isAccepted();
+		
+		/*
+		\dd(
+			$result,
+			$limit->getRetryAfter(),
+			$ru12Carbon->make(Carbon::createFromTimestampUTC($timestamp))->isoFormat('LLLL'),
+			$getInterval((new CarbonInterval())->add($duration, 'seconds')->cascade()),
+			$reserved->getRateLimit()->getRemainingTokens(),
+		);
+		*/
+		
+		if (true === $result) {
+			//...
+		}
 		
 		return $response;
 		

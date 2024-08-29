@@ -119,7 +119,7 @@ security:
                     
         main:
             pattern: '^/'
-
+                
             #context: main_admin
             lazy: true
             stateless: false
@@ -139,9 +139,8 @@ security:
             #request_matcher: App\Security\RequestMatcher\CustomRequestMatcher            
             
             login_throttling:
-                max_attempts: 10
-                #interval: '5 seconds'
-            
+                limiter: 'App\RateLimit\Request\DefaultRequestRateLimiter'
+                
             two_factor:
                 multi_factor: true
                 trusted_parameter_name: _trusted

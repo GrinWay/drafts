@@ -4,7 +4,6 @@ when@dev: &when_dev
             default_options:
                 verify_peer: false
                 verify_host: true
-                timeout: 3
                 extra:
                     trace_content: true
 
@@ -12,10 +11,12 @@ framework:
     http_client:
         default_options:
             http_version: '2.0'
-        
+            vars:
+                anchor: limit-the-number-of-requests
             verify_peer: true
             verify_host: true
             max_redirects: 10
+            timeout: 10
             extra:
                 trace_content: false
     
