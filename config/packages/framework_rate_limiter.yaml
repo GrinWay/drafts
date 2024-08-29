@@ -1,0 +1,11 @@
+framework:
+    rate_limiter:
+        limiters:
+        
+            # Symfony\Component\RateLimiter\RateLimiterFactory $defaultLimiter
+            default:
+                policy: 'token_bucket'
+                limit: 2
+                rate:
+                    interval: '30 days'
+                    amount: 1

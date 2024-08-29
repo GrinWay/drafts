@@ -1,0 +1,27 @@
+parameters:
+
+    app.qr_code.logo_resize_to_width: 42
+    
+    app.qr_code.png:
+        writer: 'Endroid\QrCode\Writer\PngWriter'
+        writer_options:
+            compression_level: 9
+        size: 300
+        margin: 10
+        encoding: 'UTF-8'
+        error_correction_level: 'high'
+        round_block_size_mode: 'margin'
+        validate_result: false
+        
+    app.qr_code.svg:
+        writer: 'Endroid\QrCode\Writer\SvgWriter'
+        size: 300
+        margin: 10
+        encoding: 'UTF-8'
+        error_correction_level: 'high'
+        round_block_size_mode: 'margin'
+        validate_result: false
+        logo_path: '%kernel.project_dir%/logo.png'
+        # logo_resize_to_width = (int) size/7,1428
+        logo_resize_to_width: '%app.qr_code.logo_resize_to_width%'
+        logo_punchout_background: false

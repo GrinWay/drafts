@@ -6,7 +6,7 @@ use Symfony\Component\HttpClient\HttpClient;
 
 class FpdfDownloader
 {
-	public static function download(): void {
+	public static function download($event): void {
 		return;
 		$client = HttpClient::create();
 		

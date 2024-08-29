@@ -7,6 +7,9 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Endroid\QrCodeBundle\Response\QrCodeResponse;
+use Endroid\QrCode\Builder\BuilderInterface;
 use App\OTP\TOTPStrategy;
 use App\OTP\HOTPStrategy;
 use Symfony\Component\Mime\MimeTypes;
@@ -394,54 +397,48 @@ class HomeController extends AbstractController
 		$mailerHeaderFrom,
 		#[Autowire('%env(APP_TO_TEST_EMAIL)%')]
 		$testEmail,
+		BuilderInterface $pngQrCodeBuilder,
+		BuilderInterface $svgQrCodeBuilder,
+		RateLimiterFactory $defaultLimiter,
 		/*
 		*/
 	) {
-		$writer = new PngWriter();
-		$writerOptions = [
-			'compression_level' => 9,
-		];
-		$data = 'Very useful encoded info';
-		$encoding = new Encoding('UTF-8');
-		$errorCorrectionLevel = ErrorCorrectionLevel::High;
-		$roundBlockSizeMode = RoundBlockSizeMode::Margin;
-		$logoPath = $stringService->getPath($absImgDir, 'symfony.png');
-		$labelText = 'Symfony Logo';
-
-		$qrCodeResult = Builder::create()
-			->writer($writer)
-			->writerOptions($writerOptions)
-			->data($data)
-			->encoding($encoding)
-			->errorCorrectionLevel($errorCorrectionLevel)
-			->size($size = 300)
-			->margin(10)
-			->roundBlockSizeMode($roundBlockSizeMode)
-			->logoPath($logoPath)
-			->logoResizeToWidth((int) ($size*.10))
-			->logoPunchoutBackground(false)
-			/*
-			->labelText($labelText)
-			->labelFont(new AppQRCodeFont\SchadowBTRoman(20))
-			->labelAlignment(LabelAlignment::Center)
-			*/
-			->validateResult(false)
-			->build()
-		;
+		$clientIp = $request->getClientIp();
+		$limiter = $defaultLimiter->create($clientIp);
 		
-		$mimeTypes = new MimeTypes();
-		$exts = $mimeTypes->getExtensions($qrCodeResult->getMimeType());
-		$ext = \reset($exts);
-		$qrCodeResult->saveToFile($stringService->getPath($absQrDir, \sprintf('symfony_qr_code.%s', $ext)));
-		
-		\dump(
-			$qrCodeResult->getDataUri(),
+		/*
+		\dd(
+			$clientIp,
+			\get_debug_type($limiter),
+			\get_debug_type($limiter->reserve()->getRateLimit()),
+			//$limiter->consume(1)->isAccepted(),
+			//$limiter->reserve(1)->wait(),
+			$limiter->consume(1)->wait(),
 		);
+		*/
 		
-		\dd('END');
+		// Rate limiter
 		
 		$response = $this->render('home/index.html.twig', [
 		]);
+		
+		$limit = $limiter->consume();
+		
+		$dateInterval = (new \DateTime('UTC'))->diff($limit->getRetryAfter());
+		\dd(
+			\sprintf('%s', CarbonInterval::instance($dateInterval)->locale('ru')->forHumans([
+				'options' => \Carbon\CarbonInterface::JUST_NOW | \Carbon\CarbonInterface::ONE_DAY_WORDS,
+				//'syntax' => \Carbon\CarbonInterface::DIFF_RELATIVE_TO_NOW,
+			])),
+			$limiter->reserve(1)->getRateLimit()->getRetryAfter(),
+		);
+		
+		$limitHeaders = [
+			'X-RateLimit-Limit' => $limit->getLimit(),
+			'X-RateLimit-NextAttemptIn' => (string) CarbonInterval::instance($dateInterval),
+			'X-RateLimit-RemainedAttempts' => $limit->getRemainingTokens(),
+		];
+		$response->headers->add($limitHeaders);
 		
 		return $response;
 		

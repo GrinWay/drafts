@@ -1,3 +1,10 @@
+PHP HEADERS
+	?
+	+ возможно ли отобразить картинку, которая не сохранена, то есть я имею только бинарное содержимое
+		(
+		ДА, просто передай Content-Type: 'image/png' заголовок
+		браузер сам отобразит элемент <img>
+		)
 SYMFONY ROUTE
 	?
 	+ почему меня перебрасывает на https (потому что срабатывает resource schemes для аттрибутов Route)
@@ -138,8 +145,8 @@ SYMFONY SERVICE CONTAINER
 		!service_closure #[AutowireServiceClosure]
 		!closure #[AutowireMethodOf]
 	add yaml custom tag
-		!tagged_locator !tagged_iterator !service_closure !closure !service_locator !service !returns_clone !abstract
-		!php/const !php/env !php/object
+		!tagged_locator !tagged_iterator !service_closure !closure !service_locator !abstract !service !returns_clone
+		!php/const !php/enum !php/object
 		!!str !!float !!binary
 	удалить сервис в зависимости от APP_ENV
 	провести абстрактный аргумент в compiller pass
@@ -149,9 +156,44 @@ SYMFONY SERVICE CONTAINER
 	Что делает: AutowireDecorated
 	как _defaults: bind в бандле? (Definition::setBindings ?)
 	!!! Как добавить тег к Psr\Log\LoggerInterface
-	по неизвестной причине некоторые сервисы не могут попасть в коллекцию по тегу
+	+ по неизвестной причине некоторые сервисы не могут попасть в коллекцию по тегу
 		но #[AutowireLocator] лениво подтягивает сервисы успешно
 		Psr\Log\LoggerInterface тегирую, а получить в коллекцию !tagged_locator не могу, а через !service_locator могу
+		(
+			Так нет потому что у LoggerInterface тега в момент заполнения !tagged_locator
+		
+			Просто проверь на всякий случай bin/console debug:container --tag="<>"
+			есть ли у сервиса тег
+			
+			Особые сомнения вызывают определения сервисов, которые были созданы за счёт конфигурации в бандле или проходе компилятора
+			так как просто ->addTag мог не вызываться
+			
+			При наследовании интерфейса или использовании Аттрибута вероятность, что сервис имеет тег выше,
+			так как предполагается, что будет коллекция однотипных классов
+			и нужно будет иметь возможность собрать их всех для дальнейшей настройки чего-то в CompilerPass
+			или собрать их в сервисе...
+			А для этого нужен тег, чтобы коллекция сервисов была доступна:
+				в сервисах, контроллерах: !tagged_(locator|iterator)
+				в bundle(когда контейнер полностью собран), CompilerPass: containerBuilder::findTaggedServiceIds
+			Реализовав: _instanceof в services.yaml, (registerAttributeForAutoconfiguration|registerForAutoconfiguration) в CompilerPass
+			
+			При определении сервиса в services.yaml мы вообще сами вручную можем указать теги
+		)
+	Psr\Log\LoggerInterface тегирую, а получить в коллекцию !tagged_locator не могу
+	REQUIRED!!!:
+		1) Psr\Log\LoggerInterface тегирую, а получить в коллекцию !tagged_locator не могу
+			может быть не Psr\Log\LoggerInterface тегировать нужно, а конкретный service id: 'monolog.logger.<CHANNEL>' например.
+			Мне кажется всё дело в том, у сервисов, создаваемых Monolog с помощью monolog.yaml при объявлении канала
+			просто на просто не присваивается никаких тегов,
+			как раз в отличии от Rate Limiter Factory при описании во framework.rate_limiter
+			там сервисам автоматически назначается rate_limiter tag
+		2) поэксперементируй и промоделируй всевозможные сценарии использования !tagged_locator со своим тегом
+		app_test_tag например, чтобы понять в каких случаях ты получаешь сервис в коллекцию 
+		И ЧТО САМОЕ ИНТЕРЕСНОЕ когда ты НЕ ПОЛУЧАЕШЬ сервиса, который тег имеет, но в коллекцию не попадает
+		то есть возможно ли такое что !tagged_locator срабатывает быстрее назначения тега
+		то есть тег есть, а в коллекции сервиса нет из-за позднего назначения тега.
+		Может если сервис создаётся в CompilerPass (как это обычно бывает при конфигурировании сервисов бандла)(и тег там не назначается), а назначается он где-нибудь в другом месте.
+		Мне честно кажется невозможной ситуация, при которой сервис имеет tag, а быть собранным по нему с помощью !tagged_locator не может
 	services.yaml namespace-path не назначает теги как следует, нужно использовать _instanceof
 	как по Definition получить DEFINITION_SERVICE_ID из container
 	Как изменить Definition так, чтобы возвращался Closure определённого метода
@@ -583,17 +625,46 @@ SYMFONY MAILER
 	+ ?Отправляя письма получаю ошибку 550 relay not permitted (не было авторизации!, .env файл конечно же не читает secrests так как это просто статичный файл)
 	+ Каким таким образом без авторизации я могу отправлять письма на почту админа (если почтовый ящик принадлежит почтовому домену, который ты и использовал для отправки писем, авторизация не нужна, так как ретрансляции не происходит)
 	неужели тест может понять что в MessageHandler будет отпарвляться письмо, или это внутренняя реализация асинхронной отправки письма, то есть если в БД записан объект именно Email
-***
-Composer get extra in scripts https://getcomposer.org/doc/04-schema.md#extra
-allow-plugins of bundle https://github.com/endroid/qr-code-bundle?tab=readme-ov-file
+Composer get extra in event listeners (scripts & plugins)
+allow-plugins of bundle
 QR Code Bundle https://github.com/endroid/qr-code-bundle?tab=readme-ov-file#configuration
-SYMFONY RATE LIMITER https://symfony.com/doc/current/rate_limiter.html#/rate-limiter
+	?
+	+ ? возможно ли получить оригинальное содержимое qr_code картинки, ведь result::getDataUri выдаёт base64 data uri готовое к примению в html img.src
+		(
+			result::getString причём для png это бинарное представление, а для svg это xml документ
+			result::getDataUri использует base64_encode(result::getString)
+		)
+***
+SYMFONY RATE LIMITER
+	https://cheatsheetseries.owasp.org/cheatsheets/Denial_of_Service_Cheat_Sheet.html
+	https://httpd.apache.org/docs/current/mod/mod_ratelimit.html
+	https://blog.nginx.org/blog/rate-limiting-nginx
+	https://en.wikipedia.org/wiki/Token_bucket
+	сравнить методы (reservation имеет rateLimit)
+		https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/RateLimiter/RateLimit.php
+		https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/RateLimiter/Reservation.php
 	Http Client декорировать client чтобы выполнялось max 3 запроса в минуту
 		https://symfony.com/doc/current/http_client.html#limit-the-number-of-requests
-	?
+	R: создай свой storage implements StorageInterface для cache_pool дампни кеш в виде .yaml
+		limiterStateId:
+			all the data from LimiterStateInterface
 	настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
 	создать своего лимитера для логина login_throttling limiter
 		https://symfony.com/doc/current/security.html#limiting-login-attempts
+		https://symfony.com/doc/current/security.html#security-login-throttling
+	?
+SYMFONY LOCK https://symfony.com/doc/current/components/lock.html
+	https://symfony.com/doc/current/lock.html
+	Lock factory для Schedule
+	R: создать и определить свой rate_limiter.lock_factory
+	?
+SYMFONY CACHE https://symfony.com/doc/current/components/cache.html
+	https://symfony.com/doc/current/cache.html
+	определить новый cache_pool для своего rate_limiter
+	создать cache адаптер для ExpressionLanguage($adapter)
+	$request->getETags()
+	?
+SYMFONY The Mime Component https://symfony.com/doc/current/components/mime.html
 SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
 	?
@@ -641,15 +712,7 @@ HOTWIRE: STRADA https://strada.hotwired.dev/
 	Поймать события сервера https://symfony.com/doc/current/http_client.html#consuming-server-sent-events
 SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
 SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
-SYMFONY CACHE
-	?
-	$request->getETags()
-	создать cache адаптер для ExpressionLanguage($adapter)
-SYMFONY The Mime Component https://symfony.com/doc/current/components/mime.html
 SYMFONY FILESYSTEM
-SYMFONY LOCK
-	?
-	Lock factory для Schedule
 SYMFONY INTL COMPONENT https://symfony.com/doc/current/components/intl.html
 SYMFONY CONTAINER BUILDER
 	?
@@ -743,6 +806,8 @@ SYMFONY HTTP CLIENT [DIFFICULT ONE MORE] https://symfony.com/doc/current/http_cl
 	? как указать самоподписанный SSL сертификат, при обращении к другим сайтам: CAfile: C:/OSPanel/data/ssl/cacert.pem
 	? не понятно куда скачивается файл
 	+ нет вызова callback на прогресс HttpClient(HttpOptions::setOnProgress) (используя сервисный HttpClientInterface on_progress действительно не вызывается, но если создать вручную то вызывается)
+PHP PARALLEL https://habr.com/ru/companies/oleg-bunin/articles/715844/
+	https://www.php.net/manual/ru/book.parallel.php
 TESTS
 	GitHub Actions https://help.github.com/en/actions
 		https://www.youtube.com/watch?v=WW6ZUw9IExA
@@ -898,6 +963,7 @@ TODO
 		//TODO: HOTPStrategy
 		//TODO: TOTPStrategy
 		<IN ONE NAMESPACE
+		//TODO: MimeUtil
 		
 		
 	Extensions

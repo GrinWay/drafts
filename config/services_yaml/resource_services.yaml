@@ -68,7 +68,6 @@ services:
             $absCustomConfigParametersDir: '%kernel.project_dir%/config/services_yaml/custom/parameters'
             $absConfigParametersDir: '%kernel.project_dir%/config/services_yaml/parameters'
             ###< PATHS ###
-            
 
     ###> AUTOLOAD SERVICES BY NAMESPACE AND RESOURCE
     App\:

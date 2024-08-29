@@ -3109,7 +3109,7 @@
             "dist": {
                 "type": "path",
                 "url": "./bundles/grinway/installer",
-                "reference": "9b3afe8d7c5c187efa85d6b516c72cc25811adf8"
+                "reference": "d4dcc12c1e84005ca593b3e5661c7cd9f12ed947"
             },
             "require": {
                 "composer-plugin-api": "^2.0",
@@ -3243,7 +3243,7 @@
             "dist": {
                 "type": "path",
                 "url": "./bundles/grinway/web-app-bundle",
-                "reference": "9eb68f1fd89331d739206bcd2e643642f7151773"
+                "reference": "7b00def7a001f1639a03208f680503c7a9a515c4"
             },
             "require": {
                 "doctrine/doctrine-bundle": ">=2",
