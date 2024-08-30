@@ -649,6 +649,7 @@ QR Code Bundle https://github.com/endroid/qr-code-bundle?tab=readme-ov-file#conf
 		)
 SYMFONY RATE LIMITER
 	?
+	???When Limit::wait() абсолютно все запросы (и новые в том числе) будут блокированы пока Limit::wait() не закончиться до конца
 	R!: Осознать философию использования ReteLimiter, в том смысле что когда использовать ::consume(), ::reserve()
 	ИНТЕРЕСНЫЙ МОМЕНТ: для security.firewall.login_throttling.limiter как и принято указывается полный SERVICE ID rate_limiter
 		а для framework.messenger.transports.<>.rate_limiter.только имя самой Factoroy
@@ -656,15 +657,70 @@ SYMFONY RATE LIMITER
 		сделал, но только не совсем понятно почему при обновлении workers не обрабатываются сообщения, сохранённые раньше
 ***
 SYMFONY LOCK
-	https://symfony.com/doc/current/components/lock.html#usage
+
+	https://symfony.com/doc/current/components/lock.html#automatically-releasing-the-lock
 	
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/LockFactory.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/LockInterface.php
+	https://en.wikipedia.org/wiki/Readers%E2%80%93writer_lock
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/SharedLockInterface.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/LockInterface.php
+	https://en.wikipedia.org/wiki/Readers%E2%80%93writer_lock#Priority_policies
+	https://symfony.com/doc/current/components/lock.html#lock-stores
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/Key.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/Lock.php
+	https://symfony.com/doc/current/components/lock.html#lock-store-semaphore
+	https://symfony.com/doc/current/components/lock.html#lock-stores
+	https://stackoverflow.com/questions/33036773/how-to-enable-pcntl-in-php-while-using-a-framework-like-symfony-2
 	
 	https://symfony.com/doc/current/lock.html
 	Lock factory для Schedule
 	R: создать и определить свой rate_limiter.lock_factory
+	заставь блокировку сброситься с помошью след. методов:
+		release() OK
+		ttl CAN'T
+		__destruct CAN'T
 	?
+	Блокировка не слетает после истечения ttl (1 сек.), а должна по идее
+		$lock = $lockFactory->createLock($key = new Key('TEST'), ttl: 1);
+		$isLocked = $lock->acquire();
+		for($i = 0; $i < 500_000_000; $i++) {
+			$a = $i + $i;
+		}
+		// or sleep(2);
+		
+		$lock2 = $lockFactory->createLock($key);
+		$isLocked2 = $lock2->acquire();
+		\dump($isLocked2); // false
+	?Блокировка обновит ttl с помощью refresh только в случае если она уже не слетела, мне кажется это логично
+	Блокировка слетает, а по идее не должна
+		Имею доступ к ресурсу когда по идее на него сохранилась блокировка
+		НО Я ЖЕ НЕ ДОЛЖЕН ЕГО ИМЕТЬ, по идее блокировка ведь слететь не должна была когда сработал __destruct
+		$lock = $lockFactory->createLock($key = new Key('TEST'), autoRelease: false/* оставляем блокировку даже после __destruct */);
+		$isLocked = $lock->acquire();
+		unset($lock); // Symfony\Component\Lock\Lock::__destruct
+		
+		$lock2 = $lockFactory->createLock($key);
+		$isLocked2 = $lock2->acquire();
+		\dump($isLocked2); // true
+	Почему подвисло навсегда
+		$store = new FlockStore($cacheDir.'/__LOCK__');
+		$lockFactory = new LockFactory($store);
+		
+		$lock = $lockFactory->createLock($key = new Key('TEST'), ttl: 10);
+		$isLocked = $lock->acquire();
+		
+		$lock2 = $lockFactory->createLock($key);
+		$isLocked2 = $lock2->acquire(true);
+		\dump($isLocked2);
+	Не происходит вечного зависания хотя я его ожидал
+		$lock1 = $lockFactory->createLock($key = new Key('TEST'));
+		$lock1->acquire();
+		$lock2 = $lockFactory->createLock($key);
+		$isLocked2 = $lock2->acquire(true);
+	Не представляю сценарий, в котором для одного и того же ресурса с одним и тем же lockId, понадобиться создавать 2 экземпляра lock
+	+ При вызове acquire() если уже есть блокировка, сценарий не возвращет false как описано в docs, а ждёт пока получит блокировку
+		ты перепутал... это поведение связано с выполнением php \sleep() от rate limiter
 SYMFONY CACHE https://symfony.com/doc/current/components/cache.html
 	https://symfony.com/doc/current/cache.html
 	определить новый cache_pool для своего rate_limiter
@@ -829,6 +885,7 @@ Endroid\QrCode QR Code for Symfony https://github.com/endroid/qr-code-bundle
 	DETECT AND READ QR CODE: https://github.com/khanamiryan/php-qrcode-detector-decoder
 PHP TOTP LIB
 	https://github.com/Spomky-Labs/otphp/blob/11.4.x/doc/index.md#advanced-features
+PHP УПРАВЛЕНИЕ ПРОЦЕССАМИ (не работает в windows) https://www.php.net/manual/ru/book.pcntl.php
 JWT lcobucci
 PHP FPDF
 	https://www.youtube.com/watch?v=aSTLAjLjJqk

@@ -7,6 +7,7 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Lock\Key;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\SemaphoreStore;
 use Symfony\Component\Lock\Store\FlockStore;
@@ -298,11 +299,11 @@ class HomeController extends AbstractController
 	/**
 	* @var Carbon $nowModified -1second
 	*/
-    #[Route(path: '/{passedOtpNumber<\d+>?}', methods: ['GET', 'POST'])]
+    #[Route(path: '/{passedOtpNumber<\d+>?1}', methods: ['GET', 'POST'])]
     //#[IsCsrfTokenValid(id: 'default', tokenKey: '_token')]
     //#[SomeAttribute]
     public function home(
-        $passedOtpNumber,
+        int $passedOtpNumber,
         Request $r,
         Request $request,
         RequestStack $requestStack,
@@ -402,22 +403,32 @@ class HomeController extends AbstractController
 		$testEmail,
 		BuilderInterface $pngQrCodeBuilder,
 		BuilderInterface $svgQrCodeBuilder,
-		RateLimiterFactory $tooRareLimiter,
+		RateLimiterFactory $shortSecondsLimiter,
+		#[Autowire('%kernel.cache_dir%')]
+		$cacheDir,
 		/*
 		*/
 	) {
 		// Lock
 		
-		$store = new FlockStore();
+		$store = new FlockStore($cacheDir.'/__LOCK__');
 		$lockFactory = new LockFactory($store);
 		
-		$lock = $lockFactory->createLock($lockId = 'TEST');
+		$lock = $lockFactory->createLock($key = new Key('TEST'), ttl: 1, autoRelease: true);
+		$isLocked = $lock->acquire();
+		\dump($lockFactory->createLock($key)->acquireRead(true));
+		//$lock->release();
+		//unset($lock);
 		
-		if ($lock->acquire()) {
+		/*
+		*/
+		
+		if ($isLocked) {
 			\dump('Блокировка приобретена 👍');
-			$limit = $tooRareLimiter->create($limiterId = $lockId);
-			$limit->consume()->wait();
-			$lock->release();
+			if (isset($lock)) {
+				$lock->release();
+				\dump('Блокировка ОТПУЩЕНА 👍');
+			}
 		} else {
 			\dump('Блокировка не приобретена 🤐');
 		}
