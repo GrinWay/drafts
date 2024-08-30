@@ -415,8 +415,11 @@ class HomeController extends AbstractController
 		$lockFactory = new LockFactory($store);
 		
 		$lock = $lockFactory->createLock($key = new Key('TEST'), ttl: 1, autoRelease: true);
+		$isLocked = $lock->acquireRead();
 		$isLocked = $lock->acquire();
-		\dump($lockFactory->createLock($key)->acquireRead(true));
+		$isLocked = $lock->acquireRead();
+		\dump($lockFactory->createLock($key)->acquireRead());
+		\dump($isLocked);
 		//$lock->release();
 		//unset($lock);
 		

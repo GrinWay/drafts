@@ -658,7 +658,7 @@ SYMFONY RATE LIMITER
 ***
 SYMFONY LOCK
 
-	https://symfony.com/doc/current/components/lock.html#automatically-releasing-the-lock
+	https://symfony.com/doc/current/components/lock.html#the-owner-of-the-lock
 	
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/LockFactory.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/LockInterface.php
@@ -672,6 +672,9 @@ SYMFONY LOCK
 	https://symfony.com/doc/current/components/lock.html#lock-store-semaphore
 	https://symfony.com/doc/current/components/lock.html#lock-stores
 	https://stackoverflow.com/questions/33036773/how-to-enable-pcntl-in-php-while-using-a-framework-like-symfony-2
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/SharedLockStoreInterface.php
+	https://symfony.com/doc/current/components/lock.html#lock-stores
+	https://symfony.com/doc/current/components/lock.html#lock-owner-technical-details
 	
 	https://symfony.com/doc/current/lock.html
 	Lock factory для Schedule
@@ -795,6 +798,7 @@ SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
 https://symfony.com/doc/current/reference/dic_tags.html
 SYMFONY REDIS BUNDLE
 	https://symfony.com/doc/current/security/login_link.html#configure-a-maximum-use-of-a-link
+	LOCK: The priority policy of Symfony's shared locks depends on the underlying store (e.g. Redis store prioritizes readers vs writers).
 SYMFONY MY ADMIN
 SYMFONY WebLink
 SYMFONY WEBPACK ENCORE
