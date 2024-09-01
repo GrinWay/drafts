@@ -417,7 +417,7 @@ class HomeController extends AbstractController
 		$cache = new ArrayAdapter(
 			0,
 			false,
-			0,
+			1,
 			0,
 		);
 		
@@ -436,7 +436,22 @@ class HomeController extends AbstractController
 			
 			return \random_int(0, 1000000000);
 		};
-		$value = $cache->get('my_value_1', $init, 10.0);
+		$getCached = static fn($key) => $cache->get($key, $init, 10.0);
+		
+		$getCached('value');
+		$getCached('value2');
+		$getCached('value');
+		$getCached('value2');
+		$getCached('value');
+		$getCached('value2');
+		$getCached('value');
+		$getCached('value2');
+		$getCached('value');
+		$getCached('value2');
+		$getCached('value');
+		$getCached('value2');
+		$getCached('value');
+		$getCached('value2');
 		
 		\dd('END');
 		

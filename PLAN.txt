@@ -873,6 +873,7 @@ SYMFONY HTTP CLIENT [DIFFICULT ONE MORE] https://symfony.com/doc/current/http_cl
 PHP PARALLEL https://habr.com/ru/companies/oleg-bunin/articles/715844/
 	https://www.php.net/manual/ru/book.parallel.php
 TESTS
+	R: использовать кэш в тестах используя ArrayAdapter
 	GitHub Actions https://help.github.com/en/actions
 		https://www.youtube.com/watch?v=WW6ZUw9IExA
 		https://symfony.com/doc/current/bundles/best_practices.html#continuous-integration
