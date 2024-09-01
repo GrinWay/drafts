@@ -7,6 +7,11 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Component\Cache\Adapter\ApcuAdapter;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Lock\Store\DoctrineDbalStore;
 use Symfony\Component\Lock\Key;
 use Symfony\Component\Lock\LockFactory;
 use Symfony\Component\Lock\Store\SemaphoreStore;
@@ -404,37 +409,34 @@ class HomeController extends AbstractController
 		BuilderInterface $pngQrCodeBuilder,
 		BuilderInterface $svgQrCodeBuilder,
 		RateLimiterFactory $shortSecondsLimiter,
-		#[Autowire('%kernel.cache_dir%')]
-		$cacheDir,
+		LockFactory $doctrineLockFactory,
+		$enUtcCarbon,
 		/*
 		*/
 	) {
-		// Lock
+		$cache = new ArrayAdapter(
+			0,
+			false,
+			0,
+			0,
+		);
 		
-		$store = new FlockStore($cacheDir.'/__LOCK__');
-		$lockFactory = new LockFactory($store);
-		
-		$lock = $lockFactory->createLock($key = new Key('TEST'), ttl: 1, autoRelease: true);
-		$isLocked = $lock->acquireRead();
-		$isLocked = $lock->acquire();
-		$isLocked = $lock->acquireRead();
-		\dump($lockFactory->createLock($key)->acquireRead());
-		\dump($isLocked);
-		//$lock->release();
-		//unset($lock);
-		
-		/*
-		*/
-		
-		if ($isLocked) {
-			\dump('Блокировка приобретена 👍');
-			if (isset($lock)) {
-				$lock->release();
-				\dump('Блокировка ОТПУЩЕНА 👍');
-			}
-		} else {
-			\dump('Блокировка не приобретена 🤐');
-		}
+		$init = static function(ItemInterface $item) use($ru12Carbon, $enUtcCarbon): string {
+			//$item->expiresAfter(10);
+			$item->expiresAt($enUtcCarbon->now()->add(30, 'second'));
+			/*
+			$item->tag([
+				'tag_0',
+				'tag_1',
+			]);
+			*/
+			\dump(
+				'__CALCULATED__',
+			);
+			
+			return \random_int(0, 1000000000);
+		};
+		$value = $cache->get('my_value_1', $init, 10.0);
 		
 		\dd('END');
 		

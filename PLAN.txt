@@ -655,28 +655,8 @@ SYMFONY RATE LIMITER
 		а для framework.messenger.transports.<>.rate_limiter.только имя самой Factoroy
 	???R: настроить rate_limiter для транспорта messenger / rate_limiter blocks the whole worker (for rate limited transport you need to create a separate worker)
 		сделал, но только не совсем понятно почему при обновлении workers не обрабатываются сообщения, сохранённые раньше
-***
 SYMFONY LOCK
-
-	https://symfony.com/doc/current/components/lock.html#the-owner-of-the-lock
-	
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/LockFactory.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/LockInterface.php
-	https://en.wikipedia.org/wiki/Readers%E2%80%93writer_lock
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/SharedLockInterface.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/LockInterface.php
-	https://en.wikipedia.org/wiki/Readers%E2%80%93writer_lock#Priority_policies
-	https://symfony.com/doc/current/components/lock.html#lock-stores
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/Key.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/Lock.php
-	https://symfony.com/doc/current/components/lock.html#lock-store-semaphore
-	https://symfony.com/doc/current/components/lock.html#lock-stores
-	https://stackoverflow.com/questions/33036773/how-to-enable-pcntl-in-php-while-using-a-framework-like-symfony-2
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Lock/SharedLockStoreInterface.php
-	https://symfony.com/doc/current/components/lock.html#lock-stores
-	https://symfony.com/doc/current/components/lock.html#lock-owner-technical-details
-	
-	https://symfony.com/doc/current/lock.html
+***
 	Lock factory для Schedule
 	R: создать и определить свой rate_limiter.lock_factory
 	заставь блокировку сброситься с помошью след. методов:
@@ -724,8 +704,24 @@ SYMFONY LOCK
 	Не представляю сценарий, в котором для одного и того же ресурса с одним и тем же lockId, понадобиться создавать 2 экземпляра lock
 	+ При вызове acquire() если уже есть блокировка, сценарий не возвращет false как описано в docs, а ждёт пока получит блокировку
 		ты перепутал... это поведение связано с выполнением php \sleep() от rate limiter
-SYMFONY CACHE https://symfony.com/doc/current/components/cache.html
+	Немного не понятный момент https://symfony.com/doc/current/components/lock.html#expiring-stores
+	All concurrent processes must use the same physical file system by running on the same machine and using the same absolute path to the lock directory.
+		Using a FlockStore in an HTTP context is incompatible with multiple front servers, unless to ensure that the same resource will always be locked on the same machine or to use a well configured shared file system.
+***
+SYMFONY CACHE
+
+	https://symfony.com/doc/current/components/cache.html#available-cache-adapters
+	chain_adapter
+
 	https://symfony.com/doc/current/cache.html
+	
+	https://symfony.com/doc/current/components/cache/cache_invalidation.html
+	https://en.wikipedia.org/wiki/Cache_stampede
+	https://en.wikipedia.org/wiki/Cache_stampede#Probabilistic_early_expiration
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Cache/Adapter/FilesystemAdapter.php
+	https://github.com/symfony/contracts/blob/main/Cache/CacheInterface.php
+	https://symfony.com/doc/current/components/cache/psr6_psr16_adapters.html
+
 	определить новый cache_pool для своего rate_limiter
 	создать cache адаптер для ExpressionLanguage($adapter)
 	$request->getETags()
@@ -799,6 +795,7 @@ https://symfony.com/doc/current/reference/dic_tags.html
 SYMFONY REDIS BUNDLE
 	https://symfony.com/doc/current/security/login_link.html#configure-a-maximum-use-of-a-link
 	LOCK: The priority policy of Symfony's shared locks depends on the underlying store (e.g. Redis store prioritizes readers vs writers).
+	https://symfony.com/doc/current/components/lock.html#redisstore
 SYMFONY MY ADMIN
 SYMFONY WebLink
 SYMFONY WEBPACK ENCORE
@@ -906,6 +903,7 @@ SYMFONY TRANSLATION
 	Использовать провайдера Loco зарегайся с VPN: https://symfony.com/doc/current/translation.html#installing-and-configuring-a-third-party-provider
 SYMFONY DEPLOYMENT https://symfony.com/doc/current/deployment.html
 PRODUCTION
+	cache: https://symfony.com/doc/current/components/cache/adapters/apcu_adapter.html
 	как сделать скриншот монитора
 	как сделать pdf
 	https://symfony.com/doc/current/reference/configuration/kernel.html

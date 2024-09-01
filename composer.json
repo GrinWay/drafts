@@ -40,6 +40,7 @@
         "scheb/2fa-trusted-device": "^7.5",
         "symfony-bundles/redis-bundle": "^3.1",
         "symfony/asset": "7.1.*",
+        "symfony/cache": "7.1.*",
         "symfony/clock": "7.1.*",
         "symfony/console": "7.1.*",
         "symfony/debug-bundle": "7.1.*",
