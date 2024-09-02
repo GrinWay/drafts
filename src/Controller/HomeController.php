@@ -10,6 +10,7 @@ use function Symfony\Component\Clock\now;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\ChainAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Lock\Store\DoctrineDbalStore;
 use Symfony\Component\Lock\Key;
@@ -414,11 +415,12 @@ class HomeController extends AbstractController
 		/*
 		*/
 	) {
-		$cache = new ArrayAdapter(
-			0,
-			false,
-			1,
-			0,
+		$cache = new ChainAdapter(
+			[
+				new FilesystemAdapter(),
+				new ArrayAdapter(),
+			],
+			10,
 		);
 		
 		$init = static function(ItemInterface $item) use($ru12Carbon, $enUtcCarbon): string {
@@ -452,7 +454,6 @@ class HomeController extends AbstractController
 		$getCached('value2');
 		$getCached('value');
 		$getCached('value2');
-		
 		\dd('END');
 		
 		$clientIp = $request->getClientIp();

@@ -709,10 +709,9 @@ SYMFONY LOCK
 		Using a FlockStore in an HTTP context is incompatible with multiple front servers, unless to ensure that the same resource will always be locked on the same machine or to use a well configured shared file system.
 ***
 SYMFONY CACHE
-
+	
 	https://symfony.com/doc/current/components/cache.html#available-cache-adapters
-	chain_adapter
-
+	
 	https://symfony.com/doc/current/cache.html
 	
 	https://symfony.com/doc/current/components/cache/cache_invalidation.html
@@ -792,7 +791,8 @@ SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
 	? по каким-то причинам profiler тупо иногда либо не отображается либо просто перестаёт работать
 	Почему сервис @Psr\Container\ContainerInterface не доступен из services.yaml
 https://symfony.com/doc/current/reference/dic_tags.html
-SYMFONY REDIS BUNDLE
+SYMFONY REDIS BUNDLE	
+	https://github.com/phpredis/phpredis
 	https://symfony.com/doc/current/security/login_link.html#configure-a-maximum-use-of-a-link
 	LOCK: The priority policy of Symfony's shared locks depends on the underlying store (e.g. Redis store prioritizes readers vs writers).
 	https://symfony.com/doc/current/components/lock.html#redisstore
