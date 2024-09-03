@@ -8,9 +8,14 @@ use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
 use Symfony\Contracts\Cache\ItemInterface;
+use Symfony\Component\Cache\Adapter\DoctrineDbalAdapter;
+use Symfony\Component\Cache\Adapter\PdoAdapter;
 use Symfony\Component\Cache\Adapter\ApcuAdapter;
 use Symfony\Component\Cache\Adapter\ArrayAdapter;
+use Symfony\Component\Cache\Adapter\PhpArrayAdapter;
 use Symfony\Component\Cache\Adapter\ChainAdapter;
+use Symfony\Component\Cache\Adapter\PhpFilesAdapter;
+use Symfony\Component\Cache\Adapter\FilesystemTagAwareAdapter;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Lock\Store\DoctrineDbalStore;
 use Symfony\Component\Lock\Key;
@@ -412,63 +417,43 @@ class HomeController extends AbstractController
 		RateLimiterFactory $shortSecondsLimiter,
 		LockFactory $doctrineLockFactory,
 		$enUtcCarbon,
+		#[Autowire('%kernel.cache_dir%')]
+		$cacheDir,
 		/*
 		*/
 	) {
-		$cache = new ChainAdapter(
-			[
-				new FilesystemAdapter(),
-				new ArrayAdapter(),
-			],
-			10,
+		$cache = new FilesystemTagAwareAdapter(
+			'__FilesystemAdapter__',
+			100,
+			$cacheDir,
 		);
 		
-		$init = static function(ItemInterface $item) use($ru12Carbon, $enUtcCarbon): string {
+		$refresh = static function(ItemInterface $item) use($ru12Carbon, $enUtcCarbon): string {
 			//$item->expiresAfter(10);
-			$item->expiresAt($enUtcCarbon->now()->add(30, 'second'));
-			/*
-			$item->tag([
-				'tag_0',
-				'tag_1',
-			]);
-			*/
+			$item->expiresAfter(\DateInterval::createFromDateString('1 hour'));
+			//$item->expiresAt($enUtcCarbon->now()->add(30, 'second'));
+			
+			//$item->tag('tag_crucial');
 			\dump(
-				'__CALCULATED__',
+				$item->getKey().' was __CALCULATED__',
 			);
 			
-			return \random_int(0, 1000000000);
+			return 'VALUE_'.\random_int(0, 100);
 		};
-		$getCached = static fn($key) => $cache->get($key, $init, 10.0);
+		$getCached = static fn($key) => $cache->get($key, $refresh, /*10.0*/);
 		
-		$getCached('value');
-		$getCached('value2');
-		$getCached('value');
-		$getCached('value2');
-		$getCached('value');
-		$getCached('value2');
-		$getCached('value');
-		$getCached('value2');
-		$getCached('value');
-		$getCached('value2');
-		$getCached('value');
-		$getCached('value2');
-		$getCached('value');
-		$getCached('value2');
+		$getCached('ksdfjl');
+		
+		/*
+		$cache->invalidateTags([
+			'tag_crucial',
+		]);
+		*/
+		
 		\dd('END');
 		
 		$clientIp = $request->getClientIp();
 		$limiter = $defaultLimiter->create($clientIp);
-		
-		/*
-		\dd(
-			$clientIp,
-			\get_debug_type($limiter),
-			\get_debug_type($limiter->reserve()->getRateLimit()),
-			//$limiter->consume(1)->isAccepted(),
-			//$limiter->reserve(1)->wait(),
-			$limiter->consume(1)->wait(),
-		);
-		*/
 		
 		// Rate limiter
 		

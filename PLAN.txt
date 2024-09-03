@@ -24,6 +24,8 @@ SYMFONY HTTP FOUNDATION
 	+ как в request УСТАНОВИТЬ не скалярное значение (можно)
 SYMFONY DOCTRINE
 	?
+	? что за тип varbinary(255) и зачем используется
+	? что за тип mediumblob и зачем используется
 	? как вместо аттрибутов описать колонки в config/doctrine/*.xml
 	?не получилось добавить функцию dql doctrine
 	?кто отвечает за порядок расположения столбцов
@@ -710,7 +712,8 @@ SYMFONY LOCK
 ***
 SYMFONY CACHE
 	
-	https://symfony.com/doc/current/components/cache.html#available-cache-adapters
+	https://symfony.com/doc/current/components/cache/cache_pools.html
+	https://symfony.com/doc/current/components/cache/psr6_psr16_adapters.html
 	
 	https://symfony.com/doc/current/cache.html
 	
@@ -720,11 +723,48 @@ SYMFONY CACHE
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Cache/Adapter/FilesystemAdapter.php
 	https://github.com/symfony/contracts/blob/main/Cache/CacheInterface.php
 	https://symfony.com/doc/current/components/cache/psr6_psr16_adapters.html
+	https://www.doctrine-project.org/projects/doctrine-dbal/en/current/reference/platforms.html
 
 	определить новый cache_pool для своего rate_limiter
 	создать cache адаптер для ExpressionLanguage($adapter)
 	$request->getETags()
 	?
+	+ Почему кэш удаляется сразу же (каждый раз __CALCULATED__) (потому что в реализации PSR-6 нужно вызвать save())
+		$cache = new FilesystemAdapter(
+			'__FilesystemAdapter__',
+			20,
+			$cacheDir,
+		);
+		$item = $cache->getItem('value1');
+		if (!$item->isHit()) {
+			\dump('__CALCULATED__');
+			$item->set(\random_int(0, 100));
+		}
+		\dump($item->get('value1'));
+	Не получается пользоваться cache tag, данные кэша немедленно удаляются при попытке назначить тег
+		$cache = new FilesystemTagAwareAdapter(
+			'__FilesystemAdapter__',
+			100,
+			$cacheDir,
+		);
+		
+		$init = static function(ItemInterface $item) {
+			$item->tag('tag_crucial');
+			\dump(
+				'__CALCULATED__',
+			);
+			
+			return 'VALUE_'.\random_int(0, 100);
+		};
+		$getCached = static fn($key) => $cache->get($key, $init);
+		
+		\dump($getCached('key1'));
+		\dump($getCached('key1')); // __CALCULATED__ again!
+		/* Инвалидировать нечего, так как кэш тупо не сохраняется
+		$cache->invalidateTags([
+			'tag_crucial',
+		]);
+		*/
 SYMFONY The Mime Component https://symfony.com/doc/current/components/mime.html
 SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
@@ -734,10 +774,14 @@ SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
 	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
 SYMFONY SERIALIZER https://symfony.com/doc/current/components/serializer.html
 	https://symfony.com/doc/current/serializer.html
-	?
-	зачем сериализовывать объекты в сессии (? может быть дело в хранимом объёме, или что ещё...)
 	добавляет новые поля в json при serialize
 	grin_way_env_csv_multiline parse with serializer
+	CACHE: чётвёртым аргументом в *Adapter передай marshaller, который использует Symfony Serializer вместо php serialize()
+	
+	Просто ради интереса заставь \igbinary_serialize() работать
+		https://github.com/igbinary/igbinary
+	?
+	зачем сериализовывать объекты в сессии (? может быть дело в хранимом объёме, или что ещё...)
 OpenSSL:
 	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.
 	Как создать самоподписанные сертификаты
@@ -791,12 +835,24 @@ SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
 	? по каким-то причинам profiler тупо иногда либо не отображается либо просто перестаёт работать
 	Почему сервис @Psr\Container\ContainerInterface не доступен из services.yaml
 https://symfony.com/doc/current/reference/dic_tags.html
-SYMFONY REDIS BUNDLE	
+SYMFONY MY ADMIN
+SYMFONY REDIS BUNDLE
 	https://github.com/phpredis/phpredis
 	https://symfony.com/doc/current/security/login_link.html#configure-a-maximum-use-of-a-link
 	LOCK: The priority policy of Symfony's shared locks depends on the underlying store (e.g. Redis store prioritizes readers vs writers).
 	https://symfony.com/doc/current/components/lock.html#redisstore
-SYMFONY MY ADMIN
+	CACHE: Используй TagAwareAdapter(для файлов кеша используй FilesystemAdapter, а для тегов используй RedisAdapter)
+Cache with Memcached
+	https://habr.com/ru/articles/14939/
+	https://habr.com/ru/articles/42607/
+	https://stackoverflow.com/questions/59476616/install-memcached-on-windows
+	создай сервис в services.ymal на основе фабричного метода MemcachedAdapter::createConnection
+		https://symfony.com/doc/current/components/cache/adapters/memcached_adapter.html
+	?
+	https://symfony.com/doc/current/components/cache/adapters/chain_adapter.html
+		Если сделать ChainAdapter то можно ли решить проблему отказоустойчивоости
+		допустим использовать MemcachedAdapter
+		но если произошёл сбой использовать FilesystemAdapter
 SYMFONY WebLink
 SYMFONY WEBPACK ENCORE
 	https://symfony.com/doc/current/frontend.html
@@ -852,6 +908,10 @@ DOCKER
 	https://symfony.com/doc/current/setup.html
 	https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
 	https://symfony.com/doc/current/setup/symfony_server.html#symfony-server-docker
+Cache with Couchbase
+	https://www.couchbase.com/
+	https://docs.couchbase.com/sdk-api/couchbase-php-client/namespaces/couchbase.html
+	https://symfony.com/doc/current/components/cache/adapters/couchbasecollection_adapter.html
 SYMFONY HTTP CLIENT [DIFFICULT ONE MORE] https://symfony.com/doc/current/http_client.html
 	?
 	?? Декорировать клиента и возвращать chunk каким-то образом изменённым
