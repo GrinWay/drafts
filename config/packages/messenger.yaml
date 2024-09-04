@@ -91,6 +91,8 @@ framework:
             
             'Symfony\Component\Mailer\Messenger\SendEmailMessage': sync
             
+            'Symfony\Component\Cache\Messenger\EarlyExpirationMessage': async
+            
 when@test:
     framework:
         messenger:

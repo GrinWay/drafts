@@ -82,7 +82,7 @@ class SymfonySchedule implements ScheduleProviderInterface
 
     private function initSchedule(): array
     {
-        if ($this->messagesAndCallbacks !== []) {
+        if ([] !== $this->messagesAndCallbacks) {
             return [];
         }
 

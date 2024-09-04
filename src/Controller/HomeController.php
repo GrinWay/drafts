@@ -7,6 +7,8 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Component\Cache\Adapter\DoctrineDbalAdapter;
 use Symfony\Component\Cache\Adapter\PdoAdapter;
@@ -419,18 +421,21 @@ class HomeController extends AbstractController
 		$enUtcCarbon,
 		#[Autowire('%kernel.cache_dir%')]
 		$cacheDir,
+		Service\CacheUtil $cacheUtil,
+		CacheInterface $appCacheMinute,
+		#[Autowire('@app.cache.async')]
+		$cache,
 		/*
 		*/
 	) {
-		$cache = new FilesystemTagAwareAdapter(
-			'__FilesystemAdapter__',
-			100,
-			$cacheDir,
-		);
-		
 		$refresh = static function(ItemInterface $item) use($ru12Carbon, $enUtcCarbon): string {
-			//$item->expiresAfter(10);
-			$item->expiresAfter(\DateInterval::createFromDateString('1 hour'));
+			/*
+			$item->tag([
+				'tag_highly_important',
+			]);
+			*/
+			$item->expiresAfter(10);
+			//$item->expiresAfter(\DateInterval::createFromDateString('1 hour'));
 			//$item->expiresAt($enUtcCarbon->now()->add(30, 'second'));
 			
 			//$item->tag('tag_crucial');
@@ -440,14 +445,14 @@ class HomeController extends AbstractController
 			
 			return 'VALUE_'.\random_int(0, 100);
 		};
-		$getCached = static fn($key) => $cache->get($key, $refresh, /*10.0*/);
 		
-		$getCached('ksdfjl');
+		\dump($cache->get('seven', $refresh));
 		
 		/*
 		$cache->invalidateTags([
-			'tag_crucial',
+			'tag_highly_important',
 		]);
+		$cache->delete('three');
 		*/
 		
 		\dd('END');

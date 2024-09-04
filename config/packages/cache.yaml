@@ -1,5 +1,9 @@
 framework:
     cache:
+        directory: '%kernel.cache_dir%/app_cache'
+        
+        #app: 'app.cache_adapter.php_files'
+        
         # Unique name of your app: used to compute stable namespaces for cache keys.
         #prefix_seed: your_vendor_name/app_name
 
@@ -15,5 +19,27 @@ framework:
         #app: cache.adapter.apcu
 
         # Namespaced pools use the above "app" backend by default
-        #pools:
-            #my.dedicated.cache: null
+        pools:
+        
+            app.cache.async:
+                early_expiration_message_bus: messenger.default_bus
+        
+            app.cache.chain:
+                default_lifetime: 60
+                adapters:
+                
+                # VERY FAST
+                -   cache.adapter.array
+                
+                #-   app.cache_adapter.php_files
+                
+                # SAVES LOTS OF INFORMATION
+                -   cache.adapter.filesystem
+        
+            app.cache.minute:
+                adapter: 'cache.adapter.filesystem'
+                default_lifetime: 60
+                
+            app.cache.day:
+                adapter: 'cache.adapter.filesystem'
+                default_lifetime: 3600

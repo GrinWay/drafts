@@ -712,10 +712,10 @@ SYMFONY LOCK
 ***
 SYMFONY CACHE
 	
-	https://symfony.com/doc/current/components/cache/cache_pools.html
-	https://symfony.com/doc/current/components/cache/psr6_psr16_adapters.html
+	https://symfony.com/doc/current/cache.html#computing-cache-values-asynchronously
 	
-	https://symfony.com/doc/current/cache.html
+	https://symfony.com/doc/current/components/cache/cache_pools.html#removing-cache-items
+	https://symfony.com/doc/current/components/cache/cache_pools.html#pruning-cache-items
 	
 	https://symfony.com/doc/current/components/cache/cache_invalidation.html
 	https://en.wikipedia.org/wiki/Cache_stampede
@@ -724,11 +724,18 @@ SYMFONY CACHE
 	https://github.com/symfony/contracts/blob/main/Cache/CacheInterface.php
 	https://symfony.com/doc/current/components/cache/psr6_psr16_adapters.html
 	https://www.doctrine-project.org/projects/doctrine-dbal/en/current/reference/platforms.html
+	https://symfony.com/doc/current/components/cache.html#cache_stampede-prevention
+	https://symfony.com/doc/current/components/messenger.html
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Cache/Messenger/EarlyExpirationMessage.php
 
 	определить новый cache_pool для своего rate_limiter
 	создать cache адаптер для ExpressionLanguage($adapter)
 	$request->getETags()
 	?
+	Чем отличаются команды
+		cache:pool:*        (cache:pool:clear, cache:pool:prune, cache:pool:delete)
+		от
+	+ 	cache:*             (cache:clear) ЭТОЙ КОМАНДОЙ ПОЛЬЗУЕТСЯ cache.system_clearer И ОЧИЩАЕТСЯ СИСТЕМНЫЙ POOL
 	+ Почему кэш удаляется сразу же (каждый раз __CALCULATED__) (потому что в реализации PSR-6 нужно вызвать save())
 		$cache = new FilesystemAdapter(
 			'__FilesystemAdapter__',
@@ -765,6 +772,29 @@ SYMFONY CACHE
 			'tag_crucial',
 		]);
 		*/
+		
+		Хотя сервис TagAwareCacheInterface $tagAwareCache работает с tag отлично, значит проблема в создании экземпляра адаптера
+	Не получилось заставить кеш вычисляться заново асинхронно 
+		https://symfony.com/doc/current/cache.html#computing-cache-values-asynchronously
+	Когда получиться засунуть app.cache_adapter.php_files в pools установи для app.cache_adapter.php_files tag cache.pool с аттрибутом namespace: чтоб создавалась дополнительная папка
+	Не получается установить новый service id для framework.cache.app: 'app.cache_adapter.php_files'
+	? В чём проблема не могу понять
+		(Service "app.cache.minute": The argument "0" doesn't exist in class "Symfony\Component\Cache\Adapter\PhpFilesAdapter".) 
+		Подозреваю, что это связано с разным кол-вом аргуметов адаптеров, и аргумент под 0 индексом просто не учитывается (но очень сомневаюсь, что это так)
+		framework:
+			cache:
+				pools:
+					app.cache.minute:
+							adapter: 'Symfony\Component\Cache\Adapter\PhpFilesAdapter'
+							default_lifetime: 60
+		(
+			ошибка возникает при установке аттрибута namespace используя tag 'cache.pool' с PhpFilesAdapter
+		)
+	cache.pool сочетает в себе adapter & provider, но фактически какая их ответственность, кто за что отвечает
+	Не могу использовать свой adapter как часть своего же pool
+		tag_pool:
+			# can't use my adapter
+			adapter: 'app.cache_adapter.filesystem_tag_aware'
 SYMFONY The Mime Component https://symfony.com/doc/current/components/mime.html
 SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
@@ -817,6 +847,7 @@ HOTWIRE: STRADA https://strada.hotwired.dev/
 	Поймать события сервера https://symfony.com/doc/current/http_client.html#consuming-server-sent-events
 SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
 SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
+SYMFONY VAR EXPORTER https://symfony.com/doc/current/components/var_exporter.html
 SYMFONY FILESYSTEM
 SYMFONY INTL COMPONENT https://symfony.com/doc/current/components/intl.html
 SYMFONY CONTAINER BUILDER
@@ -965,6 +996,7 @@ SYMFONY TRANSLATION
 SYMFONY DEPLOYMENT https://symfony.com/doc/current/deployment.html
 PRODUCTION
 	cache: https://symfony.com/doc/current/components/cache/adapters/apcu_adapter.html
+	cache: будет полезно поставить Shedule для выполнения php bin/console cache:pool:prune раз в неделю
 	как сделать скриншот монитора
 	как сделать pdf
 	https://symfony.com/doc/current/reference/configuration/kernel.html
@@ -1092,6 +1124,7 @@ TODO
 		<IN ONE NAMESPACE
 		//TODO: MimeUtil
 		//TODO: DefaultRateLimiterStorage
+		//TODO: CacheUtil (придумать нормальный интерфейс)
 		
 	Extensions
 		может перейти от OptionsResolver к Processor+TreeBuilder в global instance of
