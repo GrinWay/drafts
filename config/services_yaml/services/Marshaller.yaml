@@ -4,10 +4,11 @@ services:
         autowire: true
         autoconfigure: true
     
-    Symfony\Component\Cache\Marshaller\SodiumMarshaller:
-        decorates: cache.default_marshaller
-        arguments:
-        -
-            -   '%env(base64:CACHE_1_DECRYPTION_KEY)%'
-            -   '%env(base64:CACHE_0_DECRYPTION_KEY)%'
-        -   '@.inner'
+    # Cache Encryption
+    #Symfony\Component\Cache\Marshaller\SodiumMarshaller:
+    #    decorates: cache.default_marshaller
+    #    arguments:
+    #    -
+    #        -   '%env(base64:CACHE_1_DECRYPTION_KEY)%'
+    #        -   '%env(base64:CACHE_0_DECRYPTION_KEY)%'
+    #    -   '@.inner'

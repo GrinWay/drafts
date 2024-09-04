@@ -623,6 +623,8 @@ SYMFONY BROWSER KIT
 		или это просто для заголовков (Да, автоматисески будет добавлен HTTP_X_REQUESTED_WITH)
 SYMFONY MAILER
 	?
+	? Зачем email::replyTo('fabien@symfony.com')
+    ? Зачем email::priority(Email::PRIORITY_HIGH)
 	? реализовать 2fa.email_code со сроком истечения
 	throttle_limit это период, в течении которого нельзя запрашивать изменение пароля, как понять что можно сгенерировать новую ссылку
 		https://github.com/SymfonyCasts/reset-password-bundle/blob/main/docs/manual-setup.md
@@ -709,33 +711,13 @@ SYMFONY LOCK
 	Немного не понятный момент https://symfony.com/doc/current/components/lock.html#expiring-stores
 	All concurrent processes must use the same physical file system by running on the same machine and using the same absolute path to the lock directory.
 		Using a FlockStore in an HTTP context is incompatible with multiple front servers, unless to ensure that the same resource will always be locked on the same machine or to use a well configured shared file system.
-***
 SYMFONY CACHE
-	
-	https://symfony.com/doc/current/cache.html#computing-cache-values-asynchronously
-	
-	https://symfony.com/doc/current/components/cache/cache_pools.html#removing-cache-items
-	https://symfony.com/doc/current/components/cache/cache_pools.html#pruning-cache-items
-	
-	https://symfony.com/doc/current/components/cache/cache_invalidation.html
-	https://en.wikipedia.org/wiki/Cache_stampede
-	https://en.wikipedia.org/wiki/Cache_stampede#Probabilistic_early_expiration
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Cache/Adapter/FilesystemAdapter.php
-	https://github.com/symfony/contracts/blob/main/Cache/CacheInterface.php
-	https://symfony.com/doc/current/components/cache/psr6_psr16_adapters.html
-	https://www.doctrine-project.org/projects/doctrine-dbal/en/current/reference/platforms.html
-	https://symfony.com/doc/current/components/cache.html#cache_stampede-prevention
-	https://symfony.com/doc/current/components/messenger.html
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Cache/Messenger/EarlyExpirationMessage.php
-
-	определить новый cache_pool для своего rate_limiter
-	создать cache адаптер для ExpressionLanguage($adapter)
-	$request->getETags()
 	?
-	Чем отличаются команды
+	+ Чем отличаются команды
 		cache:pool:*        (cache:pool:clear, cache:pool:prune, cache:pool:delete)
 		от
-	+ 	cache:*             (cache:clear) ЭТОЙ КОМАНДОЙ ПОЛЬЗУЕТСЯ cache.system_clearer И ОЧИЩАЕТСЯ СИСТЕМНЫЙ POOL
+	 	cache:*             (cache:clear)
+			cache:* ЭТОЙ КОМАНДОЙ ПОЛЬЗУЕТСЯ cache.system_clearer И ОЧИЩАЕТСЯ СИСТЕМНЫЙ POOL
 	+ Почему кэш удаляется сразу же (каждый раз __CALCULATED__) (потому что в реализации PSR-6 нужно вызвать save())
 		$cache = new FilesystemAdapter(
 			'__FilesystemAdapter__',
@@ -775,6 +757,8 @@ SYMFONY CACHE
 		
 		Хотя сервис TagAwareCacheInterface $tagAwareCache работает с tag отлично, значит проблема в создании экземпляра адаптера
 	Не получилось заставить кеш вычисляться заново асинхронно 
+		записей в БД не появляется
+		$cache->get('secret2', [Service\CacheGetter::class, 'refresh'], \INF)
 		https://symfony.com/doc/current/cache.html#computing-cache-values-asynchronously
 	Когда получиться засунуть app.cache_adapter.php_files в pools установи для app.cache_adapter.php_files tag cache.pool с аттрибутом namespace: чтоб создавалась дополнительная папка
 	Не получается установить новый service id для framework.cache.app: 'app.cache_adapter.php_files'
@@ -795,9 +779,36 @@ SYMFONY CACHE
 		tag_pool:
 			# can't use my adapter
 			adapter: 'app.cache_adapter.filesystem_tag_aware'
-SYMFONY The Mime Component https://symfony.com/doc/current/components/mime.html
-SYMFONY NOTIFIER https://symfony.com/doc/current/notifier.html
+SYMFONY The Mime Component
+	создай реализацию MimeTypeGuesserInterface для своего угадывающего тип по содержимому
+***
+SYMFONY NOTIFIER
+	https://symfony.com/doc/current/notifier.html#chat-channel
+
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Texter.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Message/SentMessage.php
+	
+	*** как бабки появятся
+	R: отправить sms на телефон
+		https://www.twilio.com/en-us/sms/pricing/us
+		https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Bridge/Twilio/README.md
+		
+		$options = (new TwilioOptions())
+			->webhookUrl('app_twilio_webhook')
+		;
+		
+		$sms = new SmsMessage(
+			phone: '+79996403928',
+			subject: 'Могу отправлять смс за счёт api сервиса!',
+			
+			from: 'ХАКЕР-УБЛЮДОК-МОШЕННИК',
+			options: $options,
+		);
+		
+		$sentMessage = $texter->send($sms);
+	R: отправить в telegram
+	R: отправить push на телефон
 	?
 	написать тест https://symfony.com/doc/current/testing.html#notifier-assertions
 	???LOGIN WITH PUSH CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на push уведомление
@@ -845,6 +856,15 @@ SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/in
 HOTWIRE: STRADA https://strada.hotwired.dev/
 	?
 	Поймать события сервера https://symfony.com/doc/current/http_client.html#consuming-server-sent-events
+SYMFONY WebLink
+SYMFONY WEBPACK ENCORE
+	https://symfony.com/doc/current/frontend.html
+    ?
+	The asset() function supports various cache busting techniques
+		https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-assets-version
+		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-version-format
+		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-json-manifest-path
+SYMFONY WEBHOOK https://symfony.com/doc/current/webhook.html
 SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
 SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
 SYMFONY VAR EXPORTER https://symfony.com/doc/current/components/var_exporter.html
@@ -884,15 +904,6 @@ Cache with Memcached
 		Если сделать ChainAdapter то можно ли решить проблему отказоустойчивоости
 		допустим использовать MemcachedAdapter
 		но если произошёл сбой использовать FilesystemAdapter
-SYMFONY WebLink
-SYMFONY WEBPACK ENCORE
-	https://symfony.com/doc/current/frontend.html
-    ?
-	The asset() function supports various cache busting techniques
-		https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-assets-version
-		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-version-format
-		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-json-manifest-path
-SYMFONY WEBHOOK https://symfony.com/doc/current/webhook.html
 Framework Configuration Reference https://symfony.com/doc/current/reference/configuration/framework.html#reference-cache-prefix-seed
 SYMFONY BUNDLE FOSJsRoutingBundle (route -> uri in js)
 SYMFONY BUNDLE FOSHttpCacheBundle (invalidate cache)
@@ -1039,7 +1050,10 @@ php-webdriver (зачем если можно $client->click(HttpBrowser::reques
 SYMFONY FORMATS/STANDARDS
 	https://symfony.com/doc/current/contributing/documentation/format.html
 	https://symfony.com/doc/current/contributing/documentation/standards.html
-HTML-TO-MARKDOWN https://github.com/thephpleague/html-to-markdown?tab=readme-ov-file
+HTML-TO-MARKDOWN
+	https://github.com/erusev/parsedown
+	https://github.com/thephpleague/html-to-markdown?tab=readme-ov-file
+Php texteditor lib for websites
 COMMONMARK https://github.com/thephpleague/commonmark
 SYMFONY SERVER https://symfony.com/doc/current/setup/symfony_server.html
 php GD installation for PngWriter(label)

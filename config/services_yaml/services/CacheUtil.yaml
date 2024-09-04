@@ -14,7 +14,13 @@ services:
             $appendOnly: false
 
     app.cache_adapter.php_files: '@Symfony\Component\Cache\Adapter\PhpFilesAdapter'
-
+    app.cache_adapter.php_files.rate_limiter: 
+        class: Symfony\Component\Cache\Adapter\PhpFilesAdapter
+        arguments:
+            $namespace: cache_php_files_rate_limiter
+            $defaultLifetime: 3600
+            $directory: '%kernel.cache_dir%'
+            $appendOnly: false
 
     Symfony\Component\Cache\Adapter\FilesystemTagAwareAdapter:
         class: 'Symfony\Component\Cache\Adapter\FilesystemTagAwareAdapter'

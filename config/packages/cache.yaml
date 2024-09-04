@@ -22,6 +22,8 @@ framework:
         pools:
         
             app.cache.async:
+                default_lifetime: 20
+                adapter: 'cache.adapter.filesystem'
                 early_expiration_message_bus: messenger.default_bus
         
             app.cache.chain:

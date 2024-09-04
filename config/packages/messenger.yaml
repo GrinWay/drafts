@@ -1,7 +1,6 @@
 framework:
     messenger:
-        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
-        #failure_transport: failed_default
+        failure_transport: failed
 
         default_bus: command.bus
 
@@ -93,6 +92,12 @@ framework:
             
             'Symfony\Component\Cache\Messenger\EarlyExpirationMessage': async
             
+when@prod:
+    framework:
+        messenger:
+            routing:
+                'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
+
 when@test:
     framework:
         messenger:

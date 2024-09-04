@@ -22,6 +22,12 @@ bin/console secrets:set CACHE_0_DECRYPTION_KEY
 echo 'CACHE_1_DECRYPTION_KEY'
 bin/console secrets:set CACHE_1_DECRYPTION_KEY
 
+echo 'APP_TWILIO_SID'
+bin/console secrets:set APP_TWILIO_SID
+
+echo 'APP_TWILIO_TOKEN'
+bin/console secrets:set APP_TWILIO_TOKEN
+
 #php bin/console doctrine:migrations:migrate -q --env=dev
 
 #yarn install && yarn run dev

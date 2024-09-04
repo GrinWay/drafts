@@ -7,6 +7,9 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Notifier\Bridge\Twilio\TwilioOptions;
+use Symfony\Component\Notifier\Message\SmsMessage;
+use Symfony\Component\Notifier\TexterInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;
@@ -425,40 +428,19 @@ class HomeController extends AbstractController
 		CacheInterface $appCacheMinute,
 		#[Autowire('@app.cache.async')]
 		$cache,
+		Service\ExpressionLanguage $expr,
+		RateLimiterFactory $tooRareLimiter,
+		TexterInterface $texter,
 		/*
 		*/
 	) {
-		$refresh = static function(ItemInterface $item) use($ru12Carbon, $enUtcCarbon): string {
-			/*
-			$item->tag([
-				'tag_highly_important',
-			]);
-			*/
-			$item->expiresAfter(10);
-			//$item->expiresAfter(\DateInterval::createFromDateString('1 hour'));
-			//$item->expiresAt($enUtcCarbon->now()->add(30, 'second'));
-			
-			//$item->tag('tag_crucial');
-			\dump(
-				$item->getKey().' was __CALCULATED__',
-			);
-			
-			return 'VALUE_'.\random_int(0, 100);
-		};
 		
-		\dump($cache->get('seven', $refresh));
 		
-		/*
-		$cache->invalidateTags([
-			'tag_highly_important',
-		]);
-		$cache->delete('three');
-		*/
 		
 		\dd('END');
 		
 		$clientIp = $request->getClientIp();
-		$limiter = $defaultLimiter->create($clientIp);
+		$limiter = $tooRare->create($clientIp);
 		
 		// Rate limiter
 		

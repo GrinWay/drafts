@@ -4,7 +4,9 @@ framework:
         
             # Symfony\Component\RateLimiter\RateLimiterFactory $defaultLimiter
             too_rare:
-                storage_service: app.rate_limiter_storage.default
+                cache_pool: 'app.cache_adapter.php_files.rate_limiter'
+                #storage_service: app.rate_limiter_storage.default
+                
                 policy: 'token_bucket'
                 limit: 1
                 rate:
@@ -12,7 +14,8 @@ framework:
                     amount: 1
             
             short_seconds:
-                storage_service: app.rate_limiter_storage.default
+                cache_pool: 'app.cache_adapter.php_files.rate_limiter'
+                #storage_service: app.rate_limiter_storage.default
                 
                 policy: 'token_bucket'
                 limit: 1
@@ -21,8 +24,8 @@ framework:
                     amount: 1
             
             default:
-                storage_service: app.rate_limiter_storage.default
-                #cache_pool:
+                #storage_service: app.rate_limiter_storage.default
+                cache_pool: 'app.cache_adapter.php_files.rate_limiter'
                 
                 policy: 'token_bucket'
                 limit: 2
@@ -31,7 +34,9 @@ framework:
                     amount: 1
             
             default_request:
-                storage_service: app.rate_limiter_storage.default
+                cache_pool: 'app.cache_adapter.php_files.rate_limiter'
+                #storage_service: app.rate_limiter_storage.default
+                
                 policy: 'token_bucket'
                 limit: 1
                 rate:
@@ -39,7 +44,9 @@ framework:
                     amount: 10
                     
             async:
-                storage_service: app.rate_limiter_storage.default
+                cache_pool: 'app.cache_adapter.php_files.rate_limiter'
+                #storage_service: app.rate_limiter_storage.default
+                
                 policy: 'token_bucket'
                 limit: 10
                 rate:
@@ -47,7 +54,9 @@ framework:
                     amount: 10
             
             failed:
-                storage_service: app.rate_limiter_storage.default
+                #storage_service: app.rate_limiter_storage.default
+                
+                cache_pool: 'app.cache_adapter.php_files.rate_limiter'
                 policy: 'token_bucket'
                 limit: 10
                 rate:
