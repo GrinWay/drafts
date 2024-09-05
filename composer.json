@@ -72,6 +72,7 @@
         "symfony/security-csrf": "7.1.*",
         "symfony/serializer": "7.1.*",
         "symfony/stimulus-bundle": "*",
+        "symfony/telegram-notifier": "7.1.*",
         "symfony/translation": "7.1.*",
         "symfony/twig-bundle": "7.1.*",
         "symfony/twilio-notifier": "7.1.*",

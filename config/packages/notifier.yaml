@@ -1,11 +1,13 @@
 framework:
     notifier:
-
-        # sms
-        texter_transports:
-            twilio: '%env(TWILIO_DSN)%'
-
+        #message_bus: false
+        message_bus: messenger.default_bus
+        
+        #texter_transports:
+            #twilio: '%env(TWILIO_DSN)%'
+        
         chatter_transports:
+            telegram: '%env(TELEGRAM_DSN)%'
 
         channel_policy:
             # use chat/slack, chat/telegram, sms/twilio or sms/nexmo

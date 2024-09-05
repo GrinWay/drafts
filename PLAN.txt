@@ -783,12 +783,20 @@ SYMFONY The Mime Component
 	создай реализацию MimeTypeGuesserInterface для своего угадывающего тип по содержимому
 ***
 SYMFONY NOTIFIER
-	https://symfony.com/doc/current/notifier.html#chat-channel
+	//###> NEXT ###
+	https://core.telegram.org/api/bots
+	https://core.telegram.org/bots/api#sending-files
+	https://handbook.tmat.me/ru/
+	https://confluence.twin24.ai/pages/viewpage.action?pageId=130352995
+	https://njsoft.dev/blog/symfony-telegram-bot/
+	https://symfony.com/doc/current/notifier.html#email-channel
+	//###< NEXT ###
 
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Texter.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Message/SentMessage.php
 	
+	написать тест https://symfony.com/doc/current/testing.html#notifier-assertions
 	*** как бабки появятся
 	R: отправить sms на телефон
 		https://www.twilio.com/en-us/sms/pricing/us
@@ -810,7 +818,12 @@ SYMFONY NOTIFIER
 	R: отправить в telegram
 	R: отправить push на телефон
 	?
-	написать тест https://symfony.com/doc/current/testing.html#notifier-assertions
+	? как распарсить отправляя markdown
+	? почему отправление через *Interface по умолчанию не происходит асинхронно как это было сказано в документации
+	? что за channel_policy
+	Как, используя telegram bot можно писать людям в личку
+	+ Почему не получается подключиться к telegram bot (не нужно делать urlencode для token)
+	+ Возможно ли указать в SmsMessage transport (если их у меня несколько) (Да, *Message::transport(<>))
 	???LOGIN WITH PUSH CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на push уведомление
 	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
 SYMFONY SERIALIZER https://symfony.com/doc/current/components/serializer.html

@@ -28,6 +28,12 @@ bin/console secrets:set APP_TWILIO_SID
 echo 'APP_TWILIO_TOKEN'
 bin/console secrets:set APP_TWILIO_TOKEN
 
+echo 'APP_TELEGRAM_TOKEN'
+bin/console secrets:set APP_TELEGRAM_TOKEN
+
+echo 'APP_TELEGRAM_CHAT_ID'
+bin/console secrets:set APP_TELEGRAM_CHAT_ID
+
 #php bin/console doctrine:migrations:migrate -q --env=dev
 
 #yarn install && yarn run dev
