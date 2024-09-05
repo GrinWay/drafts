@@ -784,6 +784,8 @@ SYMFONY The Mime Component
 ***
 SYMFONY NOTIFIER
 	//###> NEXT ###
+	https://stepik.org/lesson/870035/step/3
+	https://habr.com/ru/articles/543676/ (Бот может писать в личку только тем пользователям, которые его запустили)
 	https://core.telegram.org/api/bots
 	https://core.telegram.org/bots/api#sending-files
 	https://handbook.tmat.me/ru/
