@@ -18,28 +18,50 @@
 
 {%- if app.session.flashBag.peekAll|length > 0 -%}
 	<div class="{{ class_cva.apply({flash_position}, attributes.nested(nestedFlashName).render('class')) }}" {{ attributes }}>
-		{% block flash %}
+		{%- block flash -%}
+			
 			<div class="">
 				{%- for flash in app.flashes(app_note_type.notice) -%}
 					<twig:grinway:alert {{ ...attributes }} alert_type="success">
-						{{ flash }}
+						{{- flash -}}
 					</twig:grinway:alert>
 				{%- endfor -%}
 			</div>
+			
 			<div class="">
 				{%- for flash in app.flashes(app_note_type.warning) -%}
 					<twig:grinway:alert {{ ...attributes }} alert_type="warning">
-						{{ flash }}
+						{{- flash -}}
 					</twig:grinway:alert>
 				{%- endfor -%}
 			</div>
+			
 			<div class="">
-				{%- for flash in app.flashes(app_note_type.erorr) -%}
+				{%- for flash in app.flashes(app_note_type.error) -%}
 					<twig:grinway:alert {{ ...attributes }} alert_type="danger">
-						{{ flash }}
+						{{- flash -}}
 					</twig:grinway:alert>
 				{%- endfor -%}
 			</div>
-		{% endblock %}
+			
+			<div class="">
+				{%- for flash in app.flashes('secondary') -%}
+					<twig:grinway:alert {{ ...attributes }} alert_type="secondary">
+						{{- flash -}}
+					</twig:grinway:alert>
+				{%- endfor -%}
+			</div>
+			
+			<div class="">
+				{%- for flashes in app.flashes -%}
+					{%- for flash in flashes -%}
+						<twig:grinway:alert {{ ...attributes }} alert_type="primary">
+							{{- flash -}}
+						</twig:grinway:alert>
+					{%- endfor -%}
+				{%- endfor -%}
+			</div>
+			
+		{%- endblock -%}
 	</div>
 {%- endif -%}

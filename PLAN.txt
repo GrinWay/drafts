@@ -783,22 +783,16 @@ SYMFONY The Mime Component
 	создай реализацию MimeTypeGuesserInterface для своего угадывающего тип по содержимому
 ***
 SYMFONY NOTIFIER
-	//###> NEXT ###
-	https://stepik.org/lesson/870035/step/3
-	https://habr.com/ru/articles/543676/ (Бот может писать в личку только тем пользователям, которые его запустили)
-	https://core.telegram.org/api/bots
-	https://core.telegram.org/bots/api#sending-files
-	https://handbook.tmat.me/ru/
-	https://confluence.twin24.ai/pages/viewpage.action?pageId=130352995
-	https://njsoft.dev/blog/symfony-telegram-bot/
-	https://symfony.com/doc/current/notifier.html#email-channel
-	//###< NEXT ###
+
+	https://symfony.com/doc/current/notifier.html#testing-notifier
 
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Texter.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Message/SentMessage.php
 	
-	написать тест https://symfony.com/doc/current/testing.html#notifier-assertions
+	R: изменить шаблон email notification на свой
+	***
+	Telegram Bot Api: https://core.telegram.org/bots/api#available-types
 	*** как бабки появятся
 	R: отправить sms на телефон
 		https://www.twilio.com/en-us/sms/pricing/us
@@ -817,11 +811,42 @@ SYMFONY NOTIFIER
 		);
 		
 		$sentMessage = $texter->send($sms);
-	R: отправить в telegram
 	R: отправить push на телефон
+		НИКАК НЕ ПОЛУЧАЕТЬСЯ ОТПРАВИТЬ push на телефон with push/onesignal
+		
+		https://documentation.onesignal.com/reference/create-notification
+		https://dashboard.onesignal.com/apps/c30fe145-50c7-4884-8f16-20ecf439f7a3/settings
 	?
-	? как распарсить отправляя markdown
 	? почему отправление через *Interface по умолчанию не происходит асинхронно как это было сказано в документации
+	? Telegram channel: как надёжно получить message_id ботовского message
+	R: Telegram channel: повесить бота на sheduler, чтобы раз в час делал пост
+	? Telegram channel: какой-то непонятный inline mod @NameBot PLACEHOLDER
+	? Telegram channel: как распологать кнопки как хочешь
+	? Telegram channel: как убрать экранирование ответа при использовании answerCallbackQuery
+	? Telegram channel: неужели edit можно применить только к тому сообщению бота что было использовано с replyMarkup
+	? Telegram channel: Когда происходит message_reaction
+	? Telegram channel: Когда происходит shipping_query
+	? Telegram channel: Когда происходит pre_checkout_query
+	? Telegram channel: Когда происходит purchased_paid_media
+	? Telegram channel: Когда происходит chat_join_request
+	? Telegram channel: Когда происходит chat_boost
+	? Telegram channel: Когда происходит removed_chat_boost
+	? Telegram channel: Как отправить голосование ботом
+	? Telegram channel: Как ответить на inline_query @NameOfBot [param]
+	+ ? Telegram channel: Не работает markdown, markdown_v2	
+		Это временная проблема на Сентябрь 2024 года, нужно вместо константы использовать 'markdownv2'
+	+ ? Не получается установить webhook для приёма сообщений с телеграма
+		(
+			С помощью ngrok создай https? тунель
+			https://api.telegram.org/bot<TELEGRAM_TOKEN>/setWebhook?url=<NGROK_TUNNEL>/telegram/webhook
+		)
+	+ ? Telegram channel: Не понимаю как указать webhook для бота
+		Через переход по сслыке https://api.telegram.org/bot<TELEGRAM_TOKEN>/setWebhook?url=<>
+	+ ? Telegram channel: Не понимаю для чего TelegramOptions::edit
+		Для изменения сообщения бота
+		Можно сделать динамическое меню
+	+ ? Telegram channel: Не понимаю для чего TelegramOptions::answerCallbackQuery
+		Ответ на inline_callback (inline_button) в виде alert или toast
 	? что за channel_policy
 	Как, используя telegram bot можно писать людям в личку
 	+ Почему не получается подключиться к telegram bot (не нужно делать urlencode для token)
@@ -895,6 +920,13 @@ SYMFONY MONOLOG https://symfony.com/doc/current/logging.html
 By default, the URLs generated for web assets use the same default_uri value, but you can change it with the asset.request_context.base_path and asset.request_context.secure container parameters.
 ###< EXCERPTS TO ANSWER ###
 SYMFONY WORKFLOW
+	R: Реализовать telegram bot для оформления заказа с компонентом workflow
+		init
+		what_do_you_want
+		get_name
+		get_contact
+		send_order_to_master
+			крайним этапом отправь ответ в виде alert, что письмо админу отправлено, он свяжется с вами
 SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
 	реализовать свой DataCollectorInterface, *Pass который добавит в сервис Profiler, если он есть, addCollector
 	?

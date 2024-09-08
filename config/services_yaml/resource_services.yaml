@@ -17,6 +17,11 @@ services:
             ###< SERVICES ###
 
             
+            ###> URL ###
+            $appUrl: '%env(APP_URL)%'
+            ###< URL ###
+            
+            
             ###> LANG ###
             $appEnabledLocales: '%app.enabled_locales%'
             ###< LANG ###
@@ -37,6 +42,7 @@ services:
             ###> PARAMS ###
             $kernelProjectDir:  '%kernel.project_dir%'
             $adminEmail:        '%env(APP_ADMIN_EMAIL)%'
+            $adminPhone:        '%env(APP_ADMIN_PHONE)%'
             ###< PARAMS ###
 
 

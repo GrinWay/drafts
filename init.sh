@@ -34,6 +34,18 @@ bin/console secrets:set APP_TELEGRAM_TOKEN
 echo 'APP_TELEGRAM_CHAT_ID'
 bin/console secrets:set APP_TELEGRAM_CHAT_ID
 
+echo 'APP_ONESIGNAL_ID'
+bin/console secrets:set APP_ONESIGNAL_ID
+
+echo 'APP_ONESIGNAL_API_KEY'
+bin/console secrets:set APP_ONESIGNAL_API_KEY
+
+echo 'APP_ONESIGNAL_DEFAULT_RECIPIENT_ID'
+bin/console secrets:set APP_ONESIGNAL_DEFAULT_RECIPIENT_ID
+
+echo 'ONESIGNAL_DSN_AUTH_KEY'
+bin/console secrets:set ONESIGNAL_DSN_AUTH_KEY
+
 #php bin/console doctrine:migrations:migrate -q --env=dev
 
 #yarn install && yarn run dev

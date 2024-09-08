@@ -3,7 +3,8 @@ framework:
         #message_bus: false
         message_bus: messenger.default_bus
         
-        #texter_transports:
+        texter_transports:
+            onesignal: '%env(ONESIGNAL_DSN)%'
             #twilio: '%env(TWILIO_DSN)%'
         
         chatter_transports:
@@ -11,10 +12,21 @@ framework:
 
         channel_policy:
             # use chat/slack, chat/telegram, sms/twilio or sms/nexmo
-            urgent: ['email']
-            high: ['email']
-            medium: ['email']
-            low: ['email']
+            urgent:
+            -   'browser'
+            #-   'sms/twilio'
+            #-   'email'
+            #-   'push/onesignal'
+            #-   'chat/telegram'
+            
+            high:
+            -   'browser'
+            
+            medium:
+            -   'browser'
+            
+            low:
+            -   'browser'
 
         admin_recipients:
         -   email: admin@example.com

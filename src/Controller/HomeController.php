@@ -7,6 +7,17 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use App\Notification\ChatNotification\SubjectPlusContentNotification;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\Notifier\Recipient\Recipient;
+use Symfony\Bridge\Twig\Mime\NotificationEmail;
+use Symfony\Component\Notifier\Bridge\Telegram\Reply\Markup\Button\InlineKeyboardButton;
+use Symfony\Component\Notifier\Bridge\Telegram\Reply\Markup\ReplyKeyboardRemove;
+use Symfony\Component\Notifier\Bridge\Telegram\Reply\Markup\InlineKeyboardMarkup;
+use Symfony\Component\Notifier\Bridge\Telegram\Reply\Markup\ForceReply;
+use Symfony\Component\Notifier\Bridge\Telegram\Reply\Markup\ReplyKeyboardMarkup;
+use Symfony\Component\Notifier\Bridge\Telegram\Reply\Markup\Button\KeyboardButton;
 use Symfony\Component\Notifier\Bridge\Telegram\TelegramOptions;
 use Symfony\Component\Notifier\ChatterInterface;
 use Symfony\Component\Notifier\Message\ChatMessage;
@@ -399,9 +410,7 @@ class HomeController extends AbstractController
 		#[Autowire('%env(APP_REQUIRED_SCHEME)%')]
 		$requiredScheme,
 		HttpClientInterface $client,
-		//MailerInterface $mailer,
 		//TransportInterface $mailer,
-		MailerInterface $mailer,
 		#[Autowire('%env(APP_ADMIN_MAILER_LOGIN)%')]
 		$appAdminEmailLogin,
 		#[Autowire('%env(APP_ADMIN_EMAIL)%')]
@@ -435,66 +444,49 @@ class HomeController extends AbstractController
 		RateLimiterFactory $tooRareLimiter,
 		?TexterInterface $texter,
 		?ChatterInterface $chatter,
+		MailerInterface $mailer,
+		$appUrl,
+		NotifierInterface $notifier,
+		$adminPhone,
 		/*
 		*/
 	) {
-		$audioPublicPath = \sprintf('%smedia/audio/telegram/sound.mp3', $request->getUri());
 		
-		$id = 'https://t.me/grin180898';
-		$options = (new TelegramOptions())
-			//->chatId($id)
-			//->replyTo($id)
-			//->edit($id)
-			
-			//->replyMarkup(AbstractTelegramReplyMarkup)
-			//->answerCallbackQuery(string $callbackQueryId, bool $showAlert = false, int $cacheTime = 0)
-			//->venue(float $latitude, float $longitude, string $title, string $address)
-			
-			//###> EITHER OR ###
-			//->contact(phoneNumber: '+79991234567', firstName: '[Мастер]', lastName: 'Wooden Alex', vCard: $id /* ? vCard */) // [OK]
-			//->location(53.18333330, 158.38333330) // [OK]
-			//###< EITHER OR ###
-			
-			->parseMode(TelegramOptions::PARSE_MODE_MARKDOWN_V2) // ?maybe for sending
-			//->disableWebPagePreview(true) // ?
-			//->protectContent(true) // ?
-			//->hasSpoiler(true) // ?
-			->disableNotification(true) // [OK] without sound
-			
-			//->photo('http://users.wfu.edu/matthews/misc/graphics/ResVsComp/25percent_444.jpg') // [OK]
-			//->uploadPhoto('https://blog.icons8.com/wp-content/uploads/2021/06/mona-lisa-low-quality.jpg') // [OK] не увидел разницы
-			
-			//->document('https://www.reduceimages.com/img/woman_illustration.png') // [OK]
-			//->uploadDocument('https://www.html5gamedevs.com/uploads/monthly_2017_08/image.jpg.31a662f3a122c7509c42474ce5346aeb.jpg') // [OK] не увидел разницы
-			
-			//->video('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5eeea355389655.59822ff824b72.gif') // [OK]
-			//->uploadVideo('https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/5eeea355389655.59822ff824b72.gif') // [OK]
-			
-			->audio($audioPublicPath) // ? аудио не отправляется
-			//->uploadAudio('C:\Users\user\Downloads\sound.mp3')
-			//->animation('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2c0dTh6b2V0MXMzdWFrdzVrb3d4dGxkemVraWR6azRlMzJxam9qYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9diZjYz1lbg/cmaz55WyIjWwlZTV9y/giphy1080p.mp4')
-			//->uploadAnimation('https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExY2c0dTh6b2V0MXMzdWFrdzVrb3d4dGxkemVraWR6azRlMzJxam9qYSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9diZjYz1lbg/cmaz55WyIjWwlZTV9y/giphy1080p.mp4')
-			
-			//->sticker('https://i.ebayimg.com/images/g/~PQAAOSw0RFiW1nY/s-l1600.webp', 😎)
-			//->uploadSticker('https://i.ebayimg.com/images/g/~PQAAOSw0RFiW1nY/s-l1600.webp', 😎)
-		;
+		$subject = 'Symfony Notifier';
+		$content = 'Привет из Symfony Notifier component!';
 		
-		$subject = <<<'__TEXT__'
-		Hello from Symfony App (test telegram markdown)
-		*Жирный текст*
-		__TEXT__;
-		$message = (new ChatMessage($subject))
-			->options($options)
-			//->subject($subject)
-			//->transport('telegram') // 2
-		;
-		
-		$sentMessage = $chatter?->send($message);
-		
-		\dump(
-			\get_debug_type($chatter),
-			\get_debug_type($sentMessage),
+		$notification = new SubjectPlusContentNotification(
+			subject: $subject,
+			channels: [
+				'browser',
+				/*
+				'chat/telegram',
+				'email',
+				'push/onesignal',
+				*/
+			],
 		);
+		$notification
+			->content($content)
+			->importance(Notification::IMPORTANCE_LOW)
+			->emoji('💕')
+		;
+		
+		$recipient = new Recipient(
+			email: $adminEmail,
+			phone: $adminPhone,
+		);
+		
+		/*
+		*/
+		$notifier->send(
+			$notification,
+			$recipient,
+		);
+		
+		$response = $this->render('home/index.html.twig');
+		
+		return $response;
 		
 		\dd('END');
 		

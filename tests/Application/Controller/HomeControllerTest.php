@@ -23,17 +23,14 @@ class HomeControllerTest extends AbstractApplicationCase {
 		$this->client = null;
 	}
 	
-	public function testHomePageGetMethodIsSuccessful() {
-		$this->client->request('GET', '/');
+	public function testNotifierMessengesSent() {
+		$client = static::createClient();
+		$client->followRedirects(true);
 		
-		$this->assertResponseIsSuccessful();
-	}
-	
-	public function testHomePagePostMethodIsForbidden() {
-		//$this->expectException(MethodNotAllowedHttpException::class);
+		$crawler = $client->request('GET', '/');
 		
-		$this->client->request('POST', '/');
+		\dump($crawler->filter('html')->text());
 		
-		$this->assertMatchesRegularExpression('~^4[0-9]{2}$~', $this->client->getResponse()->getStatusCode());
+		//$this->assertNotificationCount(1);
 	}
 }

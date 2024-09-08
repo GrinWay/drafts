@@ -274,6 +274,15 @@
             "./config/packages/notifier.yaml"
         ]
     },
+    "symfony/one-signal-notifier": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.4",
+            "ref": "75ad83b16ef1b68c7d54cf1502e4d9d958412640"
+        }
+    },
     "symfony/panther": {
         "version": "2.1",
         "recipe": {

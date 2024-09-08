@@ -3,7 +3,7 @@ when@dev: &when_dev
         http_client:
             default_options:
                 verify_peer: false
-                verify_host: true
+                verify_host: false
                 extra:
                     trace_content: true
 
