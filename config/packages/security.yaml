@@ -290,4 +290,4 @@ security:
         
     -   path: ^/
         roles: PUBLIC_ACCESS
-        requires_channel: '%env(APP_REQUIRED_SCHEME)%'
+        #requires_channel: '%env(APP_REQUIRED_SCHEME)%'

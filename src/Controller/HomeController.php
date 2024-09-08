@@ -458,10 +458,10 @@ class HomeController extends AbstractController
 		$notification = new SubjectPlusContentNotification(
 			subject: $subject,
 			channels: [
-				'browser',
-				/*
 				'chat/telegram',
+				/*
 				'email',
+				'browser',
 				'push/onesignal',
 				*/
 			],

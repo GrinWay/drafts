@@ -29,8 +29,9 @@ class HomeControllerTest extends AbstractApplicationCase {
 		
 		$crawler = $client->request('GET', '/');
 		
-		\dump($crawler->filter('html')->text());
+		//\dump($crawler->filter('html')->text());
 		
-		//$this->assertNotificationCount(1);
+		//TODO: current
+		$this->assertNotificationCount(1);
 	}
 }

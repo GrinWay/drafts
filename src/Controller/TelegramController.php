@@ -130,7 +130,7 @@ class TelegramController extends AbstractController
 				->resizeKeyboard(true)
 			;
 			
-			$markup = new ReplyKeyboardMarkup();
+			$markup = null;
 			if (\preg_match('~^/удали\s*меню$~iu', $text)) {
 				$markup = $replyKeyboardRemove;
 			} else if (\preg_match('~^/встроенное\s*меню$~iu', $text)) {
@@ -140,7 +140,7 @@ class TelegramController extends AbstractController
 			}
 
 			$editMessageId = null;
-			if (\preg_match('~^\/исправь\s*?(?<message_id>[0-9]+)\s*на\s*(?<new_content>.+)\s*$~iu', $text, $modifyStore)) {
+			if (\preg_match('~^\/change\s*?(?<message_id>[0-9]+)\s*with\s*(?<new_content>.+)\s*$~iu', $text, $modifyStore)) {
 				if (isset($modifyStore['message_id']) && isset($modifyStore['new_content'])) {
 					$editMessageId = $modifyStore['message_id'];
 					$subject = $modifyStore['new_content'];
@@ -156,7 +156,7 @@ class TelegramController extends AbstractController
 					$pa->getValue($response, '[message_id]')
 				)
 				*/
-				->replyMarkup($markup)
+				
 				->parseMode('markdownv2')
 				->disableWebPagePreview(true)
 				->protectContent(false)
@@ -167,6 +167,10 @@ class TelegramController extends AbstractController
 				->photo('AgACAgIAAxkBAAIBQGbdA44KuIrrpn4Kif4dOWX3EDI2AAJS4TEbtZDoSno7Iu5lBD2hAQADAgADbQADNgQ')
 				*/
 			;
+			
+			if (null !== $markup) {
+				$options->replyMarkup($markup);
+			}
 			
 			if (null !== $editMessageId) {
 				$options->edit($editMessageId);

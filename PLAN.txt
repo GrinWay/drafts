@@ -668,6 +668,8 @@ SYMFONY LOCK
 		ttl CAN'T
 		__destruct CAN'T
 	?
+	Что за исключение и как его исправить
+		symfony Failed to release the lock (при тестировании telegram chatter)
 	Блокировка не слетает после истечения ttl (1 сек.), а должна по идее
 		$lock = $lockFactory->createLock($key = new Key('TEST'), ttl: 1);
 		$isLocked = $lock->acquire();
@@ -783,14 +785,28 @@ SYMFONY The Mime Component
 	создай реализацию MimeTypeGuesserInterface для своего угадывающего тип по содержимому
 ***
 SYMFONY NOTIFIER
-
-	https://symfony.com/doc/current/notifier.html#testing-notifier
+	
+	R: https://stackoverflow.com/questions/47774225/symfony-lock-component-does-not-lock-how-to-fix
+	R: https://symfony.com/doc/current/testing.html#notifier-assertions
+		clear && bin/phpunit tests/Application/Controller/HomeControllerTest.php
+	R: изменить шаблон email notification на свой (по hard-code сразу в SubjectPlusContentNotification реализуя EmailNotificationInterface)
 
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Texter.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Message/SentMessage.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bundle/FrameworkBundle/Test/NotificationAssertionsTrait.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bundle/FrameworkBundle/Test/KernelTestCase.php
+	https://symfony.com/doc/current/testing.html#notifier-assertions
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/NotifierInterface.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Notification/Notification.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Recipient/Recipient.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Recipient/NoRecipient.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Recipient/Recipient.php
+	https://symfony.com/doc/current/session.html#flash-messages
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Texter.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bridge/Twig/Mime/NotificationEmail.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Transport.php
 	
-	R: изменить шаблон email notification на свой
 	***
 	Telegram Bot Api: https://core.telegram.org/bots/api#available-types
 	*** как бабки появятся
@@ -817,9 +833,14 @@ SYMFONY NOTIFIER
 		https://documentation.onesignal.com/reference/create-notification
 		https://dashboard.onesignal.com/apps/c30fe145-50c7-4884-8f16-20ecf439f7a3/settings
 	?
+	Неужели не каждое сообщение может быть прослушано в MessageEvent
+		вот например email, browser не прослушиваются
+		такое чувство, что в Notification Events отправляются только те события, чьи DSN_TRANSPORTS
+		могут быть сконфигурированы в notifier.yaml (browser, email пролетают)
 	? почему отправление через *Interface по умолчанию не происходит асинхронно как это было сказано в документации
 	? Telegram channel: как надёжно получить message_id ботовского message
 	R: Telegram channel: повесить бота на sheduler, чтобы раз в час делал пост
+	? Telegram channel: разобраться до конца как работает ::edit(message_id) просто в официальной док-ии посмотри про метод изменения
 	? Telegram channel: какой-то непонятный inline mod @NameBot PLACEHOLDER
 	? Telegram channel: как распологать кнопки как хочешь
 	? Telegram channel: как убрать экранирование ответа при использовании answerCallbackQuery
@@ -833,6 +854,15 @@ SYMFONY NOTIFIER
 	? Telegram channel: Когда происходит removed_chat_boost
 	? Telegram channel: Как отправить голосование ботом
 	? Telegram channel: Как ответить на inline_query @NameOfBot [param]
+	? TEST Telegram channel: Бросается исключение
+		Symfony\Component\Lock\Exception\LockReleasingException: Failed to release the "default-http_client" lock
+		При тестировании отправленного сообщения в telegram
+	+ При тестировании notification сообщения как будто бы не отправляются assert fails
+		Но фактически сообщение может быть отправлено!
+		(
+			очень вероятно, что тест сообщений, отправленных notifier будет считаться
+			только для тех notifications, DSN которых был описан в notifier.yaml
+		)
 	+ ? Telegram channel: Не работает markdown, markdown_v2	
 		Это временная проблема на Сентябрь 2024 года, нужно вместо константы использовать 'markdownv2'
 	+ ? Не получается установить webhook для приёма сообщений с телеграма
