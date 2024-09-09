@@ -786,7 +786,8 @@ SYMFONY The Mime Component
 ***
 SYMFONY NOTIFIER
 	
-	https://symfony.com/doc/current/testing.html#notifier-assertions
+	По неизвестной причине тест не видит что в очередь был добавлен message
+		https://symfony.com/doc/current/testing.html#notifier-assertions
 	R: изменить шаблон email notification на свой (по hard-code сразу в SubjectPlusContentNotification реализуя EmailNotificationInterface)
 
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user

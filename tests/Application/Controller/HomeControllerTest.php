@@ -31,7 +31,10 @@ class HomeControllerTest extends AbstractApplicationCase {
 		
 		//\dump($crawler->filter('html')->text());
 		
+		//TODO: current
+		$event = $this->getNotifierMessage('chat/telegram');
 		//$this->assertNotificationCount(1);
-		$this->assertQueuedNotificationCount(1, message: 'Должен был быть отправлен 1 notification в очередь');
+		//$this->assertQueuedNotificationCount(1, message: 'Должен был быть отправлен 1 notification в очередь');
+		$this->assertNotificationIsQueued($event);
 	}
 }
