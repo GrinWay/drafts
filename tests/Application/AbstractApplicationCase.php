@@ -2,6 +2,8 @@
 
 namespace App\Tests\Application;
 
+use PHPUnit\Framework\Attributes as PHPUnitAttr;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use App\Tests\InitTrait;
 use Symfony\Component\HttpKernel\KernelInterface;
@@ -21,5 +23,24 @@ abstract class AbstractApplicationCase extends WebTestCase {
 			}
 			$client->followRedirect();			
 		}
+	}
+	
+	protected static function createClient(array $options = [], array $server = []): KernelBrowser
+    {
+		$container = self::getContainer();
+		
+		$appHost = $container->getParameter('app.host');
+		$appHttps = $container->getParameter('app.https');
+
+		static::ensureKernelShutdown();
+		
+		$server = \array_merge([
+			'HTTP_HOST' => $appHost,
+			'HTTPS' => $appHttps,
+		], $server);
+		
+		$client = parent::createClient($options, $server);
+		
+		return $client;
 	}
 }

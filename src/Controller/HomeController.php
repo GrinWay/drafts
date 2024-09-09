@@ -452,7 +452,6 @@ class HomeController extends AbstractController
 		/*
 		*/
 	) {
-		
 		$subject = 'Symfony Notifier';
 		$content = 'Сообщение только для админа!';
 		
@@ -461,8 +460,8 @@ class HomeController extends AbstractController
 			channels: [
 				'chat/telegram',
 				/*
-				'email',
-				'browser',
+				'browser', // ? how to test it
+				'email', // for tests assertEmailCount but not assertNotificationCount
 				'push/onesignal',
 				*/
 			],
@@ -477,7 +476,7 @@ class HomeController extends AbstractController
 			email: $adminEmail,
 			phone: $adminPhone,
 		);
-		$recipient = new NoRecipient();
+		//$recipient = new NoRecipient();
 		
 		/*
 		*/
@@ -485,6 +484,15 @@ class HomeController extends AbstractController
 			$notification,
 			$recipient,
 		);
+		
+		/*
+		$telegramOptions = new TelegramOptions();
+		$telegramMessage = (new ChatMessage('Hello, it is a new message'))
+			->transport('telegram')
+			->options($telegramOptions)
+		;
+		$chatter->send($telegramMessage);
+		*/
 		
 		$response = $this->render('home/index.html.twig');
 		

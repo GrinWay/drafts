@@ -1,5 +1,9 @@
 parameters:
 
     app.app: "_0" #@
+    
+    app.host: '%env(APP_HOST)%'
+    app.https: '%env(APP_HTTPS)%'
+    
     #app.sign: '='
     #app.app: '%env(key_val:explode:app.sign:default::key:query:url:APP_APP)%'

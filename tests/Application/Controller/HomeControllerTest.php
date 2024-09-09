@@ -7,21 +7,13 @@ use App\Tests\Application\AbstractApplicationCase;
 use PHPUnit\Framework\Attributes as PHPUnitAttr;
 use App\Test\DataProvider\LocaleProvider;
 use App\Controller;
+use Symfony\Component\Notifier\Event\MessageEvent;
+use Symfony\Component\Notifier\Message\MessageInterface;
+use Symfony\Component\Notifier\Notification\Notification;
 
 #[PHPUnitAttr\Large]
 #[PHPUnitAttr\CoversClass(Controller\HomeController::class)]
 class HomeControllerTest extends AbstractApplicationCase {
-	
-	#[PHPUnitAttr\Before]
-	public function before(): void {
-		$this->client = static::createClient();
-		$this->client->followRedirects(true);
-	}
-	
-	#[PHPUnitAttr\After]
-	public function after(): void {
-		$this->client = null;
-	}
 	
 	public function testNotifierMessengesSent() {
 		$client = static::createClient();
@@ -29,12 +21,23 @@ class HomeControllerTest extends AbstractApplicationCase {
 		
 		$crawler = $client->request('GET', '/');
 		
-		//\dump($crawler->filter('html')->text());
+		$event = $this->getNotifierEvent();
+		$notification = $this->getNotifierMessage();
 		
-		//TODO: current
-		$event = $this->getNotifierMessage('chat/telegram');
-		//$this->assertNotificationCount(1);
-		//$this->assertQueuedNotificationCount(1, message: 'Должен был быть отправлен 1 notification в очередь');
-		$this->assertNotificationIsQueued($event);
+		//###> ASSERT ###
+		//$this->assertNotificationCount(1, 'telegram');
+		$this->assertQueuedNotificationCount(1, 'telegram');
+		
+		/*
+		if ($event instanceof MessageEvent) {
+			$this->assertNotificationIsQueued($event);			
+		}
+		
+		if ($notification instanceof MessageInterface) {
+			$this->assertNotificationSubjectContains($notification, 'Hello');
+			$this->assertNotificationTransportIsEqual($notification, 'telegram');
+		}
+		*/
+		//###< ASSERT ###
 	}
 }

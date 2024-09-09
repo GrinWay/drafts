@@ -472,7 +472,7 @@ SYMFONY SECURITY
 	???не получилось OIDC https://symfony.com/doc/current/security/access_token.html#using-openid-connect-oidc
 	чекнуть API TwoFactorToken
 	???не получилось CAS 2.0 https://symfony.com/doc/current/security/access_token.html#using-cas-2-0
-	+ авторизируется ли пользователь несколькими authenticators за раз (да, но это безсмысленно, так как в session сохраняется _security_<FIREWALL_NAME>
+	+ авторизируется ли пользователь несколькими authenticators за раз (да, но это беcсмысленно, так как в session сохраняется _security_<FIREWALL_NAME>
 	+ деавторизировать пользователя если у него изменилось (customPoly)
 		возможно ли через свой app_user_provider (Doctrine decorator) Symfony\Component\Security\Core\User\UserProviderInterface
 		(
@@ -520,6 +520,30 @@ SYMFONY TESTS
 	https://symfony.com/doc/current/components/phpunit_bridge.html
 	??? Как работать с тестами бандла
 	?
+	? notifier: По неизвестной причине тест не видит что в очередь был добавлен ASYNC message
+		причём используя ChatterInterface тест async возможен, и он видит отправленные async сообщения
+		в то время используя NotifierInterface тест не видит что было отправлено сообщение
+	? Как тестировать session::flashes
+	+ ? Почему при отправке message на sync, async транспорты тест не видит что они были отправлены
+		Хотя ФАКТИЧЕСКИ они действительно отправляются
+		(
+			Транспорт 'in-memory://' портит тесты
+			
+			К сожалению правило следующее:
+			Чтобы тесты работали нужно менять DSN настройку каждого поставщика на 'null://null'
+			А не менять транспорты компонента messenger: sync, async...
+		)
+	+ ? Определяя client как свойство объекта в #[PHPUnitAttr\Before]
+		почему-то тест не видел что на bus были отправлены email, notifications...
+		Failed asserting that the Transport has queued "1" emails (0 queued).
+		(
+			Это связанно с внутренним вызовом static::ensureKernelShutdown();
+			И работа с ядром (kernel, client...) полностью завершается
+			Так что клиента определять (в #[PHPUnitAttr\Before]) беcсмысленно, ведь ядро окончит работу
+			
+			Предпочитай setUp вместо #[PHPUnitAttr\Before], так как kernel не падает
+		)
+		
 	? когда нужно использовать KernelBrowser а когда HttpBrowser для запросов
 		я так пологаю когда нужен (Container, Profiler, Kernel...) KernelBrowser
 		в упрощённом варианте просто HttpBrowser
@@ -786,8 +810,6 @@ SYMFONY The Mime Component
 ***
 SYMFONY NOTIFIER
 	
-	По неизвестной причине тест не видит что в очередь был добавлен message
-		https://symfony.com/doc/current/testing.html#notifier-assertions
 	R: изменить шаблон email notification на свой (по hard-code сразу в SubjectPlusContentNotification реализуя EmailNotificationInterface)
 
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user

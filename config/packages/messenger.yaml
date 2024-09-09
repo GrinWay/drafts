@@ -88,11 +88,14 @@ framework:
             'App\Messenger\Command\Message\HowStampWorks': async
             'App\Messenger\Event\Message\TestUserWasCreated': async
             
-            'Symfony\Component\Mailer\Messenger\SendEmailMessage': sync
-            
+            # CACHE
             'Symfony\Component\Cache\Messenger\EarlyExpirationMessage': async
             
-            'Symfony\Component\Notifier\Message\*': async
+            # MAILER
+            'Symfony\Component\Mailer\Messenger\SendEmailMessage': sync
+
+            # NOTIFIER
+            'Symfony\Component\Notifier\*': async
 
 when@prod: &prod
     framework:
@@ -104,6 +107,11 @@ when@test: &test
     framework:
         messenger:
             transports:
-                sync: '%env(APP_MESSENGER_TEST)%'
-                async: '%env(APP_MESSENGER_TEST)%'
-                failed: '%env(APP_MESSENGER_TEST)%'
+                ###> 
+                # With this config tests work INCORRECTLY
+                #
+                # sync: '%env(APP_MESSENGER_TEST)%'
+                # async: '%env(APP_MESSENGER_TEST)%'
+                # failed: '%env(APP_MESSENGER_TEST)%'
+                #
+                ###<

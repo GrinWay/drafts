@@ -17,9 +17,8 @@ class EmailControllerTest extends AbstractApplicationCase
 	
 	public function testOneMessageSentWithAsyncTransport() {
 		$client = static::createClient();
-		$client->followRedirects(false);
+		$client->followRedirects(true);
 		$crawler = $client->request('GET', '/email/send');
-		$client->followRedirect();
 		
 		$this->assertResponseIsSuccessful();
 		

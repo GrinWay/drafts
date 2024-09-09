@@ -6,7 +6,7 @@ when@test: &test
                 twilio:         'null://null'
 
             chatter_transports:
-                telegram:       'null://null'                
+                telegram:       'null://null'
 
 framework:
     notifier:
