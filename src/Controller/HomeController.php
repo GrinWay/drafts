@@ -11,6 +11,7 @@ use App\Notification\ChatNotification\SubjectPlusContentNotification;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
 use Symfony\Component\Notifier\Recipient\Recipient;
+use Symfony\Component\Notifier\Recipient\NoRecipient;
 use Symfony\Bridge\Twig\Mime\NotificationEmail;
 use Symfony\Component\Notifier\Bridge\Telegram\Reply\Markup\Button\InlineKeyboardButton;
 use Symfony\Component\Notifier\Bridge\Telegram\Reply\Markup\ReplyKeyboardRemove;
@@ -453,7 +454,7 @@ class HomeController extends AbstractController
 	) {
 		
 		$subject = 'Symfony Notifier';
-		$content = 'Привет из Symfony Notifier component!';
+		$content = 'Сообщение только для админа!';
 		
 		$notification = new SubjectPlusContentNotification(
 			subject: $subject,
@@ -476,6 +477,7 @@ class HomeController extends AbstractController
 			email: $adminEmail,
 			phone: $adminPhone,
 		);
+		$recipient = new NoRecipient();
 		
 		/*
 		*/

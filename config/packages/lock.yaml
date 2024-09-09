@@ -3,4 +3,4 @@ framework:
         resources:
             local: '%env(resolve:LOCK_DSN)%'
             doctrine: '%env(DATABASE_URL)%'
-            default: '%env(DATABASE_URL)%'
+            default: '%env(resolve:LOCK_DSN)%'

@@ -78,6 +78,7 @@ class TelegramController extends AbstractController
 			__SUBJECT__, $data);
 			
 			$options = (new TelegramOptions())
+				// override chat id
 				->chatId(
 					$pa->getValue($response, '[message][chat][id]')
 				)

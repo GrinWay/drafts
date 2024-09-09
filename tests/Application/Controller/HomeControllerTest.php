@@ -31,7 +31,7 @@ class HomeControllerTest extends AbstractApplicationCase {
 		
 		//\dump($crawler->filter('html')->text());
 		
-		//TODO: current
-		$this->assertNotificationCount(1);
+		//$this->assertNotificationCount(1);
+		$this->assertQueuedNotificationCount(1, message: 'Должен был быть отправлен 1 notification в очередь');
 	}
 }

@@ -92,13 +92,15 @@ framework:
             
             'Symfony\Component\Cache\Messenger\EarlyExpirationMessage': async
             
-when@prod:
+            'Symfony\Component\Notifier\Message\*': async
+
+when@prod: &prod
     framework:
         messenger:
             routing:
                 'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
 
-when@test:
+when@test: &test
     framework:
         messenger:
             transports:

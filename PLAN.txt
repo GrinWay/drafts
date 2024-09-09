@@ -786,9 +786,7 @@ SYMFONY The Mime Component
 ***
 SYMFONY NOTIFIER
 	
-	R: https://stackoverflow.com/questions/47774225/symfony-lock-component-does-not-lock-how-to-fix
-	R: https://symfony.com/doc/current/testing.html#notifier-assertions
-		clear && bin/phpunit tests/Application/Controller/HomeControllerTest.php
+	https://symfony.com/doc/current/testing.html#notifier-assertions
 	R: изменить шаблон email notification на свой (по hard-code сразу в SubjectPlusContentNotification реализуя EmailNotificationInterface)
 
 	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
@@ -837,6 +835,7 @@ SYMFONY NOTIFIER
 		вот например email, browser не прослушиваются
 		такое чувство, что в Notification Events отправляются только те события, чьи DSN_TRANSPORTS
 		могут быть сконфигурированы в notifier.yaml (browser, email пролетают)
+	? Test Telegram Async: парадокс, но сообщение отправляется асинхронно, но assert не видит отправленный в очередь message
 	? почему отправление через *Interface по умолчанию не происходит асинхронно как это было сказано в документации
 	? Telegram channel: как надёжно получить message_id ботовского message
 	R: Telegram channel: повесить бота на sheduler, чтобы раз в час делал пост
@@ -857,12 +856,16 @@ SYMFONY NOTIFIER
 	? TEST Telegram channel: Бросается исключение
 		Symfony\Component\Lock\Exception\LockReleasingException: Failed to release the "default-http_client" lock
 		При тестировании отправленного сообщения в telegram
+		Неизвестно почему, но при использовании lock.default DOCTRINE_URI lock не отпускается
+		Проблема решилась установкой lock.default в filesystem store
 	+ При тестировании notification сообщения как будто бы не отправляются assert fails
 		Но фактически сообщение может быть отправлено!
 		(
 			очень вероятно, что тест сообщений, отправленных notifier будет считаться
 			только для тех notifications, DSN которых был описан в notifier.yaml
 		)
+	+ не могу при тестировании отправить сообщение по асинхронному транспорту
+		Всё ты можешь, сообщение просто добавлялось в тестовую таблицу test_test вместо real_db
 	+ ? Telegram channel: Не работает markdown, markdown_v2	
 		Это временная проблема на Сентябрь 2024 года, нужно вместо константы использовать 'markdownv2'
 	+ ? Не получается установить webhook для приёма сообщений с телеграма

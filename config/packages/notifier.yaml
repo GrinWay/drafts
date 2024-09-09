@@ -1,25 +1,23 @@
 when@test: &test
     framework:
         notifier:
-            message_bus: messenger.default_bus
-        
             texter_transports:
-                onesignal: 'null://null'
-                twilio: 'null://null'
+                onesignal:      'null://null'
+                twilio:         'null://null'
 
             chatter_transports:
-                telegram: 'null://null'                
+                telegram:       'null://null'                
 
 framework:
     notifier:
         message_bus: messenger.default_bus
         
         texter_transports:
-            onesignal: '%env(ONESIGNAL_DSN)%'
-            #twilio: '%env(TWILIO_DSN)%'
+            #twilio:            '%env(TWILIO_DSN)%'
+            onesignal:          '%env(ONESIGNAL_DSN)%'
         
         chatter_transports:
-            telegram: '%env(TELEGRAM_DSN)%'
+            telegram:           '%env(TELEGRAM_DSN)%'
 
         channel_policy:
             # use chat/slack, chat/telegram, sms/twilio or sms/nexmo
@@ -40,4 +38,5 @@ framework:
             -   'browser'
 
         admin_recipients:
-        -   email: admin@example.com
+            -   email:                '%env(APP_ADMIN_EMAIL)%'
+                phone:                '%env(APP_ADMIN_PHONE)%'

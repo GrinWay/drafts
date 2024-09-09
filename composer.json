@@ -161,6 +161,7 @@
     "scripts": {
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
+            "telegram:set_webhook": "symfony-cmd",
             "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
 		"app_reinstall_grinway_bundles": [
@@ -168,9 +169,13 @@
 			"@composer require grinway/command-bundle grinway/env-processor-bundle grinway/service-bundle grinway/web-app-bundle"
 		],
 		"app_after_composer_install": [
-			"@app_fpdf_download"
+			"@app_fpdf_download",
+			"@telegram_set_webhook"
 		],
 		
+        "telegram_set_webhook": [
+			"App\\Command\\Telegram\\TelegramSetWebhook"
+		],
         "command": [
 			"php -r \"echo 'INLINE CLI COMMAND'.\\PHP_EOL;\"",
 			"App\\Composer\\Scripts\\Command::execute"
