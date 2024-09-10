@@ -828,6 +828,8 @@ SYMFONY NOTIFIER
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bridge/Twig/Mime/NotificationEmail.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Transport.php
 	
+	заставить заработать onesignal для отправки push сообщений
+	
 	***
 	Telegram Bot Api: https://core.telegram.org/bots/api#available-types
 	*** как бабки появятся
