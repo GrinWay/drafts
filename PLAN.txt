@@ -810,24 +810,8 @@ SYMFONY The Mime Component
 ***
 SYMFONY NOTIFIER
 	
-	R: изменить шаблон email notification на свой (по hard-code сразу в SubjectPlusContentNotification реализуя EmailNotificationInterface)
-
-	https://symfony.com/doc/current/security/login_link.html#3-send-the-login-link-to-the-user
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Texter.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Message/SentMessage.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bundle/FrameworkBundle/Test/NotificationAssertionsTrait.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bundle/FrameworkBundle/Test/KernelTestCase.php
-	https://symfony.com/doc/current/testing.html#notifier-assertions
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/NotifierInterface.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Notification/Notification.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Recipient/Recipient.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Recipient/NoRecipient.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Recipient/Recipient.php
-	https://symfony.com/doc/current/session.html#flash-messages
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Texter.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bridge/Twig/Mime/NotificationEmail.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Transport.php
-	
 	заставить заработать onesignal для отправки push сообщений
 	
 	***
@@ -856,6 +840,15 @@ SYMFONY NOTIFIER
 		https://documentation.onesignal.com/reference/create-notification
 		https://dashboard.onesignal.com/apps/c30fe145-50c7-4884-8f16-20ecf439f7a3/settings
 	?
+	+ изменить шаблон email notification на свой (по hard-code сразу в SubjectPlusContentNotification реализуя EmailNotificationInterface)
+		Реализуя EmailNotificationInterface ты имеешь доступ к контенту, но не к шаблону :(
+	??? Как для Symfony Email Notification указать путь к htmlTwigTemplate
+		1) Попробовать попереопределять шаблоны в своём проекте
+			.\vendor\symfony\twig-bridge\Resources\views
+			.\templates\bundles\TwigBridge
+		2) Как крайний вариант послушать событие MessageEvent и если это Notification поработать с событием, может есть метод полезный
+	?? I can test sending only "sync" but not "async" messages using NotifierInterface service
+		https://stackoverflow.com/questions/78966921/symfony-7-2-notifier-component-testing-i-can-test-sending-only-sync-but-not-a
 	Неужели не каждое сообщение может быть прослушано в MessageEvent
 		вот например email, browser не прослушиваются
 		такое чувство, что в Notification Events отправляются только те события, чьи DSN_TRANSPORTS
@@ -1134,6 +1127,15 @@ PNG WRITER https://github.com/endroid/qr-code
 TWIG
 	https://symfony.com/doc/current/reference/twig_reference.html
 	https://symfony.com/doc/current/reference/configuration/twig.html
+	?
+	Я так пологаю переопределить шаблон не бандла не получиться
+		так как нет twig.yaml где определяются paths: ...
+		Но можно пойти ублюдским способом и задать namespace в своём проете (будет много одноимённых ключей)
+	+ Если есть несколько twig namespace и первый инвалидный, а второй валидный то всё будет работать ок?
+		предпологаю что да
+		(
+			Абсолютно верно, twig ищёт шаблоны (paths: ~ then default) с первого определённого до первого валидного
+		)
 SYMFONY SESSION
 	не получилось https://symfony.com/doc/current/session.html#encryption-of-session-data
 SYMFONY VARDUMPER https://symfony.com/doc/current/components/var_dumper.html#components-var-dumper-dump

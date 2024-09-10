@@ -21,12 +21,14 @@ class HomeControllerTest extends AbstractApplicationCase {
 		
 		$crawler = $client->request('GET', '/');
 		
+		//\dump($crawler->text());
+		
 		$event = $this->getNotifierEvent();
 		$notification = $this->getNotifierMessage();
 		
 		//###> ASSERT ###
-		//$this->assertNotificationCount(1, 'telegram');
-		$this->assertQueuedNotificationCount(1, 'telegram');
+		//$this->assertNotificationCount(1);
+		$this->assertQueuedNotificationCount(1);
 		
 		/*
 		if ($event instanceof MessageEvent) {

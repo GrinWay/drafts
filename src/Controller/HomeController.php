@@ -7,6 +7,8 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Security\Http\LoginLink\LoginLinkNotification;
+use App\Notification\EmailNotification\TemplatedEmailNotification;
 use App\Notification\ChatNotification\SubjectPlusContentNotification;
 use Symfony\Component\Notifier\Notification\Notification;
 use Symfony\Component\Notifier\NotifierInterface;
@@ -453,15 +455,20 @@ class HomeController extends AbstractController
 		*/
 	) {
 		$subject = 'Symfony Notifier';
-		$content = 'Сообщение только для админа!';
+		$content = <<<'__TEXT__'
+		1. Список 1
+		1. Список 1
+		1. Список 1
+		__TEXT__;
 		
-		$notification = new SubjectPlusContentNotification(
+		$notification = new TemplatedEmailNotification(
+			//template: 'email/default/index.html.twig',
 			subject: $subject,
 			channels: [
-				'chat/telegram',
+				'email',
 				/*
+				'chat/telegram',
 				'browser', // ? how to test it
-				'email', // for tests assertEmailCount but not assertNotificationCount
 				'push/onesignal',
 				*/
 			],
