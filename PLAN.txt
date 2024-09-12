@@ -809,9 +809,7 @@ SYMFONY The Mime Component
 	создай реализацию MimeTypeGuesserInterface для своего угадывающего тип по содержимому
 ***
 SYMFONY NOTIFIER
-	
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Bridge/Twig/Mime/NotificationEmail.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Transport.php
+
 	заставить заработать onesignal для отправки push сообщений
 	
 	***
@@ -840,6 +838,26 @@ SYMFONY NOTIFIER
 		https://documentation.onesignal.com/reference/create-notification
 		https://dashboard.onesignal.com/apps/c30fe145-50c7-4884-8f16-20ecf439f7a3/settings
 	?
+	+ ? NotificationEmail: Кто переопределяется header from, email.subject
+		NotificationEmail
+	+ ? NotificationEmail: как работает метод NotificationEmail::markdown 
+	(
+		Этот метод помимо установки контента устанавливает переменную шаблона vars в markdown
+	
+		Начнём с того, что по замыслу у NotificationEmail всегда есть тема, она default по умолчанию
+		Определив алиас email в project_dir/config/packages/twig.yaml можно указать на свои шаблоны @email/<>/notification/...
+		так и происходит в TwigBridge
+		markdown это просто переменная шаблона, используемая как предикат для использования |markdown_to_html фильтра в шаблоне
+		Если в теме(шаблоне) нет предиката, то по факту в шаблон (как и ::htmlTemplate) передаётся просто переменная var markdown
+	)
+	+ ? NotificationEmail: Почему переменная content шаблона(темы) пустая
+	(
+		Ты установил content в Notifier, но не в NotificationEmail, который определён в asEmailMessage, а ведь отправляется фактически то, что определено в этом методе
+	)
+	+ ? NotificationEmail: у меня есть подозрение, что NotificationEmail::theme метод не для тем форм..., а просто тема для сообщения, где определена разметка и используются глобальные переменные шаблона
+		(
+			Да, это так, там указывается разметка сообщения
+		)
 	+ изменить шаблон email notification на свой (по hard-code сразу в SubjectPlusContentNotification реализуя EmailNotificationInterface)
 		Реализуя EmailNotificationInterface ты имеешь доступ к контенту, но не к шаблону :(
 	??? Как для Symfony Email Notification указать путь к htmlTwigTemplate

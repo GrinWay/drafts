@@ -1,0 +1,37 @@
+{%- extends 'email/base.html.twig' -%}
+
+{%- block body -%}
+	<row>
+		<columns>
+			{{ importance }}
+		</columns>
+	</row>
+	<row>
+		<columns>
+			{%- include '@email/content.html.twig' -%}
+		</columns>
+	</row>
+	<row>
+		<columns>
+			{{ footer_text }}
+		</columns>
+	</row>
+	
+	{#
+	TODO: current
+	
+	<twig:grinway:email
+		email_email=email
+		email_importance=importance
+		email_content=content
+		email_exception=exception
+		email_action_text=action_text
+		email_action_url=action_url
+		email_markdown=markdown
+		email_raw=raw
+		email_footer_text=footer_text
+	/>
+	
+	#}
+	
+{%- endblock -%}

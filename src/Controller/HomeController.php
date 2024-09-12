@@ -456,13 +456,10 @@ class HomeController extends AbstractController
 	) {
 		$subject = 'Symfony Notifier';
 		$content = <<<'__TEXT__'
-		1. Список 1
-		1. Список 1
-		1. Список 1
+		# I love Symfony
 		__TEXT__;
 		
 		$notification = new TemplatedEmailNotification(
-			//template: 'email/default/index.html.twig',
 			subject: $subject,
 			channels: [
 				'email',
@@ -480,7 +477,7 @@ class HomeController extends AbstractController
 		;
 		
 		$recipient = new Recipient(
-			email: $adminEmail,
+			email: $adminEmail = 'son5-29@mail.ru',
 			phone: $adminPhone,
 		);
 		//$recipient = new NoRecipient();
@@ -501,7 +498,8 @@ class HomeController extends AbstractController
 		$chatter->send($telegramMessage);
 		*/
 		
-		$response = $this->render('home/index.html.twig');
+		$response = $this->render('home/index.html.twig', [
+		]);
 		
 		return $response;
 		

@@ -27,8 +27,8 @@ twig:
         templates/admin/index: admin
         '%app.abs_img_dir%': abs_img_dir
         assets/styles: css
-        templates/bundles/TwigBridge/Email: email
-        templates/bundles: email
+        # @email for TwigBridge
+        templates/email/theme: email
     globals:
         app_note_type: !php/const App\Type\Note\NoteType::SNAKE_KEYS_TYPES
     cache: '%kernel.project_dir%/var/cache/dev/twig'

@@ -2,7 +2,8 @@
 
 namespace App\Notification\EmailNotification;
 
-use Symfony\Bridge\Twig\Mime\NotificationEmail;
+use App\Twig\Mime\NotificationEmail;
+use Symfony\Bridge\Twig\Mime\NotificationEmail as SymfonyNotificationEmail;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mailer\Envelope;
 use Symfony\Bridge\Twig\Mime\WrappedTemplatedEmail;
@@ -22,10 +23,14 @@ class TemplatedEmailNotification extends Notification implements EmailNotificati
 	public function __construct(
 		string $subject,
 		array $channels,
+		//###> Priority 2 (high)
+		private readonly ?string $theme = null,
+		//###> Priority 1 (low)
 		private readonly ?string $template = null,
 		private readonly array $context = [],
-		private readonly ?string $actionName = null,
+		private readonly ?string $actionText = null,
 		private readonly ?string $actionUri = null,
+		private readonly bool $markdown = true,
 	) {
 		parent::__construct(
 			subject: $subject,
@@ -33,8 +38,8 @@ class TemplatedEmailNotification extends Notification implements EmailNotificati
 		);
 		
 		/*
-		if (!$twig->getLoader()->exists($template)) {
-			$message = \sprintf('The twig template path: "%s" does not exist', $template);
+		if (!$twig->getLoader()->exists($theme)) {
+			$message = \sprintf('The twig theme path: "%s" does not exist', $theme);
 			throw new \Exception($message);
 		}
 		*/
@@ -42,30 +47,37 @@ class TemplatedEmailNotification extends Notification implements EmailNotificati
 	
 	public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): ?EmailMessage
 	{
-		if (!class_exists(NotificationEmail::class)) {
+		if (!class_exists(SymfonyNotificationEmail::class)) {
             throw new \LogicException(sprintf('The "%s" method requires "symfony/twig-bridge:>4.4".', __METHOD__));
         }
 
         $email = NotificationEmail::asPublicEmail()
             ->to($recipient->getEmail())
-            //->subject($this->getSubject())
-			->theme('theme')
+			->importance($this->getImportance())
+            ->subject($this->getSubject())
+			->content($this->getContent())
+			->context($this->context)
         ;
 		
-		if (null !== $this->template) {
-			$email
-				->htmlTemplate($this->template)
-				->context($this->context)
-			;
-		} else {
+		if (true === $this->markdown) {
 			$email
 				->markdown($this->getContent())
 			;
 		}
 		
-		if (null !== $this->actionName && null !== $this->actionUri) {
+		if (null !== $this->theme) {
 			$email
-				->action($this->actionName, $this->actionUri)
+				->theme($this->theme)
+			;
+		} else if (null !== $this->template) {
+			$email
+				->htmlTemplate($this->template)
+			;
+		}
+		
+		if (null !== $this->actionText && null !== $this->actionUri) {
+			$email
+				->action($this->actionText, $this->actionUri)
 			;
 		}
 		

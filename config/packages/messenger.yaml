@@ -95,7 +95,7 @@ framework:
             'Symfony\Component\Mailer\Messenger\SendEmailMessage': sync
 
             # NOTIFIER
-            'Symfony\Component\Notifier\*': async
+            'Symfony\Component\Notifier\*': sync
 
 when@prod: &prod
     framework:

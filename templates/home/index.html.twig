@@ -6,6 +6,12 @@
 
 {% block body %}
 	
+	{%- if form is defined and form -%}
+		<div>
+			{{- form(form) -}}
+		</div>
+	{%- endif -%}
+	
 	<div class="">
 		<a href="{{- login_link ?? '' -}}">LOGIN LINK</a>
 	</div>
