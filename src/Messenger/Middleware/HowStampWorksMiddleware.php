@@ -15,25 +15,25 @@ use Symfony\Component\Messenger\Stamp\HandlerArgumentsStamp;
 
 class HowStampWorksMiddleware implements MiddlewareInterface
 {
-	private static $idx = 0;
-	
+    private static $idx = 0;
+
     public function handle(
         Envelope $envelope,
         StackInterface $stack,
     ): Envelope {
-		$responseEnvelope = null;
-		
-		/*
-		if (self::$idx++ > 0) {
-			return $envelope;
-		}
-		*/
-		
-		\dump('ENTERED INTO CUSTOM MIDDLEWARE');
-		//$envelope = $envelope->with(new DelayStamp(1));
-		$responseEnvelope = $stack->next()->handle($envelope, $stack);
-		\dump(\get_debug_type($responseEnvelope->getMessage()), $responseEnvelope);
-		
+        $responseEnvelope = null;
+
+        /*
+        if (self::$idx++ > 0) {
+            return $envelope;
+        }
+        */
+
+        \dump('ENTERED INTO CUSTOM MIDDLEWARE');
+        //$envelope = $envelope->with(new DelayStamp(1));
+        $responseEnvelope = $stack->next()->handle($envelope, $stack);
+        \dump(\get_debug_type($responseEnvelope->getMessage()), $responseEnvelope);
+
         return $responseEnvelope ?? $stack->next()->handle($envelope, $stack);
     }
 }

@@ -38,118 +38,126 @@ class TaskFormType extends AbstractFormType
         private readonly UrlGeneratorInterface $urlGenerator,
         private $enUtcCarbon,
     ) {
-		parent::__construct(
-			pa: $pa,
-		);
+        parent::__construct(
+            pa: $pa,
+        );
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-		$mTF = static function($v) {
-			\dump('(MODEL trans) to form');
-			return $v;
-		};
-		$mTO = static function($v) {
-			\dump('(MODEL trans) to obj');
-			$v->setName('CHANGED IN MODEL TRANS');
-			return $v;
-		};
-		$vTO = static function($v) {
-			\dump('(VIEW trans) to obj');
-			$v->setName('CHANGED IN VIEW TRANS');
-			return $v;
-		};
-		$vTF = static function($v) {
-			\dump('(VIEW trans) to form');
-			return $v;
-		};
-		
-		// TODO: PreventModifyingPropsOfEntity (usage)
-		$forbidModifyPropsChildHook = new ForbidModifyPropEventSubscriberChildHook(
-			$this->pa,
-			$preventModifyingPropsOfEntity = new PreventModifyingPropsOfEntity('id'),
-		);
-		
+        $mTF = static function ($v) {
+            \dump('(MODEL trans) to form');
+            return $v;
+        };
+        $mTO = static function ($v) {
+            \dump('(MODEL trans) to obj');
+            $v->setName('CHANGED IN MODEL TRANS');
+            return $v;
+        };
+        $vTO = static function ($v) {
+            \dump('(VIEW trans) to obj');
+            $v->setName('CHANGED IN VIEW TRANS');
+            return $v;
+        };
+        $vTF = static function ($v) {
+            \dump('(VIEW trans) to form');
+            return $v;
+        };
+
+        // TODO: PreventModifyingPropsOfEntity (usage)
+        $forbidModifyPropsChildHook = new ForbidModifyPropEventSubscriberChildHook(
+            $this->pa,
+            $preventModifyingPropsOfEntity = new PreventModifyingPropsOfEntity('id'),
+        );
+
         $builder
-			//->add('id')
+            //->add('id')
             ->add($builder->create(
                 'name', //FormType\DateTimeType::class,
                 options: [
-					'empty_data' => null,
-					//'inherit_data' => true,
+                    'empty_data' => null,
+                    //'inherit_data' => true,
                     'label' => 'Name',
-					'attr' => [
-						'placeholder' => 'Name',
-					],
-					'row_attr' => [
-						'class' => 'form-floating',
-					],
-					'label_attr' => [
-						//'class' => 'my-class',
-					],
-					'constraints' => [
-					],
+                    'attr' => [
+                        'placeholder' => 'Name',
+                    ],
+                    'row_attr' => [
+                        'class' => 'form-floating',
+                    ],
+                    'label_attr' => [
+                        //'class' => 'my-class',
+                    ],
+                    'constraints' => [
+                    ],
                     //'label' => $this->pa->getValue($options, "[form_type_nested?][name?][label?]"),
                     'required' => $this->pa->getValue($options, "[form_type_nested?][name?][required?]"),
-					//'getter' => static fn($obj, $form) => \strtolower($obj->getName()),
-					//'setter' => static fn(&$obj, $value, $form) => $obj->setName(\strtoupper($value)),
-                ])
-				//->addEventSubscriber($forbidModifyPropsChildHook)
-			)
-            ->add('deadLine', YearMonthDayHourMinuteSecondType::class, //DateTimeAsTextType::class,
-				options: [
-					'label' => $this->pa->getValue($options, "[form_type_nested?][dead_line?][label?]"),
-					'required' => $this->pa->getValue($options, "[form_type_nested?][dead_line?][required?]"),
-					'carbon_class' => \Carbon\Carbon::class,
-					//'block_name' => 'dead_line',
-					//'inherit_data' => true,
-				]
-			)
+                    //'getter' => static fn($obj, $form) => \strtolower($obj->getName()),
+                    //'setter' => static fn(&$obj, $value, $form) => $obj->setName(\strtoupper($value)),
+                ]
+            ))
+                //->addEventSubscriber($forbidModifyPropsChildHook)
+
+            ->add(
+                'deadLine',
+                YearMonthDayHourMinuteSecondType::class, //DateTimeAsTextType::class,
+                options: [
+                    'label' => $this->pa->getValue($options, "[form_type_nested?][dead_line?][label?]"),
+                    'required' => $this->pa->getValue($options, "[form_type_nested?][dead_line?][required?]"),
+                    'carbon_class' => \Carbon\Carbon::class,
+                    //'block_name' => 'dead_line',
+                    //'inherit_data' => true,
+                ]
+            )
             ->add(
                 'agree',
                 FormType\CheckboxType::class,
                 options: [
                     'mapped' => false,
-					'label_attr' => [
-						'class' => 'checkbox-switch',
-					],
+                    'label_attr' => [
+                        'class' => 'checkbox-switch',
+                    ],
                 ],
             )
-            ->add($builder->create('topic', EntityAsIdTextType::class,
-				options: [])
-				//->addEventListener(FormEvents::PRE_SUBMIT, static function($e) {})
-			)
-            ->add('unmappedChoice', FormType\ChoiceType::class,
-				options: [
-					'mapped' => false,
-					'block_name' => 'unmapped_choice',
-					'display_count' => true,
-					'selected_value' => 'two',
-					'choices' => [
-						'ONE' => 'one',
-						'TWO' => 'two',
-					],
-					'attr' => [
-						'class' => 'form-control',
-					],
-				],
-			)
-			//->addViewTransformer(new CallbackTransformer($vTF, $vTO))
+            ->add($builder->create(
+                'topic',
+                EntityAsIdTextType::class,
+                options: []
+            ))
+                //->addEventListener(FormEvents::PRE_SUBMIT, static function($e) {})
+
+            ->add(
+                'unmappedChoice',
+                FormType\ChoiceType::class,
+                options: [
+                    'mapped' => false,
+                    'block_name' => 'unmapped_choice',
+                    'display_count' => true,
+                    'selected_value' => 'two',
+                    'choices' => [
+                        'ONE' => 'one',
+                        'TWO' => 'two',
+                    ],
+                    'attr' => [
+                        'class' => 'form-control',
+                    ],
+                ],
+            )
+            //->addViewTransformer(new CallbackTransformer($vTF, $vTO))
             //->setMethod('POST')
             //->setAction($this->urlGenerator->generate($this->requestStack->getCurrentRequest()->attributes->get('_route', $this->requestStack->getCurrentRequest()->attributes->get('_route_params'))))
-		;
-		
-		// TODO: PreventModifyingPropsOfEntity (usage)
-		$forbidModifyProps = new ForbidModifyPropEventSubscriber(
-			$this->pa,
-			$preventModifyingPropsOfEntity,
-		);
+        ;
 
-		if (true === $options['forbid_modify_props_feature']) {
-			$builder
-				->addEventSubscriber($forbidModifyProps)
-			;
-		}
+        // TODO: PreventModifyingPropsOfEntity (usage)
+        $forbidModifyProps = new ForbidModifyPropEventSubscriber(
+            $this->pa,
+            $preventModifyingPropsOfEntity,
+        );
+
+        if (true === $options['forbid_modify_props_feature']) {
+            $builder
+                ->addEventSubscriber($forbidModifyProps)
+            ;
+        }
     }
 
     public function configureOptions(OptionsResolver $taskType)
@@ -162,10 +170,10 @@ class TaskFormType extends AbstractFormType
 
         $taskType
             ->setDefaults([
-				'help' => 'Task form',
-				'data_class' => Task::class,
-				'allow_extra_fields' => true,
-				'forbid_modify_props_feature' => true,
+                'help' => 'Task form',
+                'data_class' => Task::class,
+                'allow_extra_fields' => true,
+                'forbid_modify_props_feature' => true,
                 //'csrf_field_name' => '_token',
             ])
             ->setDefault('form_type_nested', static function (

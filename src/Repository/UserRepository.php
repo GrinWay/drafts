@@ -18,22 +18,23 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
     {
         parent::__construct($registry, User::class);
     }
-	
-	/**
-	* If a key contains relations
-	*/
-	//public function joinedFindOneBy(array $criteria): mixed {
-	public function getUserIfThereIsGitHubRelation(int|string $id): ?User {
-		return $this->createQueryBuilder('o')
+
+    /**
+    * If a key contains relations
+    */
+    //public function joinedFindOneBy(array $criteria): mixed {
+    public function getUserIfThereIsGitHubRelation(int|string $id): ?User
+    {
+        return $this->createQueryBuilder('o')
             ->join('o.gitHub', 'g')
             ->andWhere('g.id = :id')
-			->setParameter('id', $id)
-			->orderBy('g.id', 'DESC')
-			->setMaxResults(1)
-			->getQuery()
-			->getOneOrNullResult()
-		;
-	}
+            ->setParameter('id', $id)
+            ->orderBy('g.id', 'DESC')
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
@@ -49,29 +50,30 @@ class UserRepository extends AbstractRepository implements PasswordUpgraderInter
         $this->getEntityManager()->flush();
     }
 
-	public function findOneByPassport($criteria): ?User
-	{
-		$qb = $this->createQueryBuilder('u')
-			->join('u.passport', 'p')
-		;
-		
-		foreach($criteria as $key => $val) {
-			$qb
-				->andWhere('p.'.$key.' = :'.$key)
-				->setParameter(':'.$key, $val)
-			;
-		}
-		
-		return $qb
-			->setMaxResults(1)
-			->getQuery()
-			->getOneOrNullResult()
-		;
-	}
+    public function findOneByPassport($criteria): ?User
+    {
+        $qb = $this->createQueryBuilder('u')
+            ->join('u.passport', 'p')
+        ;
 
-	public function findOneByEmail(string $email): ?User {
-		return parent::findOneByEmail($email);
-	}
+        foreach ($criteria as $key => $val) {
+            $qb
+                ->andWhere('p.' . $key . ' = :' . $key)
+                ->setParameter(':' . $key, $val)
+            ;
+        }
+
+        return $qb
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+
+    public function findOneByEmail(string $email): ?User
+    {
+        return parent::findOneByEmail($email);
+    }
 
 //    /**
 //     * @return User[] Returns an array of User objects

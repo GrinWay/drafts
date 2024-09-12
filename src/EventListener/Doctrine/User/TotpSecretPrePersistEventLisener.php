@@ -27,10 +27,10 @@ class TotpSecretPrePersistEventLisener
         User $obj,
         PrePersistEventArgs $args,
     ): void {
-		if (null === $this->totpAuthenticator) {
-			return;
-		}
-		$totpSecret = $this->totpAuthenticator->generateSecret();
+        if (null === $this->totpAuthenticator) {
+            return;
+        }
+        $totpSecret = $this->totpAuthenticator->generateSecret();
         $obj->setTotpSecret($totpSecret);
     }
 }

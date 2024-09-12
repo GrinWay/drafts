@@ -30,52 +30,55 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 class UserDtoFormType extends AbstractFormType
 {
     public function __construct(
-		PropertyAccessorInterface $pa,
-		private readonly string $absPublicDir,
-		private readonly AvatarRepository $avatarRepo,
-		private $get,
-	) {
-		parent::__construct(
-			pa: $pa,
-		);
-	}
-	
+        PropertyAccessorInterface $pa,
+        private readonly string $absPublicDir,
+        private readonly AvatarRepository $avatarRepo,
+        private $get,
+    ) {
+        parent::__construct(
+            pa: $pa,
+        );
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-		$builder
-			->add('id', 
-				options: [
-					//'empty_data' => [],
-					//'required' => true,
-					'translation_domain' => 'app.form',
-					'block_prefix' => 'user_dto_id',
-				],
-			)
-			->add('name',
-				options: [
-					'translation_domain' => 'app.form',
-					//'empty_data' => [],
-					//'required' => true,
-				],
-			)
-			->add('age',
-				options: [
-					'translation_domain' => 'app.form',
-					//'empty_data' => [],
-					//'required' => true,
-				],
-			)
-		;
+        $builder
+            ->add(
+                'id',
+                options: [
+                    //'empty_data' => [],
+                    //'required' => true,
+                    'translation_domain' => 'app.form',
+                    'block_prefix' => 'user_dto_id',
+                ],
+            )
+            ->add(
+                'name',
+                options: [
+                    'translation_domain' => 'app.form',
+                    //'empty_data' => [],
+                    //'required' => true,
+                ],
+            )
+            ->add(
+                'age',
+                options: [
+                    'translation_domain' => 'app.form',
+                    //'empty_data' => [],
+                    //'required' => true,
+                ],
+            )
+        ;
     }
-	
-	public function configureOptions(OptionsResolver $resolver): void
+
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-			'data_class' => UserDto::class,
+            'data_class' => UserDto::class,
             'label_format' => '%name%',
             'translation_domain' => 'app.form',
-			//'empty_data' => null,
-			'block_prefix' => 'user_dto',
+            //'empty_data' => null,
+            'block_prefix' => 'user_dto',
         ]);
     }
 }

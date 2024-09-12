@@ -13,15 +13,17 @@ use App\Messenger\AbstractHandler;
 )]
 class HoursHandler extends AbstractHandler
 {
-    public function __construct(
-	) {}
-	
-    public function __invoke(Hours $message) {
-		return CarbonService::get(
-			carbonStart: static fn($c) => $c->startOfMonth(),
-			carbonEnd: static fn($c) => $c->endOfDay(),
-			onlyCarbonProperty: 'hour',
-			includePassed: $message->includePassed
-		);
-	}
+    public function __construct()
+    {
+    }
+
+    public function __invoke(Hours $message)
+    {
+        return CarbonService::get(
+            carbonStart: static fn($c) => $c->startOfMonth(),
+            carbonEnd: static fn($c) => $c->endOfDay(),
+            onlyCarbonProperty: 'hour',
+            includePassed: $message->includePassed
+        );
+    }
 }

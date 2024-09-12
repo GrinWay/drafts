@@ -15,14 +15,16 @@ use App\Service\ConfigService;
 class SecurityAlwaysRememberMeHandler extends AbstractHandler
 {
     public function __construct(
-		private readonly ConfigService $configService,
-	) {}
-	
-    public function __invoke(SecurityAlwaysRememberMe $message) {
-		return $this->configService->getPackageValue(
-			packName:                   'security.yaml',
-			propertyAccessString:       '[security][firewalls][main][remember_me][always_remember_me]',
-			packRelPath:                'config/packages',
-		);
-	}
+        private readonly ConfigService $configService,
+    ) {
+    }
+
+    public function __invoke(SecurityAlwaysRememberMe $message)
+    {
+        return $this->configService->getPackageValue(
+            packName:                   'security.yaml',
+            propertyAccessString:       '[security][firewalls][main][remember_me][always_remember_me]',
+            packRelPath:                'config/packages',
+        );
+    }
 }

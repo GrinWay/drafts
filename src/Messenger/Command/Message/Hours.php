@@ -7,6 +7,7 @@ use GrinWay\WebApp\Contract\Messenger\MessageHasSyncTransportInterface;
 class Hours implements MessageHasSyncTransportInterface
 {
     public function __construct(
-		public readonly bool $includePassed,
-	) {}
+        public readonly bool $includePassed,
+    ) {
+    }
 }

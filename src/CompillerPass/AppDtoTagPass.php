@@ -32,9 +32,9 @@ class AppDtoTagPass implements CompilerPassInterface
         );
     }
 
-	/**
-	* @return void
-	*/
+    /**
+    * @return void
+    */
     public function process(ContainerBuilder $container): void
     {
 

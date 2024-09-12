@@ -19,20 +19,22 @@ use Symfony\Component\Security\Http\EventListener\CheckCredentialsListener;
 #[AsEventListener]
 class CheckPassportBadgesEventListener
 {
-	public function __construct(
-		private readonly EntityManagerInterface $em,
-	) {}
-	
-	public function __invoke(CheckPassportEvent $e): void {
-		
-		$passport = $e->getPassport();
-		
-		if ($passport->hasBadge(ModifyUserPropBadge::class)) {
-			$badge = $passport->getBadge(ModifyUserPropBadge::class);
-			$user = $passport->getUser();
-			$badge($user);
-			$this->em->flush();			
-			return;
-		}
-	}
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+    ) {
+    }
+
+    public function __invoke(CheckPassportEvent $e): void
+    {
+
+        $passport = $e->getPassport();
+
+        if ($passport->hasBadge(ModifyUserPropBadge::class)) {
+            $badge = $passport->getBadge(ModifyUserPropBadge::class);
+            $user = $passport->getUser();
+            $badge($user);
+            $this->em->flush();
+            return;
+        }
+    }
 }

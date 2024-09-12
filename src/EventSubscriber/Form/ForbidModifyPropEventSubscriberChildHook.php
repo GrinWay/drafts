@@ -18,33 +18,37 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use App\Service\Form\FormEventHelper;
 
 // TODO: PreventModifyingPropsOfEntity
-class ForbidModifyPropEventSubscriberChildHook implements EventSubscriberInterface {
-	
-	public function __construct(
-		private readonly PropertyAccessorInterface $pa,
-		private readonly PreventModifyingPropsOfEntity $forbiddenPropsAware,
-	) {
-	}
-	
-	public static function getSubscribedEvents(): array {
+class ForbidModifyPropEventSubscriberChildHook implements EventSubscriberInterface
+{
+    public function __construct(
+        private readonly PropertyAccessorInterface $pa,
+        private readonly PreventModifyingPropsOfEntity $forbiddenPropsAware,
+    ) {
+    }
+
+    public static function getSubscribedEvents(): array
+    {
         return [
             FormEvents::PRE_SUBMIT => 'onPreSubmit',
             FormEvents::SUBMIT => 'onSubmit',
             FormEvents::POST_SUBMIT => 'onPostSubmit',
         ];
     }
-	
-	public function onPreSubmit(PreSubmitEvent $e): void {
-		\dump('child pre submit');
-		//return;
-	}
-	
-	public function onSubmit(SubmitEvent $e): void {
-		\dump('child submit');
-		//return;
-	}
-	
-	public function onPostSubmit(PostSubmitEvent $e): void {
-		\dump('child post submit');
-	}
+
+    public function onPreSubmit(PreSubmitEvent $e): void
+    {
+        \dump('child pre submit');
+        //return;
+    }
+
+    public function onSubmit(SubmitEvent $e): void
+    {
+        \dump('child submit');
+        //return;
+    }
+
+    public function onPostSubmit(PostSubmitEvent $e): void
+    {
+        \dump('child post submit');
+    }
 }

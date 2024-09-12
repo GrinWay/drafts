@@ -2,5 +2,6 @@
 
 namespace App\Service;
 
-class ReplaceAbleService 
-{}
+class ReplaceAbleService
+{
+}

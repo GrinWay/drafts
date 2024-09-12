@@ -32,16 +32,16 @@ class AvatarFixtures extends AbstractProductFixtures implements FixtureGroupInte
         ObjectManager $manager
     ): void {
         for ($i = 0; $i < $this->count; ++$i) {
-			$filepath = $this->stringService->getPath(
-				$this->faker->numberBetween(1, 5).'.jpg',
-			);
-			$vichFile = new VichFile();
-			$vichFile->setName($filepath);
-			
+            $filepath = $this->stringService->getPath(
+                $this->faker->numberBetween(1, 5) . '.jpg',
+            );
+            $vichFile = new VichFile();
+            $vichFile->setName($filepath);
+
             $obj = new Avatar(
-				filepath: $filepath,
-				fileOriginalName: $filepath,
-				//vichFile: $vichFile,
+                filepath: $filepath,
+                fileOriginalName: $filepath,
+                //vichFile: $vichFile,
             );
 
             $manager->persist($obj);

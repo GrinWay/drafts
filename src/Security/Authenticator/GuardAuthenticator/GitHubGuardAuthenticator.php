@@ -14,8 +14,9 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 
-class GitHubGuardAuthenticator extends SocialAuthenticator {
-	private $clientRegistry;
+class GitHubGuardAuthenticator extends SocialAuthenticator
+{
+    private $clientRegistry;
     private $em;
     private $router;
 
@@ -25,16 +26,16 @@ class GitHubGuardAuthenticator extends SocialAuthenticator {
         $this->em = $em;
         $this->router = $router;
     }
-	
-	public function supports(Request $request)
+
+    public function supports(Request $request)
     {
         return 'app_github_login' === $request->attributes->get('_route');
     }
-	
-	public function getUser($credentials, UserProviderInterface $userProvider)
+
+    public function getUser($credentials, UserProviderInterface $userProvider)
     {
         $client = $this->clientRegistry->getClient('github_main');
-		$githubUser = $this->fetchUserFromToken($client);
+        $githubUser = $this->fetchUserFromToken($client);
 
         $email = $githubUser->getEmail();
 

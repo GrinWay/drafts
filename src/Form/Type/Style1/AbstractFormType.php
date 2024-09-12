@@ -12,7 +12,7 @@ class AbstractFormType extends AppAbstractFormType
         $resolver->setDefaults([
             'style1' => true,
         ]);
-		
-		parent::configureOptions($resolver);
-	}
+
+        parent::configureOptions($resolver);
+    }
 }

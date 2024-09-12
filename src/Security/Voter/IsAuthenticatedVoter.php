@@ -18,37 +18,42 @@ use Symfony\Component\Security\Core\Exception\CustomUserMessageAccountStatusExce
 use App\Exception\Security\Authentication\LackOfPermissionException;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
-class IsAuthenticatedVoter extends Voter implements CacheableVoterInterface {
-	
-	public const ATTRIBUTE = 'VOTE_IS_AUTH';
-	
-    public function __construct(
-		private readonly AuthorizationCheckerInterface $checker,
-	) {}
-	
-    protected function supports(string $attribute, mixed $subject): bool {
-		return self::ATTRIBUTE === $attribute;
-	}
-	
-    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool {
-		if ($this->checker->isGranted('IS_AUTHENTICATED_FULLY') || $this->checker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
-			return true;
-		}
-		
-		return false;
-	}
-	
-	/**
-	* CacheableVoterInterface
-	*/
-	public function supportsAttribute(string $attribute): bool {
-		return self::ATTRIBUTE === $attribute;
-	}
+class IsAuthenticatedVoter extends Voter implements CacheableVoterInterface
+{
+    public const ATTRIBUTE = 'VOTE_IS_AUTH';
 
-	/**
-	* CacheableVoterInterface
-	*/
-    public function supportsType(string $subjectType): bool {
-		return true;
-	}
+    public function __construct(
+        private readonly AuthorizationCheckerInterface $checker,
+    ) {
+    }
+
+    protected function supports(string $attribute, mixed $subject): bool
+    {
+        return self::ATTRIBUTE === $attribute;
+    }
+
+    protected function voteOnAttribute(string $attribute, mixed $subject, TokenInterface $token): bool
+    {
+        if ($this->checker->isGranted('IS_AUTHENTICATED_FULLY') || $this->checker->isGranted('IS_AUTHENTICATED_REMEMBERED')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+    * CacheableVoterInterface
+    */
+    public function supportsAttribute(string $attribute): bool
+    {
+        return self::ATTRIBUTE === $attribute;
+    }
+
+    /**
+    * CacheableVoterInterface
+    */
+    public function supportsType(string $subjectType): bool
+    {
+        return true;
+    }
 }

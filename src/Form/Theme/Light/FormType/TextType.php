@@ -17,8 +17,9 @@ class TextType extends AbstractType
     {
         return 'text';
     }
-	
-	public function getParent() {
-		return FormType\TextType::class;
-	}
+
+    public function getParent()
+    {
+        return FormType\TextType::class;
+    }
 }

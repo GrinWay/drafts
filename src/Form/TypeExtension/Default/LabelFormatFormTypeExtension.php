@@ -14,21 +14,23 @@ use Symfony\Component\Validator\Constraints;
 use App\Service\PureStatic\DefaultFormExtendedTypesSupplier;
 
 // TODO: LabelFormatFormTypeExtension (через конфиг default_label_format)
-class LabelFormatFormTypeExtension extends AbstractTypeExtension {
-	
-	public function __construct (
-	) {}
-	
-	public static function getExtendedTypes(): iterable {
-		return DefaultFormExtendedTypesSupplier::supply();
-	}
-	
-	public function configureOptions(OptionsResolver $resolver): void 
+class LabelFormatFormTypeExtension extends AbstractTypeExtension
+{
+    public function __construct()
     {
-		$resolver
-			->setDefaults([
-				'label_format' => '%name%',
-			])
-		;
+    }
+
+    public static function getExtendedTypes(): iterable
+    {
+        return DefaultFormExtendedTypesSupplier::supply();
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver
+            ->setDefaults([
+                'label_format' => '%name%',
+            ])
+        ;
     }
 }

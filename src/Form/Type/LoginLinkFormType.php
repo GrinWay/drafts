@@ -20,40 +20,43 @@ use App\Entity\Product\Product;
 class LoginLinkFormType extends AbstractFormType
 {
     public function __construct(
-		PropertyAccessorInterface $pa,
-		private readonly UrlGeneratorInterface $ug,
-	) {
-		parent::__construct(
-			pa: $pa,
-		);
+        PropertyAccessorInterface $pa,
+        private readonly UrlGeneratorInterface $ug,
+    ) {
+        parent::__construct(
+            pa: $pa,
+        );
     }
 
-	public function buildForm(FormBuilderInterface $builder, array $options): void
-	{
-		$productTypes = (new \ReflectionClass(ProductTypes::class))->getConstants();
-		
-		$builder
-			->add('user', FormType\HiddenType::class,
-				options: [
-				],
-			)
-			->add('expires', FormType\HiddenType::class,)
-			->add('hash', FormType\HiddenType::class,)
-			->add('submit', FormType\SubmitType::class,)
-			->setAction($this->ug->generate('app_login_link'))
-		;
-	}
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $productTypes = (new \ReflectionClass(ProductTypes::class))->getConstants();
+
+        $builder
+            ->add(
+                'user',
+                FormType\HiddenType::class,
+                options: [
+                ],
+            )
+            ->add('expires', FormType\HiddenType::class,)
+            ->add('hash', FormType\HiddenType::class,)
+            ->add('submit', FormType\SubmitType::class,)
+            ->setAction($this->ug->generate('app_login_link'))
+        ;
+    }
 
     public function configureOptions(OptionsResolver $resolver)
     {
 
         $resolver
             ->setDefaults([
-			])
+            ])
         ;
     }
-	
-    public function getBlockPrefix(): string {
-		return '';
-	}
+
+    public function getBlockPrefix(): string
+    {
+        return '';
+    }
 }

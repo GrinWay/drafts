@@ -11,10 +11,10 @@ class ExpressionLanguage extends BaseExpressionLanguage
 {
     public function __construct(?CacheItemPoolInterface $cache = null, array $providers = [], #[Autowire('@app.cache_adapter.php_files')] $cachePool = null)
     {
-		if (null !== $cachePool) {
-			$cache = $cachePool;
-		}
-		
+        if (null !== $cachePool) {
+            $cache = $cachePool;
+        }
+
         // prepends provider to let users add functions
         \array_unshift($providers, new ExpressionLanguageFunctionProvider());
 

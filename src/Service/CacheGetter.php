@@ -14,12 +14,13 @@ use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class CacheGetter
 {
-    public static function refresh(): string {
-		$chars = '123456890qwertyuiopasdfghjklzxcvbnm';
-		
-		$chars = \str_split($chars);
-		\shuffle($chars);
-		
-		return \implode('', $chars);
-	}
+    public static function refresh(): string
+    {
+        $chars = '123456890qwertyuiopasdfghjklzxcvbnm';
+
+        $chars = \str_split($chars);
+        \shuffle($chars);
+
+        return \implode('', $chars);
+    }
 }

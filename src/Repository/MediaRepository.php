@@ -15,25 +15,25 @@ class MediaRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Media::class);
     }
-	
+
     public function findAllQB()
     {
         return $this->createQueryBuilder('m');
     }
-	
+
     public function findOneByPath(?string $filepath): ?Media
     {
-		if (null === $filepath) {
-			return null;
-		}
-		
+        if (null === $filepath) {
+            return null;
+        }
+
         return $this->createQueryBuilder('m')
-			->andWhere('m.filepath = :filepath')
-			->setParameter('filepath', $filepath)
-			->setMaxResults(1)
-			->getQuery()
-			->getOneOrNullResult()
-		;
+            ->andWhere('m.filepath = :filepath')
+            ->setParameter('filepath', $filepath)
+            ->setMaxResults(1)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
     }
 
 //    /**

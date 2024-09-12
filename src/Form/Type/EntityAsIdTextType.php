@@ -22,32 +22,33 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 class EntityAsIdTextType extends AbstractFormType
 {
     public function __construct(
-		PropertyAccessorInterface $pa,
+        PropertyAccessorInterface $pa,
         private readonly ForeignKeyAsTextIdDataTransformer $foreignKeyAsTextIdDataTransformer,
     ) {
-		parent::__construct(
-			pa: $pa,
-		);
+        parent::__construct(
+            pa: $pa,
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-		$resolver
-			->setDefaults([
-				'empty_data' => null,
-				'invalid_message' => 'Incorrect data',
-			])
-		;
+        $resolver
+            ->setDefaults([
+                'empty_data' => null,
+                'invalid_message' => 'Incorrect data',
+            ])
+        ;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-		$builder
-			->addModelTransformer($this->foreignKeyAsTextIdDataTransformer)
-		;
+        $builder
+            ->addModelTransformer($this->foreignKeyAsTextIdDataTransformer)
+        ;
     }
-	
-	public function getParent(): ?string {
-		return FormType\TextType::class;
-	}
+
+    public function getParent(): ?string
+    {
+        return FormType\TextType::class;
+    }
 }

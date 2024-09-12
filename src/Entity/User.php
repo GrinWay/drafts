@@ -31,10 +31,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 {
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $emailAuthCode = null;
-	
+
     #[ORM\Id]
-	#[ORM\GeneratedValue(strategy: 'CUSTOM')]
-	#[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
+    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
+    #[ORM\CustomIdGenerator(class: 'doctrine.ulid_generator')]
     #[ORM\Column(type: Types\UlidType::NAME, unique: true)]
     private ?Ulid $id = null;
 
@@ -46,33 +46,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $googleSecret = null;
-
-	#[ORM\Column(type: DBALTypes::JSON, nullable: true)]
-	private ?array $backupCodes = null;
-
+    #[ORM\Column(type: DBALTypes::JSON, nullable: true)]
+    private ?array $backupCodes = null;
     #[ORM\Column()]
     private int $trustedVersion = 0;
-	
-	/**
-	 * @var array $roles list<string> The user roles
-	 * @var ?string $password string The hashed password
-	 */
-	public function __construct(
-		#[ORM\Column(length: 255)]
-		private ?string $email = null,
-		#[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EAGER')]
-		#[ORM\JoinColumn(nullable: false)]
-		private ?UserPassport $passport = null,
-		#[ORM\Column]
-		private array $roles = [],
-		#[ORM\Column]
-		private ?string $password = null,
-		#[ORM\Column()]
-		private bool $switchUserAble = false,
-		#[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EAGER')]
-		private ?GitHub $gitHub = null,
-		//private ?string $_hiddenPoly = null,
-	) {}
+
+    /**
+     * @var array $roles list<string> The user roles
+     * @var ?string $password string The hashed password
+     */
+    public function __construct(
+        #[ORM\Column(length: 255)]
+        private ?string $email = null,
+        #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EAGER')]
+        #[ORM\JoinColumn(nullable: false)]
+        private ?UserPassport $passport = null,
+        #[ORM\Column]
+        private array $roles = [],
+        #[ORM\Column]
+        private ?string $password = null,
+        #[ORM\Column()]
+        private bool $switchUserAble = false,
+        #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'], fetch: 'EAGER')]
+        private ?GitHub $gitHub = null,
+        //private ?string $_hiddenPoly = null,
+    ) {
+    }
 
     public function getId(): ?Ulid
     {
@@ -82,8 +81,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function setId(?Ulid $uuid): static
     {
         $this->id = $uuid;
-		
-		return $this;
+
+        return $this;
     }
 
     public function getEmail(): ?string
@@ -166,30 +165,32 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
         return $this;
     }
-	
-	public function isEqualTo(UserInterface $dbUser): bool {
-                  		//\dd($dbUser, $this, $dbUser === $this);
-                  		
-                  		return true
-                  			//&& $dbUser->getUserIdentifier() === $this->getUserIdentifier()
-                  			//&& $dbUser->getId() === $this->getId()
-                  			//&& $dbUser->getRoles() === $this->getRoles()
-                  			//&& $dbUser->isSwitchUserAble() === $this->isSwitchUserAble()
-                  		;
-                  	}
-	
-	/**
-	* PasswordHasherAwareInterface
-	*/
-	public function getPasswordHasherName(): ?string {
-                  		$hasher = null;
-                  		
-                  		if (\in_array('ROLE_ADMIN', $this->getRoles())) {
-                  			$hasher = 'admin_hasher';
-                  		}
-                  		
-                  		return $hasher;
-                  	}
+
+    public function isEqualTo(UserInterface $dbUser): bool
+    {
+                        //\dd($dbUser, $this, $dbUser === $this);
+
+                        return true
+                            //&& $dbUser->getUserIdentifier() === $this->getUserIdentifier()
+                            //&& $dbUser->getId() === $this->getId()
+                            //&& $dbUser->getRoles() === $this->getRoles()
+                            //&& $dbUser->isSwitchUserAble() === $this->isSwitchUserAble()
+                        ;
+    }
+
+    /**
+    * PasswordHasherAwareInterface
+    */
+    public function getPasswordHasherName(): ?string
+    {
+                        $hasher = null;
+
+        if (\in_array('ROLE_ADMIN', $this->getRoles())) {
+            $hasher = 'admin_hasher';
+        }
+
+                        return $hasher;
+    }
 
     public function isSwitchUserAble(): bool
     {
@@ -207,7 +208,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     {
         return $this->apiToken;
     }
-	
+
     public function setApiToken(?string $apiToken): static
     {
         $this->apiToken = $apiToken;
@@ -215,57 +216,60 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
         return $this;
     }
 
-	/*
-		public function getHiddenPoly(): ?string
-		{
-			return $this->_hiddenPoly;
-		}
-		
-		public function setHiddenPoly(?string $_hiddenPoly): static
-		{
-			$this->_hiddenPoly = $_hiddenPoly;
+    /*
+        public function getHiddenPoly(): ?string
+        {
+            return $this->_hiddenPoly;
+        }
 
-			return $this;
-		}
-	*/
+        public function setHiddenPoly(?string $_hiddenPoly): static
+        {
+            $this->_hiddenPoly = $_hiddenPoly;
 
-	public function getGitHub(): ?GitHub
-                  	{
-                  		return $this->gitHub;
-                  	}
+            return $this;
+        }
+    */
 
-	public function setGitHub(?GitHub $gitHub): static
-                  	{
-                  		$this->gitHub = $gitHub;
-                    
-                  		return $this;
-                  	}
-	
+    public function getGitHub(): ?GitHub
+    {
+                        return $this->gitHub;
+    }
+
+    public function setGitHub(?GitHub $gitHub): static
+    {
+                        $this->gitHub = $gitHub;
+
+                        return $this;
+    }
+
     /**
      * Return true if the user should do TOTP authentication.
      */
-    public function isTotpAuthenticationEnabled(): bool {
-		return $this->totpSecret ? true : false;
-	}
+    public function isTotpAuthenticationEnabled(): bool
+    {
+        return $this->totpSecret ? true : false;
+    }
 
     /**
      * Return the user name.
      */
-    public function getTotpAuthenticationUsername(): string {
-		return $this->getUserIdentifier();
-	}
+    public function getTotpAuthenticationUsername(): string
+    {
+        return $this->getUserIdentifier();
+    }
 
     /**
      * Return the configuration for TOTP authentication.
      */
-    public function getTotpAuthenticationConfiguration(): TotpConfigurationInterface|null {
-		return new TotpConfiguration(
-			secret: $this->totpSecret,
-			algorithm: TotpConfiguration::ALGORITHM_SHA1,
-			period: 30,
-			digits: 6,
-		);
-	}
+    public function getTotpAuthenticationConfiguration(): TotpConfigurationInterface|null
+    {
+        return new TotpConfiguration(
+            secret: $this->totpSecret,
+            algorithm: TotpConfiguration::ALGORITHM_SHA1,
+            period: 30,
+            digits: 6,
+        );
+    }
 
     public function getTotpSecret(): ?string
     {
@@ -278,11 +282,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
 
         return $this;
     }
-	
-	public function isGoogleAuthenticatorEnabled(): bool
-                      {
+
+    public function isGoogleAuthenticatorEnabled(): bool
+    {
                           return null !== $this->googleSecret;
-                      }
+    }
 
     public function getGoogleAuthenticatorUsername(): string
     {
@@ -310,25 +314,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     {
         $this->googleSecret = $googleSecret;
     }
-	
-	public function isEmailAuthEnabled(): bool
-                      {
+
+    public function isEmailAuthEnabled(): bool
+    {
                           return true; // This can be a persisted field to switch email code authentication on/off
-                      }
+    }
 
     public function getEmailAuthRecipient(): string
     {
         return $this->getEmail();
     }
-	
-	public function getEmailAuthCode(): string
-                      {
-                          if (null === $this->emailAuthCode) {
-                              throw new \LogicException('The email authentication code was not set');
-                          }
-                  
+
+    public function getEmailAuthCode(): string
+    {
+        if (null === $this->emailAuthCode) {
+            throw new \LogicException('The email authentication code was not set');
+        }
+
                           return $this->emailAuthCode;
-                      }
+    }
 
     public function setEmailAuthCode(string $emailAuthCode): void
     {
@@ -343,11 +347,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function setBackupCodes(?array $backupCodes): static
     {
         $this->backupCodes = $backupCodes;
-
         return $this;
     }
-	
-	/**
+
+    /**
      * Check if it is a valid backup code.
      */
     public function isBackupCode(string $code): bool
@@ -361,7 +364,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function invalidateBackupCode(string $code): void
     {
         $key = \array_search($code, $this->backupCodes);
-        if ($key !== false){
+        if ($key !== false) {
             unset($this->backupCodes[$key]);
         }
     }
@@ -371,19 +374,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
      */
     public function addBackUpCode($backUpCode): void
     {
-		if (\is_array($backUpCode)) {
-			foreach($backUpCode as $bc) {
-				$this->addBackUpCode($bc);
-				continue;
-			}
-			return;
-		}
-		
-		if (\is_scalar($backUpCode)) {
-			if (null === $this->backupCodes || !\in_array($backUpCode, $this->backupCodes)) {
-				$this->backupCodes[] = $backUpCode;
-			}			
-		}
+        if (\is_array($backUpCode)) {
+            foreach ($backUpCode as $bc) {
+                $this->addBackUpCode($bc);
+                continue;
+            }
+            return;
+        }
+
+        if (\is_scalar($backUpCode)) {
+            if (null === $this->backupCodes || !\in_array($backUpCode, $this->backupCodes)) {
+                $this->backupCodes[] = $backUpCode;
+            }
+        }
     }
 
     public function getTrustedVersion(): int
@@ -394,19 +397,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     public function setTrustedVersion(int $trustedVersion): static
     {
         $this->trustedVersion = $trustedVersion;
-
         return $this;
     }
-	
+
     public function getTrustedTokenVersion(): int
     {
         return $this->trustedVersion;
     }
-	
+
     public function invalidateTrustedTokenCookie(): static
     {
         ++$this->trustedVersion;
-		
-		return $this;
+
+        return $this;
     }
 }

@@ -45,31 +45,32 @@ class StringService extends GrinWayStringService
             grinWayServiceSlashOfIpRegex: $grinWayServiceSlashOfIpRegex,
         );
     }
-	
-	//TODO: take isEnabledLocale
-	public static function isEnabledLocale(?string $needleLocale, array $enabledLocales): bool {
-		if (empty($needleLocale)) {
-			return false;
-		}
-		
-		if (\preg_match('~^[^a-z0-9]~i', $needleLocale)) {
-			return false;
-		}
-		
-		if (\preg_match('~[^a-z0-9]$~i', $needleLocale)) {
-			return false;
-		}
-		
-		$needleLocale = (string) u($needleLocale)->replace('-', '_');
-		$needleLocaleFirstPart = \explode('_', $needleLocale);
-		$needleLocaleFirstPart = \mb_strtolower($needleLocaleFirstPart[0]);
-		
-		foreach($enabledLocales as $enabledLocale) {
-			$enabledLocale = \mb_strtolower($enabledLocale);
-			if (null != $needleLocale && \str_starts_with($enabledLocale, $needleLocaleFirstPart)) {
-				return true;
-			}
-		}
-		return false;
-	}
+
+    //TODO: take isEnabledLocale
+    public static function isEnabledLocale(?string $needleLocale, array $enabledLocales): bool
+    {
+        if (empty($needleLocale)) {
+            return false;
+        }
+
+        if (\preg_match('~^[^a-z0-9]~i', $needleLocale)) {
+            return false;
+        }
+
+        if (\preg_match('~[^a-z0-9]$~i', $needleLocale)) {
+            return false;
+        }
+
+        $needleLocale = (string) u($needleLocale)->replace('-', '_');
+        $needleLocaleFirstPart = \explode('_', $needleLocale);
+        $needleLocaleFirstPart = \mb_strtolower($needleLocaleFirstPart[0]);
+
+        foreach ($enabledLocales as $enabledLocale) {
+            $enabledLocale = \mb_strtolower($enabledLocale);
+            if (null != $needleLocale && \str_starts_with($enabledLocale, $needleLocaleFirstPart)) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

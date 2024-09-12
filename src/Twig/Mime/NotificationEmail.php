@@ -5,15 +5,12 @@ namespace App\Twig\Mime;
 use Symfony\Bridge\Twig\Mime\NotificationEmail as SymfonyNotificationEmail;
 use Symfony\Component\Mime\Header\Headers;
 
-// TODO: current
-// C:\Users\user\Desktop\drafts\vendor\symfony\twig-bridge\Mime
-// fix headers
 class NotificationEmail extends SymfonyNotificationEmail
 {
-	public function getPreparedHeaders(): Headers
+    public function getPreparedHeaders(): Headers
     {
         $headers = clone $this->getHeaders();
-		
+
         if (!$headers->has('From')) {
             if (!$headers->has('Sender')) {
                 throw new LogicException('An email must have a "From" or a "Sender" header.');

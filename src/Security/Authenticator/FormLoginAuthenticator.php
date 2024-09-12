@@ -30,77 +30,81 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Badge\PreAuthenticate
 use Symfony\Component\PasswordHasher\Hasher\PasswordHasherFactoryInterface;
 use App\Security\Badge\ModifyUserPropBadge;
 
-class FormLoginAuthenticator extends AbstractLoginFormAuthenticator {
-	
-	public function __construct(
-		private readonly PasswordHasherFactoryInterface $hasherFactory,
-		private $get,
-	) {}
-	
-	public function createToken(Passport $passport, string $firewallName): TokenInterface
-    {
-		$token = $passport->getAttribute('token');
-		
-        return new FormLoginAuthenticationToken(
-			$passport->getUser(),
-			$firewallName,
-			$passport->getUser()->getRoles(),
-			token: $token,
-		);
+class FormLoginAuthenticator extends AbstractLoginFormAuthenticator
+{
+    public function __construct(
+        private readonly PasswordHasherFactoryInterface $hasherFactory,
+        private $get,
+    ) {
     }
-	
-	/**
-	* AbstractLoginFormAuthenticator
-	*/
-	protected function getLoginUrl(Request $request): string {
-		return '/login';
-	}
-	
-    public function authenticate(Request $request): Passport {
-		
-		$csrfTokenId = 'youWillNotHackMe';
-		$userIdentifier = $request->get('_username');
-		$csrfToken = $request->get('_csrf_token');
-		$plainPassword = $request->get('_password');
-		$isRememberMe = $request->get('_remember_me');
-		$alwaysRememberMe = ($this->get)(new SecurityAlwaysRememberMe());
-		
-		$userBadge = new UserBadge(
-			userIdentifier: $userIdentifier,
-		);
-		
-		$credential = new PasswordCredentials($plainPassword);
-		
-		$badges = [
-			new CsrfTokenBadge($csrfTokenId, $csrfToken),
-			/*
-			new ModifyUserPropBadge(
-				'passport.lastName',
-				static fn($origin) => \mb_strtoupper($origin),
-			),
-			new PreAuthenticatedUserBadge(),
-			*/
-		];
-		
-		if ($alwaysRememberMe || !empty($isRememberMe)) {
-			$badges[] = (new RememberMeBadge)->enable();
-		}
-		
-		$passport = new Passport(
-			userBadge: $userBadge,
-			credentials: $credential,
-			badges: $badges,
-		);
 
-		$requestBasedToken = $userIdentifier.\md5($request->attributes->get('_router')).$csrfToken;
-		$requestBasedToken = $this->hasherFactory->getPasswordHasher('low_cost_bcrypt')->hash($requestBasedToken);
-		$passport->setAttribute('token', $requestBasedToken);
-		
-		return $passport;
-	}
-	
-	public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response {
-		return null;
-		return new RedirectResponse('app_home_home');
-	}
+    public function createToken(Passport $passport, string $firewallName): TokenInterface
+    {
+        $token = $passport->getAttribute('token');
+
+        return new FormLoginAuthenticationToken(
+            $passport->getUser(),
+            $firewallName,
+            $passport->getUser()->getRoles(),
+            token: $token,
+        );
+    }
+
+    /**
+    * AbstractLoginFormAuthenticator
+    */
+    protected function getLoginUrl(Request $request): string
+    {
+        return '/login';
+    }
+
+    public function authenticate(Request $request): Passport
+    {
+
+        $csrfTokenId = 'youWillNotHackMe';
+        $userIdentifier = $request->get('_username');
+        $csrfToken = $request->get('_csrf_token');
+        $plainPassword = $request->get('_password');
+        $isRememberMe = $request->get('_remember_me');
+        $alwaysRememberMe = ($this->get)(new SecurityAlwaysRememberMe());
+
+        $userBadge = new UserBadge(
+            userIdentifier: $userIdentifier,
+        );
+
+        $credential = new PasswordCredentials($plainPassword);
+
+        $badges = [
+            new CsrfTokenBadge($csrfTokenId, $csrfToken),
+            /*
+            new ModifyUserPropBadge(
+                'passport.lastName',
+                static fn($origin) => \mb_strtoupper($origin),
+            ),
+            new PreAuthenticatedUserBadge(),
+            */
+        ];
+
+        if ($alwaysRememberMe || !empty($isRememberMe)) {
+            $badges[] = (new RememberMeBadge())->enable();
+        }
+
+        $passport = new Passport(
+            userBadge: $userBadge,
+            credentials: $credential,
+            badges: $badges,
+        );
+
+        $requestBasedToken = $userIdentifier . \md5($request->attributes->get('_router')) . $csrfToken;
+        $requestBasedToken = $this->hasherFactory->getPasswordHasher('low_cost_bcrypt')->hash($requestBasedToken);
+        $passport->setAttribute('token', $requestBasedToken);
+
+        return $passport;
+    }
+
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    {
+        return null;
+        return new RedirectResponse('app_home_home');
+    }
 }

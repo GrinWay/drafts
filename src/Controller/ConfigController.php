@@ -16,50 +16,51 @@ use App\Service;
 #[Route('/config')]
 class ConfigController extends AbstractController
 {
-	public function __construct(
-		private readonly Service\StringService $stringService,
-		private readonly PropertyAccessorInterface $pa,
-		private readonly string $absCustomConfigParametersDir,
-		private readonly string $absConfigParametersDir,
-	) {}
-	
+    public function __construct(
+        private readonly Service\StringService $stringService,
+        private readonly PropertyAccessorInterface $pa,
+        private readonly string $absCustomConfigParametersDir,
+        private readonly string $absConfigParametersDir,
+    ) {
+    }
+
     #[Route('/edit/mailer', name: 'app_config_edit_mailer')]
     public function index(
-		Request $request,
-	): Response {
-		$path = $this->stringService->getPath(
-			$this->absCustomConfigParametersDir,
-			'mailer.yaml',
-		);
-		$data = Yaml::parseFile($path);
-		
-		$options = [];
-		
-		$form = $this->createForm(FormType\MailerConfigFormType::class, $data, $options);
-		
-		$form->handleRequest($request);
-		
-		if ($form->isSubmitted() && $form->isValid()) {
-			if (true === $form->get('default')->getData()) {
-				$immutablePath = $this->stringService->getPath(
-					$this->absConfigParametersDir,
-					'mailer.yaml',
-				);
-				$immutableParametersData = $this->pa->getValue(Yaml::parseFile($immutablePath), '[parameters]');
-				$parametersData = $this->pa->getValue($data, '[parameters]');
-				$data = [
-					'parameters' => \array_intersect_key($immutableParametersData, $parametersData),
-				];
-			} else {
-				$data = $form->getData();
-			}
-			$content = Yaml::dump($data);
-			\file_put_contents($path, $content);
-			return $this->redirectToRoute($request->attributes->get('_route', 'app_home_home'));
-		}
-		
+        Request $request,
+    ): Response {
+        $path = $this->stringService->getPath(
+            $this->absCustomConfigParametersDir,
+            'mailer.yaml',
+        );
+        $data = Yaml::parseFile($path);
+
+        $options = [];
+
+        $form = $this->createForm(FormType\MailerConfigFormType::class, $data, $options);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            if (true === $form->get('default')->getData()) {
+                $immutablePath = $this->stringService->getPath(
+                    $this->absConfigParametersDir,
+                    'mailer.yaml',
+                );
+                $immutableParametersData = $this->pa->getValue(Yaml::parseFile($immutablePath), '[parameters]');
+                $parametersData = $this->pa->getValue($data, '[parameters]');
+                $data = [
+                    'parameters' => \array_intersect_key($immutableParametersData, $parametersData),
+                ];
+            } else {
+                $data = $form->getData();
+            }
+            $content = Yaml::dump($data);
+            \file_put_contents($path, $content);
+            return $this->redirectToRoute($request->attributes->get('_route', 'app_home_home'));
+        }
+
         return $this->render('config/edit/mailer.html.twig', [
-			'form' => $form,
-		]);
+            'form' => $form,
+        ]);
     }
 }

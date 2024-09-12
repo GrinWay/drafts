@@ -7,17 +7,17 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlLoader extends FileLoader
 {
-	public function load(mixed $resource, ?string $type = null): mixed
+    public function load(mixed $resource, ?string $type = null): mixed
     {
-		if (\is_array($resource)) {
-			$res = [];
-			foreach($resource as $resource) {
-				$res[] = $this->load($resource, $type);				
-			}
-			return $res;
-		}
-		
-		return Yaml::parseFile($resource);
+        if (\is_array($resource)) {
+            $res = [];
+            foreach ($resource as $resource) {
+                $res[] = $this->load($resource, $type);
+            }
+            return $res;
+        }
+
+        return Yaml::parseFile($resource);
     }
 
     public function supports($resource, $type = null): bool

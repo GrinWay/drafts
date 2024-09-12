@@ -28,48 +28,48 @@ class RegistrationController extends AbstractController
 {
     #[Route('/register', name: 'app_register')]
     public function register(
-		Request $request,
-		UserPasswordHasherInterface $userPasswordHasher,
-		EntityManagerInterface $entityManager,
-		Security $security,
-		CsrfTokenManagerInterface $csrfTokenManager,
-		PropertyAccessorInterface $propertyAccessor,
-	): Response {
+        Request $request,
+        UserPasswordHasherInterface $userPasswordHasher,
+        EntityManagerInterface $entityManager,
+        Security $security,
+        CsrfTokenManagerInterface $csrfTokenManager,
+        PropertyAccessorInterface $propertyAccessor,
+    ): Response {
         $user = new User(
-			passport: new UserPassport(
-				name: 's',
-				lastName: 's',
-			),
-			email: 'ss',
-			//_hiddenPoly: '_hidden',
-		);
+            passport: new UserPassport(
+                name: 's',
+                lastName: 's',
+            ),
+            email: 'ss',
+            //_hiddenPoly: '_hidden',
+        );
         $form = $this->createForm(
-			RegistrationFormType::class,
-			// $user,
-		);
-		//\dump($form->get('_csrf_token')?->getData());		
-		$form->handleRequest($request);
-		if ($form->isSubmitted() && $form->isValid()) {
-			/*
-			// encode the plain password
+            RegistrationFormType::class,
+            // $user,
+        );
+        //\dump($form->get('_csrf_token')?->getData());
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            /*
+            // encode the plain password
             $plainPassword = $form->get('plainPassword')->getData();
-			$hashedPassword = $userPasswordHasher->hashPassword(
-				$user,
-				$plainPassword,
-			);
-			$user->setPassword($hashedPassword);
-			*/
-			$user = $form->getData();
+            $hashedPassword = $userPasswordHasher->hashPassword(
+                $user,
+                $plainPassword,
+            );
+            $user->setPassword($hashedPassword);
+            */
+            $user = $form->getData();
 
             $entityManager->persist($user);
-			//\dd($user);
+            //\dd($user);
             $entityManager->flush();
 
-			$response = $security->login(
-				$user,
-				'form_login',//FormLoginAuthenticator::class,
-			);
-			
+            $response = $security->login(
+                $user,
+                'form_login', //FormLoginAuthenticator::class,
+            );
+
             return $response ?? $this->redirectToRoute('app_home_home');
         }
 

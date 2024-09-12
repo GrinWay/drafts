@@ -19,11 +19,11 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 class TestLargeFormType extends AbstractFormType
 {
     public function __construct(
-		PropertyAccessorInterface $pa,
-	) {
-		parent::__construct(
-			pa: $pa,
-		);
+        PropertyAccessorInterface $pa,
+    ) {
+        parent::__construct(
+            pa: $pa,
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -33,22 +33,22 @@ class TestLargeFormType extends AbstractFormType
                 'house_number_styled' => false,
                 'address_list' => null,
             ])
-			->setAllowedTypes('address_list', ['array', 'null'])
+            ->setAllowedTypes('address_list', ['array', 'null'])
         ;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $addressList = $options['address_list'];
-		$addressOptions = ['help' => 'Help info: this is the address'];
-	
+        $addressOptions = ['help' => 'Help info: this is the address'];
+
         if (null !== $addressList) {
             $builder
             ->add(
                 'address',
                 FormType\ChoiceType::class,
                 options: [
-					...$addressOptions,
+                    ...$addressOptions,
                     'choices' => $addressList,
                 ]
             );
@@ -58,27 +58,27 @@ class TestLargeFormType extends AbstractFormType
                 'address',
                 FormType\TextType::class,
                 options: [
-					...$addressOptions,
+                    ...$addressOptions,
                 ]
             );
         }
-		
-		$houseNumberOptions = [
-			'label' => 'House number',
-		];
-		if (true === $options['house_number_styled']) {
-			$houseNumberOptions['block_prefix'] = 'styled_theme';
-		}
+
+        $houseNumberOptions = [
+            'label' => 'House number',
+        ];
+        if (true === $options['house_number_styled']) {
+            $houseNumberOptions['block_prefix'] = 'styled_theme';
+        }
 
         $builder
             ->add(
                 'car',
                 FormType\TextType::class,
                 options: [
-					'attr' => [
-						'class' => 'w-100 mb-3',
-						'style' => 'display: inline-block;',
-					],
+                    'attr' => [
+                        'class' => 'w-100 mb-3',
+                        'style' => 'display: inline-block;',
+                    ],
                 ]
             )
             ->add(
@@ -90,8 +90,8 @@ class TestLargeFormType extends AbstractFormType
                 'descriptionForOld',
                 FormType\TextareaType::class,
                 options: [
-					'block_name' => 'description_for_old',
-					'block_prefix' => 'styled_theme',
+                    'block_name' => 'description_for_old',
+                    'block_prefix' => 'styled_theme',
                 ]
             )
         ;

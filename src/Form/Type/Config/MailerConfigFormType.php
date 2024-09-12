@@ -26,62 +26,67 @@ use Symfony\Component\Form\FormInterface;
 class MailerConfigFormType extends AbstractFormType
 {
     public function __construct(
-		PropertyAccessorInterface $pa,
-		private readonly CustomConfigParametersDataMapper $customConfigParametersDataMapper,
-		private readonly ParameterBagInterface $parameterBag,
-	) {
-		parent::__construct(
-			pa: $pa,
-		);
-	}
-	
-	public function buildForm(FormBuilderInterface $builder, array $options): void
-    {	
-		$onlyCountries = $this->pa->getValue($options, '[only]');
-		
-		$builder
-			->add($builder->create('APP_MAILER_HEADER_FROM_TITLE', FormType\TextType::class,
-				options: [
-					'label' => 'От кого',
-					'constraints' => [
-						//new Constraints\NotBlank(),
-					],
-					'help' => 'Лучше используй только буквы и цифры',
-				],
-			)->addEventListener(FormEvents::PRE_SUBMIT, function ($event): void {
-				$value = $event->getData();
-				$value = \preg_replace('~[\(\)\{\}\[\]\<\>@]~i', '', $value);
-				$event->setData($value);
-			})
-			)
-			->add('APP_MAILER_HEADER_SUBJECT', FormType\TextType::class,
-				options: [
-					'label' => 'Тема',
-					'constraints' => [
-						new Constraints\NotBlank(),
-					],
-				],
-			)
-			->add('default', FormType\CheckboxType::class,
-				options: [
-					'data' => false,
-					'label' => 'Использовать данные по умолчанию',
-				],
-			)
-			->setMethod('PATCH')
-		;
-		
-		$builder->setDataMapper($this->customConfigParametersDataMapper->setRequired($this->pa, $this->parameterBag));
-	}
-	
+        PropertyAccessorInterface $pa,
+        private readonly CustomConfigParametersDataMapper $customConfigParametersDataMapper,
+        private readonly ParameterBagInterface $parameterBag,
+    ) {
+        parent::__construct(
+            pa: $pa,
+        );
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $onlyCountries = $this->pa->getValue($options, '[only]');
+
+        $builder
+            ->add($builder->create(
+                'APP_MAILER_HEADER_FROM_TITLE',
+                FormType\TextType::class,
+                options: [
+                    'label' => 'От кого',
+                    'constraints' => [
+                        //new Constraints\NotBlank(),
+                    ],
+                    'help' => 'Лучше используй только буквы и цифры',
+                ],
+            )->addEventListener(FormEvents::PRE_SUBMIT, function ($event): void {
+                $value = $event->getData();
+                $value = \preg_replace('~[\(\)\{\}\[\]\<\>@]~i', '', $value);
+                $event->setData($value);
+            }))
+            ->add(
+                'APP_MAILER_HEADER_SUBJECT',
+                FormType\TextType::class,
+                options: [
+                    'label' => 'Тема',
+                    'constraints' => [
+                        new Constraints\NotBlank(),
+                    ],
+                ],
+            )
+            ->add(
+                'default',
+                FormType\CheckboxType::class,
+                options: [
+                    'data' => false,
+                    'label' => 'Использовать данные по умолчанию',
+                ],
+            )
+            ->setMethod('PATCH')
+        ;
+
+        $builder->setDataMapper($this->customConfigParametersDataMapper->setRequired($this->pa, $this->parameterBag));
+    }
+
     public function configureOptions(OptionsResolver $resolver): void
     {
-		$resolver
-			->setDefaults([
-				'attr' => [
-					'novalidate' => 'novalidate',
-				],
-			])
-		;
+        $resolver
+            ->setDefaults([
+                'attr' => [
+                    'novalidate' => 'novalidate',
+                ],
+            ])
+        ;
     }
 }

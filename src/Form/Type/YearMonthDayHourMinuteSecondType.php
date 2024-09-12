@@ -23,96 +23,108 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 class YearMonthDayHourMinuteSecondType extends AbstractFormType
 {
-	public function __construct(
-		PropertyAccessorInterface $pa,
-		private readonly YearMonthDayHourMinuteSecondDataMapper $yearMonthDayHourMinuteSecondDataMapper,
-	) {
-		parent::__construct(
-			pa: $pa,
-		);
-	}
-	
+    public function __construct(
+        PropertyAccessorInterface $pa,
+        private readonly YearMonthDayHourMinuteSecondDataMapper $yearMonthDayHourMinuteSecondDataMapper,
+    ) {
+        parent::__construct(
+            pa: $pa,
+        );
+    }
+
     public function configureOptions(OptionsResolver $resolver): void
     {
-		$carbonNormalizer = static function(OptionsResolver $_, $value) {
-			CarbonService::throwIfNotTypeByString($value);
-			return $value;
-		};
-		
-		$resolver
-			->setDefaults([
-				'empty_data' => null,
-				'carbon_class' => CarbonImmutable::class,
-			])
-			->addNormalizer('carbon_class', $carbonNormalizer)
-		;
+        $carbonNormalizer = static function (OptionsResolver $_, $value) {
+            CarbonService::throwIfNotTypeByString($value);
+            return $value;
+        };
+
+        $resolver
+            ->setDefaults([
+                'empty_data' => null,
+                'carbon_class' => CarbonImmutable::class,
+            ])
+            ->addNormalizer('carbon_class', $carbonNormalizer)
+        ;
     }
-	
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-		$builder
-			->add('year', FormType\IntegerType::class, 
-				options: [
-					'constraints' => [
-						new Constraints\NotBlank(groups: ['date']),
-						new Constraints\Type('integer', groups: ['date']),
-						new Constraints\Positive(groups: ['date']),
-					],
-				],
-			)
-			->add('month', FormType\IntegerType::class, 
-				options: [
-					'constraints' => [
-						//new Constraints\NotBlank(groups: ['date']),
-						new Constraints\Type('integer', groups: ['date']),
-						new Constraints\Positive(groups: ['date']),
-						new Constraints\Range(min: 1, max: 12, groups: ['date']),
-					],
-				],
-			)
-			->add('day', FormType\IntegerType::class, 
-				options: [
-					'constraints' => [
-						//new Constraints\NotBlank(groups: ['date']),
-						new Constraints\Type('integer', groups: ['date']),
-						new Constraints\Positive(groups: ['date']),
-						new Constraints\Range(min: 1, max: 31, groups: ['date']),
-					],
-				],
-			)
-			->add('hour', FormType\IntegerType::class, 
-				options: [
-					'constraints' => [
-						//new Constraints\NotBlank(groups: ['time']),
-						new Constraints\Type('integer', groups: ['time']),
-						new Constraints\Positive(groups: ['time']),
-						new Constraints\Range(min: 0, max: 24, groups: ['time']),
-					],
-				],
-			)
-			->add('minute', FormType\IntegerType::class, 
-				options: [
-					'constraints' => [
-						//new Constraints\NotBlank(groups: ['time']),
-						new Constraints\Type('integer', groups: ['time']),
-						new Constraints\Positive(groups: ['time']),
-						new Constraints\Range(min: 0, max: 60, groups: ['time']),
-					],],
-			)
-			->add('second', FormType\IntegerType::class, 
-				options: [
-					'constraints' => [
-						//new Constraints\NotBlank(groups: ['time']),
-						new Constraints\Type('integer', groups: ['time']),
-						new Constraints\Positive(groups: ['time']),
-						new Constraints\Range(min: 0, max: 60, groups: ['time']),
-					],
-				],
-			)
-			->setDataMapper(
-				$this->yearMonthDayHourMinuteSecondDataMapper
-				->setCarbonClass($options['carbon_class'])
-			)
-		;
+        $builder
+            ->add(
+                'year',
+                FormType\IntegerType::class,
+                options: [
+                    'constraints' => [
+                        new Constraints\NotBlank(groups: ['date']),
+                        new Constraints\Type('integer', groups: ['date']),
+                        new Constraints\Positive(groups: ['date']),
+                    ],
+                ],
+            )
+            ->add(
+                'month',
+                FormType\IntegerType::class,
+                options: [
+                    'constraints' => [
+                        //new Constraints\NotBlank(groups: ['date']),
+                        new Constraints\Type('integer', groups: ['date']),
+                        new Constraints\Positive(groups: ['date']),
+                        new Constraints\Range(min: 1, max: 12, groups: ['date']),
+                    ],
+                ],
+            )
+            ->add(
+                'day',
+                FormType\IntegerType::class,
+                options: [
+                    'constraints' => [
+                        //new Constraints\NotBlank(groups: ['date']),
+                        new Constraints\Type('integer', groups: ['date']),
+                        new Constraints\Positive(groups: ['date']),
+                        new Constraints\Range(min: 1, max: 31, groups: ['date']),
+                    ],
+                ],
+            )
+            ->add(
+                'hour',
+                FormType\IntegerType::class,
+                options: [
+                    'constraints' => [
+                        //new Constraints\NotBlank(groups: ['time']),
+                        new Constraints\Type('integer', groups: ['time']),
+                        new Constraints\Positive(groups: ['time']),
+                        new Constraints\Range(min: 0, max: 24, groups: ['time']),
+                    ],
+                ],
+            )
+            ->add(
+                'minute',
+                FormType\IntegerType::class,
+                options: [
+                    'constraints' => [
+                        //new Constraints\NotBlank(groups: ['time']),
+                        new Constraints\Type('integer', groups: ['time']),
+                        new Constraints\Positive(groups: ['time']),
+                        new Constraints\Range(min: 0, max: 60, groups: ['time']),
+                    ],],
+            )
+            ->add(
+                'second',
+                FormType\IntegerType::class,
+                options: [
+                    'constraints' => [
+                        //new Constraints\NotBlank(groups: ['time']),
+                        new Constraints\Type('integer', groups: ['time']),
+                        new Constraints\Positive(groups: ['time']),
+                        new Constraints\Range(min: 0, max: 60, groups: ['time']),
+                    ],
+                ],
+            )
+            ->setDataMapper(
+                $this->yearMonthDayHourMinuteSecondDataMapper
+                ->setCarbonClass($options['carbon_class'])
+            )
+        ;
     }
 }

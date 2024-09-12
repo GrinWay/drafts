@@ -12,24 +12,25 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 
-class AddValidatorToEmailTypeExtension extends AbstractTypeExtension {
-	
-	public function __construct (
-	) {}
-	
-	public static function getExtendedTypes(): iterable {
-		yield FormType\EmailType::class;
-	}
-	
-	public function configureOptions(OptionsResolver $resolver): void
+class AddValidatorToEmailTypeExtension extends AbstractTypeExtension
+{
+    public function __construct()
     {
-		$resolver
-			->setDefaults([
-				'constraints' => [
-					new Constraints\Email(),
-				],
-			])
-		;
     }
-	
+
+    public static function getExtendedTypes(): iterable
+    {
+        yield FormType\EmailType::class;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver
+            ->setDefaults([
+                'constraints' => [
+                    new Constraints\Email(),
+                ],
+            ])
+        ;
+    }
 }

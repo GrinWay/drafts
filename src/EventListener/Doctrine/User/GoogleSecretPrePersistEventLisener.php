@@ -28,10 +28,10 @@ class GoogleSecretPrePersistEventLisener
         User $obj,
         PrePersistEventArgs $args,
     ): void {
-		if (null === $this->googleAuthenticator) {
-			return;
-		}
-		$secret = $this->googleAuthenticator->generateSecret();
+        if (null === $this->googleAuthenticator) {
+            return;
+        }
+        $secret = $this->googleAuthenticator->generateSecret();
         $obj->setGoogleSecret($secret);
     }
 }

@@ -16,7 +16,7 @@ use App\Contract\EventListener\Form\InvokeableFormEventListenerInterface;
 class PreSubmitFormEventLisener
 {
     public function __invoke(
-		FormEvent $e,
+        FormEvent $e,
     ): void {
         \dump('__GLOBAL__ PRE SUBMIT EVENT');
     }

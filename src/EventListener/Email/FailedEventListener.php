@@ -12,6 +12,6 @@ class FailedEventListener
     public function __invoke(
         FailedMessageEvent $event,
     ): void {
-		\dump($event->getError());
-	}
+        \dump($event->getError());
+    }
 }

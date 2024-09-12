@@ -20,72 +20,73 @@ use App\Service\ConfigService;
 // TODO: RememberMeSignatureUserProvider
 class RememberMeSignatureUserProvider implements UserProviderInterface
 {
-	public function __construct(
-		private $inner,
-		private readonly UserRepository $userRepo,
-		private readonly ConfigService $configService,
-		private $pa,
-		private $securityLogger,
-	) {
-	}
-	
+    public function __construct(
+        private $inner,
+        private readonly UserRepository $userRepo,
+        private readonly ConfigService $configService,
+        private $pa,
+        private $securityLogger,
+    ) {
+    }
+
     public function loadUserByIdentifier(string $identifier): UserInterface
     {
-		return $this->inner->loadUserByIdentifier($identifier);
+        return $this->inner->loadUserByIdentifier($identifier);
     }
 
     public function refreshUser(UserInterface $sessionDeserializedUser): UserInterface
     {
-		$this->invalidateUserAuthorizationIfDoctrineWasChangedByRememberMeSignature($sessionDeserializedUser);
-		
-		return $this->inner->refreshUser($sessionDeserializedUser);
+        $this->invalidateUserAuthorizationIfDoctrineWasChangedByRememberMeSignature($sessionDeserializedUser);
+
+        return $this->inner->refreshUser($sessionDeserializedUser);
     }
 
     public function supportsClass(string $class): bool
     {
-		return $this->inner->supportsClass($class);
+        return $this->inner->supportsClass($class);
     }
 
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
-		$this->inner->upgradePassword($user, $newHashedPassword);
-	}
-	
-	/**
-	* @throws UserNotFoundException (If remember me signature properties from db was changed)
-	*/
-	private function invalidateUserAuthorizationIfDoctrineWasChangedByRememberMeSignature(UserInterface $sessionDeserializedUser): void {
-		$doctrineUser = $this->userRepo->find($sessionDeserializedUser->getId());
-		
-		if (null == $doctrineUser) {
-			throw new UserNotFoundException('User was not downloaded from database.');
-		}
-		
-		$rememberMePropertyAccesssorStrings = $this->configService->getPackageValue(
-			packName:					'security.yaml',
-			propertyAccessString:		'[security][firewalls][main][remember_me][signature_properties]',
-			packRelPath:				'config/packages',
-		);
-		
-		if (empty($rememberMePropertyAccesssorStrings)) {
-			return;
-		}
-		
-		foreach($rememberMePropertyAccesssorStrings as $paString) {
-			$sessionValue = $this->pa->getValue($sessionDeserializedUser, $paString);
-			$doctrineValue = $this->pa->getValue($doctrineUser, $paString);
+        $this->inner->upgradePassword($user, $newHashedPassword);
+    }
 
-			if ($sessionValue != $doctrineValue) {
-				$message = \sprintf(
-					'Property "%1$s" of "%2$s" are not equal. session: "%3$s" != doctrine: "%4$s".',
-					$paString,
-					User::class,
-					$sessionValue,
-					$doctrineValue,
-				);
-				throw new UserNotFoundException($message);
-				//$this->securityLogger->notice($message);
-			}
-		}
-	}
+    /**
+    * @throws UserNotFoundException (If remember me signature properties from db was changed)
+    */
+    private function invalidateUserAuthorizationIfDoctrineWasChangedByRememberMeSignature(UserInterface $sessionDeserializedUser): void
+    {
+        $doctrineUser = $this->userRepo->find($sessionDeserializedUser->getId());
+
+        if (null == $doctrineUser) {
+            throw new UserNotFoundException('User was not downloaded from database.');
+        }
+
+        $rememberMePropertyAccesssorStrings = $this->configService->getPackageValue(
+            packName:                   'security.yaml',
+            propertyAccessString:       '[security][firewalls][main][remember_me][signature_properties]',
+            packRelPath:                'config/packages',
+        );
+
+        if (empty($rememberMePropertyAccesssorStrings)) {
+            return;
+        }
+
+        foreach ($rememberMePropertyAccesssorStrings as $paString) {
+            $sessionValue = $this->pa->getValue($sessionDeserializedUser, $paString);
+            $doctrineValue = $this->pa->getValue($doctrineUser, $paString);
+
+            if ($sessionValue != $doctrineValue) {
+                $message = \sprintf(
+                    'Property "%1$s" of "%2$s" are not equal. session: "%3$s" != doctrine: "%4$s".',
+                    $paString,
+                    User::class,
+                    $sessionValue,
+                    $doctrineValue,
+                );
+                throw new UserNotFoundException($message);
+                //$this->securityLogger->notice($message);
+            }
+        }
+    }
 }

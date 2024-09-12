@@ -20,41 +20,44 @@ use App\Entity\Product\Product;
 class ProductFormType extends AbstractFormType
 {
     public function __construct(
-		PropertyAccessorInterface $pa,
-	) {
-		parent::__construct(
-			pa: $pa,
-		);
+        PropertyAccessorInterface $pa,
+    ) {
+        parent::__construct(
+            pa: $pa,
+        );
     }
 
-	public function buildForm(FormBuilderInterface $builder, array $options): void
-	{
-		$productTypes = (new \ReflectionClass(ProductTypes::class))->getConstants();
-		
-		$builder
-			->add('id',
-				options: [
-					'disabled' => true,
-				],
-			)
-			->add('name')
-			->add('description')
-			->add('type', FormType\ChoiceType::class,
-				options: [
-					'mapped' => false,
-					'choices' => $productTypes,
-				],
-			)
-		;
-	}
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $productTypes = (new \ReflectionClass(ProductTypes::class))->getConstants();
+
+        $builder
+            ->add(
+                'id',
+                options: [
+                    'disabled' => true,
+                ],
+            )
+            ->add('name')
+            ->add('description')
+            ->add(
+                'type',
+                FormType\ChoiceType::class,
+                options: [
+                    'mapped' => false,
+                    'choices' => $productTypes,
+                ],
+            )
+        ;
+    }
 
     public function configureOptions(OptionsResolver $resolver)
     {
 
         $resolver
             ->setDefaults([
-				'data_class' => Product::class,
-			])
+                'data_class' => Product::class,
+            ])
         ;
     }
 }

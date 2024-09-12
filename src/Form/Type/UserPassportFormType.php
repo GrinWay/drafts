@@ -14,23 +14,25 @@ class UserPassportFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name',
-				options: [
-					'attr' => [
-						'autocomplete' => 'off',
-						'autofocus' => 'autofocus',
-					],
-					'translation_domain' => 'app.security+intl-icu',
-				]
-			)
-            ->add('lastName',
-				options: [
-					'attr' => [
-						'autocomplete' => 'off',
-					],
-					'translation_domain' => 'app.security+intl-icu',
-				]
-			)
+            ->add(
+                'name',
+                options: [
+                    'attr' => [
+                        'autocomplete' => 'off',
+                        'autofocus' => 'autofocus',
+                    ],
+                    'translation_domain' => 'app.security+intl-icu',
+                ]
+            )
+            ->add(
+                'lastName',
+                options: [
+                    'attr' => [
+                        'autocomplete' => 'off',
+                    ],
+                    'translation_domain' => 'app.security+intl-icu',
+                ]
+            )
         ;
     }
 
@@ -38,7 +40,7 @@ class UserPassportFormType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => UserPassport::class,
-			'label_format' => '%name%',
+            'label_format' => '%name%',
         ]);
     }
 }

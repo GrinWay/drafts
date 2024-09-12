@@ -8,19 +8,19 @@ use App\Extension\ExpressionLanguage\ExpressionLanguageStaticFunctions;
 
 class ValidatorExpLangFunctionProvider implements ExpressionFunctionProviderInterface
 {
-	public function __construct(
-		private $inner,
-	) {
-	}
+    public function __construct(
+        private $inner,
+    ) {
+    }
 
     public function getFunctions(): array
     {
-		return \array_merge(
-			$this->inner->getFunctions(),
-			[
-				ExpressionLanguageStaticFunctions::getIsArrayFunc(),
-				ExpressionLanguageStaticFunctions::getIsIntegerFunc(),
-			]
-		);
+        return \array_merge(
+            $this->inner->getFunctions(),
+            [
+                ExpressionLanguageStaticFunctions::getIsArrayFunc(),
+                ExpressionLanguageStaticFunctions::getIsIntegerFunc(),
+            ]
+        );
     }
 }

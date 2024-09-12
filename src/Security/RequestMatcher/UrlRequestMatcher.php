@@ -10,9 +10,10 @@ use Symfony\Component\Validator\Constraints;
 use Symfony\Component\HttpFoundation\RequestMatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 
-class UrlRequestMatcher implements RequestMatcherInterface {
-	
-	public function matches(Request $request): bool {
-		return \preg_match('~^/$~', $request->getPathInfo());
-	}
+class UrlRequestMatcher implements RequestMatcherInterface
+{
+    public function matches(Request $request): bool
+    {
+        return \preg_match('~^/$~', $request->getPathInfo());
+    }
 }

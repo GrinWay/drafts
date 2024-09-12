@@ -12,14 +12,15 @@ class GitHub
     private ?User $user = null;
 
     public function __construct(
-		#[ORM\Id]
-		#[ORM\Column]
-		private ?int $id = null,
-		#[ORM\Column(nullable: true, length: 255)]
-		private ?string $profilePicture = null,
-		#[ORM\Column(nullable: true, length: 255)]
-		private ?string $accessToken = null,
-	) {}
+        #[ORM\Id]
+        #[ORM\Column]
+        private ?int $id = null,
+        #[ORM\Column(nullable: true, length: 255)]
+        private ?string $profilePicture = null,
+        #[ORM\Column(nullable: true, length: 255)]
+        private ?string $accessToken = null,
+    ) {
+    }
 
     public function getId(): ?int
     {

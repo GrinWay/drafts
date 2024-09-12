@@ -13,9 +13,9 @@ use Symfony\Component\BrowserKit\HttpBrowser as SymfonyHttpBrowser;
 
 class HttpBrowser extends SymfonyHttpBrowser
 {
-	protected function getHeaders(Request $request): array
-	{
-		$headers = parent::getHeaders($request);
-		return $headers;
-	}
+    protected function getHeaders(Request $request): array
+    {
+        $headers = parent::getHeaders($request);
+        return $headers;
+    }
 }

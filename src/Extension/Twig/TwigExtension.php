@@ -41,9 +41,9 @@ class TwigExtension extends AbstractExtension
     public function getFunctions(): array
     {
         return [
-			new TwigFunction('get_debug_type', \get_debug_type(...)),
-			new TwigFunction('get_short_class', [TwigFunctionExtension::class, 'getShortClass']),
-		];
+            new TwigFunction('get_debug_type', \get_debug_type(...)),
+            new TwigFunction('get_short_class', [TwigFunctionExtension::class, 'getShortClass']),
+        ];
     }
 
     public function getOperators(): array

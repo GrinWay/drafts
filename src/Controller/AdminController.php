@@ -16,15 +16,16 @@ use Symfony\Bridge\Doctrine\Attribute\MapEntity;
  */
 class AdminController extends AbstractController
 {
-	#[IsGranted(
-		'ROLE_OWNER',
-		message: 'Доступ разрешён только для тех, кто может управлять админами.',
-		//statusCode: Response::HTTP_UNAUTHORIZED,
-		//exceptionCode: 180898,
-	)]
+    #[IsGranted(
+        'ROLE_OWNER',
+        message: 'Доступ разрешён только для тех, кто может управлять админами.',
+        //statusCode: Response::HTTP_UNAUTHORIZED,
+        //exceptionCode: 180898,
+    )]
     #[Route(path: '/admin', defaults: [
-	])]
-	public function index(): Response {
+    ])]
+    public function index(): Response
+    {
         return $this->render('@admin/index.html.twig', [
             'controller_name' => 'AdminController',
         ]);

@@ -46,6 +46,15 @@ bin/console secrets:set APP_ONESIGNAL_DEFAULT_RECIPIENT_ID
 echo 'ONESIGNAL_DSN_AUTH_KEY'
 bin/console secrets:set ONESIGNAL_DSN_AUTH_KEY
 
+echo 'APP_NOVU_API_KEY'
+bin/console secrets:set APP_NOVU_API_KEY
+
+echo 'APP_NOVU_APP_ID'
+bin/console secrets:set APP_NOVU_APP_ID
+
+echo 'APP_NOVU_ENV_ID'
+bin/console secrets:set APP_NOVU_ENV_ID
+
 #php bin/console doctrine:migrations:migrate -q --env=dev
 
 #yarn install && yarn run dev

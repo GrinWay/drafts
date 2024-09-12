@@ -14,7 +14,7 @@ class ExtensionExample extends Extension
     }
 
     public function load(array $configs, ContainerBuilder $container): void
-    {	
+    {
         //\dump(__METHOD__);
         /*
         $configs = \array_pop($configs);

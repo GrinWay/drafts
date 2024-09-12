@@ -10,4 +10,5 @@ use Symfony\Component\DomCrawler\Crawler;
 
 //TODO: TestUtil
 class CrawlerUtil extends TestUtil
-{}
+{
+}

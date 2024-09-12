@@ -22,8 +22,8 @@ class CodeGenerator implements CodeGeneratorInterface
 
     public function generateAndSend(TwoFactorInterface $user): void
     {
-		$code = $this->generateCode();
-		$user->setEmailAuthCode((string) $code);
+        $code = $this->generateCode();
+        $user->setEmailAuthCode((string) $code);
         $this->persister->persist($user);
         $this->mailer->sendAuthCode($user);
     }
@@ -35,13 +35,13 @@ class CodeGenerator implements CodeGeneratorInterface
 
     protected function generateCode()
     {
-		$set = '1234567890';
-		$result = '';
-		
-		for($i = 0; $i < $this->digits; ++$i) {
-			$result .= \substr(\str_shuffle($set), 0, 1);
-		}
-		
+        $set = '1234567890';
+        $result = '';
+
+        for ($i = 0; $i < $this->digits; ++$i) {
+            $result .= \substr(\str_shuffle($set), 0, 1);
+        }
+
         return $result;
     }
 }

@@ -7,7 +7,8 @@ use Symfony\Component\Form\AbstractType;
 
 class DefaultFormExtendedTypesSupplier
 {
-	public static function supply(): iterable {
-		yield FormType\FormType::class;
-	}
+    public static function supply(): iterable
+    {
+        yield FormType\FormType::class;
+    }
 }

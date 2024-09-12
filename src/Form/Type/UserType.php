@@ -23,31 +23,31 @@ class UserType extends AbstractFormType
         $resolver->setDefaults([
             'data_class' => User::class,
         ]);
-	}
-	
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('products', FormType\CollectionType::class, [
-				'entry_type' => ProductFormType::class,
-				
-				'allow_add' => true,
-				'allow_delete' => true,
-				/**
-				* Guarantee that OUR ->remove<Item>() will be called
-				* 
-				* instead of working with collection directly
-				* ->getCollection()->removeElement($item)
-				*/
-				'by_reference' => false,
-			])
-			->setMethod('PATCH')
-			/*
+                'entry_type' => ProductFormType::class,
+
+                'allow_add' => true,
+                'allow_delete' => true,
+                /**
+                * Guarantee that OUR ->remove<Item>() will be called
+                *
+                * instead of working with collection directly
+                * ->getCollection()->removeElement($item)
+                */
+                'by_reference' => false,
+            ])
+            ->setMethod('PATCH')
+            /*
             ->add('passport', EntityType::class, [
                 'class' => UserPassport::class,
-				'choice_label' => 'id',
+                'choice_label' => 'id',
             ])
-			*/
+            */
         ;
     }
 }

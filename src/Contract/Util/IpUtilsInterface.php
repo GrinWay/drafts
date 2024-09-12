@@ -2,4 +2,6 @@
 
 namespace App\Contract\Util;
 
-interface IpUtilsInterface {}
+interface IpUtilsInterface
+{
+}

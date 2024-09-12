@@ -24,48 +24,50 @@ use Symfony\Contracts\Service\Attribute\Required;
 
 abstract class AbstractFormType extends AbstractType
 {
-	public function __construct(
+    public function __construct(
         protected readonly PropertyAccessorInterface $pa,
-	) {}
+    ) {
+    }
 
-	/**
-	* @return void
-	*/
-	public function configureOptions(OptionsResolver $resolver)
+    /**
+    * @return void
+    */
+    public function configureOptions(OptionsResolver $resolver)
     {
-		$resolver
-			->setDefaults([
-				//'translation_domain' => 'app.form',
-				'choice_translation_domain' => 'app.form',
-				'label_format' => '%name%',
-				//'label_format' => t('%name%', [], 'app.form'),
-			])
-		;
+        $resolver
+            ->setDefaults([
+                //'translation_domain' => 'app.form',
+                'choice_translation_domain' => 'app.form',
+                'label_format' => '%name%',
+                //'label_format' => t('%name%', [], 'app.form'),
+            ])
+        ;
     }
-	
-	/**
-	* @return void
-	*/
-	public function buildView(FormView $view, FormInterface $form, array $options)
+
+    /**
+    * @return void
+    */
+    public function buildView(FormView $view, FormInterface $form, array $options)
     {
-		$this->customizeStyle1(
-			$view,
-			$options,
-		);
+        $this->customizeStyle1(
+            $view,
+            $options,
+        );
     }
-	
-	private function customizeStyle1(FormView $view, array $options): void {
-		if (true === $this->pa->getValue($options, '[style1]')) {
-			$view->vars['style1'] = true;
-		}
-	}
-	
-	/**
-	* @return string
-	*/
-	public function getBlockPrefix(): string
+
+    private function customizeStyle1(FormView $view, array $options): void
     {
-		$resultBlockPrefix = 'app_'.parent::getBlockPrefix();
+        if (true === $this->pa->getValue($options, '[style1]')) {
+            $view->vars['style1'] = true;
+        }
+    }
+
+    /**
+    * @return string
+    */
+    public function getBlockPrefix(): string
+    {
+        $resultBlockPrefix = 'app_' . parent::getBlockPrefix();
         //\dd($resultBlockPrefix);
         return $resultBlockPrefix;
     }

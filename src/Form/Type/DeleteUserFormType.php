@@ -21,23 +21,25 @@ class DeleteUserFormType extends AbstractFormType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([]);
-	}
-	
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('password', FormType\PasswordType::class, 
-				options: [
-					'label' => 'Пароль',
-					'attr' => [
-						'autofocus' => 'autofocus',
-						'placeholder' => '***',
-					],
-					'constraints' => [
-						new Constraints\NotBlank(),
-					],
-				],
-			)
+            ->add(
+                'password',
+                FormType\PasswordType::class,
+                options: [
+                    'label' => 'Пароль',
+                    'attr' => [
+                        'autofocus' => 'autofocus',
+                        'placeholder' => '***',
+                    ],
+                    'constraints' => [
+                        new Constraints\NotBlank(),
+                    ],
+                ],
+            )
         ;
     }
 }

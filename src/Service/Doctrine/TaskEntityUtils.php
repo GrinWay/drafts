@@ -12,7 +12,7 @@ class TaskEntityUtils
 {
     public static function getSlug(SluggerInterface $slugger, Task $obj): string
     {
-		$slug = ($obj->getName() ?? 'NULL_NAME'.\rand(0, 500)) . '-' . ($obj->getDeadLine()?->format(\DateTime::COOKIE) ?? 'NULL_DATE'.\rand(0, 1000));
+        $slug = ($obj->getName() ?? 'NULL_NAME' . \rand(0, 500)) . '-' . ($obj->getDeadLine()?->format(\DateTime::COOKIE) ?? 'NULL_DATE' . \rand(0, 1000));
         return $slugger->slug($slug);
     }
 }

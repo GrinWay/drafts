@@ -20,7 +20,7 @@ use Scheb\TwoFactorBundle\Security\TwoFactor\Provider\Totp\TotpAuthenticatorInte
 class BackupCodesPrePersistEventLisener
 {
     public function __construct(
-		private $faker,
+        private $faker,
     ) {
     }
 
@@ -28,13 +28,13 @@ class BackupCodesPrePersistEventLisener
         User $obj,
         PrePersistEventArgs $args,
     ): void {
-		if (!$obj instanceof BackupCodeInterface) {
-			return;
-		}
+        if (!$obj instanceof BackupCodeInterface) {
+            return;
+        }
         $obj->addBackUpCode([
-			$this->faker->numberBetween(10, 999),
-			$this->faker->numberBetween(10, 999),
-			$this->faker->numberBetween(10, 999),
-		]);
+            $this->faker->numberBetween(10, 999),
+            $this->faker->numberBetween(10, 999),
+            $this->faker->numberBetween(10, 999),
+        ]);
     }
 }

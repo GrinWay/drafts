@@ -3,6 +3,7 @@ when@test: &test
         notifier:
             texter_transports:
                 onesignal:      'null://null'
+                novu:           'null://null'
                 twilio:         'null://null'
 
             chatter_transports:
@@ -13,8 +14,9 @@ framework:
         message_bus: messenger.default_bus
         
         texter_transports:
-            #twilio:            '%env(TWILIO_DSN)%'
-            onesignal:          '%env(ONESIGNAL_DSN)%'
+            #twilio:             '%env(TWILIO_DSN)%'
+            novu:               '%env(NOVU_DSN)%'
+            #onesignal:          '%env(ONESIGNAL_DSN)%'
         
         chatter_transports:
             telegram:           '%env(TELEGRAM_DSN)%'

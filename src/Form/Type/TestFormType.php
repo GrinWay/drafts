@@ -21,75 +21,91 @@ use Symfony\Component\Form\FormEvents;
 class TestFormType extends AbstractFormType
 {
     public function __construct(
-		PropertyAccessorInterface $pa,
-		private readonly StringService $stringService,
-	) {
-		parent::__construct(
-			pa: $pa,
-		);
-	}
-	
+        PropertyAccessorInterface $pa,
+        private readonly StringService $stringService,
+    ) {
+        parent::__construct(
+            pa: $pa,
+        );
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add($builder->create('name', FormType\ChoiceType::class,
-				options: [
-					'choices' => NoteType::TYPES,
-					'multiple' => true,
-				])
-			)
-            ->add('timezone', FormType\TextType::class,
-				options: [
-			])
-            ->add('product', ProductFormType::class,
-				options: [
-					'data' => new ToyProduct(description: '~s', name: 'aadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadaaadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadada'),
-				]
-			)
-            ->add('price', FormType\NumberType::class,
-				options: [
-			])
-            ->add('email', FormType\EmailType::class,
-				options: [
-			])
-            ->add('createdAt', FormType\DateTimeType::class,
-				options: []
-			)
-            ->add('rubric', //FormType\FileType::class,
-				options: [
-				]
-			)
-			/*
+            ->add($builder->create(
+                'name',
+                FormType\ChoiceType::class,
+                options: [
+                    'choices' => NoteType::TYPES,
+                    'multiple' => true,
+                ]
+            ))
+            ->add(
+                'timezone',
+                FormType\TextType::class,
+                options: [
+                ]
+            )
+            ->add(
+                'product',
+                ProductFormType::class,
+                options: [
+                    'data' => new ToyProduct(description: '~s', name: 'aadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadaaadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadadada'),
+                ]
+            )
+            ->add(
+                'price',
+                FormType\NumberType::class,
+                options: [
+                ]
+            )
+            ->add(
+                'email',
+                FormType\EmailType::class,
+                options: [
+                ]
+            )
+            ->add(
+                'createdAt',
+                FormType\DateTimeType::class,
+                options: []
+            )
+            ->add(
+                'rubric', //FormType\FileType::class,
+                options: [
+                ]
+            )
+            /*
             ->add($builder->create('compound', TestLargeFormType::class,
-				options: [
-					'mapped' => false,
-				])
-				//->addViewTransformer(new CallbackTransformer(static fn($v) => $v, static fn($v) => ['address' => '', 'car' => '']))
-				//->addModelTransformer(new CallbackTransformer(static fn($v) => $v, static fn($v) => $v))
-			)
-			*/
-			->setMethod('PATCH')
+                options: [
+                    'mapped' => false,
+                ])
+                //->addViewTransformer(new CallbackTransformer(static fn($v) => $v, static fn($v) => ['address' => '', 'car' => '']))
+                //->addModelTransformer(new CallbackTransformer(static fn($v) => $v, static fn($v) => $v))
+            )
+            */
+            ->setMethod('PATCH')
         ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-		//doesn't work
-		$constraints = [
-			'price' => new Constraints\NotBlank(groups: null),
-		];
-		
+        //doesn't work
+        $constraints = [
+            'price' => new Constraints\NotBlank(groups: null),
+        ];
+
         $resolver->setDefaults([
-			'data_class' => TestForTestFormType::class,
-			//for parent
-			/*
-			'error_mapping' => [
-				'upperCaseName' => 'name',
-				// the rest errors to ...
-				'.' => 'price',
-			],
-			'constraints' => $constraints,
-			*/
+            'data_class' => TestForTestFormType::class,
+            //for parent
+            /*
+            'error_mapping' => [
+                'upperCaseName' => 'name',
+                // the rest errors to ...
+                '.' => 'price',
+            ],
+            'constraints' => $constraints,
+            */
         ]);
     }
 }

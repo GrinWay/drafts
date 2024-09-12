@@ -9,6 +9,6 @@ class OSService extends GrinWayOSService implements ResetInterface
 {
     public function reset()
     {
-		\dump(__METHOD__);
+        \dump(__METHOD__);
     }
 }

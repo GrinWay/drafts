@@ -11,29 +11,31 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 
-class ChoiceTypeExtension extends AbstractTypeExtension {
-	
-	public function __construct (
-	) {}
-	
-	public static function getExtendedTypes(): iterable {
-		yield FormType\ChoiceType::class;
-	}
-	
-	public function configureOptions(OptionsResolver $resolver): void
+class ChoiceTypeExtension extends AbstractTypeExtension
+{
+    public function __construct()
     {
-		$resolver
-			->setDefined([
-				'selected_value',
-			])
-			->setAllowedTypes('selected_value', ['string', 'int', 'null'])
-		;
     }
-	
-	public function buildView(FormView $view, FormInterface $form, array $options): void
+
+    public static function getExtendedTypes(): iterable
     {
-		if (isset($options['selected_value'])) {
-			$view->vars['selected_value'] = $options['selected_value'];			
-		}
+        yield FormType\ChoiceType::class;
+    }
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver
+            ->setDefined([
+                'selected_value',
+            ])
+            ->setAllowedTypes('selected_value', ['string', 'int', 'null'])
+        ;
+    }
+
+    public function buildView(FormView $view, FormInterface $form, array $options): void
+    {
+        if (isset($options['selected_value'])) {
+            $view->vars['selected_value'] = $options['selected_value'];
+        }
     }
 }

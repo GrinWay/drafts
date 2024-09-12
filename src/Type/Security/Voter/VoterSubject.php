@@ -2,6 +2,7 @@
 
 namespace App\Type\Security\Voter;
 
-class VoterSubject {
-	public const ADMIN = 'ADMIN';
+class VoterSubject
+{
+    public const ADMIN = 'ADMIN';
 }

@@ -23,19 +23,18 @@ class UserPassport extends Passport
     use \GrinWay\WebApp\Trait\Doctrine\CreatedAt;
 
     #[ORM\OneToOne(mappedBy: 'passport', cascade: ['persist'])]
-	private ?User $user = null;
-
+    private ?User $user = null;
     public function __construct(
         ?string $name = null,
         //#[ORM\Column(type: 'key_val', length: 255)]
         #[ORM\Column(length: 255)]
         private null|array|string $lastName = null,
-		#[ORM\Column(length: 30, nullable: true)]
-		private ?string $timezone = null,
-		#[ORM\Column(length: 10, nullable: true)]
-		private ?string $lang = null,
-		#[ORM\Column]
-		private bool $banned = false,
+        #[ORM\Column(length: 30, nullable: true)]
+        private ?string $timezone = null,
+        #[ORM\Column(length: 10, nullable: true)]
+        private ?string $lang = null,
+        #[ORM\Column]
+        private bool $banned = false,
         //#[ORM\Column(length: 255, unique: true)]
         //private ?string $email = null,
     ) {
@@ -56,7 +55,7 @@ class UserPassport extends Passport
         return $this;
     }
 
-	/*
+    /*
     public function getEmail(): ?string
     {
         return $this->email;
@@ -68,7 +67,7 @@ class UserPassport extends Passport
 
         return $this;
     }
-	*/
+    */
 
     public function getUser(): ?User
     {

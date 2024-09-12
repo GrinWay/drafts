@@ -83,10 +83,10 @@ class Product implements GroupSequenceProviderInterface//, AutoMappingEnabledInt
         protected ?User $user = null,
     ) {
     }
-	
+
     public function __clone()
     {
-		\dump(__METHOD__);
+        \dump(__METHOD__);
     }
 
     public function getId(): ?int
@@ -161,66 +161,67 @@ class Product implements GroupSequenceProviderInterface//, AutoMappingEnabledInt
 
     public function setUser(?User $user): static
     {
-		\dump(__METHOD__);
-		
+        \dump(__METHOD__);
+
         $this->user = $user;
 
         return $this;
     }
-	
-	public function setUpdatedAt(?\DateTimeImmutable $dateTime = null): static
+
+    public function setUpdatedAt(?\DateTimeImmutable $dateTime = null): static
     {
-		\dump('set updated at');
-		$dateTime ??= CarbonService::getNow();
+        \dump('set updated at');
+        $dateTime ??= CarbonService::getNow();
         $this->updatedAt = $dateTime;
-		return $this;
+        return $this;
     }
-	
-	public function setCreatedAt(?\DateTimeImmutable $dateTime = null): static
+
+    public function setCreatedAt(?\DateTimeImmutable $dateTime = null): static
     {
-		\dump('set updated at');
-		$dateTime ??= CarbonService::getNow();
+        \dump('set updated at');
+        $dateTime ??= CarbonService::getNow();
         $this->createdAt = $dateTime;
-		return $this;
+        return $this;
     }
-	
-	public static function validate(mixed $obj, ExecutionContextInterface $context, mixed $payload): void {
-		if (null === $obj->getUser()) {
-			$context->buildViolation('User не может быть пустым')
-				->atPath('id')
-				->addViolation()
-			;
-		}
-	}
-	
-	public function isCanMakePublic(): bool {
-		if (true === $this->isPublic()) {
-			return null !== $this->getUser();			
-		}
-		return true;
-	}
-	
-	public static function loadValidatorMetadata(ClassMetadata $metadata): void
+
+    public static function validate(mixed $obj, ExecutionContextInterface $context, mixed $payload): void
     {
-		return;
-        $metadata
-			->addGetterConstraint(
-				'canMakePublic',
-				new Constraints\IsTrue([
-					'message' => 'Not authenticated User can\'t make the product public',
-				]
-			)
-		);
+        if (null === $obj->getUser()) {
+            $context->buildViolation('User не может быть пустым')
+                ->atPath('id')
+                ->addViolation()
+            ;
+        }
     }
-	
-	public function getGroupSequence(): array|GroupSequence {
-		
-		if (true) {
-			return ['Product', 'regex'];
-		} else {
-			// No groups no validations
-			return [];
-		}
-		
-	}
+
+    public function isCanMakePublic(): bool
+    {
+        if (true === $this->isPublic()) {
+            return null !== $this->getUser();
+        }
+        return true;
+    }
+
+    public static function loadValidatorMetadata(ClassMetadata $metadata): void
+    {
+        return;
+        $metadata
+            ->addGetterConstraint(
+                'canMakePublic',
+                new Constraints\IsTrue([
+                    'message' => 'Not authenticated User can\'t make the product public',
+                ])
+            );
+    }
+
+    public function getGroupSequence(): array|GroupSequence
+    {
+
+        if (true) {
+            return ['Product', 'regex'];
+        } else {
+            // No groups no validations
+            return [];
+        }
+    }
 }

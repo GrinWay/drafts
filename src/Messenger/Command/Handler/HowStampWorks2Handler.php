@@ -13,16 +13,18 @@ use App\Messenger\AbstractHandler;
 
 #[AsMessageHandler(
     //bus: BusTypes::QUERY_BUS,
-	priority: 1,
+    priority: 1,
 )]
 class HowStampWorks2Handler extends AbstractHandler
 {
-    public function __construct(
-	) {}
-	
-    public function __invoke(HowStampWorks $message) {
-		$response = 'HANDLED 2';
-		\dump($response);
-		return $response;
-	}
+    public function __construct()
+    {
+    }
+
+    public function __invoke(HowStampWorks $message)
+    {
+        $response = 'HANDLED 2';
+        \dump($response);
+        return $response;
+    }
 }

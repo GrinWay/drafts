@@ -14,29 +14,32 @@ use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use App\Service\StringService;
 
 #[AsEventListener]
-class SwitchUserSetLocaleEventListener {
-	public function __construct(
-		private readonly array $appEnabledLocales,
-	) {}
-	
-	public function __invoke(SwitchUserEvent $e): void {
-		
-		$token = $e->getToken();
-		
-		$user = $token->getUser();
+class SwitchUserSetLocaleEventListener
+{
+    public function __construct(
+        private readonly array $appEnabledLocales,
+    ) {
+    }
 
-		$request = $e->getRequest();
-		
-		$lang = $user->getPassport()->getLang();
-		
-		if (null === $lang) {
-			$lang = $request->getPreferredLanguage(
-				$this->appEnabledLocales,
-			);
-		}
-		
-		if (StringService::isEnabledLocale($lang, $this->appEnabledLocales)) {
-			$request->getSession()?->set('_locale', $lang);
-		}
-	}
+    public function __invoke(SwitchUserEvent $e): void
+    {
+
+        $token = $e->getToken();
+
+        $user = $token->getUser();
+
+        $request = $e->getRequest();
+
+        $lang = $user->getPassport()->getLang();
+
+        if (null === $lang) {
+            $lang = $request->getPreferredLanguage(
+                $this->appEnabledLocales,
+            );
+        }
+
+        if (StringService::isEnabledLocale($lang, $this->appEnabledLocales)) {
+            $request->getSession()?->set('_locale', $lang);
+        }
+    }
 }

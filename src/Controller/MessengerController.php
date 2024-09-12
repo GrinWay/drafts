@@ -19,22 +19,22 @@ class MessengerController extends AbstractController
 {
     #[Route('/messenger', name: 'app_messenger')]
     public function index(
-		MessageBusInterface $bus,
-		MessageBusInterface $eventBus,
-		$get,
-		\Symfony\Contracts\HttpClient\HttpClientInterface $thisClient,
-	): Response {
-		
-		$response = $bus->dispatch(
-			new HowStampWorks,
-			[
-				new StopPropagationStamp(),
-			]
-		);
-		
-		//\dd($response);
-		//\dump($response);
-		
+        MessageBusInterface $bus,
+        MessageBusInterface $eventBus,
+        $get,
+        \Symfony\Contracts\HttpClient\HttpClientInterface $thisClient,
+    ): Response {
+
+        $response = $bus->dispatch(
+            new HowStampWorks(),
+            [
+                new StopPropagationStamp(),
+            ]
+        );
+
+        //\dd($response);
+        //\dump($response);
+
         return $this->render('messenger/index.html.twig', [
             'controller_name' => 'MessengerController',
         ]);

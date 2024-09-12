@@ -13,15 +13,17 @@ use App\Messenger\AbstractHandler;
 )]
 class OnlyWeekendsOfThisMonthHandler extends AbstractHandler
 {
-    public function __construct(
-	) {}
-	
-    public function __invoke(OnlyWeekendsOfThisMonth $message) {
-		return CarbonService::getWeekends(
-			carbonStart: static fn($c) => $c->startOfMonth(),
-			carbonEnd: static fn($c) => $c->endOfMonth(),
-			onlyCarbonProperty: 'day',
-			includePassed: $message->includePassed
-		);
-	}
+    public function __construct()
+    {
+    }
+
+    public function __invoke(OnlyWeekendsOfThisMonth $message)
+    {
+        return CarbonService::getWeekends(
+            carbonStart: static fn($c) => $c->startOfMonth(),
+            carbonEnd: static fn($c) => $c->endOfMonth(),
+            onlyCarbonProperty: 'day',
+            includePassed: $message->includePassed
+        );
+    }
 }

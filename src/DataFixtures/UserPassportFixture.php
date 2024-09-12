@@ -22,19 +22,19 @@ class UserPassportFixture extends AbstractFixtures
     public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < $this->count; ++$i) {
-			$sign = $this->faker->randomElement(['+', '-']);
+            $sign = $this->faker->randomElement(['+', '-']);
             $h = $this->faker->numberBetween(0, 23);
-			if (1 === \strlen($h)) {
-				$h = '0'.$h;
-			}
+            if (1 === \strlen($h)) {
+                $h = '0' . $h;
+            }
             $m = $this->faker->numberBetween(0, 59);
-			if (1 === \strlen($m)) {
-				$m = '0'.$m;
-			}
-			$timezone = \sprintf('%s%s:%s', $sign, $h, $m);
+            if (1 === \strlen($m)) {
+                $m = '0' . $m;
+            }
+            $timezone = \sprintf('%s%s:%s', $sign, $h, $m);
             $lang = $this->faker->languageCode;
-			
-			$obj = new UserPassport(
+
+            $obj = new UserPassport(
                 name: $this->faker->firstName,
                 lastName: $this->faker->lastName,
                 timezone: $timezone,

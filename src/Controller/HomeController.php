@@ -7,6 +7,9 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Novu\SDK\Novu;
+use Symfony\Component\Notifier\Bridge\Novu\NovuSubscriberRecipient;
+use App\Notification\PushNotification\NovuNotification;
 use Symfony\Component\Security\Http\LoginLink\LoginLinkNotification;
 use App\Notification\EmailNotification\TemplatedEmailNotification;
 use App\Notification\ChatNotification\SubjectPlusContentNotification;
@@ -451,22 +454,79 @@ class HomeController extends AbstractController
 		$appUrl,
 		NotifierInterface $notifier,
 		$adminPhone,
+		#[Autowire('%env(APP_NOVU_APP_ID)%')]
+		$novuAppId,
+		#[Autowire('%env(APP_NOVU_API_KEY)%')]
+		$novuApiKey,
+		#[Autowire('%env(APP_NOVU_ENV_ID)%')]
+		$novuEnvId,
 		/*
 		*/
 	) {
+		$tenantsUri = \sprintf('https://api.novu.co/v1/tenants/%s', $novuAppId);
+		$notificationsUri = 'https://api.novu.co/v1/notifications';
+		$eventUri = 'https://api.novu.co/v1/events/trigger';
+		
+		$uri = $eventUri;
+		
+		$options = [
+			'json' => [
+				'name' => 'name_outside',
+				'to' => [
+					'subscriberId' => '1',
+					'firstName' => 'firstName',
+					'lastName' => 'lastName',
+					'email' => $adminEmail,
+					'phone' => $adminPhone,
+				],
+			],
+			'headers' => [
+				'Authorization' => \sprintf('ApiKey %s', $novuApiKey),
+			],
+		];
+		/*
+		$response = $client->request('GET', $uri, $options);
+		\dd(
+			\get_debug_type($response),
+			$response->getStatusCode(),
+			$response->toArray(),
+		);
+		*/
+		$novu = new Novu($novuApiKey);
+
+		// https://dashboard.novu.co/subscribers
+		$novu->triggerEvent([
+		'name' => $novuEnvId,
+			'to' => [
+				'subscriberId' => '1',
+				'email' => $adminEmail,
+				'firstName' => 'John',
+				'lastName'  => 'Doe',
+				'phone' => $adminPhone,
+			],
+		]);
+		
+		\dd(1);
+		
 		$subject = 'Symfony Notifier';
 		$content = <<<'__TEXT__'
 		# I love Symfony
 		__TEXT__;
+		$content = \json_encode(
+			[
+				'param1' => 'Lorum Ipsum',
+			]
+		);
 		
-		$notification = new TemplatedEmailNotification(
+		$notification = new NovuNotification(
 			subject: $subject,
 			channels: [
-				'email',
+				'push',
 				/*
-				'chat/telegram',
+				'push/novu',
 				'browser', // ? how to test it
-				'push/onesignal',
+				'chat/telegram',
+				'email',
 				*/
 			],
 		);
@@ -477,23 +537,33 @@ class HomeController extends AbstractController
 		;
 		
 		$recipient = new Recipient(
-			email: $adminEmail = 'son5-29@mail.ru',
+			email: $adminEmail,
 			phone: $adminPhone,
+		);
+		$recipient = new NovuSubscriberRecipient(
+			email: $adminEmail,
+			phone: $adminPhone,
+			subscriberId: '',
+			firstName: 'First Name',
+			lastName: 'Last Name',
+			avatar: 'AVATAR',
+			locale: 'ru',
+			overrides: [],
 		);
 		//$recipient = new NoRecipient();
 		
 		/*
-		*/
 		$email = (new TemplatedEmail())
 			->to($adminEmail)
 			->htmlTemplate('email/default/index.html.twig')
 		;
 		$mailer->send($email);
-		/*
+		*/
 		$notifier->send(
 			$notification,
 			$recipient,
 		);
+		/*
 		*/
 		
 		/*

@@ -39,7 +39,7 @@ class TaskFixtures extends AbstractProductFixtures implements FixtureGroupInterf
             } else {
                 $deadLine = $this->enUtcCarbon->now()->add($this->faker->numberBetween(0, 1000), 'days');
             }
-			$topic = $this->getReference(TaskFoodTopicFixtures::class.$this->faker->numberBetween(0, $this->taskFoodTopicCount - 1));
+            $topic = $this->getReference(TaskFoodTopicFixtures::class . $this->faker->numberBetween(0, $this->taskFoodTopicCount - 1));
 
             $obj = new Task(
                 name: $name,
@@ -57,7 +57,7 @@ class TaskFixtures extends AbstractProductFixtures implements FixtureGroupInterf
     public function getDependencies()
     {
         return [
-			TaskFoodTopicFixtures::class,
+            TaskFoodTopicFixtures::class,
         ];
     }
 

@@ -807,14 +807,15 @@ SYMFONY CACHE
 			adapter: 'app.cache_adapter.filesystem_tag_aware'
 SYMFONY The Mime Component
 	создай реализацию MimeTypeGuesserInterface для своего угадывающего тип по содержимому
-***
 SYMFONY NOTIFIER
-
-	заставить заработать onesignal для отправки push сообщений
-	
+	- отправить push на телефон
+		НИКАК НЕ ПОЛУЧАЕТЬСЯ ОТПРАВИТЬ push на телефон with push/onesignal
 	***
-	Telegram Bot Api: https://core.telegram.org/bots/api#available-types
-	*** как бабки появятся
+	R: отправить push на телефон with novu
+		https://github.com/novuhq/novu-php
+		https://docs.novu.co/api-reference/events/trigger-event
+		https://dashboard.novu.co/subscribers
+		https://dashboard.novu.co/api-keys
 	R: отправить sms на телефон
 		https://www.twilio.com/en-us/sms/pricing/us
 		https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Bridge/Twilio/README.md
@@ -832,14 +833,22 @@ SYMFONY NOTIFIER
 		);
 		
 		$sentMessage = $texter->send($sms);
-	R: отправить push на телефон
-		НИКАК НЕ ПОЛУЧАЕТЬСЯ ОТПРАВИТЬ push на телефон with push/onesignal
-		
-		https://documentation.onesignal.com/reference/create-notification
-		https://dashboard.onesignal.com/apps/c30fe145-50c7-4884-8f16-20ecf439f7a3/settings
 	?
-	// TODO: current
-	?? По какой причине в слушателе mailer/EventListener/MessageListener.php успешно назначаются from headers для TemplatedEmail и не получается назначить header sender для NotificationEmail
+	+ ?? По какой причине в слушателе mailer/EventListener/MessageListener.php
+		успешно назначаются header sender для TemplatedEmail
+		и не получается назначить header sender для NotificationEmail
+		(
+			По такой, что header from уже назначен для NotificationEmail
+			В то время как для TemplatedEmail из-за его отсутствия он назначается
+			
+			Дело в том, что компонент Notifier для EmailChannel
+			заранее устанавливает header from, используя настройку "mailer.envelope.sender"
+			
+			Таким образом чтобы иметь желаемый адрес ADRESS_NAME <ADRESS>
+			опиши его в этих двух местах одинаково!
+				"mailer.envelope.sender"
+				"mailer.headers.From"
+		)
 	+ ? NotificationEmail: Кто переопределяется header from, email.subject
 		NotificationEmail
 	+ ? NotificationEmail: как работает метод NotificationEmail::markdown 
@@ -1166,6 +1175,7 @@ SYMFONY SECURITY
 		https://symfony.com/doc/current/security/ldap.html
 		https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
 EmojiTransliterator::create('text-emoji')->transliterate() used it https://github.com/unicode-org/cldr?tab=readme-ov-file
+Telegram Bot Api: https://core.telegram.org/bots/api#available-types
 security через передачу заголовка impersonator не сработал https://symfony.com/doc/current/security/impersonating_user.html
 SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
 SYMFONY RESPONSE сохранить куки
@@ -1230,6 +1240,26 @@ TODO
 		Вынести логику чтения _instanceof в отдельный Extension и описать что он есть в документации
 		// TODO: TranlationDomainFormTypeExtension (через конфиг default_translation_domain)
 		// TODO: LabelFormatFormTypeExtension (через конфиг default_label_format)
+		###> twig:grinway:email ###
+		Шаблон email сообщения, используемый в теме email message,
+		По задумке должен:
+			отображать различие от importance
+			красиво отображать exception
+			красиво отображать action_text, action_url
+			если true == markdown отображать content, footer_text с фильтром markdown_to_html
+			если true == raw отображать content, footer_text с фильтром raw
+		<twig:grinway:email
+			email_email=email
+			email_importance=importance
+			email_content=content
+			email_exception=exception
+			email_action_text=action_text
+			email_action_url=action_url
+			email_markdown=markdown
+			email_raw=raw
+			email_footer_text=footer_text
+		/>
+		###< twig:grinway:email ###
 	GsEnvProcessor
 		fix abstractions (only with functions)
 	Command

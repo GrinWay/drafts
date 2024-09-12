@@ -12,21 +12,23 @@ use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
-class SuccessHandler implements AuthenticationSuccessHandlerInterface {
-	
-	public function __construct(
-		private readonly EntityManagerInterface $em,
-	) {}
-	
-	public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response {
-		
-		$apiToken = \md5(\rand(0, 10));
-		$user = $token->getUser();
-		$user->setApiToken($apiToken);
-		$this->em->flush();
-		
-		return new JsonResponse([
-			'apiToken' => $apiToken,
-		]);
-	}
+class SuccessHandler implements AuthenticationSuccessHandlerInterface
+{
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+    ) {
+    }
+
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token): ?Response
+    {
+
+        $apiToken = \md5(\rand(0, 10));
+        $user = $token->getUser();
+        $user->setApiToken($apiToken);
+        $this->em->flush();
+
+        return new JsonResponse([
+            'apiToken' => $apiToken,
+        ]);
+    }
 }

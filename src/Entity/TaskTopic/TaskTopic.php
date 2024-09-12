@@ -15,7 +15,7 @@ use App\Contract\TypesAwareInterface;
 #[ORM\DiscriminatorColumn(name: 'type', type: 'string')]
 #[ORM\DiscriminatorMap([
     TaskTopicTypes::DEFAULT => TaskTopic::class,
-    TaskTopicTypes::FOOD	=> TaskFoodTopic::class,
+    TaskTopicTypes::FOOD    => TaskFoodTopic::class,
 ])]
 #[ORM\Entity(repositoryClass: TaskTopicRepository::class)]
 class TaskTopic implements TypesAwareInterface
@@ -31,12 +31,12 @@ class TaskTopic implements TypesAwareInterface
     #[ORM\OneToMany(targetEntity: Task::class, mappedBy: 'topic', cascade: ['persist', 'remove'])]
     protected Collection $tasks;
 
-	public function __construct(
-		#[ORM\Column(length: 255)]
-		protected ?string $name = null,
-	) {
-		$this->tasks = new ArrayCollection();
-	}
+    public function __construct(
+        #[ORM\Column(length: 255)]
+        protected ?string $name = null,
+    ) {
+        $this->tasks = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -84,8 +84,9 @@ class TaskTopic implements TypesAwareInterface
 
         return $this;
     }
-	
-	public function getTypesClass(): string {
-		return TaskTopicTypes::class;
-	}
+
+    public function getTypesClass(): string
+    {
+        return TaskTopicTypes::class;
+    }
 }

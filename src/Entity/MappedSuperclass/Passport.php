@@ -49,21 +49,21 @@ abstract class Passport
     {
         return $this->rememberMeUpdatedAt;
     }
-	
-	#[ORM\PrePersist]
+
+    #[ORM\PrePersist]
     public function setRememberMeUpdatedAt(mixed $rememberMeUpdatedAt = null): static
     {
-		if (!$rememberMeUpdatedAt instanceof \DateTimeImmutable) {
-			$rememberMeUpdatedAt = new \DateTimeImmutable();			
-		}
-		
+        if (!$rememberMeUpdatedAt instanceof \DateTimeImmutable) {
+            $rememberMeUpdatedAt = new \DateTimeImmutable();
+        }
+
         $this->rememberMeUpdatedAt = $rememberMeUpdatedAt;
 
         return $this;
     }
-	
+
     public function invalidateRememberMeCookie(): static
     {
-		return $this->setRememberMeUpdatedAt();
+        return $this->setRememberMeUpdatedAt();
     }
 }

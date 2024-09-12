@@ -27,46 +27,46 @@ use App\Validation\GroupProvider\Entity\MediaGroupProvider;
 //#[Constraints\GroupSequenceProvider(MediaGroupProvider::class)]
 class Media
 {
-	use CreatedAt;
-	use UpdatedAt;
-	
+    use CreatedAt;
+    use UpdatedAt;
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     protected ?int $id = null;
-	
-	#[UploadableField(
-         		mapping: 'media',
-         		fileNameProperty: 'filepath',
-         		
-         		originalName: 'fileOriginalName',
-         	)]
-         	protected ?File $file = null;
 
-	//#[ORM\Embedded(class: VichFile::class)]
-	protected ?VichFile $vichFile = null;
+    #[UploadableField(
+        mapping: 'media',
+        fileNameProperty: 'filepath',
+        originalName: 'fileOriginalName',
+    )]
+    protected ?File $file = null;
+
+    //#[ORM\Embedded(class: VichFile::class)]
+    protected ?VichFile $vichFile = null;
 
     #[ORM\Column(length: 60, nullable: true)]
     protected ?string $fileToken = null;
 
-	public function __construct(
-         		#[ORM\Column(length: 255)]
-         		protected ?string $filepath = null,
-         		#[ORM\Column(length: 255)]
-         		protected ?string $fileOriginalName = null,
-         	) {}
+    public function __construct(
+        #[ORM\Column(length: 255)]
+        protected ?string $filepath = null,
+        #[ORM\Column(length: 255)]
+        protected ?string $fileOriginalName = null,
+    ) {
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
-	
-	//TODO: REMOVE
+
+    //TODO: REMOVE
     public function setId(?int $id): static
     {
         $this->id = $id;
-		
-		return $this;
+
+        return $this;
     }
 
     public function getVichFile(): ?VichFile
@@ -110,37 +110,44 @@ class Media
 
         return $this;
     }
-	
-	public function setFileSize(?int $fileSize): static {
-         		$this->fileSize = $fileSize;
-         		return $this;
-         	}
-	
-	public function setFileMimeType(?string $fileMimeType): static {
-         		$this->fileMimeType = $fileMimeType;
-         		return $this;
-         	}
-	
-	public function setFileOriginalName(?string $fileOriginalName): static {
-         		$this->fileOriginalName = $fileOriginalName;
-         		return $this;
-         	}
-	
-	public function getFileSize(): ?int {
-         		return $this->fileSize;
-         	}
-	
-	public function getFileMimeType(): ?string {
-         		return $this->fileMimeType;
-         	}
-	
-	public function getFileOriginalName(): ?string {
-         		return $this->fileOriginalName;
-         	}
-	
-	public function getMd5(): string {
-         		return md5($this->id);
-         	}
+
+    public function setFileSize(?int $fileSize): static
+    {
+                $this->fileSize = $fileSize;
+                return $this;
+    }
+
+    public function setFileMimeType(?string $fileMimeType): static
+    {
+                $this->fileMimeType = $fileMimeType;
+                return $this;
+    }
+
+    public function setFileOriginalName(?string $fileOriginalName): static
+    {
+                $this->fileOriginalName = $fileOriginalName;
+                return $this;
+    }
+
+    public function getFileSize(): ?int
+    {
+                return $this->fileSize;
+    }
+
+    public function getFileMimeType(): ?string
+    {
+                return $this->fileMimeType;
+    }
+
+    public function getFileOriginalName(): ?string
+    {
+                return $this->fileOriginalName;
+    }
+
+    public function getMd5(): string
+    {
+                return md5($this->id);
+    }
 
     public function getFileToken(): ?string
     {

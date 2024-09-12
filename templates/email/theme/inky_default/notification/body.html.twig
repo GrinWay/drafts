@@ -3,6 +3,11 @@
 {%- block body -%}
 	<row>
 		<columns>
+			raw: {{ dump(raw) }}
+		</columns>
+	</row>
+	<row>
+		<columns>
 			{{ importance }}
 		</columns>
 	</row>
@@ -16,22 +21,4 @@
 			{{ footer_text }}
 		</columns>
 	</row>
-	
-	{#
-	TODO: current
-	
-	<twig:grinway:email
-		email_email=email
-		email_importance=importance
-		email_content=content
-		email_exception=exception
-		email_action_text=action_text
-		email_action_url=action_url
-		email_markdown=markdown
-		email_raw=raw
-		email_footer_text=footer_text
-	/>
-	
-	#}
-	
 {%- endblock -%}

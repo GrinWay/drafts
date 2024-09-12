@@ -27,7 +27,7 @@ class ViewEventListener// implements KernelEventListenerInterface
         ViewEvent $event,
     ): void {
         return;
-		\dd('VIEW');
+        \dd('VIEW');
         $result = $event->getControllerResult();
 
         $controllerMethodCallable = $event->getRequest()->attributes->get('_controller');

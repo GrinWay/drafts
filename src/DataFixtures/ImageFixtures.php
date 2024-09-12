@@ -33,15 +33,15 @@ class ImageFixtures extends AbstractProductFixtures implements FixtureGroupInter
     ): void {
         for ($i = 0; $i < $this->count; ++$i) {
             $filepath = $this->stringService->getPath(
-				$this->faker->unique()->numberBetween(1, 5).'.jpg',
-			);
-			$vichFile = new VichFile();
-			$vichFile->setName($filepath);
-			
+                $this->faker->unique()->numberBetween(1, 5) . '.jpg',
+            );
+            $vichFile = new VichFile();
+            $vichFile->setName($filepath);
+
             $obj = new Image(
-				filepath: $filepath,
-				fileOriginalName: $filepath,
-				//vichFile: $vichFile,
+                filepath: $filepath,
+                fileOriginalName: $filepath,
+                //vichFile: $vichFile,
             );
 
             $manager->persist($obj);

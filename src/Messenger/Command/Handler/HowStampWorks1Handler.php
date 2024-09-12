@@ -16,27 +16,29 @@ use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 #[AsMessageHandler(
     //bus: BusTypes::QUERY_BUS,
-	priority: 2,
+    priority: 2,
 )]
 class HowStampWorks1Handler extends AbstractHandler
 {
     public function __construct(
-		private readonly UserRepository $userRepo,
-		private readonly MessageBusInterface $eventBus,
-	) {}
-	
-    public function __invoke(HowStampWorks $message) {
-		$this->eventBus->dispatch(new TestUserWasCreated(), [
-			//new StopPropagationStamp(),
-			new DispatchAfterCurrentBusStamp(),
-		]);
-		
-		$user = $this->userRepo->findOneBy(['email' => 's']);
-		//$user?->getPassport()?->setName('11');
-		
-		$response = 'USER WAS CREATED';
-		//throw new UnrecoverableMessageHandlingException();
-		\dump($response);
-		return $response;
-	}
+        private readonly UserRepository $userRepo,
+        private readonly MessageBusInterface $eventBus,
+    ) {
+    }
+
+    public function __invoke(HowStampWorks $message)
+    {
+        $this->eventBus->dispatch(new TestUserWasCreated(), [
+            //new StopPropagationStamp(),
+            new DispatchAfterCurrentBusStamp(),
+        ]);
+
+        $user = $this->userRepo->findOneBy(['email' => 's']);
+        //$user?->getPassport()?->setName('11');
+
+        $response = 'USER WAS CREATED';
+        //throw new UnrecoverableMessageHandlingException();
+        \dump($response);
+        return $response;
+    }
 }

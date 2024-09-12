@@ -12,17 +12,17 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Validator\Constraints;
 
-class ClearErrorsFromEmailTypeExtension extends AbstractTypeExtension {
-	
-	public static function getExtendedTypes(): iterable {
-		yield FormType\EmailType::class;
-	}
-	
+class ClearErrorsFromEmailTypeExtension extends AbstractTypeExtension
+{
+    public static function getExtendedTypes(): iterable
+    {
+        yield FormType\EmailType::class;
+    }
+
     public function buildView(FormView $view, FormInterface $form, array $options): void
     {
-		return;
+        return;
         $view->vars['errors'] = [];
         $view->vars['valid'] = true;
     }
-	
 }

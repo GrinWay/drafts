@@ -50,10 +50,10 @@ class Kernel extends BaseKernel implements CompilerPassInterface
     }
 
     protected function build(ContainerBuilder $container): void
-    {	
-		$this->addEventAliasesPass($container);
+    {
+        $this->addEventAliasesPass($container);
 
-		$container->registerExtension($e = new ExtensionExample());
+        $container->registerExtension($e = new ExtensionExample());
         $container->loadFromExtension($e->getAlias());
         $container->addCompilerPass(new AppDtoTagPass());
         $container->addCompilerPass(new AutowireMyMethodOfPass());
@@ -101,19 +101,19 @@ class Kernel extends BaseKernel implements CompilerPassInterface
 
         $this->registerAutowireMyMethodOf($container);
     }
-	
+
     public function process(ContainerBuilder $container): void
     {
-		if ('test' === $this->environment) {
-			//$container->findDefinition('security.token_storage')->clearTag('kernel.reset');
-			//$container->findDefinition('doctrine')->clearTag('kernel.reset');
-		}
-		
-		$serviceId = 'App\Service\SomeService';
+        if ('test' === $this->environment) {
+            //$container->findDefinition('security.token_storage')->clearTag('kernel.reset');
+            //$container->findDefinition('doctrine')->clearTag('kernel.reset');
+        }
 
-		$ids = $container->findTaggedServiceIds('app.promocode');
+        $serviceId = 'App\Service\SomeService';
 
-		//\dd($ids);
+        $ids = $container->findTaggedServiceIds('app.promocode');
+
+        //\dd($ids);
 
         $d = $container->findDefinition($serviceId);
 

@@ -7,7 +7,8 @@ use Composer\Installer\PackageEvent;
 
 class PostPackageInstall
 {
-	public static function execute(PackageEvent $event): void {
-		echo (string) $event->getOperation().\PHP_EOL;
-	}
+    public static function execute(PackageEvent $event): void
+    {
+        echo (string) $event->getOperation() . \PHP_EOL;
+    }
 }

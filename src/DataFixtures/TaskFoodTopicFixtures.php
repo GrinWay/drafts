@@ -37,7 +37,7 @@ class TaskFoodTopicFixtures extends AbstractProductFixtures implements FixtureGr
                 name: $name,
             );
 
-			$this->addReference(self::class.$i, $obj);
+            $this->addReference(self::class . $i, $obj);
 
             $manager->persist($obj);
         }

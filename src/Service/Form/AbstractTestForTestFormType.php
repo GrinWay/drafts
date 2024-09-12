@@ -7,8 +7,8 @@ use App\Service\StringService;
 
 class AbstractTestForTestFormType
 {
-	function __construct(
-		public mixed $name = null,
-	) {
-	}
+    function __construct(
+        public mixed $name = null,
+    ) {
+    }
 }

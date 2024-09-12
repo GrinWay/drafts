@@ -11,22 +11,23 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type as FormType;
 use App\Form\DataTransformer\NormalizeLocaleDataTransformer;
 
-class FormTypeExtension extends AbstractTypeExtension {
-	
-	public function __construct(
-    ) {
-    }
-	
-	public function configureOptions(OptionsResolver $resolver): void
+class FormTypeExtension extends AbstractTypeExtension
+{
+    public function __construct()
     {
-		$resolver
-			->setDefaults([
-				'translation_domain' => 'validators',
-			])
-		;
     }
-	
-	public static function getExtendedTypes(): iterable {
-		yield FormType\FormType::class;
-	}
+
+    public function configureOptions(OptionsResolver $resolver): void
+    {
+        $resolver
+            ->setDefaults([
+                'translation_domain' => 'validators',
+            ])
+        ;
+    }
+
+    public static function getExtendedTypes(): iterable
+    {
+        yield FormType\FormType::class;
+    }
 }

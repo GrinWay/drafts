@@ -14,12 +14,13 @@ use Twig\Extension\RuntimeExtensionInterface;
 
 class TwigFunctionExtension implements RuntimeExtensionInterface
 {
-    public function __construct(
-    ) {
+    public function __construct()
+    {
     }
-	
-	public static function getShortClass($objOrClass) {
-		$refl = new \ReflectionClass($objOrClass);
-		return $refl->getShortName();
-	}
+
+    public static function getShortClass($objOrClass)
+    {
+        $refl = new \ReflectionClass($objOrClass);
+        return $refl->getShortName();
+    }
 }

@@ -6,5 +6,5 @@ use App\Translation\TranslatableMessage;
 
 function t(string $message, array $parameters = [], ?string $domain = null): TranslatableMessage
 {
-	return new TranslatableMessage($message, $parameters, $domain);
+    return new TranslatableMessage($message, $parameters, $domain);
 }

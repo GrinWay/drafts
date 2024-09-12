@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\DateTimeImmutableType as DoctrineDateTimeImmutableType;
 
 class DateTimeImmutableType extends CarbonDateTimeImmutableType
 {
-	public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue($value, AbstractPlatform $platform): ?string
     {
         if ($value === null) {
             return $value;

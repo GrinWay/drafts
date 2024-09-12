@@ -22,49 +22,48 @@ use Symfony\Component\Form\CallbackTransformer;
 class OnlyCountryType extends AbstractFormType
 {
     public function __construct(
-		PropertyAccessorInterface $pa,
-		private readonly string $absPublicDir,
-		private readonly AvatarRepository $avatarRepo,
-	) {
-		parent::__construct(
-			pa: $pa,
-		);
-	}
-	
-	public function buildForm(FormBuilderInterface $builder, array $options): void
-    {	
-		$onlyCountries = $this->pa->getValue($options, '[only]');
-		
-		$builder
-			->add($builder->create('country', FormType\CountryType::class,
-				options: [
-					'mapped' => false,
-					// ChoiceList switches the cache on
-					'choice_filter' => ChoiceList::filter(
-						$this,
-						static function($v) use (&$onlyCountries): bool {
-							if (null === $onlyCountries) {
-								return true;
-							} else {
-								return u($v)->ignoreCase()->containsAny($onlyCountries);
-							}
-						},
-					)
-				])
-			)
-		;
-	}
-	
+        PropertyAccessorInterface $pa,
+        private readonly string $absPublicDir,
+        private readonly AvatarRepository $avatarRepo,
+    ) {
+        parent::__construct(
+            pa: $pa,
+        );
+    }
+
+    public function buildForm(FormBuilderInterface $builder, array $options): void
+    {
+        $onlyCountries = $this->pa->getValue($options, '[only]');
+
+        $builder
+            ->add($builder->create(
+                'country',
+                FormType\CountryType::class,
+                options: [
+                    'mapped' => false,
+                    // ChoiceList switches the cache on
+                    'choice_filter' => ChoiceList::filter(
+                        $this,
+                        static function ($v) use (&$onlyCountries): bool {
+                            if (null === $onlyCountries) {
+                                return true;
+                            } else {
+                                return u($v)->ignoreCase()->containsAny($onlyCountries);
+                            }
+                        },
+                    )
+                ]
+            ));
+    }
+
     public function configureOptions(OptionsResolver $resolver): void
     {
-		$resolver
-			->setDefaults([
-				'only' => null,
-				'inherit_data' => true,
-			])
-			->setAllowedTypes('only', ['null', 'array'])
-		;
+        $resolver
+            ->setDefaults([
+                'only' => null,
+                'inherit_data' => true,
+            ])
+            ->setAllowedTypes('only', ['null', 'array'])
+        ;
     }
-	
-	
 }

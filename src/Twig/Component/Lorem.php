@@ -13,26 +13,26 @@ use App\Service;
 #[AsTwigComponent]
 class Lorem
 {
-	public string $lorem;
-	
-	public function __construct(
-		private $faker,
-	) {
-	}
-	
-	public function mount(
-		$lorem_len = 30,
-	): void {
-		$faker = $this->faker;
-		$word = static fn() => $faker->word();
-		
-		$lorem = '';
-		
-		while (0 < $lorem_len) {
-			$lorem .= $word() . ' ';
-			--$lorem_len;
-		}
-		
-		$this->lorem = $lorem;
-	}
+    public string $lorem;
+
+    public function __construct(
+        private $faker,
+    ) {
+    }
+
+    public function mount(
+        $lorem_len = 30,
+    ): void {
+        $faker = $this->faker;
+        $word = static fn() => $faker->word();
+
+        $lorem = '';
+
+        while (0 < $lorem_len) {
+            $lorem .= $word() . ' ';
+            --$lorem_len;
+        }
+
+        $this->lorem = $lorem;
+    }
 }

@@ -12,13 +12,13 @@ use Symfony\Component\Validator\Constraints;
 #[ORM\Entity(repositoryClass: TaskRepository::class)]
 class Task
 {
-	public $year;
-	public $month;
-	public $day;
-	public $hour;
-	public $minute;
-	public $second;
-	
+    public $year;
+    public $month;
+    public $day;
+    public $hour;
+    public $minute;
+    public $second;
+
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'CUSTOM')]
     #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
@@ -28,17 +28,17 @@ class Task
     public function __construct(
         //#[Constraints\NotBlank]
         #[ORM\Column(length: 255, nullable: true)]
-		/**
-		* @guess string $name
-		*/
+        /**
+         * @guess string $name
+         */
         private ?string $name = null,
         #[ORM\Column(type: 'datetime_immutable', nullable: true)]
         private ?\DateTimeInterface $deadLine = null,
         #[ORM\Column(length: 255, unique: true)]
         private ?string $slug = null,
-		#[ORM\ManyToOne(inversedBy: 'tasks', cascade: ['persist', 'remove'])]
-		#[ORM\JoinColumn(nullable: false)]
-		private ?TaskTopic $topic = null,
+        #[ORM\ManyToOne(inversedBy: 'tasks', cascade: ['persist', 'remove'])]
+        #[ORM\JoinColumn(nullable: false)]
+        private ?TaskTopic $topic = null,
     ) {
     }
 

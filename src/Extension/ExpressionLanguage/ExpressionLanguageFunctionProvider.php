@@ -18,19 +18,19 @@ class ExpressionLanguageFunctionProvider implements ExpressionFunctionProviderIn
                 function ($funcArg) {
                     return \sprintf('strtolower(%1$s)', $funcArg);
                 },
-                // evaluate 
+                // evaluate
                 function ($values, $funcArg) {
                     $this->onEvaluateFunctionStartClearStore();
                     return $this->strtolower($funcArg);
                 },
             ),
-			ExpressionLanguageStaticFunctions::getIsArrayFunc(),
-		];
+            ExpressionLanguageStaticFunctions::getIsArrayFunc(),
+        ];
     }
 
 
     //###> FUNCTIONS ###
-	
+
     private function strtolower($funcArg): mixed
     {
         if (\is_array($funcArg)) {

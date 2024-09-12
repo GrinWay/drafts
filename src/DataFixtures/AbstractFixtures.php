@@ -12,9 +12,9 @@ use Symfony\Contracts\Service\ServiceSubscriberInterface;
 
 abstract class AbstractFixtures extends Fixture implements ServiceSubscriberInterface
 {
-	use ServiceMethodsSubscriberTrait;
-	use SecurityLoggerAware;
-	use UserPasswordHasherAware;
+    use ServiceMethodsSubscriberTrait;
+    use SecurityLoggerAware;
+    use UserPasswordHasherAware;
 
     protected static $usersForProductCount = 0;
 

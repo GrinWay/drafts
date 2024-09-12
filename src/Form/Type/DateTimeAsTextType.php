@@ -22,12 +22,12 @@ use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 class DateTimeAsTextType extends AbstractFormType
 {
     public function __construct(
-		PropertyAccessorInterface $pa,
+        PropertyAccessorInterface $pa,
         private readonly ObjHasDateTimeFormHasTextDataTrasformer $objHasDateTimeFormHasTextDataTrasformer,
     ) {
-		parent::__construct(
-			pa: $pa,
-		);
+        parent::__construct(
+            pa: $pa,
+        );
     }
 
     public function configureOptions(OptionsResolver $resolver)
@@ -36,12 +36,13 @@ class DateTimeAsTextType extends AbstractFormType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-		$builder
-			->addModelTransformer($this->objHasDateTimeFormHasTextDataTrasformer)
-		;
+        $builder
+            ->addModelTransformer($this->objHasDateTimeFormHasTextDataTrasformer)
+        ;
     }
-	
-	public function getParent(): ?string {
-		return FormType\TextType::class;
-	}
+
+    public function getParent(): ?string
+    {
+        return FormType\TextType::class;
+    }
 }

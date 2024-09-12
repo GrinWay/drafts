@@ -16,10 +16,10 @@ class SessionController extends AbstractController
 {
     #[Route('/clear', name: 'app_session_clear')]
     public function clear(
-		Request $request,
-	): Response {
-		$request->getSession()->clear();
-		//$this->addFlash(NoteType::NOTICE, 'Session была очищена.');
+        Request $request,
+    ): Response {
+        $request->getSession()->clear();
+        //$this->addFlash(NoteType::NOTICE, 'Session была очищена.');
         return $this->redirectToRoute('app_home_home');
     }
 }

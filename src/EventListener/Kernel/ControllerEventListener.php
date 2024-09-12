@@ -22,7 +22,7 @@ class ControllerEventListener implements KernelEventListenerInterface
 
         $controller = $event->getController();
         $attributes = $event->getAttributes();
-		\dd($attributes);
+        \dd($attributes);
         $reflector = $event->getControllerReflector();
         $request = $event->getRequest();
 

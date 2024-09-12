@@ -4,7 +4,7 @@ when@test: &test
             dsn: 'null://null'
             
             envelope:
-                sender: '%env(APP_ADMIN_EMAIL)%'
+                sender: '%env(APP_MAILER_HEADER_FROM)%'
                 recipients:
                 -   '%env(APP_ADMIN_EMAIL)%'
                 allowed_recipients: []
@@ -25,7 +25,7 @@ framework:
             #google: '%env(MAILER_GOOGLE_TRANSPORT)%'
         
         envelope:
-            sender: '%env(APP_ADMIN_EMAIL)%'
+            sender: '%env(APP_MAILER_HEADER_FROM)%'
             recipients:
             -   '%env(APP_ADMIN_EMAIL)%'
             allowed_recipients:
