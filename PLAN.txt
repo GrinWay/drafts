@@ -839,7 +839,7 @@ SYMFONY NOTIFIER
 		https://dashboard.onesignal.com/apps/c30fe145-50c7-4884-8f16-20ecf439f7a3/settings
 	?
 	// TODO: current
-	?? По какой причине в слушателе mailer/EventListener/MessageListener.php успешно назначаются from headers для TemplatedEmail и неполучается назначить header sender для NotificationEmail
+	?? По какой причине в слушателе mailer/EventListener/MessageListener.php успешно назначаются from headers для TemplatedEmail и не получается назначить header sender для NotificationEmail
 	+ ? NotificationEmail: Кто переопределяется header from, email.subject
 		NotificationEmail
 	+ ? NotificationEmail: как работает метод NotificationEmail::markdown 
