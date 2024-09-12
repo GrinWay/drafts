@@ -484,10 +484,17 @@ class HomeController extends AbstractController
 		
 		/*
 		*/
+		$email = (new TemplatedEmail())
+			->to($adminEmail)
+			->htmlTemplate('email/default/index.html.twig')
+		;
+		$mailer->send($email);
+		/*
 		$notifier->send(
 			$notification,
 			$recipient,
 		);
+		*/
 		
 		/*
 		$telegramOptions = new TelegramOptions();

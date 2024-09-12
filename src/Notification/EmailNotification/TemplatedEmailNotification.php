@@ -36,13 +36,6 @@ class TemplatedEmailNotification extends Notification implements EmailNotificati
 			subject: $subject,
 			channels: $channels,
 		);
-		
-		/*
-		if (!$twig->getLoader()->exists($theme)) {
-			$message = \sprintf('The twig theme path: "%s" does not exist', $theme);
-			throw new \Exception($message);
-		}
-		*/
 	}
 	
 	public function asEmailMessage(EmailRecipientInterface $recipient, ?string $transport = null): ?EmailMessage
