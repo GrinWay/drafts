@@ -1,5 +1,11 @@
 bash "./public/deploy/install-grinway-symfony-bundles.sh"
 
+yarn install
+
+#php bin/console doctrine:migrations:migrate -q --env=dev
+
+#yarn run dev
+
 echo 'APP_ADMIN_MAILER_LOGIN'
 php bin/console secrets:set APP_ADMIN_MAILER_LOGIN
 echo 'APP_ADMIN_MAILER_PASS'
@@ -57,7 +63,3 @@ bin/console secrets:set APP_NOVU_ENV_ID
 
 echo 'APP_EXPO_TOKEN'
 bin/console secrets:set APP_EXPO_TOKEN
-
-#php bin/console doctrine:migrations:migrate -q --env=dev
-
-#yarn install && yarn run dev

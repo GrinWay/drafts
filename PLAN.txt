@@ -845,6 +845,14 @@ SYMFONY NOTIFIER
 		
 		$sentMessage = $texter->send($sms);
 	?
+	? OneSignal Push: могу ли я задать один и тот-же externalId для разных подписчиков
+		чтобы отправлять что-либо одновременно семейству подписчиков по externalId
+	? OneSignal Push: Как импортировать уже существующих у меня в базе данных подписчиков
+		в OneSignal, то есть в каком виде csv это сделать
+	? OneSignal Push: Что такое теги и как ими пользоваться
+	? OneSignal Push: Как собрать пользователей в сегмент по фильтру (и главно как этим пользоваться)
+	? OneSignal Push: Создавать условия отправления последующих push с сайта OneSignal
+	??? OneSignal Push: Подписчик есть, а push не доставляются, но ПОЧЕМУ непонятно (постоянно Failed)
 	? Возможно ли как-нибудь указать options, используя NotifierInterface, а не ChatterInterface
 	+ ? Из-за чего вдруг появилось исключение
 		Invalid "telegram://default" notifier DSN: Missing token
@@ -1005,6 +1013,8 @@ SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
 SYMFONY VAR EXPORTER https://symfony.com/doc/current/components/var_exporter.html
 SYMFONY FILESYSTEM
 SYMFONY INTL COMPONENT https://symfony.com/doc/current/components/intl.html
+LIB MOBILE DETECT: https://github.com/serbanghita/Mobile-Detect
+	R: TODO: Mobile-detect
 SYMFONY CONTAINER BUILDER
 	?
 	https://github.com/violet-php/class-scanner

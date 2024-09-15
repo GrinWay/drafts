@@ -14,15 +14,6 @@
 
         {% block javascripts %}
         {% endblock %}
-		<script src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" defer></script>
-		<script>
-		  window.OneSignalDeferred = window.OneSignalDeferred || [];
-		  OneSignalDeferred.push(async function(OneSignal) {
-			await OneSignal.init({
-			  appId: "c30fe145-50c7-4884-8f16-20ecf439f7a3",
-			});
-		  });
-		</script>
     </head>
 
 	{%- set theme = app.request.cookies.get('app_theme') ?? 'light' -%}
@@ -40,6 +31,5 @@
 				{% block body %}{% endblock %}
 			</div>
 		</div>
-		
     </body>
 </html>

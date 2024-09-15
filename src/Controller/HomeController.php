@@ -7,6 +7,7 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Notifier\Bridge\OneSignal\OneSignalOptions;
 use Symfony\Component\Notifier\Bridge\Expo\ExpoOptions;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as SymfonyExpressionLanguage;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
@@ -459,6 +460,10 @@ class HomeController extends AbstractController
 		$appUrl,
 		NotifierInterface $notifier,
 		$adminPhone,
+		#[Autowire('%env(APP_ONESIGNAL_ID)%')]
+		$onesignalAppId,
+		#[Autowire('%env(APP_ONESIGNAL_DEFAULT_RECIPIENT_ID)%')]
+		$appOnesignalDefaultRecipientId,
 		/*
 		*/
 	) {
@@ -467,21 +472,16 @@ class HomeController extends AbstractController
 		$content = <<<'__TEXT__'
 		# I love Symfony
 		__TEXT__;
-		$content = \json_encode(
-			[
-				'param1' => 'Lorum Ipsum',
-			]
-		);
 		
 		$notification = new Notification(
 			subject: $subject,
 			channels: [
-				'push/expo',
+				'push/onesignal',
 				/*
+				'chat/telegram',
 				'chat',
 				'push/novu',
 				'browser', // ? how to test it
-				'chat/telegram',
 				'email',
 				*/
 			],
@@ -496,49 +496,8 @@ class HomeController extends AbstractController
 			email: $adminEmail,
 			phone: $adminPhone,
 		);
-		$recipient = new Recipient(
-			email: $adminEmail,
-			phone: $adminPhone,
-		);
 		//$recipient = new NoRecipient();
 		
-		$recipientId = '284cd753-a3df-4789-9935-04a53e7b8e8e';
-		$title = 'title';
-		$body = 'body';
-		$subtitle = 'subtitle';
-		$priority = 'low';
-		$sound = 'sound';
-		$badge = 0;
-		$channelId = 'channelId';
-		$categoryId = 'categoryId';
-		$mutableContent = false;
-		$ttl = 0;
-		$expiration = 0;
-		$data = [
-			'my_data' => 'data',
-		];
-		$options = (new ExpoOptions($recipientId))
-			/*
-			->title($title)
-			->body($body)
-			->subtitle($subtitle)
-			->priority($priority)
-			->sound($sound)
-			->badge($badge)
-			->channelId($channelId)
-			->categoryId($categoryId)
-			->mutableContent($mutableContent)
-			->ttl($ttl)
-			->expiration($expiration)
-			->data($data)
-			*/
-		;
-		$subject = 'subject';
-		$content = 'content';
-		$message = (new PushMessage($subject, $content))
-			->transport('expo')
-			->options($options)
-		;
 		/*
 		$email = (new TemplatedEmail())
 			->to($adminEmail)
@@ -552,8 +511,31 @@ class HomeController extends AbstractController
 			$recipient,
 		);
 		*/
-		$chatter->send($message);
 		
+		$options = (new OneSignalOptions())
+			->recipient($appOnesignalDefaultRecipientId)
+			->url($appUrl.'/push/displayed/webhook')
+			->externalId('14a7ced1-47f8-4419-a783-6d212ccf9f52') // Uuid::v4()
+			/*
+			->isExternalUserId()
+			->headings([])
+			->contents([])
+			->data([])
+			->sendAfter(Carbon::now('UTC')->add(1, 'second'))
+			*/
+		;
+		$subject = 'subject';
+		$content = 'content';
+		
+		$message = (new PushMessage(
+			$subject,
+			$content,
+		))
+			->transport('onesignal')
+			->options($options)
+		;
+		
+		$texter->send($message);
 		/*
 		$telegramOptions = new TelegramOptions();
 		$telegramMessage = (new ChatMessage('Hello, it is a new message'))
