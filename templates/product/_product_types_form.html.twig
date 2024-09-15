@@ -10,7 +10,9 @@
 	
 	<div class="container mb-3">
 		<div class="">
+			{#
 			{{ s|emojify|u.truncate(20, '...', false) }}
+			#}
 		</div>
 		<div class="">
 			{{ s|u.splice('...', 5, (len - 20)) }}

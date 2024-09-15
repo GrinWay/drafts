@@ -7,6 +7,10 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Notifier\Bridge\Expo\ExpoOptions;
+use Symfony\Component\ExpressionLanguage\ExpressionLanguage as SymfonyExpressionLanguage;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Security\Voter\HomeVoter;
 use Novu\SDK\Novu;
 use Symfony\Component\Notifier\Bridge\Novu\NovuSubscriberRecipient;
 use App\Notification\PushNotification\NovuNotification;
@@ -26,6 +30,7 @@ use Symfony\Component\Notifier\Bridge\Telegram\Reply\Markup\ReplyKeyboardMarkup;
 use Symfony\Component\Notifier\Bridge\Telegram\Reply\Markup\Button\KeyboardButton;
 use Symfony\Component\Notifier\Bridge\Telegram\TelegramOptions;
 use Symfony\Component\Notifier\ChatterInterface;
+use Symfony\Component\Notifier\Message\PushMessage;
 use Symfony\Component\Notifier\Message\ChatMessage;
 use Symfony\Component\Notifier\Bridge\Twilio\TwilioOptions;
 use Symfony\Component\Notifier\Message\SmsMessage;
@@ -153,7 +158,7 @@ use Carbon\CarbonInterval;
 use Symfony\Component\Clock\Clock;
 use Symfony\Component\Clock\MockClock;
 use Symfony\Component\String\Slugger\SluggerInterface;
-use Symfony\Component\Emoji\EmojiTransliterator;
+//use Symfony\Component\Emoji\EmojiTransliterator;
 use Symfony\Component\String\CodePointString;
 use Symfony\Component\String\ByteString;
 use Vich\UploaderBundle\Templating\Helper\UploaderHelper;
@@ -454,59 +459,9 @@ class HomeController extends AbstractController
 		$appUrl,
 		NotifierInterface $notifier,
 		$adminPhone,
-		#[Autowire('%env(APP_NOVU_APP_ID)%')]
-		$novuAppId,
-		#[Autowire('%env(APP_NOVU_API_KEY)%')]
-		$novuApiKey,
-		#[Autowire('%env(APP_NOVU_ENV_ID)%')]
-		$novuEnvId,
 		/*
 		*/
 	) {
-		$tenantsUri = \sprintf('https://api.novu.co/v1/tenants/%s', $novuAppId);
-		$notificationsUri = 'https://api.novu.co/v1/notifications';
-		$eventUri = 'https://api.novu.co/v1/events/trigger';
-		
-		$uri = $eventUri;
-		
-		$options = [
-			'json' => [
-				'name' => 'name_outside',
-				'to' => [
-					'subscriberId' => '1',
-					'firstName' => 'firstName',
-					'lastName' => 'lastName',
-					'email' => $adminEmail,
-					'phone' => $adminPhone,
-				],
-			],
-			'headers' => [
-				'Authorization' => \sprintf('ApiKey %s', $novuApiKey),
-			],
-		];
-		/*
-		$response = $client->request('GET', $uri, $options);
-		\dd(
-			\get_debug_type($response),
-			$response->getStatusCode(),
-			$response->toArray(),
-		);
-		*/
-		$novu = new Novu($novuApiKey);
-
-		// https://dashboard.novu.co/subscribers
-		$novu->triggerEvent([
-		'name' => $novuEnvId,
-			'to' => [
-				'subscriberId' => '1',
-				'email' => $adminEmail,
-				'firstName' => 'John',
-				'lastName'  => 'Doe',
-				'phone' => $adminPhone,
-			],
-		]);
-		
-		\dd(1);
 		
 		$subject = 'Symfony Notifier';
 		$content = <<<'__TEXT__'
@@ -518,11 +473,12 @@ class HomeController extends AbstractController
 			]
 		);
 		
-		$notification = new NovuNotification(
+		$notification = new Notification(
 			subject: $subject,
 			channels: [
-				'push',
+				'push/expo',
 				/*
+				'chat',
 				'push/novu',
 				'browser', // ? how to test it
 				'chat/telegram',
@@ -540,18 +496,49 @@ class HomeController extends AbstractController
 			email: $adminEmail,
 			phone: $adminPhone,
 		);
-		$recipient = new NovuSubscriberRecipient(
+		$recipient = new Recipient(
 			email: $adminEmail,
 			phone: $adminPhone,
-			subscriberId: '',
-			firstName: 'First Name',
-			lastName: 'Last Name',
-			avatar: 'AVATAR',
-			locale: 'ru',
-			overrides: [],
 		);
 		//$recipient = new NoRecipient();
 		
+		$recipientId = '284cd753-a3df-4789-9935-04a53e7b8e8e';
+		$title = 'title';
+		$body = 'body';
+		$subtitle = 'subtitle';
+		$priority = 'low';
+		$sound = 'sound';
+		$badge = 0;
+		$channelId = 'channelId';
+		$categoryId = 'categoryId';
+		$mutableContent = false;
+		$ttl = 0;
+		$expiration = 0;
+		$data = [
+			'my_data' => 'data',
+		];
+		$options = (new ExpoOptions($recipientId))
+			/*
+			->title($title)
+			->body($body)
+			->subtitle($subtitle)
+			->priority($priority)
+			->sound($sound)
+			->badge($badge)
+			->channelId($channelId)
+			->categoryId($categoryId)
+			->mutableContent($mutableContent)
+			->ttl($ttl)
+			->expiration($expiration)
+			->data($data)
+			*/
+		;
+		$subject = 'subject';
+		$content = 'content';
+		$message = (new PushMessage($subject, $content))
+			->transport('expo')
+			->options($options)
+		;
 		/*
 		$email = (new TemplatedEmail())
 			->to($adminEmail)
@@ -559,12 +546,13 @@ class HomeController extends AbstractController
 		;
 		$mailer->send($email);
 		*/
+		/*
 		$notifier->send(
 			$notification,
 			$recipient,
 		);
-		/*
 		*/
+		$chatter->send($message);
 		
 		/*
 		$telegramOptions = new TelegramOptions();

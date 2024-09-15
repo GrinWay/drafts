@@ -55,6 +55,9 @@ bin/console secrets:set APP_NOVU_APP_ID
 echo 'APP_NOVU_ENV_ID'
 bin/console secrets:set APP_NOVU_ENV_ID
 
+echo 'APP_EXPO_TOKEN'
+bin/console secrets:set APP_EXPO_TOKEN
+
 #php bin/console doctrine:migrations:migrate -q --env=dev
 
 #yarn install && yarn run dev

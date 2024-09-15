@@ -165,6 +165,15 @@
             "./config/packages/debug.yaml"
         ]
     },
+    "symfony/expo-notifier": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.4",
+            "ref": "9e3bbbadbc1d3089cacc5ff2eccc19d03c973436"
+        }
+    },
     "symfony/flex": {
         "version": "2.4",
         "recipe": {
@@ -273,15 +282,6 @@
         "files": [
             "./config/packages/notifier.yaml"
         ]
-    },
-    "symfony/novu-notifier": {
-        "version": "7.1",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "6.4",
-            "ref": "fec78b082c512ab8ddd97d26dfb48f8a6080d099"
-        }
     },
     "symfony/one-signal-notifier": {
         "version": "7.1",

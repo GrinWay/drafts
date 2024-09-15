@@ -438,6 +438,19 @@ TWIG
 SYMFONY EXTENTIONS
 SYMFONY SECURITY
 	?
+	+ ? Я ошибочно использовал group provider, передавая его в опцию form.validation_groups,
+		но туда передаются либо: string, array, GroupSequence или callback
+		А сам group provider, назначается классу через атрибут.
+		другое дело как назначить провайдера не через атрибут GroupSequenceProvider, а через config/validator
+		я подозреваю, что сделать это можно через установку тега напрямую
+		(
+			Нет, это не так.
+			Сущность не сервис, у сущности может быть GroupSequenceProvider за счёт аттрибута
+			Но этот атрибут не у сервиса, а у любого простого класса
+			Сам сервис валидатора просто читает аттрибут у класса за счёт рефлексии
+		)
+		Таким образом мы вынуждены в настройке framework.validation.enable_attributes
+		устанавливать true
 	+ ? куда пропал сервис CsrfTokenManagerInterface (Он не добавился потому что packages[framework.csrf_protection.enabled = false])
 	+ ? где CsrfTokenManagerInterface (не всегда проводиться)
 	? структура JWT
@@ -810,12 +823,10 @@ SYMFONY The Mime Component
 SYMFONY NOTIFIER
 	- отправить push на телефон
 		НИКАК НЕ ПОЛУЧАЕТЬСЯ ОТПРАВИТЬ push на телефон with push/onesignal
+	- отправить push на телефон with novu
+		совместим только с symfony/notifier 6.4
 	***
-	R: отправить push на телефон with novu
-		https://github.com/novuhq/novu-php
-		https://docs.novu.co/api-reference/events/trigger-event
-		https://dashboard.novu.co/subscribers
-		https://dashboard.novu.co/api-keys
+	отправить push на телефон
 	R: отправить sms на телефон
 		https://www.twilio.com/en-us/sms/pricing/us
 		https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Bridge/Twilio/README.md
@@ -834,6 +845,10 @@ SYMFONY NOTIFIER
 		
 		$sentMessage = $texter->send($sms);
 	?
+	? Возможно ли как-нибудь указать options, используя NotifierInterface, а не ChatterInterface
+	+ ? Из-за чего вдруг появилось исключение
+		Invalid "telegram://default" notifier DSN: Missing token
+		Это странно, но перезагрузка ПК помогла
 	+ ?? По какой причине в слушателе mailer/EventListener/MessageListener.php
 		успешно назначаются header sender для TemplatedEmail
 		и не получается назначить header sender для NotificationEmail
