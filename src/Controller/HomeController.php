@@ -515,8 +515,8 @@ class HomeController extends AbstractController
 		$options = (new OneSignalOptions())
 			->recipient($appOnesignalDefaultRecipientId)
 			->url($appUrl.'/push/displayed/webhook')
-			->externalId('14a7ced1-47f8-4419-a783-6d212ccf9f52') // Uuid::v4()
 			/*
+			->externalId('14a7ced1-47f8-4419-a783-6d212ccf9f52') // Uuid::v4()
 			->isExternalUserId()
 			->headings([])
 			->contents([])
