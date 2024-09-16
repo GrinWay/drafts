@@ -847,6 +847,7 @@ SYMFONY NOTIFIER
 	?
 	? PUSH FCM v1: OneSignal имеет конфигурацию, данную от Google Firebase FCM v1
 		но по какой-то неизвестной причине отправка push невозможна из-за ошибки в FCM v1
+		fcm v1 doesn't send push notifications
 	? OneSignal Push: могу ли я задать один и тот-же externalId для разных подписчиков
 		чтобы отправлять что-либо одновременно семейству подписчиков по externalId
 	? OneSignal Push: Как импортировать уже существующих у меня в базе данных подписчиков
