@@ -464,13 +464,59 @@ class HomeController extends AbstractController
 		$onesignalAppId,
 		#[Autowire('%env(APP_ONESIGNAL_DEFAULT_RECIPIENT_ID)%')]
 		$appOnesignalDefaultRecipientId,
+		#[Autowire('%env(APP_FIREBASE_FCM_V1_API_KEY)%')]
+		$fcmApiKey,
 		/*
 		*/
 	) {
 		
+		/*
+		$m = 'GET';
+		$u = 'https://www.googleapis.com/auth/firebase.messaging';
+		$o = [
+			'headers' => [
+				'Authorization' => \sprintf('Bearer %s', $fcmApiKey),
+			],
+		];
+		//
+		$response = $client->request($m, $u, $o);
+		\dd($response);
+		*/
+		
+		// https://stackoverflow.com/questions/76529438/send-push-fcm-to-multiple-devices-with-curl-in-v1-api
+		$pId = 'demopush-68e36';
+		$OAuth2AccessToken = $fcmApiKey;
+		$m = 'POST';
+		$storyId = '';
+		$token = '';
+		$u = \sprintf('https://fcm.googleapis.com/v1/projects/%s/messages:send', $pId);
+		$o = [
+			'json' => [
+				'message' => [
+					'topic' => 'symfony topic',
+					'token' => $token,
+					'notification' => [
+						'title' => 'symfony title',
+						'body' => 'symfony body',
+					],
+					'data' => [
+					/*
+						'story_id' => $storyId,
+					*/
+					],
+				],
+			],
+			'headers' => [
+				'Authorization' => \sprintf('Bearer %s', $OAuth2AccessToken),
+			],
+		];
+		$response = $client->request($m, $u, $o);
+		
+		\dd('Try pure FCM v1');
+		
 		$subject = 'Symfony Notifier';
 		$content = <<<'__TEXT__'
-		# I love Symfony
+		# I can't send push for days
 		__TEXT__;
 		
 		$notification = new Notification(
@@ -524,8 +570,6 @@ class HomeController extends AbstractController
 			->sendAfter(Carbon::now('UTC')->add(1, 'second'))
 			*/
 		;
-		$subject = 'subject';
-		$content = 'content';
 		
 		$message = (new PushMessage(
 			$subject,

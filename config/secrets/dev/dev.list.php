@@ -8,6 +8,7 @@ return [
     'APP_ADMIN_MAILER_PASS' => null,
     'APP_ADMIN_PHONE' => null,
     'APP_EXPO_TOKEN' => null,
+    'APP_FIREBASE_FCM_V1_API_KEY' => null,
     'APP_NOVU_API_KEY' => null,
     'APP_NOVU_APP_ID' => null,
     'APP_NOVU_ENV_ID' => null,

@@ -15,10 +15,7 @@ class SentMessageEventListener
         \dump(
             __METHOD__,
             \get_debug_type($message),
-            'message id',
-            $message->getMessageId(),
-            'transport',
-            $message->getTransport(),
+            $message,
         );
     }
 }
