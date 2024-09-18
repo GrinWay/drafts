@@ -7,6 +7,12 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Notifier\Bridge\OneSignal\OneSignalOptions;
 use Symfony\Component\Notifier\Bridge\Expo\ExpoOptions;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as SymfonyExpressionLanguage;
@@ -472,7 +478,42 @@ class HomeController extends AbstractController
 	) {
 		$response = $this->render('home/index.html.twig', []);
 		
+		$n = [
+			new ObjectNormalizer(),
+		];
+		$e = [
+			new XmlEncoder(),
+			new JsonEncoder(),
+		];
 		
+		$serializer = new Serializer($n, $e);
+		
+		$object = new RgbColor(255, 255, 255);
+		
+		$xmlRgbColor = <<<'__XML__'
+<rgb>
+	<red>1</red>
+	<green>2</green>
+	<blue>3</blue>
+	<color>
+		<red>4</red>
+		<green>5</green>
+		<blue>6</blue>
+	</color>
+</rgb>
+__XML__;
+		
+		\dump(
+			/*
+			$serializer->serialize($object, 'json'),
+			*/
+			$serializer->deserialize($xmlRgbColor, RgbColor::class, 'xml', [
+				//AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false,
+				AbstractNormalizer::OBJECT_TO_POPULATE => $object,
+				//AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true,
+			]),
+			$object,
+		);
 		
 		return $response;
 		
@@ -1267,4 +1308,49 @@ class HomeController extends AbstractController
             'obj' => $obj,
         ];
     }
+}
+
+class RgbColor {
+	public function __construct(
+		private int $red,
+		private int $green,
+		private int $blue,
+		private ?RgbColor $color = null,
+	) {}
+	
+	public function getColor(): ?RgbColor {
+		return $this->color;
+	}
+	
+	public function getRed(): int {
+		return $this->red;
+	}
+	
+	public function getGreen(): int {
+		return $this->green;
+	}
+	
+	public function getBlue(): int {
+		return $this->blue;
+	}
+	
+	public function setRed(int $value): static {
+		$this->red = $value;
+		return $this;
+	}
+	
+	public function setGreen(int $value): static {
+		$this->green = $value;
+		return $this;
+	}
+	
+	public function setBlue(int $value): static {
+		$this->blue = $value;
+		return $this;
+	}
+	
+	public function setColor(?RgbColor $value): static {
+		$this->color = $value;
+		return $this;
+	}
 }

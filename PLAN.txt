@@ -888,11 +888,9 @@ __TEXT__;
 		Похоже ID это device token, которых нужно получить (через JS) от Firebase
 	???? PUSH FCM v1: ПОЧЕМУ НИКАК НЕ ПОЛУЧАЕТЬСЯ ОТПРАВИТЬ push на телефон with push/onesignal
 		OneSignal имеет конфигурацию, данную от Google Firebase FCM v1
+	? PUSH FCM v1: OneSignal имеет конфигурацию, данную от Google Firebase FCM v1
 		но по какой-то неизвестной причине отправка push невозможна из-за ошибки в FCM v1
 		fcm v1 doesn't send push notifications
-		firebase FCM v1 always errors
-		подозреваю, что чего-то нехватает в секретных данных Firebase Cloud Messaging API
-		Подозреваю отсутствующий Web Api Key
 	? OneSignal Push: могу ли я задать один и тот-же externalId для разных подписчиков
 		чтобы отправлять что-либо одновременно семейству подписчиков по externalId
 	? OneSignal Push: Как импортировать уже существующих у меня в базе данных подписчиков
@@ -1007,8 +1005,14 @@ __TEXT__;
 ***
 SYMFONY SERIALIZER
 
+	https://symfony.com/doc/current/components/serializer.html#context
 	
-
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Serializer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ObjectNormalizer.php
+	https://symfony.com/doc/current/serializer.html#serializer_serializer-context
+	
+	$loader is any of the valid loaders explained later in this article
+	
 	https://symfony.com/doc/current/serializer.html
 	добавляет новые поля в json при serialize
 	grin_way_env_csv_multiline parse with serializer
