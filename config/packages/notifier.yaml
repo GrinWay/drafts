@@ -19,7 +19,7 @@ framework:
             #novu:               '%env(APP_NOVU_DSN)%'
             #expo:               '%env(APP_EXPO_DSN)%'
             onesignal:          '%env(APP_ONESIGNAL_DSN)%'
-            #twilio:             '%env(APP_TWILIO_DSN)%'
+            twilio:             '%env(APP_TWILIO_DSN)%'
         
         chatter_transports:
             telegram:           '%env(APP_TELEGRAM_DSN)%'

@@ -12,6 +12,6 @@ parameters:
     env(APP_ONESIGNAL_DSN): 'onesignal://%env(APP_ONESIGNAL_ID)%:%env(APP_ONESIGNAL_API_KEY)%@default?defaultRecipientId=%env(APP_ONESIGNAL_DEFAULT_RECIPIENT_ID)%'
     
     
-    #env(APP_TWILIO_DSN): 'twilio://%env(APP_TWILIO_SID)%:%env(APP_TWILIO_TOKEN)%@default?from=FROM'    
+    env(APP_TWILIO_DSN): 'twilio://%env(APP_TWILIO_SID)%:%env(APP_TWILIO_TOKEN)%@default?from=%env(APP_TWILIO_FROM)%'    
 
     

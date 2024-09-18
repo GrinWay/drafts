@@ -1,0 +1,13 @@
+services:
+    
+    _defaults:
+        autowire: true
+        autoconfigure: true
+    
+    App\Service\FirebaseService:
+        class: 'App\Service\FirebaseService'
+        shared: true
+        arguments:
+            $firebaseServiceAccountAbsPath: '%kernel.project_dir%/firebase_service_account.json'
+        calls:
+        -   configureClient: []

@@ -16,6 +16,7 @@
         "endroid/qr-code-bundle": "^5.0",
         "fpdf/fpdf": "^1.86",
         "fzaninotto/faker": "dev-bugfix",
+        "google/apiclient": "^2.15.0",
         "grinway/command-bundle": "^1.2",
         "grinway/env-processor-bundle": "^1.0",
         "grinway/installer": "*",

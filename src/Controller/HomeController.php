@@ -464,133 +464,15 @@ class HomeController extends AbstractController
 		$onesignalAppId,
 		#[Autowire('%env(APP_ONESIGNAL_DEFAULT_RECIPIENT_ID)%')]
 		$appOnesignalDefaultRecipientId,
+		Service\FirebaseService $firebaseService,
 		#[Autowire('%env(APP_FIREBASE_FCM_V1_API_KEY)%')]
-		$fcmApiKey,
+		$firebaseApiKey,
 		/*
 		*/
 	) {
+		$response = $this->render('home/index.html.twig', []);
 		
-		/*
-		$m = 'GET';
-		$u = 'https://www.googleapis.com/auth/firebase.messaging';
-		$o = [
-			'headers' => [
-				'Authorization' => \sprintf('Bearer %s', $fcmApiKey),
-			],
-		];
-		//
-		$response = $client->request($m, $u, $o);
-		\dd($response);
-		*/
 		
-		// https://stackoverflow.com/questions/76529438/send-push-fcm-to-multiple-devices-with-curl-in-v1-api
-		$pId = 'demopush-68e36';
-		$OAuth2AccessToken = $fcmApiKey;
-		$m = 'POST';
-		$storyId = '';
-		$token = '';
-		$u = \sprintf('https://fcm.googleapis.com/v1/projects/%s/messages:send', $pId);
-		$o = [
-			'json' => [
-				'message' => [
-					'topic' => 'symfony topic',
-					'token' => $token,
-					'notification' => [
-						'title' => 'symfony title',
-						'body' => 'symfony body',
-					],
-					'data' => [
-					/*
-						'story_id' => $storyId,
-					*/
-					],
-				],
-			],
-			'headers' => [
-				'Authorization' => \sprintf('Bearer %s', $OAuth2AccessToken),
-			],
-		];
-		$response = $client->request($m, $u, $o);
-		
-		\dd('Try pure FCM v1');
-		
-		$subject = 'Symfony Notifier';
-		$content = <<<'__TEXT__'
-		# I can't send push for days
-		__TEXT__;
-		
-		$notification = new Notification(
-			subject: $subject,
-			channels: [
-				'push/onesignal',
-				/*
-				'chat/telegram',
-				'chat',
-				'push/novu',
-				'browser', // ? how to test it
-				'email',
-				*/
-			],
-		);
-		$notification
-			->content($content)
-			->importance(Notification::IMPORTANCE_LOW)
-			->emoji('💕')
-		;
-		
-		$recipient = new Recipient(
-			email: $adminEmail,
-			phone: $adminPhone,
-		);
-		//$recipient = new NoRecipient();
-		
-		/*
-		$email = (new TemplatedEmail())
-			->to($adminEmail)
-			->htmlTemplate('email/default/index.html.twig')
-		;
-		$mailer->send($email);
-		*/
-		/*
-		$notifier->send(
-			$notification,
-			$recipient,
-		);
-		*/
-		
-		$options = (new OneSignalOptions())
-			->recipient($appOnesignalDefaultRecipientId)
-			->url($appUrl.'/push/displayed/webhook')
-			/*
-			->externalId('14a7ced1-47f8-4419-a783-6d212ccf9f52') // Uuid::v4()
-			->isExternalUserId()
-			->headings([])
-			->contents([])
-			->data([])
-			->sendAfter(Carbon::now('UTC')->add(1, 'second'))
-			*/
-		;
-		
-		$message = (new PushMessage(
-			$subject,
-			$content,
-		))
-			->transport('onesignal')
-			->options($options)
-		;
-		
-		$texter->send($message);
-		/*
-		$telegramOptions = new TelegramOptions();
-		$telegramMessage = (new ChatMessage('Hello, it is a new message'))
-			->transport('telegram')
-			->options($telegramOptions)
-		;
-		$chatter->send($telegramMessage);
-		*/
-		
-		$response = $this->render('home/index.html.twig', [
-		]);
 		
 		return $response;
 		
