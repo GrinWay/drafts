@@ -821,11 +821,12 @@ SYMFONY CACHE
 SYMFONY The Mime Component
 	создай реализацию MimeTypeGuesserInterface для своего угадывающего тип по содержимому
 SYMFONY NOTIFIER
+	- отправить push на телефон
+		НИКАК НЕ ПОЛУЧАЕТЬСЯ ОТПРАВИТЬ push на телефон with push/onesignal
 	- отправить push на телефон with novu
 		совместим только с symfony/notifier 6.4
 	***
 	отправить push на телефон
-		попробовать чисто за счёт API FCM v1 (без OneSignal)
 	R: отправить sms на телефон
 		https://www.twilio.com/en-us/sms/pricing/us
 		https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Bridge/Twilio/README.md
@@ -844,13 +845,9 @@ SYMFONY NOTIFIER
 		
 		$sentMessage = $texter->send($sms);
 	?
-	???? PUSH FCM v1: ПОЧЕМУ НИКАК НЕ ПОЛУЧАЕТЬСЯ ОТПРАВИТЬ push на телефон with push/onesignal
-		OneSignal имеет конфигурацию, данную от Google Firebase FCM v1
+	? PUSH FCM v1: OneSignal имеет конфигурацию, данную от Google Firebase FCM v1
 		но по какой-то неизвестной причине отправка push невозможна из-за ошибки в FCM v1
 		fcm v1 doesn't send push notifications
-		firebase FCM v1 always errors
-		подозреваю, что чего-то нехватает в секретных данных Firebase Cloud Messaging API
-		Подозреваю отсутствующий Web Api Key
 	? OneSignal Push: могу ли я задать один и тот-же externalId для разных подписчиков
 		чтобы отправлять что-либо одновременно семейству подписчиков по externalId
 	? OneSignal Push: Как импортировать уже существующих у меня в базе данных подписчиков
@@ -962,7 +959,15 @@ SYMFONY NOTIFIER
 	+ Возможно ли указать в SmsMessage transport (если их у меня несколько) (Да, *Message::transport(<>))
 	???LOGIN WITH PUSH CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на push уведомление
 	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
-SYMFONY SERIALIZER https://symfony.com/doc/current/components/serializer.html
+SYMFONY SERIALIZER
+
+	https://symfony.com/doc/current/components/serializer.html#context
+	
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Serializer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ObjectNormalizer.php
+	https://symfony.com/doc/current/serializer.html#serializer_serializer-context
+	
+	$loader is any of the valid loaders explained later in this article
 	https://symfony.com/doc/current/serializer.html
 	добавляет новые поля в json при serialize
 	grin_way_env_csv_multiline parse with serializer

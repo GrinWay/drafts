@@ -7,6 +7,12 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Notifier\Bridge\OneSignal\OneSignalOptions;
 use Symfony\Component\Notifier\Bridge\Expo\ExpoOptions;
 use Symfony\Component\ExpressionLanguage\ExpressionLanguage as SymfonyExpressionLanguage;
@@ -469,128 +475,44 @@ class HomeController extends AbstractController
 		/*
 		*/
 	) {
+		$response = $this->render('home/index.html.twig', []);
 		
-		/*
-		$m = 'GET';
-		$u = 'https://www.googleapis.com/auth/firebase.messaging';
-		$o = [
-			'headers' => [
-				'Authorization' => \sprintf('Bearer %s', $fcmApiKey),
-			],
+		$n = [
+			new ObjectNormalizer(),
 		];
-		//
-		$response = $client->request($m, $u, $o);
-		\dd($response);
-		*/
-		
-		// https://stackoverflow.com/questions/76529438/send-push-fcm-to-multiple-devices-with-curl-in-v1-api
-		$pId = 'demopush-68e36';
-		$OAuth2AccessToken = $fcmApiKey;
-		$m = 'POST';
-		$storyId = '';
-		$token = '';
-		$u = \sprintf('https://fcm.googleapis.com/v1/projects/%s/messages:send', $pId);
-		$o = [
-			'json' => [
-				'message' => [
-					'topic' => 'symfony topic',
-					'token' => $token,
-					'notification' => [
-						'title' => 'symfony title',
-						'body' => 'symfony body',
-					],
-					'data' => [
-					/*
-						'story_id' => $storyId,
-					*/
-					],
-				],
-			],
-			'headers' => [
-				'Authorization' => \sprintf('Bearer %s', $OAuth2AccessToken),
-			],
+		$e = [
+			new XmlEncoder(),
+			new JsonEncoder(),
 		];
-		$response = $client->request($m, $u, $o);
 		
-		\dd('Try pure FCM v1');
+		$serializer = new Serializer($n, $e);
 		
-		$subject = 'Symfony Notifier';
-		$content = <<<'__TEXT__'
-		# I can't send push for days
-		__TEXT__;
+		$object = new RgbColor(255, 255, 255);
 		
-		$notification = new Notification(
-			subject: $subject,
-			channels: [
-				'push/onesignal',
-				/*
-				'chat/telegram',
-				'chat',
-				'push/novu',
-				'browser', // ? how to test it
-				'email',
-				*/
-			],
-		);
-		$notification
-			->content($content)
-			->importance(Notification::IMPORTANCE_LOW)
-			->emoji('💕')
-		;
+		$xmlRgbColor = <<<'__XML__'
+<rgb>
+	<red>1</red>
+	<green>2</green>
+	<blue>3</blue>
+	<color>
+		<red>4</red>
+		<green>5</green>
+		<blue>6</blue>
+	</color>
+</rgb>
+__XML__;
 		
-		$recipient = new Recipient(
-			email: $adminEmail,
-			phone: $adminPhone,
-		);
-		//$recipient = new NoRecipient();
-		
-		/*
-		$email = (new TemplatedEmail())
-			->to($adminEmail)
-			->htmlTemplate('email/default/index.html.twig')
-		;
-		$mailer->send($email);
-		*/
-		/*
-		$notifier->send(
-			$notification,
-			$recipient,
-		);
-		*/
-		
-		$options = (new OneSignalOptions())
-			->recipient($appOnesignalDefaultRecipientId)
-			->url($appUrl.'/push/displayed/webhook')
+		\dump(
 			/*
-			->externalId('14a7ced1-47f8-4419-a783-6d212ccf9f52') // Uuid::v4()
-			->isExternalUserId()
-			->headings([])
-			->contents([])
-			->data([])
-			->sendAfter(Carbon::now('UTC')->add(1, 'second'))
+			$serializer->serialize($object, 'json'),
 			*/
-		;
-		
-		$message = (new PushMessage(
-			$subject,
-			$content,
-		))
-			->transport('onesignal')
-			->options($options)
-		;
-		
-		$texter->send($message);
-		/*
-		$telegramOptions = new TelegramOptions();
-		$telegramMessage = (new ChatMessage('Hello, it is a new message'))
-			->transport('telegram')
-			->options($telegramOptions)
-		;
-		$chatter->send($telegramMessage);
-		*/
-		
-		$response = $this->render('home/index.html.twig', [
-		]);
+			$serializer->deserialize($xmlRgbColor, RgbColor::class, 'xml', [
+				//AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false,
+				AbstractNormalizer::OBJECT_TO_POPULATE => $object,
+				//AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true,
+			]),
+			$object,
+		);
 		
 		return $response;
 		
@@ -1385,4 +1307,49 @@ class HomeController extends AbstractController
             'obj' => $obj,
         ];
     }
+}
+
+class RgbColor {
+	public function __construct(
+		private int $red,
+		private int $green,
+		private int $blue,
+		private ?RgbColor $color = null,
+	) {}
+	
+	public function getColor(): ?RgbColor {
+		return $this->color;
+	}
+	
+	public function getRed(): int {
+		return $this->red;
+	}
+	
+	public function getGreen(): int {
+		return $this->green;
+	}
+	
+	public function getBlue(): int {
+		return $this->blue;
+	}
+	
+	public function setRed(int $value): static {
+		$this->red = $value;
+		return $this;
+	}
+	
+	public function setGreen(int $value): static {
+		$this->green = $value;
+		return $this;
+	}
+	
+	public function setBlue(int $value): static {
+		$this->blue = $value;
+		return $this;
+	}
+	
+	public function setColor(?RgbColor $value): static {
+		$this->color = $value;
+		return $this;
+	}
 }
