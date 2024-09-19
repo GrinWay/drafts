@@ -1004,12 +1004,16 @@ __TEXT__;
 	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
 ***
 SYMFONY SERIALIZER
-
-	https://symfony.com/doc/current/components/serializer.html#context
+	
+	https://symfony.com/doc/current/components/serializer.html#camelcase-to-snake-case
 	
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Serializer.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ObjectNormalizer.php
 	https://symfony.com/doc/current/serializer.html#serializer_serializer-context
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/NameConverter/AdvancedNameConverterInterface.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/AbstractNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/PropertyNormalizer.php
 	
 	$loader is any of the valid loaders explained later in this article
 	

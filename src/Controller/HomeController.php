@@ -7,6 +7,10 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use App\Serializer\NameConverter\NormailzedPrefixedWithNameConverter;
+use Symfony\Component\Serializer\Annotation\Ignore;
+use Symfony\Component\Serializer\Mapping\Loader\YamlFileLoader;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -478,8 +482,17 @@ class HomeController extends AbstractController
 	) {
 		$response = $this->render('home/index.html.twig', []);
 		
-		$n = [
+		$classMetadataFactory = new ClassMetadataFactory(
+			new AttributeLoader(),
+		);
+		$nameConverter = new NormailzedPrefixedWithNameConverter('serialized_');
+		/*
+			new YamlFileLoader($projectDir.'/config/serializer/RgbColor.yaml')
+			//
 			new ObjectNormalizer(),
+		*/
+		$n = [
+			new ObjectNormalizer($classMetadataFactory, $nameConverter),
 		];
 		$e = [
 			new XmlEncoder(),
@@ -502,17 +515,51 @@ class HomeController extends AbstractController
 	</color>
 </rgb>
 __XML__;
+		$xmlRgbColor = <<<'__XML__'
+<rgb>
+	<red>1</red>
+	<green>2</green>
+	<blue>3</blue>
+</rgb>
+__XML__;
 		
 		\dump(
+			$array = $serializer->decode($xmlRgbColor, 'xml', [
+				/*
+				'groups' => 'group1',
+				*/
+			]),
+			$serializer->denormalize($array, RgbColor::class, null, [
+				/*
+				AbstractNormalizer::IGNORED_ATTRIBUTES => [
+					'red',
+					// for IGNORED_ATTRIBUTES nested doesn't work
+					'color' => [
+						'green',
+					],
+				],
+				AbstractNormalizer::ATTRIBUTES => [
+					// for ATTRIBUTES nested works
+					'color' => [
+						'green',
+					],
+				],
+				'groups' => 'group2',
+				*/
+			]),
+			$xml = $serializer->serialize($object, 'xml'),
+			$serializer->decode($xml, 'xml'),
 			/*
-			$serializer->serialize($object, 'json'),
-			*/
+			$serializer->serialize($object, 'json', [
+				'groups' => 'group1',
+			]),
 			$serializer->deserialize($xmlRgbColor, RgbColor::class, 'xml', [
 				//AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false,
 				AbstractNormalizer::OBJECT_TO_POPULATE => $object,
 				//AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true,
 			]),
 			$object,
+			*/
 		);
 		
 		return $response;
@@ -1312,9 +1359,13 @@ __XML__;
 
 class RgbColor {
 	public function __construct(
-		private int $red,
-		private int $green,
-		private int $blue,
+		#[Groups(['group1'])]
+		private int $red = 0,
+		#[Groups(['group1', 'group3'])]
+		private int $green = 0,
+		#[Groups(['group1'])]
+		private int $blue = 0,
+		#[Groups(['group2'])]
 		private ?RgbColor $color = null,
 	) {}
 	

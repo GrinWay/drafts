@@ -1,0 +1,11 @@
+App\Controller\RgbColor:
+    attributes:
+        red:
+            groups:
+            -   group1
+        green:
+            groups:
+            -   group1
+        blue:
+            groups:
+            -   group1
