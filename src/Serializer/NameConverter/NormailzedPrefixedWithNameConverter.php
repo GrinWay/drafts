@@ -17,6 +17,8 @@ class NormailzedPrefixedWithNameConverter implements NameConverterInterface
 
     public function denormalize(string $propertyName): string
     {
-        return \str_starts_with($propertyName, $this->prefix) ? \substr($propertyName, \strpos($propertyName, $this->prefix)) : $propertyName;
+		$prefix = $this->prefix;
+		$propertyNameWithoutPrefix = static fn() => \substr($propertyName, \mb_strlen($prefix));
+        return \str_starts_with($propertyName, $prefix) ? $propertyNameWithoutPrefix() : $propertyName;
     }
 }

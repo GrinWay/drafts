@@ -1005,7 +1005,7 @@ __TEXT__;
 ***
 SYMFONY SERIALIZER
 	
-	https://symfony.com/doc/current/components/serializer.html#camelcase-to-snake-case
+	https://symfony.com/doc/current/components/serializer.html#handling-serialization-depth
 	
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Serializer.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ObjectNormalizer.php
@@ -1014,6 +1014,45 @@ SYMFONY SERIALIZER
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/AbstractNormalizer.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/PropertyNormalizer.php
+	https://symfony.com/doc/current/serializer/custom_normalizer.html
+	https://symfony.com/doc/current/reference/dic_tags.html#reference-dic-tags-serializer-normalizer
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ObjectNormalizer.php
+	https://www.php-fig.org/psr/psr-1/
+	https://symfony.com/doc/current/components/serializer.html#component-serializer-attributes-groups
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/NormalizerInterface.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/DenormalizerInterface.php
+	https://symfony.com/doc/current/components/property_access.html
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ObjectNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/PropertyNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/JsonSerializableNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/DateTimeNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/DateTimeZoneNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/DataUriNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/DateIntervalNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/BackedEnumNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/FormErrorNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ConstraintViolationListNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ProblemNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/CustomNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/UidNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/TranslatableNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Uid/AbstractUid.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Validator/ConstraintViolationListInterface.php
+	https://www.php.net/manual/ru/function.strpos.php
+	https://symfony.com/doc/current/components/serializer.html#component-serializer-attributes-groups
+	https://symfony.com/doc/current/serializer.html#serializer_serializer-context
+	https://symfony.com/doc/current/serializer/custom_context_builders.html
+	https://symfony.com/doc/current/components/serializer.html#component-serializer-normalizers
+	https://symfony.com/doc/current/components/serializer.html#component-serializer-encoders
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/DecoderInterface.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/EncoderInterface.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/JsonEncoder.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/XmlEncoder.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/YamlEncoder.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/CsvEncoder.php
+	https://symfony.com/doc/current/serializer/custom_encoders.html
 	
 	$loader is any of the valid loaders explained later in this article
 	
@@ -1025,6 +1064,64 @@ SYMFONY SERIALIZER
 	Просто ради интереса заставь \igbinary_serialize() работать
 		https://github.com/igbinary/igbinary
 	?
+	+ ? ObjectNormalizer: может принять defaultContext, но каковы условия срабатывания этого контекста
+	+ ? ObjectNormalizerContextBuilder::withSkipNullValues в конкретно каких случаях пропускаются null
+		в направлении serialize, а иначе как же указать в строке специальную php переменную null :)
+	? csv encoder: as_collection, а что разве возможно в одном .csv файле описать несколько структур (таблиц)
+	? csv encoder: для чего csv_escape_char
+		Не могу проверить так как строка, содержащая (delimiter, space), оборачивается в кавычки, что является хорошим поведением я считаю
+	? почему я не захожу в denormalize у NormailzedPrefixedWithNameConverter
+		$classMetadataFactory = new ClassMetadataFactory(
+			new AttributeLoader(),
+		);
+		$nameConverter = new NormailzedPrefixedWithNameConverter('serialized_');
+		$n = [
+			new ObjectNormalizer($classMetadataFactory, $nameConverter),
+		];
+		$e = [
+			new XmlEncoder(),
+			new JsonEncoder(),
+		];
+		$serializer = new Serializer($n, $e);
+		$xmlRgbColor = <<<'__XML__'
+		<rgb>
+			<serialized_red>1</serialized_red>
+			<serialized_green>2</serialized_green>
+			<serialized_blue>3</serialized_blue>
+		</rgb>
+		__XML__;
+		$array = $serializer->decode($xmlRgbColor, 'xml'),
+		$object = $serializer->denormalize($array, RgbColor::class),
+		(
+			Подозреваю, что nave converter нужен для процесса serialize, а не для deserialize
+			только если так, то зачем тогда метод denormalize в NameConverterInterface
+		)
+	? Не получилось указать serialized_name в файле .yaml
+		хотя при использовании AttributeLoader аттрибуты читаются
+		attributes:
+			red:
+				serialized_name: r_e_d
+		
+		$classMetadataFactory = new ClassMetadataFactory(
+			new YamlFileLoader($projectDir.'/config/serializer/RgbColor.yaml')
+		);
+		$nameConverter = new MetadataAwareNameConverter($classMetadataFactory);
+		$n = [
+			$objectNormalizer = new ObjectNormalizer(
+				$classMetadataFactory,
+				$nameConverter,
+			),
+		];
+		$e = [
+			'xml' => new XmlEncoder(),
+			'json' => new JsonEncoder(),
+		];
+		
+		$serializer = new Serializer($n, $e);
+	? Выбрасывается исключение, а не должно за счёт BackedEnumNormalizer::ALLOW_INVALID_VALUES
+		(new BackedEnumNormalizer())->normalize('not_enum_object', context: [
+			BackedEnumNormalizer::ALLOW_INVALID_VALUES => true,
+		]),
 	зачем сериализовывать объекты в сессии (? может быть дело в хранимом объёме, или что ещё...)
 OpenSSL:
 	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.

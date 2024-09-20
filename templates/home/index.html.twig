@@ -6,6 +6,10 @@
 
 {% block body %}
 	
+	{%- if data is defined and data -%}
+		<img src="{{- data -}}"></img>
+	{%- endif -%}
+	
 	{%- if form is defined and form -%}
 		<div>
 			{{- form(form) -}}

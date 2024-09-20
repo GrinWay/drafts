@@ -7,6 +7,26 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Serializer\Attribute\MaxDepth;
+use Symfony\Component\Serializer\Exception\PartialDenormalizationException;
+use Symfony\Component\Serializer\Context\Encoder\CsvEncoderContextBuilder;
+use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
+use Symfony\Component\Serializer\Normalizer\TranslatableNormalizer;
+use Symfony\Component\Serializer\Normalizer\UidNormalizer;
+use Symfony\Component\Serializer\Normalizer\CustomNormalizer;
+use Symfony\Component\ErrorHandler\Exception\FlattenException;
+use Symfony\Component\Serializer\Normalizer\ProblemNormalizer;
+use Symfony\Component\Serializer\Normalizer\ConstraintViolationListNormalizer;
+use Symfony\Component\Serializer\Normalizer\FormErrorNormalizer;
+use Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer;
+use Symfony\Component\Serializer\Normalizer\DataUriNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeZoneNormalizer;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
+use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
+use Symfony\Component\Serializer\Annotation\SerializedName;
+use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
+use Symfony\Component\Serializer\NameConverter\CamelCaseToSnakeCaseNameConverter;
 use App\Serializer\NameConverter\NormailzedPrefixedWithNameConverter;
 use Symfony\Component\Serializer\Annotation\Ignore;
 use Symfony\Component\Serializer\Mapping\Loader\YamlFileLoader;
@@ -15,6 +35,8 @@ use Symfony\Component\Serializer\Normalizer\AbstractObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\AbstractNormalizer;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Encoder\YamlEncoder;
+use Symfony\Component\Serializer\Encoder\CsvEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Notifier\Bridge\OneSignal\OneSignalOptions;
@@ -298,7 +320,6 @@ use App\Entity\MappedSuperclass\Passport;
 use App\Entity\UserPassport;
 use App\Entity\ProductPassport;
 use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
-use Symfony\Component\Serializer\Context\Normalizer\ObjectNormalizerContextBuilder;
 use Symfony\Component\Serializer\Context\Encoder\JsonEncoderContextBuilder;
 use App\Messenger\Notifier\SendEmail;
 use App\Messenger\Notifier\ToAdminSendEmail;
@@ -480,57 +501,87 @@ class HomeController extends AbstractController
 		/*
 		*/
 	) {
-		$response = $this->render('home/index.html.twig', []);
+		$data = (new DataUriNormalizer())->normalize(new \SplFileInfo($projectDir.'/public/media/image/png.png'));
+		$response = $this->render('home/index.html.twig', [
+			'data' => $data,
+		]);
 		
 		$classMetadataFactory = new ClassMetadataFactory(
 			new AttributeLoader(),
 		);
 		$nameConverter = new NormailzedPrefixedWithNameConverter('serialized_');
+		$nameConverter = new CamelCaseToSnakeCaseNameConverter();
+		$nameConverter = new MetadataAwareNameConverter($classMetadataFactory);
+		$defaultContext = [
+			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => static function (object $object, ?string $format, array $context): string {
+				return $object->getName();
+			},
+		];
 		/*
 			new YamlFileLoader($projectDir.'/config/serializer/RgbColor.yaml')
 			//
 			new ObjectNormalizer(),
 		*/
 		$n = [
-			new ObjectNormalizer($classMetadataFactory, $nameConverter),
+			$objectNormalizer = new ObjectNormalizer(
+				$classMetadataFactory,
+				$nameConverter,
+				defaultContext: $defaultContext,
+			),
+			//new FormErrorNormalizer(),
 		];
 		$e = [
-			new XmlEncoder(),
-			new JsonEncoder(),
+			'xml' => new XmlEncoder(),
+			'json' => new JsonEncoder(),
+			'yaml' => new YamlEncoder(),
+			'csv' => new CsvEncoder(),
 		];
 		
 		$serializer = new Serializer($n, $e);
 		
-		$object = new RgbColor(255, 255, 255);
+		$object = new RgbColor(0, 0, 0, color: new RgbColor(1, 1, 1, new RgbColor(2, 2, 2, new RgbColor(3, 3, 3))));
 		
-		$xmlRgbColor = <<<'__XML__'
+		/*
+		$data = ['foo' => 'notNull'];
+		$normalizer = new ObjectNormalizer();
+		$result = $normalizer->denormalize($data, Dummy::class, 'json', []);
+		*/
+		
+		$xml = $xmlRgbColor = <<<'__XML__'
 <rgb>
-	<red>1</red>
-	<green>2</green>
-	<blue>3</blue>
-	<color>
-		<red>4</red>
-		<green>5</green>
-		<blue>6</blue>
-	</color>
+	<field_red>string</field_red>
+	<field_green>2</field_green>
+	<field_blue>3</field_blue>
 </rgb>
 __XML__;
-		$xmlRgbColor = <<<'__XML__'
-<rgb>
-	<red>1</red>
-	<green>2</green>
-	<blue>3</blue>
-</rgb>
-__XML__;
+$json = '{"red": "1", "green": "2", "blue": "3"}';
+$csv = <<<'__CSV__'
+fieldRed
+__CSV__;
+		
+		$colorCallback = static function (?object $value, object $originObject, $attributeName, ?string $format = null, array $context = []) {
+			return \sprintf(
+				'%s,%s,%s',
+				$value?->getFieldRed(),
+				$value?->getFieldGreen(),
+				$value?->getFieldBlue(),
+			);
+		};
+		$contextBuilder = (new ObjectNormalizerContextBuilder())
+			->withContext([
+				'xml_format_output' => true,
+				DenormalizerInterface::COLLECT_DENORMALIZATION_ERRORS => true,
+				'remove_empty_tags' => true,
+			])
+			//->withRequireAllProperties(true)
+			->withSkipUninitializedValues(true)
+			//->withGroups(['group1'])
+			//->withSkipNullValues(true)
+		;
 		
 		\dump(
-			$array = $serializer->decode($xmlRgbColor, 'xml', [
 				/*
-				'groups' => 'group1',
-				*/
-			]),
 			$serializer->denormalize($array, RgbColor::class, null, [
-				/*
 				AbstractNormalizer::IGNORED_ATTRIBUTES => [
 					'red',
 					// for IGNORED_ATTRIBUTES nested doesn't work
@@ -545,14 +596,18 @@ __XML__;
 					],
 				],
 				'groups' => 'group2',
-				*/
 			]),
-			$xml = $serializer->serialize($object, 'xml'),
-			$serializer->decode($xml, 'xml'),
+			//
+			$serializer->serialize($object, 'json', context: [
+				AbstractNormalizer::FILTER_BOOL => true,
+				AbstractNormalizer::CALLBACKS => [
+					'color' => $colorCallback,
+				],
+				PropertyNormalizer::NORMALIZE_VISIBILITY => PropertyNormalizer::NORMALIZE_PRIVATE,
+			]),
+			*/
+			$serializer->serialize($object, 'xml', context: $contextBuilder->toArray()),
 			/*
-			$serializer->serialize($object, 'json', [
-				'groups' => 'group1',
-			]),
 			$serializer->deserialize($xmlRgbColor, RgbColor::class, 'xml', [
 				//AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false,
 				AbstractNormalizer::OBJECT_TO_POPULATE => $object,
@@ -566,10 +621,10 @@ __XML__;
 		
 		\dd('END');
 		
+		// Rate limiter
+		
 		$clientIp = $request->getClientIp();
 		$limiter = $tooRare->create($clientIp);
-		
-		// Rate limiter
 		
 		$getInterval = static fn($dateInterval) => CarbonInterval::instance($dateInterval)->locale('ru')->forHumans([
 			'options' => \Carbon\CarbonInterface::JUST_NOW | \Carbon\CarbonInterface::ONE_DAY_WORDS,
@@ -1358,14 +1413,21 @@ __XML__;
 }
 
 class RgbColor {
+	public ?string $newUninitProp;
+	
 	public function __construct(
+		//#[SerializedName('r_e_d')]
 		#[Groups(['group1'])]
-		private int $red = 0,
+		private ?int $fieldRed,
+		
 		#[Groups(['group1', 'group3'])]
-		private int $green = 0,
+		private ?int $fieldGreen,
+		
 		#[Groups(['group1'])]
-		private int $blue = 0,
-		#[Groups(['group2'])]
+		private ?int $fieldBlue,
+		
+		#[Groups(['group1', 'group2'])]
+		#[MaxDepth(1)] //?
 		private ?RgbColor $color = null,
 	) {}
 	
@@ -1373,30 +1435,30 @@ class RgbColor {
 		return $this->color;
 	}
 	
-	public function getRed(): int {
-		return $this->red;
+	public function getFieldRed(): int {
+		return $this->fieldRed;
 	}
 	
-	public function getGreen(): int {
-		return $this->green;
+	public function getFieldGreen(): int {
+		return $this->fieldGreen;
 	}
 	
-	public function getBlue(): int {
-		return $this->blue;
+	public function getFieldBlue(): int {
+		return $this->fieldBlue;
 	}
 	
-	public function setRed(int $value): static {
-		$this->red = $value;
+	public function setFieldRed(int $value): static {
+		$this->fieldRed = $value;
 		return $this;
 	}
 	
-	public function setGreen(int $value): static {
-		$this->green = $value;
+	public function setFieldGreen(int $value): static {
+		$this->fieldGreen = $value;
 		return $this;
 	}
 	
-	public function setBlue(int $value): static {
-		$this->blue = $value;
+	public function setFieldBlue(int $value): static {
+		$this->fieldBlue = $value;
 		return $this;
 	}
 	

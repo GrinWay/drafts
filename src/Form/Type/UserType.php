@@ -15,8 +15,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Form\Type\Style1;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use App\Form\Type\ProductFormType;
+use Symfony\Component\Serializer\Normalizer\NormalizableInterface;
+use Symfony\Component\Serializer\Normalizer\NormalizerInterface;
 
-class UserType extends AbstractFormType
+class UserType extends AbstractFormType implements NormalizableInterface
 {
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -50,4 +52,8 @@ class UserType extends AbstractFormType
             */
         ;
     }
+	
+	public function normalize(NormalizerInterface|null $normalizer, ?string $format = null, array $context = []): array|string|int|float|bool|\ArrayObject|null {
+		return 'normalized';
+	}
 }

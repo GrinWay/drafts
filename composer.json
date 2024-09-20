@@ -39,6 +39,7 @@
         "scheb/2fa-google-authenticator": "^7.5",
         "scheb/2fa-totp": "^7.5",
         "scheb/2fa-trusted-device": "^7.5",
+        "seld/jsonlint": "^1.11",
         "symfony-bundles/redis-bundle": "^3.1",
         "symfony/asset": "7.1.*",
         "symfony/cache": "7.1.*",
