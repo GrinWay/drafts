@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
+use Symfony\Component\Serializer\Annotation\Context;
 use App\Repository\GitHubRepository;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -9,6 +11,14 @@ use Doctrine\ORM\Mapping as ORM;
 class GitHub
 {
     #[ORM\OneToOne(mappedBy: 'gitHub', cascade: ['persist'])]
+	#[Context(
+		context: [
+			DateTimeNormalizer::FORMAT_KEY => 'Y',
+		],
+		groups: [
+			'lala',
+		],
+	)]
     private ?User $user = null;
 
     public function __construct(

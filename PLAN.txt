@@ -1005,8 +1005,6 @@ __TEXT__;
 ***
 SYMFONY SERIALIZER
 	
-	https://symfony.com/doc/current/components/serializer.html#handling-serialization-depth
-	
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Serializer.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ObjectNormalizer.php
 	https://symfony.com/doc/current/serializer.html#serializer_serializer-context
@@ -1053,10 +1051,37 @@ SYMFONY SERIALIZER
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/YamlEncoder.php
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/CsvEncoder.php
 	https://symfony.com/doc/current/serializer/custom_encoders.html
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Mapping/ClassDiscriminatorResolverInterface.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ObjectNormalizer.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Mapping/ClassDiscriminatorFromClassMetadata.php
+	https://symfony.com/doc/current/components/serializer.html#component-serializer-attributes-groups
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ArrayDenormalizer.php
+	https://en.wikipedia.org/wiki/Value_object
+	https://symfony.com/doc/current/components/property_info.html
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/PropertyInfo/PropertyTypeExtractorInterface.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/PropertyInfo/PropertyInfoExtractor.php
+	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Exception/UnexpectedValueException.php
+	https://symfony.com/doc/current/components/serializer.html#component-serializer-context-builders
+	https://symfony.com/doc/current/serializer/custom_context_builders.html
+	https://symfony.com/doc/current/components/serializer.html#component-serializer-attributes-groups-attributes
+	https://symfony.com/doc/current/components/serializer.html#component-serializer-attributes-groups-attributes
+	https://symfony.com/doc/current/components/property_access.html
+	https://symfony.com/doc/current/reference/configuration/framework.html#reference-cache-system
+	https://symfony.com/doc/current/components/serializer.html#component-serializer-converting-property-names-when-serializing-and-deserializing
+	https://symfony.com/doc/current/components/serializer.html#using-camelized-method-names-for-underscored-attributes
+	https://symfony.com/doc/current/serializer/custom_encoders.html
+	https://symfony.com/doc/current/serializer/custom_normalizer.html
+	https://symfony.com/doc/current/serializer/custom_context_builders.html
+	https://www.hydra-cg.com/
+	https://json-ld.org/
+	https://www.openapis.org/
+	https://stateless.group/hal_specification.html
+	https://symfony.com/doc/current/components/serializer.html#component-serializer-normalizers
+	https://symfony.com/doc/current/reference/dic_tags.html#reference-dic-tags-serializer-normalizer
+	https://symfony.com/doc/current/reference/dic_tags.html#reference-dic-tags-serializer-encoder
 	
 	$loader is any of the valid loaders explained later in this article
 	
-	https://symfony.com/doc/current/serializer.html
 	добавляет новые поля в json при serialize
 	grin_way_env_csv_multiline parse with serializer
 	CACHE: чётвёртым аргументом в *Adapter передай marshaller, который использует Symfony Serializer вместо php serialize()
@@ -1064,10 +1089,34 @@ SYMFONY SERIALIZER
 	Просто ради интереса заставь \igbinary_serialize() работать
 		https://github.com/igbinary/igbinary
 	?
+	? Почему ничего не сериализует (https://symfony.com/doc/current/serializer.html#using-serialization-groups-attributes)
+		$serialized = $serializer->serialize($object, 'json', context: [
+			AbstractNormalizer::GROUPS => [
+				'Default',
+			],
+		]);
+	+ ? почему serializer::serialize сериализует в виде (с кавычками):
+		"{\"createdAt\":\"2024\"}"
+		(
+			Потому что по глупости передал сериализованные данные на сериализацию
+		)
+	? (после полного изучения serializer)
+		Неужели даже для встроенного сервиса serializer
+		для денормализации csv необходим ArrayDenormalizer
+		и синтаксис Тип[]
+	? Не знаю почему обработчик максимальной глубины не работает
+		AbstractObjectNormalizer::MAX_DEPTH_HANDLER ведь он указан
+		И помимо максимальной глубины есть ещё вложенные объекты!
+	+ ? Не работает MaxDepth
+		Потому что нужно разрешить его использовать в контексте
 	+ ? ObjectNormalizer: может принять defaultContext, но каковы условия срабатывания этого контекста
 	+ ? ObjectNormalizerContextBuilder::withSkipNullValues в конкретно каких случаях пропускаются null
 		в направлении serialize, а иначе как же указать в строке специальную php переменную null :)
-	? csv encoder: as_collection, а что разве возможно в одном .csv файле описать несколько структур (таблиц)
+	+ ? csv encoder: as_collection
+		а что разве возможно в одном .csv файле описать несколько структур
+		(
+			Да, конечно, просто с новой строки
+		)
 	? csv encoder: для чего csv_escape_char
 		Не могу проверить так как строка, содержащая (delimiter, space), оборачивается в кавычки, что является хорошим поведением я считаю
 	? почему я не захожу в denormalize у NormailzedPrefixedWithNameConverter

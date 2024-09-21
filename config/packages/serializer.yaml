@@ -1,0 +1,12 @@
+framework:
+    serializer:
+        name_converter: 'serializer.name_converter.camel_case_to_snake_case'
+        
+        default_context:
+            enable_max_depth: true
+            
+            ###> YAML ###
+            yaml_inline: !php/const PHP_INT_MAX
+            yaml_indentation: 4
+            ###< YAML ###
+            

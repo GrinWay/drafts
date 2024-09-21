@@ -7,6 +7,12 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Serializer\Attribute\SerializedPath;
+use Symfony\Component\Serializer\Annotation\Context;
+use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Serializer\Annotation\DiscriminatorMap;
+use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
+use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Attribute\MaxDepth;
 use Symfony\Component\Serializer\Exception\PartialDenormalizationException;
 use Symfony\Component\Serializer\Context\Encoder\CsvEncoderContextBuilder;
@@ -325,7 +331,6 @@ use App\Messenger\Notifier\SendEmail;
 use App\Messenger\Notifier\ToAdminSendEmail;
 use App\Messenger\Notifier\NotifierHandlers;
 use Doctrine\ORM\Event\PostPersistEventArgs;
-use Symfony\Component\Serializer\SerializerInterface;
 use Doctrine\ORM\Events;
 use Symfony\Component\Messenger\Exception\StopWorkerException;
 use App\Messenger\Test\Query\ListUsers;
@@ -500,121 +505,27 @@ class HomeController extends AbstractController
 		$firebaseApiKey,
 		/*
 		*/
+		SerializerInterface $serializer,
 	) {
-		$data = (new DataUriNormalizer())->normalize(new \SplFileInfo($projectDir.'/public/media/image/png.png'));
-		$response = $this->render('home/index.html.twig', [
-			'data' => $data,
-		]);
+		$response = $this->render('home/index.html.twig');
 		
-		$classMetadataFactory = new ClassMetadataFactory(
-			new AttributeLoader(),
-		);
-		$nameConverter = new NormailzedPrefixedWithNameConverter('serialized_');
-		$nameConverter = new CamelCaseToSnakeCaseNameConverter();
-		$nameConverter = new MetadataAwareNameConverter($classMetadataFactory);
-		$defaultContext = [
-			AbstractNormalizer::CIRCULAR_REFERENCE_HANDLER => static function (object $object, ?string $format, array $context): string {
-				return $object->getName();
-			},
-		];
-		/*
-			new YamlFileLoader($projectDir.'/config/serializer/RgbColor.yaml')
-			//
-			new ObjectNormalizer(),
-		*/
-		$n = [
-			$objectNormalizer = new ObjectNormalizer(
-				$classMetadataFactory,
-				$nameConverter,
-				defaultContext: $defaultContext,
-			),
-			//new FormErrorNormalizer(),
-		];
-		$e = [
-			'xml' => new XmlEncoder(),
-			'json' => new JsonEncoder(),
-			'yaml' => new YamlEncoder(),
-			'csv' => new CsvEncoder(),
-		];
+		$object = new MyClass();
+		$object->createdAt = Carbon::now('UTC');
 		
-		$serializer = new Serializer($n, $e);
-		
-		$object = new RgbColor(0, 0, 0, color: new RgbColor(1, 1, 1, new RgbColor(2, 2, 2, new RgbColor(3, 3, 3))));
-		
-		/*
-		$data = ['foo' => 'notNull'];
-		$normalizer = new ObjectNormalizer();
-		$result = $normalizer->denormalize($data, Dummy::class, 'json', []);
-		*/
-		
-		$xml = $xmlRgbColor = <<<'__XML__'
-<rgb>
-	<field_red>string</field_red>
-	<field_green>2</field_green>
-	<field_blue>3</field_blue>
-</rgb>
-__XML__;
-$json = '{"red": "1", "green": "2", "blue": "3"}';
-$csv = <<<'__CSV__'
-fieldRed
-__CSV__;
-		
-		$colorCallback = static function (?object $value, object $originObject, $attributeName, ?string $format = null, array $context = []) {
-			return \sprintf(
-				'%s,%s,%s',
-				$value?->getFieldRed(),
-				$value?->getFieldGreen(),
-				$value?->getFieldBlue(),
-			);
-		};
-		$contextBuilder = (new ObjectNormalizerContextBuilder())
-			->withContext([
-				'xml_format_output' => true,
-				DenormalizerInterface::COLLECT_DENORMALIZATION_ERRORS => true,
-				'remove_empty_tags' => true,
-			])
-			//->withRequireAllProperties(true)
-			->withSkipUninitializedValues(true)
-			//->withGroups(['group1'])
-			//->withSkipNullValues(true)
-		;
+		$json = '{"createdAt":"2024"}';
 		
 		\dump(
-				/*
-			$serializer->denormalize($array, RgbColor::class, null, [
-				AbstractNormalizer::IGNORED_ATTRIBUTES => [
-					'red',
-					// for IGNORED_ATTRIBUTES nested doesn't work
-					'color' => [
-						'green',
-					],
-				],
-				AbstractNormalizer::ATTRIBUTES => [
-					// for ATTRIBUTES nested works
-					'color' => [
-						'green',
-					],
-				],
-				'groups' => 'group2',
-			]),
-			//
-			$serializer->serialize($object, 'json', context: [
-				AbstractNormalizer::FILTER_BOOL => true,
-				AbstractNormalizer::CALLBACKS => [
-					'color' => $colorCallback,
-				],
-				PropertyNormalizer::NORMALIZE_VISIBILITY => PropertyNormalizer::NORMALIZE_PRIVATE,
-			]),
-			*/
-			$serializer->serialize($object, 'xml', context: $contextBuilder->toArray()),
 			/*
-			$serializer->deserialize($xmlRgbColor, RgbColor::class, 'xml', [
-				//AbstractNormalizer::ALLOW_EXTRA_ATTRIBUTES => false,
-				AbstractNormalizer::OBJECT_TO_POPULATE => $object,
-				//AbstractObjectNormalizer::DEEP_OBJECT_TO_POPULATE => true,
-			]),
-			$object,
+			\get_debug_type($serializer),
 			*/
+			$serializer->serialize($object, 'json', context: [
+				//'preserve_empty_objects' => true,
+				DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s', // H:i:s
+			]),
+			$serializer->deserialize($json, MyClass::class, 'json', context: [
+				//'preserve_empty_objects' => true,
+				//DateTimeNormalizer::FORMAT_KEY => 'Y-m-d', // H:i:s
+			]),
 		);
 		
 		return $response;
@@ -1412,58 +1323,9 @@ __CSV__;
     }
 }
 
-class RgbColor {
-	public ?string $newUninitProp;
+class MyClass {
+	public \DateTimeInterface $createdAt;
 	
-	public function __construct(
-		//#[SerializedName('r_e_d')]
-		#[Groups(['group1'])]
-		private ?int $fieldRed,
-		
-		#[Groups(['group1', 'group3'])]
-		private ?int $fieldGreen,
-		
-		#[Groups(['group1'])]
-		private ?int $fieldBlue,
-		
-		#[Groups(['group1', 'group2'])]
-		#[MaxDepth(1)] //?
-		private ?RgbColor $color = null,
-	) {}
-	
-	public function getColor(): ?RgbColor {
-		return $this->color;
-	}
-	
-	public function getFieldRed(): int {
-		return $this->fieldRed;
-	}
-	
-	public function getFieldGreen(): int {
-		return $this->fieldGreen;
-	}
-	
-	public function getFieldBlue(): int {
-		return $this->fieldBlue;
-	}
-	
-	public function setFieldRed(int $value): static {
-		$this->fieldRed = $value;
-		return $this;
-	}
-	
-	public function setFieldGreen(int $value): static {
-		$this->fieldGreen = $value;
-		return $this;
-	}
-	
-	public function setFieldBlue(int $value): static {
-		$this->fieldBlue = $value;
-		return $this;
-	}
-	
-	public function setColor(?RgbColor $value): static {
-		$this->color = $value;
-		return $this;
-	}
+	#[SerializedPath('[level_1][level_2]')]
+	public ?string $data = null;
 }
