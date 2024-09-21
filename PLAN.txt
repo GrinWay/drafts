@@ -1080,6 +1080,8 @@ SYMFONY SERIALIZER
 	https://symfony.com/doc/current/reference/dic_tags.html#reference-dic-tags-serializer-normalizer
 	https://symfony.com/doc/current/reference/dic_tags.html#reference-dic-tags-serializer-encoder
 	
+	R: отдебажить методанные сериализатора о любой сущности
+	
 	$loader is any of the valid loaders explained later in this article
 	
 	добавляет новые поля в json при serialize
