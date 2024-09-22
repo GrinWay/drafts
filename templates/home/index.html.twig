@@ -6,30 +6,20 @@
 
 {% block body %}
 	
-	{%- if data is defined and data -%}
-		<img src="{{- data -}}"></img>
-	{%- endif -%}
-	
-	{%- if form is defined and form -%}
-		<div>
-			{{- form(form) -}}
-		</div>
-	{%- endif -%}
-	
 	<div class="">
 		<a href="{{- login_link ?? '' -}}">LOGIN LINK</a>
 	</div>
 	
+	{#
 	{%- if qr_code_data_uri is defined and qr_code_data_uri -%}
 		<img src="{{- qr_code_data_uri -}}" alt="img"></img>
 	{%- endif -%}
-	
 	{{- qr_code_data_uri('Data') -}}
-	
 	{{ dump(asset_version('media/image/symfony.png')) }}
-		
-	<twig:Lorem lorem_len="12" lorem:class="text-bg-dark p-1 rounded-1 text-center" />
+	#}
 	
-	{{ 'app.HOME'|trans }}
+	<div {{ stimulus_controller('hello') }} class="">
+		<twig:Lorem lorem_len="12" lorem:class="text-bg-dark p-1 rounded-1 text-center" />
+	</div>
 	
 {% endblock %}

@@ -1002,95 +1002,18 @@ __TEXT__;
 	+ Возможно ли указать в SmsMessage transport (если их у меня несколько) (Да, *Message::transport(<>))
 	???LOGIN WITH PUSH CODE: сохранить в паспорте сгерерированный totp secret на 3 цифры 120 сек если ещё нет, форма /totp/login/email, код на push уведомление
 	???2FA При успешном первичном входе UsernamePasswordToken отправить пользователю на телефон TOTP 3-х значный код, который будет валиден 300 сек
-***
 SYMFONY SERIALIZER
-	
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Serializer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ObjectNormalizer.php
-	https://symfony.com/doc/current/serializer.html#serializer_serializer-context
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/NameConverter/AdvancedNameConverterInterface.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/AbstractNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/PropertyNormalizer.php
-	https://symfony.com/doc/current/serializer/custom_normalizer.html
-	https://symfony.com/doc/current/reference/dic_tags.html#reference-dic-tags-serializer-normalizer
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ObjectNormalizer.php
-	https://www.php-fig.org/psr/psr-1/
-	https://symfony.com/doc/current/components/serializer.html#component-serializer-attributes-groups
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/NormalizerInterface.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/DenormalizerInterface.php
-	https://symfony.com/doc/current/components/property_access.html
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ObjectNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/GetSetMethodNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/PropertyNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/JsonSerializableNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/DateTimeNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/DateTimeZoneNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/DataUriNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/DateIntervalNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/BackedEnumNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/FormErrorNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ConstraintViolationListNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ProblemNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/CustomNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/UidNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/TranslatableNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Uid/AbstractUid.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Validator/ConstraintViolationListInterface.php
-	https://www.php.net/manual/ru/function.strpos.php
-	https://symfony.com/doc/current/components/serializer.html#component-serializer-attributes-groups
-	https://symfony.com/doc/current/serializer.html#serializer_serializer-context
-	https://symfony.com/doc/current/serializer/custom_context_builders.html
-	https://symfony.com/doc/current/components/serializer.html#component-serializer-normalizers
-	https://symfony.com/doc/current/components/serializer.html#component-serializer-encoders
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/DecoderInterface.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/EncoderInterface.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/JsonEncoder.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/XmlEncoder.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/YamlEncoder.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Encoder/CsvEncoder.php
-	https://symfony.com/doc/current/serializer/custom_encoders.html
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Mapping/ClassDiscriminatorResolverInterface.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ObjectNormalizer.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Mapping/ClassDiscriminatorFromClassMetadata.php
-	https://symfony.com/doc/current/components/serializer.html#component-serializer-attributes-groups
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/ArrayDenormalizer.php
-	https://en.wikipedia.org/wiki/Value_object
-	https://symfony.com/doc/current/components/property_info.html
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/PropertyInfo/PropertyTypeExtractorInterface.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/PropertyInfo/PropertyInfoExtractor.php
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Exception/UnexpectedValueException.php
-	https://symfony.com/doc/current/components/serializer.html#component-serializer-context-builders
-	https://symfony.com/doc/current/serializer/custom_context_builders.html
-	https://symfony.com/doc/current/components/serializer.html#component-serializer-attributes-groups-attributes
-	https://symfony.com/doc/current/components/serializer.html#component-serializer-attributes-groups-attributes
-	https://symfony.com/doc/current/components/property_access.html
-	https://symfony.com/doc/current/reference/configuration/framework.html#reference-cache-system
-	https://symfony.com/doc/current/components/serializer.html#component-serializer-converting-property-names-when-serializing-and-deserializing
-	https://symfony.com/doc/current/components/serializer.html#using-camelized-method-names-for-underscored-attributes
-	https://symfony.com/doc/current/serializer/custom_encoders.html
-	https://symfony.com/doc/current/serializer/custom_normalizer.html
-	https://symfony.com/doc/current/serializer/custom_context_builders.html
-	https://www.hydra-cg.com/
-	https://json-ld.org/
-	https://www.openapis.org/
-	https://stateless.group/hal_specification.html
-	https://symfony.com/doc/current/components/serializer.html#component-serializer-normalizers
-	https://symfony.com/doc/current/reference/dic_tags.html#reference-dic-tags-serializer-normalizer
-	https://symfony.com/doc/current/reference/dic_tags.html#reference-dic-tags-serializer-encoder
-	
-	R: отдебажить методанные сериализатора о любой сущности
-	
-	$loader is any of the valid loaders explained later in this article
-	
-	добавляет новые поля в json при serialize
-	grin_way_env_csv_multiline parse with serializer
 	CACHE: чётвёртым аргументом в *Adapter передай marshaller, который использует Symfony Serializer вместо php serialize()
-	
 	Просто ради интереса заставь \igbinary_serialize() работать
 		https://github.com/igbinary/igbinary
+	Позже создай свой encoder and decoder с обработкой некоторого контекстного ключа
+		который должен что-то делать при кодировании и декодировании
+		так же обязательно создай contextBuilder для этой тематики
 	?
+	? Неужели возможна нормализация (получение массива) из сериализованных данных
+		https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Serializer/Normalizer/JsonSerializableNormalizer.php
+		для этого же decode существует
+	? NormalizerInterface: не совсем понятна концепция использования ключей object, * в getSupportedTypes
 	? Почему ничего не сериализует (https://symfony.com/doc/current/serializer.html#using-serialization-groups-attributes)
 		$serialized = $serializer->serialize($object, 'json', context: [
 			AbstractNormalizer::GROUPS => [
@@ -1174,19 +1097,32 @@ SYMFONY SERIALIZER
 			BackedEnumNormalizer::ALLOW_INVALID_VALUES => true,
 		]),
 	зачем сериализовывать объекты в сессии (? может быть дело в хранимом объёме, или что ещё...)
-OpenSSL:
-	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.
-	Как создать самоподписанные сертификаты
-	Куда класть самоподписанные сертификаты
-	Как разрешить самоподписанные сертификаты
-doctrine-test-bundle https://github.com/dmaicher/doctrine-test-bundle
-browser-driver-installer https://github.com/dbrekelmans/browser-driver-installer
-LiipFunctionalTestBundle https://github.com/liip/LiipFunctionalTestBundle
-HOTWIRE: STIMULUS https://stimulus.hotwired.dev/
+***
+SYMFONY FRONTEND (WEBPACK ENCORE)
+	https://symfony.com/doc/5.x/frontend.html
+	https://symfony.com/doc/current/frontend.html
+    ?
+	The asset() function supports various cache busting techniques
+		https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-assets-version
+		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-version-format
+		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-json-manifest-path
+HOTWIRE: STIMULUS
+	
+	https://stimulus.hotwired.dev/handbook/origin#how-stimulus-differs-from-mainstream-javascript-frameworks
+	https://stimulus.hotwired.dev/handbook/hello-stimulus#is-this-thing-on%3F
+	
+	https://symfony.com/bundles/StimulusBundle/current/index.html#the-ux-packages
+	
+	https://symfony.com/bundles/StimulusBundle/current/index.html#manual-installation
+	https://symfony.com/bundles/StimulusBundle/current/index.html#ux-packages
+	https://symfony.com/doc/current/frontend/asset_mapper.html
+	https://symfony.com/doc/current/frontend.html
+
 	написать тест где проверяется
 		$crawler = $client->waitForVisibility
 		... with https://symfony.com/doc/current/testing/end_to_end.html#creating-a-testcase
-	?придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
+	?
+	? придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
 HOTWIRE: TURBO https://turbo.hotwired.dev/
 	реализовать и протестировать чат
 		https://symfony.com/doc/current/testing/end_to_end.html#testing-real-time-applications
@@ -1204,17 +1140,11 @@ SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/in
 	обязательно попробуй поменять тему формы именно для добавления нового элемента collection_widget attribute data-collection="<html>"
 	?
 	вызывается или нет PreCreateForRenderEvent при обновлении re-render
+Trix Text Editor https://trix-editor.org/
 HOTWIRE: STRADA https://strada.hotwired.dev/
 	?
 	Поймать события сервера https://symfony.com/doc/current/http_client.html#consuming-server-sent-events
 SYMFONY WebLink
-SYMFONY WEBPACK ENCORE
-	https://symfony.com/doc/current/frontend.html
-    ?
-	The asset() function supports various cache busting techniques
-		https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-assets-version
-		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-version-format
-		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-json-manifest-path
 SYMFONY WEBHOOK https://symfony.com/doc/current/webhook.html
 SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
 SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
@@ -1342,12 +1272,18 @@ SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
 	Почему сервис @Psr\Container\ContainerInterface не доступен из services.yaml
 https://symfony.com/doc/current/reference/dic_tags.html
 SYMFONY MY ADMIN
+OpenSSL:
+	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.
+	Как создать самоподписанные сертификаты
+	Куда класть самоподписанные сертификаты
+	Как разрешить самоподписанные сертификаты
 SYMFONY REDIS BUNDLE
 	https://github.com/phpredis/phpredis
 	https://symfony.com/doc/current/security/login_link.html#configure-a-maximum-use-of-a-link
 	LOCK: The priority policy of Symfony's shared locks depends on the underlying store (e.g. Redis store prioritizes readers vs writers).
 	https://symfony.com/doc/current/components/lock.html#redisstore
 	CACHE: Используй TagAwareAdapter(для файлов кеша используй FilesystemAdapter, а для тегов используй RedisAdapter)
+doctrine-test-bundle https://github.com/dmaicher/doctrine-test-bundle
 Cache with Memcached
 	https://habr.com/ru/articles/14939/
 	https://habr.com/ru/articles/42607/
@@ -1360,6 +1296,7 @@ Cache with Memcached
 		допустим использовать MemcachedAdapter
 		но если произошёл сбой использовать FilesystemAdapter
 Framework Configuration Reference https://symfony.com/doc/current/reference/configuration/framework.html#reference-cache-prefix-seed
+browser-driver-installer https://github.com/dbrekelmans/browser-driver-installer
 SYMFONY BUNDLE FOSJsRoutingBundle (route -> uri in js)
 SYMFONY BUNDLE FOSHttpCacheBundle (invalidate cache)
 SYMFONY Dotenv class
@@ -1370,6 +1307,7 @@ SYMFONY COMMAND
 	возможно ли динамически переименовывать команды, задавать алиасы
 	command --param --param: InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY
 	Autowire RequestStack -> RequestStack::getCurrentRequest() === null
+LiipFunctionalTestBundle https://github.com/liip/LiipFunctionalTestBundle
 SYMFONY ROUTE
 	CMF Routing Bundle
 		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/index.html
@@ -1624,6 +1562,9 @@ TODO
 		//TODO: MimeUtil
 		//TODO: DefaultRateLimiterStorage
 		//TODO: CacheUtil (придумать нормальный интерфейс)
+		// TODO: EntityInterface
+		Реализовать env processor grin_way_csv_decode для декодирования csv в массив
+			(использовать serializer.encoder.csv service)
 		
 	Extensions
 		может перейти от OptionsResolver к Processor+TreeBuilder в global instance of

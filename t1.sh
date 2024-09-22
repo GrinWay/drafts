@@ -1,4 +1,3 @@
 #!/usr/bin/bash
 
-echo "cd vendor"
-echo "clear && grep -rlE 'class '"
+echo "clear && ngrok http 127.0.0.1:8000"

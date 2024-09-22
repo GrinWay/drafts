@@ -6,9 +6,10 @@ use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Annotation\Context;
 use App\Repository\GitHubRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Contract\Entity\EntityInterface;
 
 #[ORM\Entity(repositoryClass: GitHubRepository::class)]
-class GitHub
+class GitHub implements EntityInterface
 {
     #[ORM\OneToOne(mappedBy: 'gitHub', cascade: ['persist'])]
 	#[Context(

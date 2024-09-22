@@ -7,6 +7,10 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use App\Serializer\Normalizer\ContextBuilder\EmptyContextBuilder;
+use App\Serializer\Encoder\CustomEncoder;
+use Symfony\Component\Serializer\Encoder\DecoderInterface;
+use Symfony\Component\Serializer\Encoder\EncoderInterface;
 use Symfony\Component\Serializer\Attribute\SerializedPath;
 use Symfony\Component\Serializer\Annotation\Context;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -508,25 +512,6 @@ class HomeController extends AbstractController
 		SerializerInterface $serializer,
 	) {
 		$response = $this->render('home/index.html.twig');
-		
-		$object = new MyClass();
-		$object->createdAt = Carbon::now('UTC');
-		
-		$json = '{"createdAt":"2024"}';
-		
-		\dump(
-			/*
-			\get_debug_type($serializer),
-			*/
-			$serializer->serialize($object, 'json', context: [
-				//'preserve_empty_objects' => true,
-				DateTimeNormalizer::FORMAT_KEY => 'Y-m-d H:i:s', // H:i:s
-			]),
-			$serializer->deserialize($json, MyClass::class, 'json', context: [
-				//'preserve_empty_objects' => true,
-				//DateTimeNormalizer::FORMAT_KEY => 'Y-m-d', // H:i:s
-			]),
-		);
 		
 		return $response;
 		
@@ -1323,9 +1308,9 @@ class HomeController extends AbstractController
     }
 }
 
-class MyClass {
-	public \DateTimeInterface $createdAt;
-	
-	#[SerializedPath('[level_1][level_2]')]
-	public ?string $data = null;
+class MyClass
+{
+	public $k1;
+	public $k2;
+	public $k3;
 }
