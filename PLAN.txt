@@ -1098,9 +1098,11 @@ SYMFONY SERIALIZER
 		]),
 	зачем сериализовывать объекты в сессии (? может быть дело в хранимом объёме, или что ещё...)
 ***
-SYMFONY FRONTEND (WEBPACK ENCORE)
+SYMFONY FRONTEND (WEBPACK ENCORE/ASSET MAPPER)
 	https://symfony.com/doc/5.x/frontend.html
 	https://symfony.com/doc/current/frontend.html
+	
+	https://symfony.com/doc/current/frontend/asset_mapper.html
     ?
 	The asset() function supports various cache busting techniques
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-assets-version
