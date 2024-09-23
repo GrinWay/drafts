@@ -1,11 +1,7 @@
-body {
-    background-color: lightgray;
-}
+/*###> FONTS ###*/
+@import './font/app.css';
+/*###< FONTS ###*/
 
-.red {
-    background-color: red;
-}
-
-label.required:before {
-    content: "*";
-}
+/*###> PAGES ###*/
+@import './home/app.css';
+/*###< PAGES ###*/

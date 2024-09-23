@@ -7,6 +7,13 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Asset\Context\RequestStackContext;
+use App\Asset\VersionStrategy\DateVersionStrategy;
+use Symfony\Component\Asset\PathPackage;
+use Symfony\Component\Asset\Package;
+use Symfony\Component\Asset\VersionStrategy\JsonManifestVersionStrategy;
+use Symfony\Component\Asset\VersionStrategy\EmptyVersionStrategy;
+use Symfony\Component\Asset\VersionStrategy\StaticVersionStrategy;
 use App\Serializer\Normalizer\ContextBuilder\EmptyContextBuilder;
 use App\Serializer\Encoder\CustomEncoder;
 use Symfony\Component\Serializer\Encoder\DecoderInterface;
@@ -512,6 +519,11 @@ class HomeController extends AbstractController
 		SerializerInterface $serializer,
 	) {
 		$response = $this->render('home/index.html.twig');
+		
+		$package = new PathPackage('/assets', new DateVersionStrategy(), new RequestStackContext($requestStack));
+		dump(
+			$package->getUrl('build/fonts/SchadowBTRoman.ttf'),
+		);
 		
 		return $response;
 		
