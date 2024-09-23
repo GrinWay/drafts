@@ -1099,7 +1099,23 @@ SYMFONY SERIALIZER
 	зачем сериализовывать объекты в сессии (? может быть дело в хранимом объёме, или что ещё...)
 ***
 SYMFONY FRONTEND (WEBPACK ENCORE/ASSET MAPPER)
-	https://symfony.com/doc/5.x/frontend.html
+	# 2
+	https://symfony.com/doc/5.x/frontend.html#encore-documentation
+	
+	# 1
+	00:00:00
+	https://www.youtube.com/watch?v=fcMcf_4PjfI&ab_channel=%D0%92%D0%BB%D0%B0%D0%B4%D0%B8%D0%BB%D0%B5%D0%BD%D0%9C%D0%B8%D0%BD%D0%B8%D0%BD
+	https://symfony.com/doc/5.x/frontend/encore/simple-example.html#requiring-javascript-modules
+	https://symfony.com/doc/5.x/frontend/encore/split-chunks.html
+	https://symfony.com/doc/5.x/frontend/encore/versioning.html
+	
+	https://symfony.com/doc/5.x/frontend/encore/cdn.html
+	https://symfony.com/doc/5.x/frontend/encore/versioning.html
+	https://symfony.com/doc/5.x/frontend/encore/split-chunks.html
+	https://symfony.com/doc/5.x/frontend/encore/split-chunks.html
+	https://symfony.com/doc/5.x/setup/symfony_server.html#symfony-server_configuring-workers
+	
+	
 	https://symfony.com/doc/current/frontend.html
 	
 	https://symfony.com/doc/current/frontend/asset_mapper.html

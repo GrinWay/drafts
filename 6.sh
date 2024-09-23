@@ -1,4 +1,4 @@
 #!/usr/bin/bash
 
-echo "yarn install"
-echo "yarn encore dev --watch"
+echo "git pull"
+echo "bin/console debug:config framework profiler"

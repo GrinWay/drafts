@@ -176,6 +176,7 @@
 			"@app_fpdf_download",
 			"@telegram_set_webhook"
 		],
+		"watch": "yarn encore dev --watch",
 		
         "telegram_set_webhook": [
 			"App\\Command\\Telegram\\TelegramSetWebhook"
