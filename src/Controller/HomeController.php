@@ -7,8 +7,10 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Asset\Packages;
 use Symfony\Component\Asset\Context\RequestStackContext;
 use App\Asset\VersionStrategy\DateVersionStrategy;
+use Symfony\Component\Asset\UrlPackage;
 use Symfony\Component\Asset\PathPackage;
 use Symfony\Component\Asset\Package;
 use Symfony\Component\Asset\VersionStrategy\JsonManifestVersionStrategy;
@@ -520,9 +522,17 @@ class HomeController extends AbstractController
 	) {
 		$response = $this->render('home/index.html.twig');
 		
-		$package = new PathPackage('/assets', new DateVersionStrategy(), new RequestStackContext($requestStack));
+		$package = new UrlPackage(
+			'http://127.0.0.1:8000',
+			$strategy = new DateVersionStrategy(),
+			$rs = new RequestStackContext($requestStack),
+		);
+		$namedPackages = [
+			'ngrok' => new UrlPackage($appUrl, $strategy, $rs),
+		];
+		$packages = new Packages($package, $namedPackages);
 		dump(
-			$package->getUrl('build/fonts/SchadowBTRoman.ttf'),
+			$packages->getUrl('build/fonts/SchadowBTRoman.ttf', 'ngrok'),
 		);
 		
 		return $response;

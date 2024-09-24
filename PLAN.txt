@@ -1100,7 +1100,16 @@ SYMFONY SERIALIZER
 			BackedEnumNormalizer::ALLOW_INVALID_VALUES => true,
 		]),
 	зачем сериализовывать объекты в сессии (? может быть дело в хранимом объёме, или что ещё...)
+SYMFONY ASSET
 ***
+SYMFONY WEBLINK (PRELOADING)
+	https://symfony.com/doc/5.x/web_link.html#preloading-assets
+	
+	https://github.com/symfony/web-link
+	https://datatracker.ietf.org/doc/html/rfc7540#section-8.2
+	https://html.spec.whatwg.org/#linkTypes
+	https://github.com/dunglas/symfony-docker
+	
 SYMFONY FRONTEND (WEBPACK ENCORE/ASSET MAPPER)
 	# 3
 	https://symfony.com/doc/5.x/frontend.html#encore-documentation
@@ -1131,7 +1140,15 @@ SYMFONY FRONTEND (WEBPACK ENCORE/ASSET MAPPER)
 	
 	configureSplitChunks
 	https://webpack.js.org/plugins/split-chunks-plugin/
+	
+	Раздел позже
+		https://symfony.com/doc/5.x/components/asset.html#absolute-assets-and-cdns
 	?
+	+ ? не могу утверждать, но мне кажется, что при различных параметрах GET
+		браузер создаёт различный кеш
+		(
+			Да, браузер сохраняет кеш, учитывая все символы uri
+		)
 	? при каком условии при сборке проекта yarn encore dev в build попадут картинки
 	The asset() function supports various cache busting techniques
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-assets-version
