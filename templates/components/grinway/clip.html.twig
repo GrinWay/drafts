@@ -1,0 +1,44 @@
+{# Usage:
+#}
+
+{% props
+	clip_text = 'DEFAULT TEXT',
+	clip_btn_text = 'Copy',
+%}
+
+{% set nestedName = 'clip' %}
+
+<div
+	{{ attributes.nested(nestedName).defaults({ class: 'w-100' }) }}
+	class="{{ attributes.nested(nestedName).render('class') }}"
+	{{ stimulus_controller('clip') }}
+	data-clip-supported-class="clip--supported"
+	data-clip-timeout-ms=1000
+>
+	<input
+		class="disabled"
+		readonly="readonly"
+		disabled="disabled"
+		value="{{- clip_text -}}"
+		{{ stimulus_target('clip', 'data') }}
+		
+		{{ attributes.nested('input').defaults({ type: 'text' }) }}
+	/>
+	<a
+		href="#"
+		class="clip-btn"
+		data-action="click->clip#copyA"
+		{{ stimulus_target('clip', 'copyBtn') }}
+	>
+		{{- clip_btn_text -}}
+	</a>
+	{#
+	<twig:grinway:btn
+		class="btn-outline-success"
+		data-action="click->clip#copyA"
+		{{ ...stimulus_target('clip', 'copyBtn')|string_attribute_as_array }}
+	>
+		{{- clip_btn_text -}}
+	</twig:grinway:btn>
+	#}
+</div>

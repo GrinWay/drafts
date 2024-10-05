@@ -18,7 +18,6 @@ return [
     GrinWay\WebApp\GrinWayWebAppBundle::class => ['all' => true],
     GrinWay\Extension\GrinWayExtensionsBundle::class => ['all' => true],
     Symfony\UX\StimulusBundle\StimulusBundle::class => ['all' => true],
-    Symfony\UX\Turbo\TurboBundle::class => ['all' => true],
     Symfony\UX\TwigComponent\TwigComponentBundle::class => ['all' => true],
     TalesFromADev\Twig\Extra\Tailwind\Bridge\Symfony\Bundle\TalesFromADevTwigExtraTailwindBundle::class => ['all' => true],
     Symfony\Bundle\SecurityBundle\SecurityBundle::class => ['all' => true],
@@ -33,4 +32,5 @@ return [
     GrinWay\EnvProcessor\GrinWayEnvProcessorBundle::class => ['all' => true],
     GrinWay\Command\GrinWayCommandBundle::class => ['all' => true],
     Endroid\QrCodeBundle\EndroidQrCodeBundle::class => ['all' => true],
+    Symfony\UX\Turbo\TurboBundle::class => ['all' => true],
 ];

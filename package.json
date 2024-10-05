@@ -1,4 +1,7 @@
 {
+  "browserslist": [
+    "defaults"
+  ],
   "devDependencies": {
     "@babel/core": "^7.17.0",
     "@babel/preset-env": "^7.16.0",
@@ -8,7 +11,10 @@
     "@symfony/ux-toggle-password": "file:vendor/symfony/ux-toggle-password/assets",
     "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
     "@symfony/webpack-encore": "^4.6.1",
+    "autoprefixer": "^10.4.20",
     "core-js": "^3.23.0",
+    "dotenv-webpack": "^8.1.0",
+    "postcss-loader": "^7.0.0",
     "regenerator-runtime": "^0.13.9",
     "webpack": "^5.74.0",
     "webpack-cli": "^4.10.0",
@@ -27,8 +33,22 @@
   "name": "drafts",
   "version": "1.0.0",
   "dependencies": {
+    "@stimulus-components/animated-number": "^5.0.0",
+    "@stimulus-components/auto-submit": "^6.0.0",
+    "@stimulus-components/carousel": "^6.0.0",
+    "@stimulus-components/character-counter": "^5.0.0",
+    "@stimulus-components/checkbox-select-all": "^6.0.0",
+    "@stimulus-components/clipboard": "^5.0.0",
+    "@stimulus-components/color-picker": "^2.0.0",
+    "@stimulus-components/dialog": "^1.0.1",
+    "@stimulus-components/dropdown": "^3.0.0",
+    "@stimulus-components/lightbox": "^4.0.0",
     "expo": "~51.0.28",
+    "hotkeys-js": "^3.13.7",
+    "lodash": "^4.17.21",
     "react": "18.2.0",
-    "react-native": "0.74.5"
+    "react-native": "0.74.5",
+    "stimulus-glow": "^0.3.0",
+    "stimulus-use": "^0.52.2"
   }
 }

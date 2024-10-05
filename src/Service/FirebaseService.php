@@ -37,6 +37,7 @@ class FirebaseService
 	 * 
 	 */
 	public function configureClient(): static {
+		return $this;
 		try {
 			$this->client->setAuthConfig($this->firebaseServiceAccountAbsPath);
 			$this->client->addScope(\Google_Service_FirebaseCloudMessaging::CLOUD_PLATFORM);
@@ -72,6 +73,13 @@ class FirebaseService
 	 * 
 	 */
 	private function generateToken() {
+		/**
+		 * //TODO: Firebase Выкинул исключение
+		 *
+		 * Client error: `POST https://oauth2.googleapis.com/token` resulted in a `400 Bad Request` response:
+		 * {"error":"invalid_grant","error_description":"Invalid JWT: Token must be a short-lived token (60 minutes) and in a reasonable timeframe. Check your iat and exp values in the JWT claim
+		 *
+		 */
 		$this->client->fetchAccessTokenWithAssertion();
 		$accessToken = $this->client->getAccessToken();
 

@@ -1,0 +1,10 @@
+services:
+    
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\Asset\VersionStrategy\DateVersionStrategy:
+        class: App\Asset\VersionStrategy\DateVersionStrategy
+        
+    app.assets.version_strategy: '@App\Asset\VersionStrategy\DateVersionStrategy'

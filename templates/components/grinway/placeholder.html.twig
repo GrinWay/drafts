@@ -1,0 +1,15 @@
+{# Usage:
+#}
+
+<span
+	{{ attributes.nested('placeholder').defaults({
+		class: 'placeholder-glow  fade show  w-100',
+	}) }}
+>
+	<span
+		{{ attributes.nested('placeholder_nested').defaults({
+			class: 'placeholder rounded  h-100 w-100',
+		}) }}
+	>
+	</span>
+</span>

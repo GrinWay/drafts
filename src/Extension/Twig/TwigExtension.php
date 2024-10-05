@@ -20,6 +20,7 @@ class TwigExtension extends AbstractExtension
     {
         return [
             new TwigFilter('for_user', [TwigFilterExtension::class, 'forUser']),
+            new TwigFilter('string_attribute_as_array', [TwigFilterExtension::class, 'stringAttributeAsArray']),
         ];
     }
 
@@ -43,6 +44,7 @@ class TwigExtension extends AbstractExtension
         return [
             new TwigFunction('get_debug_type', \get_debug_type(...)),
             new TwigFunction('get_short_class', [TwigFunctionExtension::class, 'getShortClass']),
+            new TwigFunction('random', [TwigFunctionExtension::class, 'random']),
         ];
     }
 

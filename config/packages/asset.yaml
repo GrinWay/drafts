@@ -1,0 +1,4 @@
+framework:
+    assets:
+        #version_strategy: 'app.assets.version_strategy'
+        json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'

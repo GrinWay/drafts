@@ -48,4 +48,31 @@ class TwigFilterExtension implements RuntimeExtensionInterface
         $carbon = $carbon->tz($tz)->locale($locale);
         return '' . u($carbon->isoFormat($isoFormat))->title();
     }
+	
+	//TODO: attributesAsArray -> renamed as stringAttributeAsArray
+	/**
+	 * Usage:
+	 * 
+	 * In twig template for <twig> tags
+	 * <twig {{ ...normalAttributeVariable|THIS_FILTER }}></twig>
+	 */
+	public function stringAttributeAsArray(string $attribute, string $delimiter = '='): array {
+		
+		$exploded = \explode($delimiter, $attribute);
+		
+		if (2 !== \count($exploded)) {
+			$m = \sprintf(
+				'The string: "%s" must contain exactly one: "%s" sign',
+				$attribute,
+				$delimiter,
+			);
+			throw new \LogicException($m);
+		}
+		
+		$result = [
+			\array_shift($exploded) => \trim(\array_pop($exploded), " \n\r\t\v\x00\"\'"),
+		];
+		
+		return $result;
+	}
 }

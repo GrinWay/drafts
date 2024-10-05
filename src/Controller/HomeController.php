@@ -7,6 +7,8 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\UX\Turbo\TurboBundle;
+use Twig\Environment;
 use Symfony\Component\Asset\Packages;
 use Symfony\Component\Asset\Context\RequestStackContext;
 use App\Asset\VersionStrategy\DateVersionStrategy;
@@ -522,17 +524,9 @@ class HomeController extends AbstractController
 	) {
 		$response = $this->render('home/index.html.twig');
 		
-		$package = new UrlPackage(
-			'http://127.0.0.1:8000',
-			$strategy = new DateVersionStrategy(),
-			$rs = new RequestStackContext($requestStack),
-		);
-		$namedPackages = [
-			'ngrok' => new UrlPackage($appUrl, $strategy, $rs),
-		];
-		$packages = new Packages($package, $namedPackages);
-		dump(
-			$packages->getUrl('build/fonts/SchadowBTRoman.ttf', 'ngrok'),
+		\dump(
+			'IS TURBO FRAME',
+			$request->headers->get('Turbo-Frame'),
 		);
 		
 		return $response;
@@ -1166,8 +1160,9 @@ class HomeController extends AbstractController
         return ['blogs' => $blogsFromDb];
     }
 
-    #[Template('product/_product_types_form.html.twig')]
     #[Route('product/types/{id?51}/{_locale?ru}',
+		defaults: [
+		],
 		requirements: [
 			//'id' => Requirement::UUID,
 			'id' => '[0-9]+',
@@ -1198,6 +1193,7 @@ class HomeController extends AbstractController
 		$enInf,
 		$appEnabledLocales,
 		LocaleSwitcher $localeSwitcher,
+		Environment $twig,
 		RequestContext $rc,
 		MessageBusInterface $bus,
 		UrlGeneratorInterface $ug,
@@ -1208,6 +1204,8 @@ class HomeController extends AbstractController
 		PasswordHasherFactoryInterface $hasherFacotry,
 		?TokenInterface $token,
 	) {
+		$random = Carbon::now('UTC')->second.\random_int(0, 10);
+		
 		$r = $request;
 		$hasher = $hasherFacotry->getPasswordHasher('admin_hasher');
 		$string = '123';
@@ -1238,7 +1236,9 @@ class HomeController extends AbstractController
 		
 		//$id = Uuid::fromString($id);
 		//$obj = $imageRepo->find($id);
-		$obj = null;
+		$obj = new Image(
+			filepath: $request->query->get('filepath'),
+		);
 
 		/*
 		$obj->setUserDto(new UserDto(id: 0, name: 'Unknown', age: 0));
@@ -1276,6 +1276,7 @@ class HomeController extends AbstractController
 			//'forbid_modify_props_feature' => false,
 			//'action' => $this->generateUrl($r->attributes->get('_route', 'app_home_producttypes')),
 		]);
+		$clearForm = $this->createForm(ImageFormType::class);
 		
 		//if ($r->isMethod('PATCH')) {
 			/* 
@@ -1316,17 +1317,33 @@ class HomeController extends AbstractController
 				$em->remove($obj);
 				);
 				$em->flush();
-					*/
 					\dd($obj);
+					*/
 				//\dd($payload, $data);
-				return $this->redirectToRoute('app_home_producttypes', $r->attributes->get('_route_params', []));
+				\dump('SUBMITTED and VALID');
+				$this->addFlash(NoteType::NOTICE, 'Форма отправлена');
+				
+				if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
+					$request->setRequestFormat(TurboBundle::STREAM_FORMAT);
+					$template = 'product/_product_types_form.html.twig';
+					return $this->renderBlock(
+						$template,
+						'turbo_form_success',
+						[
+							'form' => $clearForm,
+						],
+					);
+				}
+				return $this->redirectToRoute('app_home_producttypes', $r->attributes->get('_route_params')/* make template rendered */);
 			}
 		//}
 		
-        return [
+		$response = $this->render('product/_product_types_form.html.twig', [
             'form' => $form,
             'obj' => $obj,
-        ];
+            'random' => $random,
+        ]);
+        return $response;
     }
 }
 

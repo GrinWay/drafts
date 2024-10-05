@@ -2,12 +2,11 @@
 
 {%- trans_default_domain 'messages' -%}
 
-{% block javascripts %}
-	{{ parent() }}
-	{{ encore_entry_script_tags('home') }}
-{% endblock %}
-
-{%- block home_title ' index'|title -%}
+{%- block outside_title -%}
+	<title {{ stimulus_controller('title') }}>
+		Title
+	</title>
+{%- endblock -%}
 
 {% block body %}
 	
@@ -22,13 +21,16 @@
 	{{- qr_code_data_uri('Data') -}}
 	{{ dump(asset_version('media/image/symfony.png')) }}
 	#}
+
+	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, ut, odit aperiam delectus dolorem fugiat doloremque molestiae recusandae molestias provident omnis vel adipisci atque. Sit, dicta, ad, exercitationem mollitia nobis numquam ullam minus cum officia praesentium dolore quaerat tempora doloribus dolor quia illo quis consequuntur modi repellendus vel soluta doloremque et quos expedita eum molestias voluptatem. Ut, voluptates reprehenderit ipsum odio? Aperiam, sapiente, quia, aliquid nisi totam necessitatibus animi mollitia laudantium nostrum magnam amet esse reiciendis eligendi accusantium blanditiis sunt facilis a neque possimus ipsam quaerat veniam dolorum illo. Hic, fuga, velit, eius, nostrum expedita possimus atque natus ipsa suscipit vel accusamus veniam voluptatem non ut quam obcaecati rerum? Repellat, doloremque, perspiciatis deleniti nostrum adipisci minus ipsa est veniam vero itaque voluptates id corrupti quam mollitia sunt voluptas repellendus ducimus accusamus autem dolores doloribus praesentium illo illum. Facilis, magnam, maxime, voluptatibus vel molestias quod accusantium suscipit officiis velit tenetur iste ex consequatur cumque aut eius repudiandae voluptates ea ut nemo exercitationem? Deserunt, consequuntur, consectetur temporibus dignissimos nihil pariatur dolorem ratione assumenda eum ducimus. Magni, reiciendis ipsum magnam unde cum doloribus facilis tempore quo iusto quas illum sint voluptates eius pariatur excepturi veritatis fugiat praesentium nesciunt dolorem odio mollitia saepe natus iure. Alias, ipsa, porro sapiente fuga tenetur iste expedita quae aut sed sit tempore placeat neque voluptate. Voluptatibus, culpa, veniam, consequuntur temporibus nostrum fugiat veritatis provident dolorum ab fugit cupiditate sit expedita quod nam architecto doloremque aspernatur optio odio enim voluptate. Nam, tenetur quia accusamus nisi explicabo delectus officia inventore ut. Nihil, labore, in, quis, obcaecati totam distinctio odit quae hic perferendis reprehenderit delectus impedit ab architecto sapiente voluptatem error eius ipsum ullam voluptates porro. Eligendi, ipsa cum officia iure distinctio nisi ab cupiditate commodi quidem praesentium omnis consequatur iste eaque. Porro, dolores sit ab fuga adipisci maiores et quas!
 	
-	<div {{ stimulus_controller('hello') }} data-proto='<input {{ stimulus_controller('hello') }} type="text"/>' class="">
-		<input type="text" {{ stimulus_target('hello', 'input') }}/>
-		<button {{ stimulus_action('hello', 'clicked') }} class="btn btn-outline-primary">Button</button>
-		<div {{ stimulus_target('hello', 'output') }} class="">
-			EMPTY
-		</div>
-	</div>
+	<div class=""
+		{{ stimulus_controller('lightbox') }}
+	></div>
+
+	<turbo-frame id="app_home_index_about">
+		This application uses UX, Stimulus, Turbo and that's rather possible that it'll be using
+		corona virus
+	</turbo-frame>
 	
 {% endblock %}

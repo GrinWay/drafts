@@ -18,20 +18,29 @@
 			{{ s|u.splice('...', 5, (len - 20)) }}
 		</div>
 	</div>
-	
-	{% if form is defined %}
-		<div class="container">
-			{#
-			#}
-			{{- form_widget(form.updatedAt) -}}
-			{{- form_widget(form.createdAt) -}}
-		
+
+	<div class=""
+		{{ stimulus_controller('some-content') }}
+	></div>
+
+	<div id="app_product_form" class="container">
+		{% block product_form %}
 			{{ form_start(form, { attr: { novalidate: 'novalidate' } }) }}
-				{{- form_widget(form) -}}
-				
-				<twig:grinway:btn autofocus="autofocus" class="btn-outline-success" type="submit"></twig:grinway:btn>
-			{{ form_end(form, { render_rest: true }) }}
-		</div>
-	{% endif %}
+				{{ form_rest(form) }}
+				<twig:grinway:btn type="submit" class="btn-large btn-secondary" >SUBMIT</twig:grinway:btn>
+			{{ form_end(form) }}
+		{% endblock %}
+	</div>
 	
 {% endblock body %}
+
+
+{% block turbo_form_success %}
+	{{ include('hotwired/turbo-stream/base/flash.html.twig') }}
+	
+	<turbo-stream action="update" targets="#app_product_form">
+		<template>
+			{{ block('product_form') }}
+		</template>
+	</turbo-stream>
+{% endblock %}

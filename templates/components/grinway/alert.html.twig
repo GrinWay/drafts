@@ -49,7 +49,7 @@
 	],
 }) %}
 
-<div class="{{- class.apply({alert_type, alert_size, alert_alignment, alert_position}, attributes.nested(nestedAlertName).render('class')) -}}" {{- attributes.nested(nestedAlertName).defaults({ role: 'alert' }) -}}>
+<div {{ attributes.nested(nestedAlertName).defaults({ role: 'alert' }) }} class="{{- class.apply({alert_type, alert_size, alert_alignment, alert_position}, attributes.nested(nestedAlertName).render('class')) -}}">
 	{%- block content -%}
 		EMPTY ALERT
 	{%- endblock content -%}

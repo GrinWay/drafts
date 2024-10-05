@@ -1,0 +1,1 @@
+export const constant = 3.1415926

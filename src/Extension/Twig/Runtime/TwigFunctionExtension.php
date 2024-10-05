@@ -22,5 +22,9 @@ class TwigFunctionExtension implements RuntimeExtensionInterface
     {
         $refl = new \ReflectionClass($objOrClass);
         return $refl->getShortName();
-    }
+	}
+    
+	public function random() {
+		return \Carbon\Carbon::now('UTC')->second.\random_int(0, 10);
+	}
 }
