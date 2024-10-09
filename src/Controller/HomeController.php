@@ -1276,7 +1276,7 @@ class HomeController extends AbstractController
 			//'forbid_modify_props_feature' => false,
 			//'action' => $this->generateUrl($r->attributes->get('_route', 'app_home_producttypes')),
 		]);
-		$clearForm = $this->createForm(ImageFormType::class);
+		$emptyForm = $this->createForm(ImageFormType::class)->createView();
 		
 		//if ($r->isMethod('PATCH')) {
 			/* 
@@ -1330,7 +1330,8 @@ class HomeController extends AbstractController
 						$template,
 						'turbo_form_success',
 						[
-							'form' => $clearForm,
+							'form' => $form,
+							'emptyForm' => $emptyForm,
 						],
 					);
 				}
@@ -1342,6 +1343,7 @@ class HomeController extends AbstractController
             'form' => $form,
             'obj' => $obj,
             'random' => $random,
+			'emptyForm' => $emptyForm,
         ]);
         return $response;
     }

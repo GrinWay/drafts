@@ -1,0 +1,24 @@
+html[aria-busy="true"]:only-child {
+	/*
+	opacity: 0.5;
+	*/
+}
+
+html[data-turbo-visit-direction="back"]:only-child {
+  
+}
+
+@keyframes slide-to-right {
+  from {
+    transform: translateX(0%);
+  }
+
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.turbo-progress-bar {
+  height: 2px;
+  background-color: green;
+}

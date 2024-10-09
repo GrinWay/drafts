@@ -9,6 +9,7 @@ webpack_encore:
         defer: true
         # https://turbo.hotwired.dev/handbook/drive#reloading-when-assets-change
         'data-turbo-track': reload
+        #'data-turbo-eval': "false"
     link_attributes:
         'data-turbo-track': reload
 

@@ -1,5 +1,5 @@
 {%- block menu -%}
-	<div {{ attributes.nested('menu').defaults({class: 'menu'}) }}>
+	<div {{ attributes.nested('menu').defaults({ class: 'menu' }) }}>
 		{%- block content -%}{%- endblock -%}
 		<ul>
 			
@@ -26,9 +26,13 @@
 			<li><a href="{{ path('app_session_clear', {}) }}">CLEAR SESSION</a></li>
 			<li><a href="{{ path('app_github_index', {}) }}">GitHub</a></li>
 			<li><a href="{{ path('app_home_producttypes', {}) }}">Type</a></li>
-			<li><a href="{{ path('app_home_home', {}) }}"
-				
-			>Home</a></li>
+			<li>
+			<a href="{{ path('app_home_home', {}) }}"
+				data-turbo-preload
+			>Home</a>
+			</li>
+			<li><a href="{{ path('app_machine_index', {}) }}">MACHINES</a></li>
+			<li><a href="{{ path('app_chat', {}) }}">CHAT</a></li>
 			<li><a href="{{ path('app_home_removeproduct', {}) }}">removeproduct</a></li>
 			<li><a href="{{ path('app_home_condition', {id: 1}) }}">condition</a></li>
 			<li><a href="{{ path('static') }}">static</a></li>

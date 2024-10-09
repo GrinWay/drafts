@@ -12,14 +12,6 @@ Encore
 	//addPlugin priority high
     .addPlugin(
 		new Dotenv({
-			path: '.env.local.php',
-			defaults: '.env',
-			systemvars: true,
-			allowEmptyValues: true,
-		}),
-	)
-    .addPlugin(
-		new Dotenv({
 			path: '.env.dev.local',
 			defaults: '.env',
 			systemvars: true,
@@ -91,14 +83,16 @@ Encore
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
     .enableSourceMaps(!Encore.isProduction())
-    .enableVersioning(Encore.isProduction())
-    //.enableVersioning(true)
+    //.enableVersioning(Encore.isProduction())
+    .enableVersioning(true)
     
+	/*
 	.enablePostCssLoader(options => {
 		options.postcssOptions = {
 			config: __dirname+'/postcss.config.js',
 		}
 	})
+	*/
 
     // configure Babel
     // .configureBabel((config) => {

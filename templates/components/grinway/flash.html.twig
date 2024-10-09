@@ -1,68 +1,103 @@
 {# Usage:
     <body class="position-relative">
-		<twig:grinway:flash  alert_size="normal" alert:class=""  flash_position="sticky"/>
+		<twig:grinway:flash
+			alert:class=""
+			alert_size="normal"
+			
+			flash_position="sticky"
+			flash_peek = false // TODO: GRINWAY:FLASH: переместить в класс, реализовать логику, при которой есть возможность не очищать сообщение из flash (для hub->publish допустим чтобы всем отобразился flash)
+		/>
 	</body>
 #}
 
-{%- props flash_position = 'normal' -%}
+{%- props
+	flash_position = 'fixed',
+	
+	flash_init_shown = "true",
+	flash_will_leave = "true",
+	flash_remove_after_leave = "true",
+	flash_style = 'fade',
+	flash_disappear_in_ms = 3000,
+-%}
+
 {%- set nestedFlashName = 'flash' -%}
+
 {%- set class_cva = cva({
 	base: '',
 	variants: {
 		flash_position: {
+			fixed: 'position-fixed top-0 end-0 start-0',
 			sticky: 'position-sticky top-0 end-0 start-0',
+			absolute: 'position-absolute top-0 end-0 start-0',
 			normal: '',
 		},
 	},
 }) -%}
 
-
-<div class="{{ class_cva.apply({flash_position}, attributes.nested(nestedFlashName).render('class')) }}" {{ attributes.nested(nestedFlashName).defaults({ id: 'app_base_flashes' }) }} }}>
+<div
+	class="{{ class_cva.apply({flash_position}, attributes.nested(nestedFlashName).render('class')) }}"
+	{{ attributes.nested(nestedFlashName).defaults({
+		id: 'app_base_flashes',
+		
+		'data-controller': 'grinway--transition',
+		'data-grinway--transition-init-shown-value': flash_init_shown,
+		'data-grinway--transition-style-value': flash_style,
+		'data-grinway--transition-disappear-in-ms-value': flash_disappear_in_ms,
+		'data-grinway--transition-will-leave-value': flash_will_leave,
+		'data-grinway--transition-remove-after-leave-value': flash_remove_after_leave,
+	}) }}
+>
 	{%- if app.session.flashBag.peekAll|length > 0 -%}
+	
 		{%- block flash -%}
 			
-			<div class="">
-				{%- for flash in app.flashes(app_note_type.notice) -%}
-					<twig:grinway:alert {{ ...attributes }} alert_type="success">
-						{{- flash -}}
-					</twig:grinway:alert>
-				{%- endfor -%}
-			</div>
-			
-			<div class="">
-				{%- for flash in app.flashes(app_note_type.warning) -%}
-					<twig:grinway:alert {{ ...attributes }} alert_type="warning">
-						{{- flash -}}
-					</twig:grinway:alert>
-				{%- endfor -%}
-			</div>
-			
-			<div class="">
-				{%- for flash in app.flashes(app_note_type.error) -%}
-					<twig:grinway:alert {{ ...attributes }} alert_type="danger">
-						{{- flash -}}
-					</twig:grinway:alert>
-				{%- endfor -%}
-			</div>
-			
-			<div class="">
-				{%- for flash in app.flashes('secondary') -%}
-					<twig:grinway:alert {{ ...attributes }} alert_type="secondary">
-						{{- flash -}}
-					</twig:grinway:alert>
-				{%- endfor -%}
-			</div>
-			
-			<div class="">
-				{%- for flashes in app.flashes -%}
-					{%- for flash in flashes -%}
-						<twig:grinway:alert {{ ...attributes }} alert_type="primary">
-							{{- flash -}}
-						</twig:grinway:alert>
+			<div
+				data-turbo-temporary
+				{{ stimulus_target('grinway--transition', 'element') }}
+			>
+				{% for flashObject in [
+					{
+						type:     'success',
+						flashes:  app.flashes(app_note_type.notice),
+					},
+					{
+						type:     'warning',
+						flashes:  app.flashes(app_note_type.warning),
+					},
+					{
+						type:     'danger',
+						flashes:  app.flashes(app_note_type.error),
+					},
+					{
+						type:     'secondary',
+						flashes:  app.flashes('secondary'),
+					},
+					{
+						type:     'primary',
+						flashes:  app.flashes,
+					},
+				] %}
+					
+					{%- for flash in flashObject.flashes -%}
+						
+						<div>
+							{% if flash is iterable %}
+							
+								{% set flashes = flash %}
+								{%- for flash in flashes -%}
+									{{ block('alert', 'components/grinway/unit/flash/_block.html.twig') }}
+								{%- endfor -%}
+							
+							{% else %}
+							
+								{{ block('alert', 'components/grinway/unit/flash/_block.html.twig') }}
+
+							{% endif %}
+						</div>
+						
 					{%- endfor -%}
-				{%- endfor -%}
-			</div>
-			
+					
+				{% endfor %}
 		{%- endblock -%}
 	{%- endif -%}
 </div>

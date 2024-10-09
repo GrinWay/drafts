@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Machine{% endblock %}
+
+{% block body %}
+    <h1>Machine</h1>
+
+    <table class="table"
+		id="show_machine_{{- machine.id -}}"
+		{{ turbo_stream_listen("machine_" ~ machine.id) }}
+	>
+		{{ include('machine/_show_machine.html.twig') }}
+    </table>
+
+    <a href="{{ path('app_machine_index') }}">back to list</a>
+
+    <a href="{{ path('app_machine_edit', { id: machine.id }) }}">edit</a>
+
+    {{ include('machine/_delete_form.html.twig') }}
+{% endblock %}

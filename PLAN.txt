@@ -550,6 +550,8 @@ SYMFONY TESTS
 	https://symfony.com/doc/current/components/phpunit_bridge.html
 	??? Как работать с тестами бандла
 	?
+	???: Похоже тут уже ничего не сделать, PANTHER_APP_ENV тупо не переопределяет APP_ENV
+		в экземпляре браузера
 	? notifier: По неизвестной причине тест не видит что в очередь был добавлен ASYNC message
 		причём используя ChatterInterface тест async возможен, и он видит отправленные async сообщения
 		в то время используя NotifierInterface тест не видит что было отправлено сообщение
@@ -901,6 +903,8 @@ __TEXT__;
 		
 		$sentMessage = $texter->send($sms);
 	?
+	? Попробуй через Notifier отправить обновление turbo-stream
+		https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Bridge/Mercure/README.md
 	?RRRR: OneSignal //TODO: Firebase Выкинул исключение
 	?RRRR: отправить push на телефон (OneSignal)
 		Похоже ID это device token, которых нужно получить (через JS) от Firebase
@@ -1210,30 +1214,56 @@ HOTWIRE: STIMULUS / STIMULUS USE / STIMULUS COMPONENTS
 			измени имя контроллера через аттрибут, но не удаляй DOM
 		)
 	? придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
-***
 HOTWIRE: TURBO
-
-	#1
-	https://symfony.com/bundles/ux-turbo/current/index.html#sending-async-changes-using-mercure-a-chat
-
-	https://symfony.com/doc/current/mercure.html
-	https://symfony.com/bundles/ux-turbo/current/index.html#chat-example
-	https://symfony.com/blog/moving-script-inside-head-and-the-defer-attribute
-	
-	https://ux.symfony.com/
-	
-	реализовать и протестировать чат
-		https://symfony.com/doc/current/testing/end_to_end.html#testing-real-time-applications
+	R: НА ПОВТОРНОМ: https://ux.symfony.com/
+	R: на повторном
+		реализовать не удаление для turbo-stream а stimulus-controller для плавного исчезновения
+		после появления connect() { this.leave() }
 	?
-	? При навигации совершается несколько ajax на один и тот же ресурс
-SYMFONY UX TURBO https://symfony.com/bundles/ux-turbo/current/index.html
-	HOTWIRE: STIMULUS
-	?
+	? private: true: Не получилось авторизоваться через сервис Authorization
+		https://symfony.com/doc/current/mercure.html#programmatically-setting-the-cookie
+	? MERCURE MOCK TESTING: Неужели это стоит того, есть же Panther
+		https://symfony.com/doc/current/mercure.html#testing
+	? E2E TESTING: Как тестировать Mercure без отправки реального сообщения
+	+ ? E2E TESTING: При создании дополнительного Panther client первоначальный не способен отправить форму
+		(
+			Да, это действительно так			
+			При создании дополнительного Panther client, только он способен отправлять форму
+		)
+	? E2E TESTING:
+		1) А если страница уже содержит определённый селектор
+		будет ли она ждать появления нового такого же при wait, assert или 
+		мне кажется что более верояно учтёт тот что есть уже
+		2) а может и wait и assert действуют по разному в этом контексте
+	? Будет проблематично обнаружить expression language provider для ux turbo
+		но если это сделать можно добавить новых функций Broadcast(topics)
+	? Broadcast: не понятно как пользоваться transports, topics опциями
+	? Как избавиться от следующей ошибки при использовании аттрибута немедленной подгрузки data-turbo-preload
+		TypeError: can't access property "style", ajaxToolbarPanel is null
+	? Не понятно зачем turbo-stream нужен аттрибут request-id
+	? Как отрендерить twig component в переменную, чтобы его назначить в аттрибут
+		для отчистки перед кешированием
+	? data-turbo-stream не понятно зачем нужен
+	? data-turbo-permanent: Добавил этот аттрибут к div с контроллером
+		перехожу по той-же странице, но элемент обновляется, хотя по задумке ну не должен наверное
+	? Не понятно какой должен быть refresh чтобы прокрутка сохранилась
+		<meta name="turbo-refresh-scroll" content="preserve">
+	? Как устранить ошибку
+		TypeError: can't access property "style", ajaxToolbarPanel is null
+		при использовании data-turbo-preload="true"
+	? Turbo.setConfirmMethod: как возвратить из функции ответ с контроллера
+	+ ? При навигации совершается несколько ajax на один и тот же ресурс
+		при навигации вообще-то не должно вообще ни одного ajax происходить
+		(
+			из-за <esi:include src="http://google.com"></esi:include>
+		)
 	реализовать https://symfony.com/doc/current/form/form_collections.html#allowing-new-tags-with-the-prototype
 		посмотреть после реализации
 		https://symfony.com/doc/current/form/form_collections.html#javascript-with-stimulus
 	есть ли разница между зафейленой обработанной формой (422) и необработанной формой для UX TURBO
-SYMFONY LIVE COMPONENTS https://symfony.com/bundles/ux-live-component/current/index.html
+***
+SYMFONY LIVE COMPONENTS
+	https://symfony.com/bundles/ux-live-component/current/index.html
 	https://ux.symfony.com/demos/live-component/form-collection-type/2299
 	https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
 	https://symfony.com/doc/current/reference/forms/types.html#symfony-ux-fields
@@ -1290,6 +1320,19 @@ SYMFONY FRONTEND (WEBPACK ENCORE/ASSET MAPPER)
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-assets-version
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-version-format
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-json-manifest-path
+SYMFONY MY ADMIN
+SYMFONY WORKFLOW
+	R: Реализовать telegram bot для оформления заказа с компонентом workflow
+		init
+		what_do_you_want
+		get_name
+		get_contact
+		send_order_to_master
+			крайним этапом отправь ответ в виде alert, что письмо админу отправлено, он свяжется с вами
+LIB MOBILE DETECT: https://github.com/serbanghita/Mobile-Detect
+	R: TODO: Mobile-detect
+	RRR: Используя Stimulus Carousel Component назначить pointer-events: none;
+		в случае если это телефон, для запрета взаимодействия с картинкой
 SYMFONY WebLink
 SYMFONY WEBHOOK https://symfony.com/doc/current/webhook.html
 SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
@@ -1400,34 +1443,27 @@ SYMFONY CONTAINER BUILDER
 	Yaml::PARSE_CONSTANT add into grin_way_service to allow !const 'GrinWay\WebApp\Type\Messenger\BusTypes::QUERY_BUS' into C:\Рабочий стол\PHP SYMFONY\__SANDBOX__\SYMFONY 7\bundles\grinway\web-app-bundle\config\services.yaml
 SYMFONY Process Component https://symfony.com/doc/current/components/process.html
 SYMFONY INTL COMPONENT https://symfony.com/doc/current/components/intl.html
-LIB MOBILE DETECT: https://github.com/serbanghita/Mobile-Detect
-	R: TODO: Mobile-detect
-	RRR: Используя Stimulus Carousel Component назначить pointer-events: none;
-		в случае если это телефон, для запрета взаимодействия с картинкой
 SYMFONY MONOLOG https://symfony.com/doc/current/logging.html
 ###> EXCERPTS TO ANSWER ###
 By default, the URLs generated for web assets use the same default_uri value, but you can change it with the asset.request_context.base_path and asset.request_context.secure container parameters.
 ###< EXCERPTS TO ANSWER ###
-SYMFONY WORKFLOW
-	R: Реализовать telegram bot для оформления заказа с компонентом workflow
-		init
-		what_do_you_want
-		get_name
-		get_contact
-		send_order_to_master
-			крайним этапом отправь ответ в виде alert, что письмо админу отправлено, он свяжется с вами
 SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
 	реализовать свой DataCollectorInterface, *Pass который добавит в сервис Profiler, если он есть, addCollector
 	?
 	? по каким-то причинам profiler тупо иногда либо не отображается либо просто перестаёт работать
 	Почему сервис @Psr\Container\ContainerInterface не доступен из services.yaml
 https://symfony.com/doc/current/reference/dic_tags.html
-SYMFONY MY ADMIN
 OpenSSL:
 	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.
 	Как создать самоподписанные сертификаты
 	Куда класть самоподписанные сертификаты
 	Как разрешить самоподписанные сертификаты
+SYMFONY API PLATFORM
+	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 1 Mythically Good RESTful APIs
+	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 2 Security for your Treasures
+	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 3 Custom Resources
+	https://api-platform.com/docs/symfony/
+	https://symfony.com/doc/current/mercure.html#web-apis
 SYMFONY REDIS BUNDLE
 	https://github.com/phpredis/phpredis
 	https://symfony.com/doc/current/security/login_link.html#configure-a-maximum-use-of-a-link
@@ -1491,10 +1527,14 @@ SYMFONY DOCTRINE
 	реализовать (MappedSuperClass)Authentication и её сущность UserAuthentication(сущность CustomAuth[access_token], сущность Auth2FA[totp, google code, email, backup codes], сущность OAuth[github, telegram, google])
 DOCKER
 	https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
+	https://symfony.com/doc/current/setup/docker.html
 	https://symfony.com/doc/current/setup.html
 	https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
 	https://symfony.com/doc/current/setup/symfony_server.html#symfony-server-docker
 	https://github.com/dunglas/symfony-docker
+	?
+	Неужели чтобы транслировать изменения не нужно запускать Mercure.hub бинарный файл
+		при использовании docker
 Cache with Couchbase
 	https://www.couchbase.com/
 	https://docs.couchbase.com/sdk-api/couchbase-php-client/namespaces/couchbase.html
@@ -1685,6 +1725,9 @@ TODO
 			email_footer_text=footer_text
 		/>
 		###< twig:grinway:email ###
+		// TODO: GRINWAY:FLASH
+		// TODO: useTransition
+		// TODO: transition_controller
 	GsEnvProcessor
 		fix abstractions (only with functions)
 	Command
@@ -1725,7 +1768,6 @@ TODO
 		Реализовать env processor grin_way_csv_decode для декодирования csv в массив
 			(использовать serializer.encoder.csv service)
 		//TODO: attributesAsArray
-		// TODO: useTransition
 		
 	Extensions
 		может перейти от OptionsResolver к Processor+TreeBuilder в global instance of

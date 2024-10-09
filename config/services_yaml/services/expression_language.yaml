@@ -6,3 +6,9 @@ services:
         arguments:
             $inner: '@.inner'
     #App\Extension\ExpressionLanguage\Decorator\ValidatorExpLangFunctionProvider: '@app.validator.expression_language_provider'
+    
+    #app.ux.expression_language_provider:
+    #    class: App\Extension\ExpressionLanguage\Decorator\UxExpLangFunctionProvider
+    #    decorates: ''
+    #    arguments:
+    #        $inner: '@.inner'

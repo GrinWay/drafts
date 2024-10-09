@@ -1,0 +1,11 @@
+<tr id="machine_{{- machine.id -}}"
+	{{ turbo_stream_listen(machine) }}
+>
+	<td>{{ machine.id }}</td>
+	<td>{{ machine.year }}</td>
+	<td>{{ machine.name }}</td>
+	<td>
+		<a href="{{ path('app_machine_show', {'id': machine.id}) }}">show</a>
+		<a href="{{ path('app_machine_edit', {'id': machine.id}) }}">edit</a>
+	</td>	
+</tr>

@@ -2,6 +2,10 @@
 
 {%- trans_default_domain 'messages' -%}
 
+{%- block meta -%}
+	{{ parent() }}
+{%- endblock -%}
+
 {%- block outside_title -%}
 	<title {{ stimulus_controller('title') }}>
 		Title

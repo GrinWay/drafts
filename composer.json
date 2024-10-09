@@ -61,6 +61,7 @@
         "symfony/ldap": "7.1.*",
         "symfony/loco-translation-provider": "7.1.*",
         "symfony/mailer": "7.1.*",
+        "symfony/mercure-bundle": "^0.3.9",
         "symfony/messenger": "7.1.*",
         "symfony/mime": "7.1.*",
         "symfony/monolog-bundle": "^3.10",

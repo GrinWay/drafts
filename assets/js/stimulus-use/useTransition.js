@@ -1,5 +1,8 @@
 import { useTransition as stimulusUseTranslation } from 'stimulus-use';
 
+/**
+ * See style in: assets/styles/stimulus/controller/useTransition/app.css
+ */
 // TODO: useTransition
 export function useTransition(
 	controller,

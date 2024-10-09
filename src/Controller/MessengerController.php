@@ -25,12 +25,14 @@ class MessengerController extends AbstractController
         \Symfony\Contracts\HttpClient\HttpClientInterface $thisClient,
     ): Response {
 
+		/*
         $response = $bus->dispatch(
             new HowStampWorks(),
             [
                 new StopPropagationStamp(),
             ]
         );
+		*/
 
         //\dd($response);
         //\dump($response);

@@ -63,3 +63,6 @@ bin/console secrets:set APP_NOVU_ENV_ID
 
 echo 'APP_EXPO_TOKEN'
 bin/console secrets:set APP_EXPO_TOKEN
+
+echo 'MERCURE_JWT_SECRET'
+bin/console secrets:set MERCURE_JWT_SECRET

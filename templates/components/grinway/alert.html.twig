@@ -4,7 +4,18 @@
 	</twig:grinway:alert>
 #}
 
-{%- props alert_type = 'primary', alert_size = 'sm', alert_alignment = 'left', alert_position = 'normal' -%}
+{%- props
+	alert_type = 'primary',
+	alert_size = 'sm',
+	alert_alignment = 'left',
+	alert_position = 'normal',
+	
+	alert_init_shown = "true",
+	alert_will_leave = "false",
+	alert_remove_after_leave = "true",
+	alert_style = 'fade',
+	alert_disappear_in_ms = 10000,
+-%}
 {%- set nestedAlertName = 'alert' -%}
 {%- set base = 'alert my-0' -%}
 {% set class = cva({
@@ -49,7 +60,18 @@
 	],
 }) %}
 
-<div {{ attributes.nested(nestedAlertName).defaults({ role: 'alert' }) }} class="{{- class.apply({alert_type, alert_size, alert_alignment, alert_position}, attributes.nested(nestedAlertName).render('class')) -}}">
+<div
+	class="{{- class.apply({alert_type, alert_size, alert_alignment, alert_position}, attributes.nested(nestedAlertName).render('class')) -}}"
+	{{ attributes.nested(nestedAlertName).defaults({
+		role: 'alert',
+		'data-controller': 'grinway--transition',
+		'data-grinway--transition-init-shown-value': alert_init_shown,
+		'data-grinway--transition-style-value': alert_style,
+		'data-grinway--transition-disappear-in-ms-value': alert_disappear_in_ms,
+		'data-grinway--transition-will-leave-value': alert_will_leave,
+		'data-grinway--transition-remove-after-leave-value': alert_remove_after_leave,
+	}) }}
+>
 	{%- block content -%}
 		EMPTY ALERT
 	{%- endblock content -%}

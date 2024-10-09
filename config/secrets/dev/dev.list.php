@@ -24,5 +24,6 @@ return [
     'APP_TWILIO_TOKEN' => null,
     'CACHE_0_DECRYPTION_KEY' => null,
     'CACHE_1_DECRYPTION_KEY' => null,
+    'MERCURE_JWT_SECRET' => null,
     'ONESIGNAL_DSN_AUTH_KEY' => null,
 ];
