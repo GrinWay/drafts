@@ -37,8 +37,6 @@
 <div
 	class="{{ class_cva.apply({flash_position}, attributes.nested(nestedFlashName).render('class')) }}"
 	{{ attributes.nested(nestedFlashName).defaults({
-		id: 'app_base_flashes',
-		
 		'data-controller': 'grinway--transition',
 		'data-grinway--transition-init-shown-value': flash_init_shown,
 		'data-grinway--transition-style-value': flash_style,
@@ -98,6 +96,8 @@
 					{%- endfor -%}
 					
 				{% endfor %}
+			</div>
+			
 		{%- endblock -%}
 	{%- endif -%}
 </div>

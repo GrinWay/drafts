@@ -96,6 +96,7 @@
 			<div class="">
 				{% block body %}{% endblock %}
 			</div>
-		</div>
+		</div>		
+		{{ block('weather_widget', 'widget/_weather_widget.html.twig') }}
     </body>
 </html>

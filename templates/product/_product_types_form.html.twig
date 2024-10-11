@@ -23,11 +23,14 @@
 		{{ stimulus_controller('some-content') }}
 	></div>
 
-	<div id="app_product_form" class="container">
+	<turbo-frame
+		id="app_frame_product_form"
+	>
+		<div id="app_product_form" class="container">
 		{% block product_form %}
 			{%- set emptyHtml = form(emptyForm) -%}
 			{{ form_start(form, { attr: {
-			novalidate: 'novalidate', 'data-controller': 'before-cache-cleaner', 'data-action': 'turbo:before-cache@window->before-cache-cleaner#clean', 'clear_html': emptyHtml|e('html_attr') } }) }}
+			novalidate: 'novalidate', 'data-controller': 'before-cache-cleaner', 'data-action': 'turbo:before-cache@window->before-cache-cleaner#clean', 'clear_element': emptyHtml|e('html_attr') } }) }}
 				{{ form_rest(form) }}
 				<twig:grinway:btn
 					data-turbo-submits-with="Процесс..."
@@ -35,9 +38,23 @@
 			{{ form_end(form) }}
 		{% endblock %}
 	</div>
+	</turbo-frame>
+	
+	<turbo-frame id="testing" data-controller="form-ignores-frame-on-success" data-action="
+			turbo:submit-end->form-ignores-frame-on-success#ignoreFrame
+			turbo:before-frame-render->form-ignores-frame-on-success#pauseDefaultBehaviour
+		" >
+		<form method="post">
+			{{ random }}
+			<button class="btn btn-sm btn-success">
+	<span class="w-100 h-100">VISIT ON SUCCESS but fetch in turbo-frame on form failure
+			</span>
+</button>		</form>
+	</turbo-frame>
 	
 	<turbo-frame
 		id="app_post_all_items"
+		target="_top"
 		
 		{{ stimulus_controller('turbo-frame-back-btn', controllerValues={
 			uri: app.request.uri,
@@ -52,7 +69,10 @@
 		<div class="">Item 3</div>
 		<small>...</small>
 		<form
-		method="get" action="/post">
+			data-turbo-stream
+			method="get"
+			action="{{- path('app_post') -}}"
+		>
 			<twig:grinway:btn class="btn-small btn-success"
 			>
 				Show all items

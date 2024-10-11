@@ -31,10 +31,15 @@ export default class extends Controller {
 	 * 
 	 */
 	async turboBeforeRender(event) {
+		//console.error(`BEFORE RENDER`)
 		event.preventDefault()
-		//await this.leave()
-		//await this.enter()
+		await this.leave()
 		event.detail.resume()
+		requestAnimationFrame(() => {
+			this.enter()
+		})
+		/*
+		*/
 	}
 	
 	/**

@@ -1345,6 +1345,7 @@ class HomeController extends AbstractController
             'random' => $random,
 			'emptyForm' => $emptyForm,
         ]);
+		//\dump($response->isRedirection());
         return $response;
     }
 }

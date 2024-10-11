@@ -44,12 +44,15 @@
     "@stimulus-components/dialog": "^1.0.1",
     "@stimulus-components/dropdown": "^3.0.0",
     "@stimulus-components/lightbox": "^4.0.0",
+    "@sweetalert2/theme-dark": "^5.0.18",
+    "@sweetalert2/themes": "^5.0.18",
     "expo": "~51.0.28",
     "hotkeys-js": "^3.13.7",
     "lodash": "^4.17.21",
     "react": "18.2.0",
     "react-native": "0.74.5",
     "stimulus-glow": "^0.3.0",
-    "stimulus-use": "^0.52.2"
+    "stimulus-use": "^0.52.2",
+    "sweetalert2": "^11.14.2"
   }
 }

@@ -1,6 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 import { useHotkeys } from 'stimulus-use/hotkeys'
 import { useTargetMutation } from 'stimulus-use'
+import { renderStreamMessage } from '@hotwired/turbo'
 
 /* Usage
 <div class=""
@@ -44,6 +45,15 @@ export default class extends Controller {
 	}
 	
 	connect() {
+		const streamMessage = `
+<turbo-stream action="update" target="app_post_all_items">
+	<template>
+		This content was replaced by turbo-stream VIA JAVASCRIPT DIRECTLY (without fetch)!
+	</template>
+</turbo-stream>
+		`
+		//renderStreamMessage(streamMessage)
+		
 		const cookieNumber = this.cookieNumber
 		if (undefined !== cookieNumber && null !== cookieNumber && NaN !== Number(cookieNumber)) {
 			this.numberValue = Number(cookieNumber)

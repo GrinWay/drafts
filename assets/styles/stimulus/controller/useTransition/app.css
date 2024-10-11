@@ -1,21 +1,25 @@
 /* ###> useTransition ### */
-.slide-enter-active, .slide-leave-active {
+.slide-leave-active:not([data-turbo-preview]) {
 	transition: all 300ms ease-out;
 }
-.slide-enter-from {
+.slide-enter-active:not([data-turbo-preview]) {
+	transition: all 400ms ease-in;
+}
+
+.slide-enter-from:not([data-turbo-preview]) {
 	transform: translate(-100px, 0);
 	opacity: 0;
 }
-.slide-enter-to {
+.slide-enter-to:not([data-turbo-preview]) {
 	transform: translate(0, 0);
 	opacity: 1;
 }
 
-.slide-leave-from {
+.slide-leave-from:not([data-turbo-preview]) {
 	transform: translate(0, 0);
 	opacity: 0.5;
 }
-.slide-leave-to {
+.slide-leave-to:not([data-turbo-preview]) {
 	transform: translate(100vw, 0);
 	opacity: 0;
 }

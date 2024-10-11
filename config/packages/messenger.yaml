@@ -98,7 +98,7 @@ framework:
             'Symfony\Component\Notifier\*': sync
             
             # MERCURE
-            'Symfony\Component\Mercure\*': async
+            'Symfony\Component\Mercure\*': sync
 
 when@prod: &prod
     framework:

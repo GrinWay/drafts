@@ -1215,6 +1215,20 @@ HOTWIRE: STIMULUS / STIMULUS USE / STIMULUS COMPONENTS
 		)
 	? придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
 HOTWIRE: TURBO
+	RRR (HARD C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\UX\Symfony UX Turbo\41-server-frame-redirect (1080p).mp4): НА ПОВТОРНОМ: 
+		Цель: ДЛЯ ФОРМ: Либо позволить turbo-frame загружать контент в себя как обычно
+			либо с сервера возвращать new Response(null, 204)
+			и придуманный заголовок (X-App-Location-Uri)
+			в слушателе turbo:before-fetch-request по этим признакам сделать Turbo.visit
+			
+			Это оптимизация, так как turbo-frame не нужен контент для отображения (event.preventDefault)
+			А нужен только редирект, который мы делаем сами
+		1) Придумать аттрибут для такого повидения
+		2) Создать stimulus-controller, который будет слушать turbo:before-fetch-request
+			и добавлять придуманный header (если у формы установлен придуманный аттрибут 1* и это УСПЕШНОЕ 2* + ПЕРЕНАПРАВЛЕНИЕ 3*)
+			чтобы symfony прочитал этот заголовок и выдал пустой ответ со статусом 204
+			установив в ответе придуманный заголовк, который говорит куда можно перенаправляться
+			Turbo.visit(uri from response)
 	R: НА ПОВТОРНОМ: https://ux.symfony.com/
 	R: на повторном
 		реализовать не удаление для turbo-stream а stimulus-controller для плавного исчезновения
@@ -1243,7 +1257,13 @@ HOTWIRE: TURBO
 	? Не понятно зачем turbo-stream нужен аттрибут request-id
 	? Как отрендерить twig component в переменную, чтобы его назначить в аттрибут
 		для отчистки перед кешированием
-	? data-turbo-stream не понятно зачем нужен
+	+? data-turbo-stream не понятно зачем нужен
+		(
+			Применияется для ссылок и форм
+			
+			для определения предпочитаемого формата
+			TurboBundle::STREAM_FORMAT === Request::getPreferredFormat()
+		)
 	? data-turbo-permanent: Добавил этот аттрибут к div с контроллером
 		перехожу по той-же странице, но элемент обновляется, хотя по задумке ну не должен наверное
 	? Не понятно какой должен быть refresh чтобы прокрутка сохранилась
@@ -1261,6 +1281,7 @@ HOTWIRE: TURBO
 		посмотреть после реализации
 		https://symfony.com/doc/current/form/form_collections.html#javascript-with-stimulus
 	есть ли разница между зафейленой обработанной формой (422) и необработанной формой для UX TURBO
+SWEET ALERT
 ***
 SYMFONY LIVE COMPONENTS
 	https://symfony.com/bundles/ux-live-component/current/index.html
@@ -1274,11 +1295,11 @@ HOTWIRE: STRADA https://strada.hotwired.dev/
 	?
 	Поймать события сервера https://symfony.com/doc/current/http_client.html#consuming-server-sent-events
 HOTWIRE: SYMFONY STIMULUS UX PACKAGES
+	https://www.stimulus-components.com/docs/stimulus-sortable
 	https://symfony.com/bundles/StimulusBundle/current/index.html#the-ux-packages
-WEBPACK
+SYMFONY WEBPACK ENCORE
 	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\JS\Webpack Encore Frontend like a Pro!
 	https://symfony.com/doc/current/frontend/encore/index.html#adding-more-features
-Trix Text Editor https://trix-editor.org/
 ASSETS MAPPER
 	https://symfony.com/doc/current/frontend/asset_mapper.html
 	https://symfony.com/bundles/StimulusBundle/current/index.html#with-assetmapper
@@ -1320,6 +1341,7 @@ SYMFONY FRONTEND (WEBPACK ENCORE/ASSET MAPPER)
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-assets-version
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-version-format
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-json-manifest-path
+Trix Text Editor https://trix-editor.org/
 SYMFONY MY ADMIN
 SYMFONY WORKFLOW
 	R: Реализовать telegram bot для оформления заказа с компонентом workflow
@@ -1333,6 +1355,12 @@ LIB MOBILE DETECT: https://github.com/serbanghita/Mobile-Detect
 	R: TODO: Mobile-detect
 	RRR: Используя Stimulus Carousel Component назначить pointer-events: none;
 		в случае если это телефон, для запрета взаимодействия с картинкой
+BOOTSTRAP (not deep)
+	https://symfony.com/doc/current/form/bootstrap5.html
+	опираясь на пример темы ".\vendor\symfony\twig-bridge\Resources\views\Form\form_div_layout.html.twig"
+		сделать свою тему на bootstrap (form/theme/grinway/light/index.html.twig)
+	освоив модальные окна, прослушать show.bs.modal, hidden.bs.modal в своём stimulus_controller
+	?
 SYMFONY WebLink
 SYMFONY WEBHOOK https://symfony.com/doc/current/webhook.html
 SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
@@ -1458,6 +1486,17 @@ OpenSSL:
 	Как создать самоподписанные сертификаты
 	Куда класть самоподписанные сертификаты
 	Как разрешить самоподписанные сертификаты
+DOCKER
+	https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
+	https://symfony.com/doc/current/setup/docker.html
+	https://symfony.com/doc/current/setup.html
+	https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
+	https://symfony.com/doc/current/setup/symfony_server.html#symfony-server-docker
+	https://github.com/dunglas/symfony-docker
+	MERCURE: C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\UX\Symfony UX Turbo\48-mercure-service (1080p).mp4
+	?
+	Неужели чтобы транслировать изменения не нужно запускать Mercure.hub бинарный файл
+		при использовании docker
 SYMFONY API PLATFORM
 	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 1 Mythically Good RESTful APIs
 	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 2 Security for your Treasures
@@ -1503,11 +1542,6 @@ SYMFONY COMPONENTS: https://symfony.com/components
 https://symfony.com/doc/current/reference/index.html
 The Runtime Component https://symfony.com/doc/current/components/runtime.html
 REFERENCE https://symfony.com/doc/current/reference/index.html
-BOOTSTRAP (not deep)
-	https://symfony.com/doc/current/form/bootstrap5.html
-	?
-	опираясь на пример темы ".\vendor\symfony\twig-bridge\Resources\views\Form\form_div_layout.html.twig"
-		сделать свою тему на bootstrap (form/theme/grinway/light/index.html.twig)
 EMAIL MESSENGES INKY https://get.foundation/emails/docs/inky.html
 SYMFONY MAKER BUNDLE https://symfony.com/bundles/SymfonyMakerBundle/current/index.html
 SYMFONY BEST PRACTIES https://symfony.com/doc/current/best_practices.html
@@ -1525,16 +1559,6 @@ SYMFONY DOCTRINE
 	? По какой-то непонятной причине если есть папка src/Bundle Doctrine выдаёт исключение что нет src/Bundle/Entity
 	как найти имя сущности в Repository
 	реализовать (MappedSuperClass)Authentication и её сущность UserAuthentication(сущность CustomAuth[access_token], сущность Auth2FA[totp, google code, email, backup codes], сущность OAuth[github, telegram, google])
-DOCKER
-	https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
-	https://symfony.com/doc/current/setup/docker.html
-	https://symfony.com/doc/current/setup.html
-	https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
-	https://symfony.com/doc/current/setup/symfony_server.html#symfony-server-docker
-	https://github.com/dunglas/symfony-docker
-	?
-	Неужели чтобы транслировать изменения не нужно запускать Mercure.hub бинарный файл
-		при использовании docker
 Cache with Couchbase
 	https://www.couchbase.com/
 	https://docs.couchbase.com/sdk-api/couchbase-php-client/namespaces/couchbase.html
@@ -1728,6 +1752,8 @@ TODO
 		// TODO: GRINWAY:FLASH
 		// TODO: useTransition
 		// TODO: transition_controller
+		// TODO: before-cache-cleaner
+		// TODO: form-ignores-frame-on-success_controller.js
 	GsEnvProcessor
 		fix abstractions (only with functions)
 	Command

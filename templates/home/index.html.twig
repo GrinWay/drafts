@@ -14,6 +14,17 @@
 
 {% block body %}
 	
+	<button class="btn btn-large btn-primary"
+		{{ stimulus_controller('swal') }}
+		data-action="
+			swal#showSwal:stop
+			turbo:before-cache@window->swal#close
+		"
+		autofocus
+	>
+		SHOW Sweet Alert
+	</button>
+	
 	<div class="" style="font-family: roman;">
 		<a href="{{- login_link ?? '' -}}">LOGIN LINK</a>
 	</div>

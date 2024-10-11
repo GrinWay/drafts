@@ -7,14 +7,15 @@ import { htmlDecode } from '../function/parser'
 <div
 	data-controller="before-cache-cleaner"
 	data-action="turbo:before-cache@window->before-cache-cleaner#clean"
-	clear_html="YOUR EMPTY/CLEAR HTML IS HERE"
+	clear_element="YOUR CLEAR ELEMENT IS HERE"
 ></div>
 */
+// TODO: before-cache-cleaner
 export default class extends Controller {
 	static values = {
-		clearHtmlAttributeName: {
+		clearElementAttributeName: {
 			type: String,
-			default: 'clear_html',
+			default: 'clear_element',
 		},
 	}
 	
@@ -22,6 +23,6 @@ export default class extends Controller {
 	 * Saves clear html during: turbo:before-cache
 	 */
 	clean(event) {
-		this.element.innerHTML = htmlDecode(this.element.getAttribute(this.clearHtmlAttributeNameValue))
+		this.element.innerHTML = htmlDecode(this.element.getAttribute(this.clearElementAttributeNameValue))
 	}
 }

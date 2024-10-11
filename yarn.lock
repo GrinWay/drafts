@@ -2216,6 +2216,16 @@
   dependencies:
     lightgallery "^2.7.2"
 
+"@sweetalert2/theme-dark@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.npmjs.org/@sweetalert2/theme-dark/-/theme-dark-5.0.18.tgz"
+  integrity sha512-Fdt8OQHQcbJy6i+rvA49h3OAzQevMwDgfsHPdR2kNwT5M7AtG5rAaBBo0StlvNbcTx/AQ5xhEdMyJdnM05CNoQ==
+
+"@sweetalert2/themes@^5.0.18":
+  version "5.0.18"
+  resolved "https://registry.npmjs.org/@sweetalert2/themes/-/themes-5.0.18.tgz"
+  integrity sha512-eXGnVZc9Y2paoE6xQKmNBIR5tf3lp6ZetSqo2tnLeC9w4nq20oCLMjGXeKiS4cf1xnudUvH7ScKLYqCnYLpSEw==
+
 "@symfony/stimulus-bridge@^3.0.0", "@symfony/stimulus-bridge@^3.2.0":
   version "3.2.2"
   resolved "https://registry.npmjs.org/@symfony/stimulus-bridge/-/stimulus-bridge-3.2.2.tgz"
@@ -8683,6 +8693,11 @@ svgo@^3.2.0:
     css-what "^6.1.0"
     csso "^5.0.5"
     picocolors "^1.0.0"
+
+sweetalert2@^11.0.0, sweetalert2@^11.14.2:
+  version "11.14.2"
+  resolved "https://registry.npmjs.org/sweetalert2/-/sweetalert2-11.14.2.tgz"
+  integrity sha512-ZJcnp+akKLFDdwTJkayZCMWfdEOxxchInuJ8gz/Xlx/nrdTfAM3Sb+NBbBNdqcfXn0h1CamN+VKDxjP8xbWqrg==
 
 swiper@^11.0.6:
   version "11.1.14"
