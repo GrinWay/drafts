@@ -4,6 +4,7 @@ namespace App\Dto\User;
 
 use Symfony\Component\Validator\Constraints;
 use App\Contract\Dto\DtoInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 class UserDto implements DtoInterface
 {
@@ -11,6 +12,7 @@ class UserDto implements DtoInterface
         /**
          * @param $firstName = (['Alex', 'Lilia'])[\rand(0, 1)];
          */
+		#[Groups('firstName')]
         #[Constraints\NotBlank(groups: ['strings'], allowNull: true)]
         public ?string $firstName = null,
         #[Constraints\NotBlank(groups: ['strings'], allowNull: true)]

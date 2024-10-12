@@ -1215,6 +1215,10 @@ HOTWIRE: STIMULUS / STIMULUS USE / STIMULUS COMPONENTS
 		)
 	? придумать что-то с контроллером для форм, чтобы выбирать какие поля изменять method="PATCH", что остаётся в форме, то и учитывается
 HOTWIRE: TURBO
+	RRRRR!!!!: Mercure hub how to set a new secret
+		Вместо того чтобы использовать тот, что по умолчанию
+		Подозреваю, что для этого нужно покупать подписку
+		https://mercure.rocks/docs/getting-started
 	RRR (HARD C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\UX\Symfony UX Turbo\41-server-frame-redirect (1080p).mp4): НА ПОВТОРНОМ: 
 		Цель: ДЛЯ ФОРМ: Либо позволить turbo-frame загружать контент в себя как обычно
 			либо с сервера возвращать new Response(null, 204)
@@ -1230,10 +1234,12 @@ HOTWIRE: TURBO
 			установив в ответе придуманный заголовк, который говорит куда можно перенаправляться
 			Turbo.visit(uri from response)
 	R: НА ПОВТОРНОМ: https://ux.symfony.com/
-	R: на повторном
+	R: на повторном добиться отправление сообщения через curl
+		C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\UX\Symfony UX Turbo\49-listen-publish (1080p).mp4
+	R: на повторном 
 		реализовать не удаление для turbo-stream а stimulus-controller для плавного исчезновения
 		после появления connect() { this.leave() }
-	?
+	? MERCURE: Как получить JWT, подписанный уникальным секретом
 	? private: true: Не получилось авторизоваться через сервис Authorization
 		https://symfony.com/doc/current/mercure.html#programmatically-setting-the-cookie
 	? MERCURE MOCK TESTING: Неужели это стоит того, есть же Panther
@@ -1284,12 +1290,21 @@ HOTWIRE: TURBO
 SWEET ALERT
 ***
 SYMFONY LIVE COMPONENTS
-	https://symfony.com/bundles/ux-live-component/current/index.html
+	
+	https://symfony.com/bundles/ux-live-component/current/index.html#hydrating-with-methods-hydratewith-dehydratewith
+	
 	https://ux.symfony.com/demos/live-component/form-collection-type/2299
 	https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
 	https://symfony.com/doc/current/reference/forms/types.html#symfony-ux-fields
 	обязательно попробуй поменять тему формы именно для добавления нового элемента collection_widget attribute data-collection="<html>"
+	R ONE SECTION: https://symfony.com/bundles/ux-live-component/current/index.html#deferring-a-re-render-until-later
+	https://symfony.com/bundles/ux-live-component/current/index.html#allowing-an-entity-to-be-changed-to-another
 	?
+	? Не понятно как работать с контекстом, если сериализуется даже то, что в группу не входит
+		useSerializerForHydration: true, serializationContext: ['groups
+	? Либо item либо items зарезервированные для чего-то
+	? In this case, the model (e.g. publishAt) will probably not update correctly because JavaScript doesn't trigger the normal change event. To fix this, you'll need to "hook" into the JavaScript library and set the model directly (or trigger a change event on the data-model field). 
+	? Непонятно зачем нужен norender|
 	вызывается или нет PreCreateForRenderEvent при обновлении re-render
 HOTWIRE: STRADA https://strada.hotwired.dev/
 	?

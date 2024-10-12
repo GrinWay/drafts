@@ -1,7 +1,12 @@
 <button {{ attributes.defaults({ class: "btn" }) }}>
 	<span {{ attributes.nested('span').defaults({ class: 'w-100 h-100' }) }}>
 		{%- block content -%}
-			Button
+			{{ attributes
+				.nested('btn_block')
+				.only('content')|u
+					.match('~"(?<btn_content>.+)"$~')['btn_content']
+				|default('Button')
+			}}
 		{%- endblock -%}
 	</span>
 </button>

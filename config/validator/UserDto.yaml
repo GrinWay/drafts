@@ -7,5 +7,5 @@ App\Doctrine\DTO\UserDto:
         #-   NotBlank:
         name:
         #-   NotBlank:
-    
+        firstName:
     getters:

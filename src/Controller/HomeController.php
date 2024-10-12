@@ -7,6 +7,8 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\Mercure\Update;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\UX\Turbo\TurboBundle;
 use Twig\Environment;
 use Symfony\Component\Asset\Packages;
@@ -270,7 +272,6 @@ use App\Messenger\Test\TestMessageHandler;
 use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\MessageBusInterface;
 use App\Service\SomeService;
-use Symfony\Component\HttpFoundation\StreamedResponse;
 use App\Service\ExpressionLanguage;
 use Symfony\Component\HttpFoundation\IpUtils;
 use Symfony\Component\HttpFoundation\AcceptHeader;
@@ -1338,6 +1339,32 @@ class HomeController extends AbstractController
 				return $this->redirectToRoute('app_home_producttypes', $r->attributes->get('_route_params')/* make template rendered */);
 			}
 		//}
+		
+		/* Основа Mercure
+		$response = new StreamedResponse();
+		$response->setCallback(static function (): void {
+			while(true) {
+				$content = <<<__EVENT_STREAM__
+data: some data
+\n\n
+__EVENT_STREAM__;
+				echo $content;
+				Service\BufferService::flushAllObLevels(endFlush: true);
+				sleep(1);
+			}
+		});
+		$response->headers->set('Content-Type', 'text/event-stream');
+		return $response;
+		
+		Слушатель
+		<div class="p-2 rounded btn btn-dark d-block"
+			{{ stimulus_controller('event-stream') }}
+		>
+			EVENT STREAM
+		</div>
+		*/
+		
+		//$request->getSession()->set('APP_RAND_NUMBER', \random_int(0, 100));
 		
 		$response = $this->render('product/_product_types_form.html.twig', [
             'form' => $form,

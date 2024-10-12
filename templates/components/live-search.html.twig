@@ -1,0 +1,68 @@
+<div {{ attributes }}>
+	<form
+		action="post"
+		data-model="*"
+	>
+		<div class=""
+			{{ stimulus_controller('test-action') }}
+		>
+			<input
+				{{ stimulus_target('test-action', 'input') }}
+				class="form-control"
+				type="search"
+				autofocus=""
+				name="query"
+			>
+		</div>
+		
+		<twig:grinway:btn
+			type="button"
+			class="btn-sm btn-success"
+			data-action="
+				live#$render
+			"
+		>APPLY</twig:grinway:btn>
+	</form>
+	
+	<div class="items">
+		{% for item in this.items %}
+			<div class="item">
+				{{ render(item)|raw }}
+			</div>
+		{% endfor %}
+	</div>
+	
+	<textarea data-model="text" cols="30" rows="10">
+		{{-''-}}
+	</textarea>
+	
+	<input type="checkbox"
+		data-model="is_markdonw_allowed"
+	>
+	
+	<h1>{{ is_markdonw_allowed ? 'PREVIEW' : 'PLAIN TEXT' }}</h1>
+	<div>
+		{{ is_markdonw_allowed ? text|markdown_to_html : text }}
+	</div>
+	
+	<input type="radio" data-model="meal" value="breakfast">
+	<input type="radio" data-model="meal" value="lunch">
+	<input type="radio" data-model="meal" value="dinner">
+	
+	<select data-model="foods" multiple>
+		<option value="pizza">Pizza</option>
+		<option value="tacos">Tacos</option>
+		<option value="sushi">Sushi</option>
+	</select>
+	
+	<input type="date" data-model="publishOn">
+	
+	<input type="text" data-model="userDto.firstName">
+	
+	<div class="badge text-bg-dark">
+		<div class="">UesrDto object</div>
+		<div class="">firstName: {{ userDto.firstName|default('NO SET') }}</div>
+	</div>
+	
+	{{ dump() }}
+</div>

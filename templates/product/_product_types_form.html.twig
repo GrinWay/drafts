@@ -28,28 +28,46 @@
 	>
 		<div id="app_product_form" class="container">
 		{% block product_form %}
-			{%- set emptyHtml = form(emptyForm) -%}
+			
+			{%- set btnHtml = component('grinway:btn', {
+				type: 'submit',
+				class: 'btn-large btn-secondary',
+				'data-turbo-submits-with': 'Процесс...',
+				
+				'btn_block:content': 'SUBMIT',
+			}) -%}
+			{%- set emptyHtml = form(emptyForm)~btnHtml -%}
+			
 			{{ form_start(form, { attr: {
-			novalidate: 'novalidate', 'data-controller': 'before-cache-cleaner', 'data-action': 'turbo:before-cache@window->before-cache-cleaner#clean', 'clear_element': emptyHtml|e('html_attr') } }) }}
+			novalidate: 'novalidate', 'data-controller': 'grinway--cleaner', 'data-action': 'turbo:before-cache@window->grinway--cleaner#clean', 'clear_element': emptyHtml|e('html_attr') } }) }}
 				{{ form_rest(form) }}
-				<twig:grinway:btn
-					data-turbo-submits-with="Процесс..."
-				type="submit" class="btn-large btn-secondary">SUBMIT</twig:grinway:btn>
+				{{ btnHtml|raw }}
 			{{ form_end(form) }}
 		{% endblock %}
 	</div>
 	</turbo-frame>
 	
-	<turbo-frame id="testing" data-controller="form-ignores-frame-on-success" data-action="
-			turbo:submit-end->form-ignores-frame-on-success#ignoreFrame
-			turbo:before-frame-render->form-ignores-frame-on-success#pauseDefaultBehaviour
-		" >
+	
+	
+	<div class="text-bg-dark p-1 rounded my-1">
+		<h1>Live search</h1>
+		
+		<twig:live-search
+			entity_class='App\\Entity\\Task'
+		/>
+	</div>
+	
+	
+	
+	<turbo-frame
+		id="testing"
+	>
 		<form method="post">
 			{{ random }}
 			<button class="btn btn-sm btn-success">
-	<span class="w-100 h-100">VISIT ON SUCCESS but fetch in turbo-frame on form failure
-			</span>
-</button>		</form>
+				<span class="w-100 h-100">VISIT ON SUCCESS but fetch in turbo-frame on form failure</span>
+			</button>
+		</form>
 	</turbo-frame>
 	
 	<turbo-frame

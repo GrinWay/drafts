@@ -68,10 +68,14 @@ class ChatController extends AbstractController
 				$content = $this->renderView('chat/new-message.stream.html.twig', $templateParameters);
 				
 				//$hub->publish(new Update(
-				$bus->dispatch(new Update(
-					$topic = $topicPrefixFromHeader.'main-live-chat',
-					$content,
-				));
+				try {
+					$bus->dispatch(new Update(
+						$topic = $topicPrefixFromHeader.'main-live-chat',
+						$content,
+					));
+				} catch (\Exception $e) {
+					\dump('ERROR: Dispatching a Mercure Update failed');
+				}
 			}
 			
 			/*

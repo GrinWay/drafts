@@ -3,9 +3,9 @@
 {% block title %}Live chat{% endblock %}
 
 {% block body %}
-	<div class="messages-container"
-		{{ turbo_stream_listen(topicPrefixFromHeader ~ 'main-live-chat') }}
-	>
+	<div class="d-none" {{ turbo_stream_listen(topicPrefixFromHeader ~ 'main-live-chat') }}></div>
+
+	<div class="messages-container">
 		<div class="messages rounded text-bg-dark p-1 my-1">
 			{{ messages ?? '<div id="no-messages-yet">No messages yet</div>' }}
 		</div>

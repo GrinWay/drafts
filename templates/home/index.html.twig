@@ -25,6 +25,12 @@
 		SHOW Sweet Alert
 	</button>
 	
+	<div class="p-2 rounded btn btn-dark d-block"
+		{{ stimulus_controller('event-stream') }}
+	>
+		EVENT STREAM
+	</div>
+	
 	<div class="" style="font-family: roman;">
 		<a href="{{- login_link ?? '' -}}">LOGIN LINK</a>
 	</div>
