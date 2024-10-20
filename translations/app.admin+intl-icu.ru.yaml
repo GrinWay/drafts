@@ -1,0 +1,18 @@
+index_dashboard:
+    title: >-
+        Админ
+dashboard: >-
+    панель админа
+application: >-
+    приложение
+website_map: >-
+    карта сайта
+logout: >-
+    выйти
+home: >-
+    дом
+stop_impersonation: >-
+    перестать прикидываться
+external_links: >-
+    внешние ссылки
+#text: >-

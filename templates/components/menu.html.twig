@@ -13,7 +13,6 @@
 			
 			{%- if is_granted('VOTE_IS_AUTH') -%}
 				<li><a href="{{ path('app_github_delete_repo', {}) }}">DELETE GITHUB REPO</a></li>
-				<li><a href="{{ path('app_admin_index', {}) }}">admin</a></li>
 				<li><a href="{{ path('app_delete_current_user', {}) }}">Delete Account</a></li>
 				<li><a href="{{ path('app_logout', {}) }}">Log out</a></li>
 			{%- else -%}
@@ -36,6 +35,9 @@
 			<li><a href="{{ path('app_home_condition', {id: 1}) }}">condition</a></li>
 			<li><a href="{{ path('static') }}">static</a></li>
 			<li><a href="{{ path('app_post') }}">POST</a></li>
+			<li><a href="{{ path('app_live_twig_component_index') }}">LIVE TWIG COMPONENT</a></li>
+			<li><a href="{{ path('app_cropper_index') }}">CROPPER INDEX</a></li>
+			<li><a href="{{ path('app_easy_admin_cinema_index') }}">EASY ADMIN BUNDLE TRAINING</a></li>
 		</ul>
 		<div class="text-bg-dark mx-1 rounded-2 p-2">
 			HWI OAuth:

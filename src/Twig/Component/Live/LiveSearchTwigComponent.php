@@ -24,11 +24,15 @@ class LiveSearchTwigComponent {
 		$this->userDto = new UserDto();
     }
 	
-	#[LiveProp(writable: true)]
+	#[LiveProp(writable: true, onUpdated: 'onFoodsUpdated')]
 	public array $foods = [
 		'pizza',
 		'sushi',
 	];
+	
+	public function onFoodsUpdated($prev): void {
+		\dump('Was updated', $prev);
+	}
 	
 	#[LiveProp(writable: ['firstName'], hydrateWith: 'hydrateUserDto', dehydrateWith: 'dehydrateUserDto')]
 	public UserDto $userDto;

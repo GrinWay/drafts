@@ -1288,36 +1288,156 @@ HOTWIRE: TURBO
 		https://symfony.com/doc/current/form/form_collections.html#javascript-with-stimulus
 	есть ли разница между зафейленой обработанной формой (422) и необработанной формой для UX TURBO
 SWEET ALERT
-***
-SYMFONY LIVE COMPONENTS
+SYMFONY LIVE COMPONENTS	
+	На обратном:
+		R ONE SECTION: https://symfony.com/bundles/ux-live-component/current/index.html#deferring-a-re-render-until-later
+		https://symfony.com/bundles/ux-live-component/current/index.html#allowing-an-entity-to-be-changed-to-another
+		Абсолютно не понятна тема с URL секцией: https://symfony.com/bundles/ux-live-component/current/index.html#changing-the-url-when-a-liveprop-changes	
+	+ R: The initialFormData property is not updated until after the form is submitted
+		(
+			Да, в случае если поле объекта не writable
+			Состояние объекта обновляется только после отправки формы ($this->submitForm)
+		)
 	
-	https://symfony.com/bundles/ux-live-component/current/index.html#hydrating-with-methods-hydratewith-dehydratewith
-	
-	https://ux.symfony.com/demos/live-component/form-collection-type/2299
-	https://symfony.com/doc/current/form/dynamic_form_modification.html#dynamic-generation-for-submitted-forms
-	https://symfony.com/doc/current/reference/forms/types.html#symfony-ux-fields
-	обязательно попробуй поменять тему формы именно для добавления нового элемента collection_widget attribute data-collection="<html>"
-	R ONE SECTION: https://symfony.com/bundles/ux-live-component/current/index.html#deferring-a-re-render-until-later
-	https://symfony.com/bundles/ux-live-component/current/index.html#allowing-an-entity-to-be-changed-to-another
+	НА обратном секция: https://symfony.com/bundles/ux-live-component/current/index.html#using-livecollectiontype
+	НА обратном реализуй всё, что касается live component: https://ux.symfony.com/demos
 	?
+	обязательно попробуй поменять тему формы именно для добавления нового элемента collection_widget attribute data-collection="<html>"
+	+ ? Как добиться обновления объекта вместо его создания в LiveComponent
+		(
+			Просто доставай его через entity manager :)
+		)
+	+ ? $this->resetForm(): Не сбрасывает поля формы, хотя говорится, что вместо редиректа можно сбросить поля
+		(
+			Функция отрисовывает форму по новому, создавая форму заново
+			
+			Просто обнули $model, которая передаётся вторым аргуметом в createForm
+		)
+	? В чём проблема (в twig component нет ничего об этом массиве)
+		The type of the "id" attribute for class "App\Entity\Media\Image" must be one of "int" ("null" given).
+		
+		/**
+		 * ORM Entity Collection
+		 * @var Image[]
+		 */
+		#[LiveProp(
+			writable: ['filepath'],
+			useSerializerForHydration: true,
+		)]
+		public array $entityCollection = [];
+		
+		public function __construct() {
+			$this->entityCollection = [
+				new Image(
+					filepath: '1 OBJECT',
+				),
+				new Image(
+					filepath: '2 OBJECT',
+				),
+				new Image(
+					filepath: '3 OBJECT',
+				),
+			];
+		}
 	? Не понятно как работать с контекстом, если сериализуется даже то, что в группу не входит
 		useSerializerForHydration: true, serializationContext: ['groups
 	? Либо item либо items зарезервированные для чего-то
-	? In this case, the model (e.g. publishAt) will probably not update correctly because JavaScript doesn't trigger the normal change event. To fix this, you'll need to "hook" into the JavaScript library and set the model directly (or trigger a change event on the data-model field). 
-	? Непонятно зачем нужен norender|
+	+ ? Непонятно зачем нужен norender|
 	вызывается или нет PreCreateForRenderEvent при обновлении re-render
-HOTWIRE: STRADA https://strada.hotwired.dev/
+SYMFONY DROP ZONE
 	?
-	Поймать события сервера https://symfony.com/doc/current/http_client.html#consuming-server-sent-events
-HOTWIRE: SYMFONY STIMULUS UX PACKAGES
-	https://www.stimulus-components.com/docs/stimulus-sortable
-	https://symfony.com/bundles/StimulusBundle/current/index.html#the-ux-packages
-SYMFONY WEBPACK ENCORE
-	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\JS\Webpack Encore Frontend like a Pro!
+	Что за баг происходит с отрисовкой компонента при LiveComponent
+	Как сохранять зону dropzone активной для перетаскивания даже после предыдущих забрасываний картинок
+- HOTWIRE: STRADA https://strada.hotwired.dev/
+НА ОБРАТНОМ R: SYMFONY CROPPER
+	?
+	+ Такое чувство что cropper js не обновляется из-за LiveComponent morphing вместо replace
+		(
+			Да это так
+			
+			Используй аттрибут data-skip-morph, чтобы заменять вместо morph
+		)
+	R: Поймать события сервера https://symfony.com/doc/current/http_client.html#consuming-server-sent-events
+R: НА ОБРАТНОМ: SYMFONY WEBPACK ENCORE
 	https://symfony.com/doc/current/frontend/encore/index.html#adding-more-features
-ASSETS MAPPER
+R: НА ОБРАТНОМ: ASSETS MAPPER
 	https://symfony.com/doc/current/frontend/asset_mapper.html
 	https://symfony.com/bundles/StimulusBundle/current/index.html#with-assetmapper
+***
+SYMFONY EasyAdmin
+	
+	https://symfony.com/bundles/EasyAdminBundle/current/crud.html
+		https://symfony.com/bundles/EasyAdminBundle/current/dashboards.html#crud-menu-item
+		https://symfony.com/bundles/EasyAdminBundle/current/crud.html#custom-redirect-after-creating-or-editing-entities
+	https://symfony.com/bundles/EasyAdminBundle/current/design.html
+	https://symfony.com/bundles/EasyAdminBundle/current/fields.html
+	https://symfony.com/bundles/EasyAdminBundle/current/filters.html
+	https://symfony.com/bundles/EasyAdminBundle/current/actions.html
+	https://symfony.com/bundles/EasyAdminBundle/current/security.html
+	https://symfony.com/bundles/EasyAdminBundle/current/events.html
+	https://symfony.com/bundles/EasyAdminBundle/current/tests.html
+	https://symfony.com/bundles/EasyAdminBundle/current/upgrade.html
+	
+	https://github.com/EasyCorp/EasyAdminBundle
+	https://symfony.com/bundles/EasyAdminBundle/current/upgrade.html
+	https://symfony.com/bundles/EasyAdminBundle/current/dashboards.html
+	
+	
+	https://wiki.c2.com/?ContextObject
+	https://symfony.com/doc/current/security.html#logging-out
+	https://symfony.com/doc/current/security.html#roles
+	https://symfony.com/bundles/EasyAdminBundle/current/security.html#security-menu
+	https://symfony.com/bundles/EasyAdminBundle/current/actions.html#actions-integrating-symfony
+	https://symfony.com/bundles/EasyAdminBundle/current/crud.html#generate-admin-urls
+	https://symfony.com/bundles/EasyAdminBundle/current/crud.html
+	https://symfony.com/bundles/EasyAdminBundle/current/crud.html
+	https://symfony.com/bundles/ux-chartjs/current/index.html
+	https://symfony.com/doc/current/controller.html
+	https://symfony.com/doc/current/routing.html#creating-routes-as-annotations
+	https://symfony.com/bundles/EasyAdminBundle/current/security.html#security-entire-backend
+	https://symfony.com/bundles/EasyAdminBundle/current/crud.html#generate-admin-urls
+	https://symfony.com/bundles/EasyAdminBundle/current/crud.html
+	https://symfony.com/bundles/EasyAdminBundle/current/crud.html
+	https://symfony.com/bundles/EasyAdminBundle/current/actions.html#actions-integrating-symfony
+	https://github.com/symfony/translation
+	https://github.com/symfony/translation#using-message-domains
+	https://symfony.com/bundles/EasyAdminBundle/current/actions.html#actions-integrating-symfony
+	
+	
+	?
+	? При рендере MenuItem::linkToCrud возникает исключение
+		Call to a member function getAsDto() on null
+	? When using Doctrine filters, listings may not include some items because they were removed by those global Doctrine filters. Use the dashboard route name to not apply the filters when the request URL belongs to the dashboard You can also get the dashboard route name via the application context variable.
+	? Что это означает
+		TextField::new('firstName', t('Name'))
+SYMFONY WORKFLOW
+	R: Реализовать telegram bot для оформления заказа с компонентом workflow
+		init
+		what_do_you_want
+		get_name
+		get_contact
+		send_order_to_master
+			крайним этапом отправь ответ в виде alert, что письмо админу отправлено, он свяжется с вами
+LIB MOBILE DETECT: https://github.com/serbanghita/Mobile-Detect
+	R: TODO: Mobile-detect
+	RRR: Используя Stimulus Carousel Component назначить pointer-events: none;
+		в случае если это телефон, для запрета взаимодействия с картинкой
+BOOTSTRAP (not deep)
+	https://symfony.com/doc/current/form/bootstrap5.html
+	опираясь на пример темы ".\vendor\symfony\twig-bridge\Resources\views\Form\form_div_layout.html.twig"
+		сделать свою тему на bootstrap (form/theme/grinway/light/index.html.twig)
+	освоив модальные окна, прослушать show.bs.modal, hidden.bs.modal в своём stimulus_controller
+	R: сделать свой стиль @symfony/ux-dropzone
+	?
+SYMFONY WebLink
+SYMFONY WEBHOOK https://symfony.com/doc/current/webhook.html
+SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
+SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
+SYMFONY VAR EXPORTER https://symfony.com/doc/current/components/var_exporter.html
+SYMFONY FILESYSTEM
+Реализовать переключение тем с тёмной на светлую
+HOTWIRE: SYMFONY STIMULUS UX PACKAGES
+	https://symfony.com/bundles/StimulusBundle/current/index.html#the-ux-packages
 SYMFONY FRONTEND (WEBPACK ENCORE/ASSET MAPPER)
 	# 1
 	https://github.com/symfony/stimulus-bridge
@@ -1357,32 +1477,6 @@ SYMFONY FRONTEND (WEBPACK ENCORE/ASSET MAPPER)
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-version-format
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-json-manifest-path
 Trix Text Editor https://trix-editor.org/
-SYMFONY MY ADMIN
-SYMFONY WORKFLOW
-	R: Реализовать telegram bot для оформления заказа с компонентом workflow
-		init
-		what_do_you_want
-		get_name
-		get_contact
-		send_order_to_master
-			крайним этапом отправь ответ в виде alert, что письмо админу отправлено, он свяжется с вами
-LIB MOBILE DETECT: https://github.com/serbanghita/Mobile-Detect
-	R: TODO: Mobile-detect
-	RRR: Используя Stimulus Carousel Component назначить pointer-events: none;
-		в случае если это телефон, для запрета взаимодействия с картинкой
-BOOTSTRAP (not deep)
-	https://symfony.com/doc/current/form/bootstrap5.html
-	опираясь на пример темы ".\vendor\symfony\twig-bridge\Resources\views\Form\form_div_layout.html.twig"
-		сделать свою тему на bootstrap (form/theme/grinway/light/index.html.twig)
-	освоив модальные окна, прослушать show.bs.modal, hidden.bs.modal в своём stimulus_controller
-	?
-SYMFONY WebLink
-SYMFONY WEBHOOK https://symfony.com/doc/current/webhook.html
-SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
-SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
-SYMFONY VAR EXPORTER https://symfony.com/doc/current/components/var_exporter.html
-SYMFONY FILESYSTEM
-Реализовать переключение тем с тёмной на светлую
 Создать в WebAppBundle Stimulus controllers (короче сделать этот пакет UX)
 	https://symfony.com/doc/current/frontend/create_ux_bundle.html
 R: PUSH NOTIFICATION
@@ -1629,6 +1723,9 @@ AMQP
 	https://github.com/cloudamqp/amqproxy
 Beanstalkd Transport https://habr.com/ru/companies/shopozzcom/articles/240483/
 SYMFONY TRANSLATION
+	RRR: Определиться раз и навсегда как переводить ($this->t->trans() | t())
+		чтобы была возможность отслеживать состояния переводов (переведено, не переведено, не используется)
+		с помощью команды (посмотреть)
 	Использовать провайдера Loco зарегайся с VPN: https://symfony.com/doc/current/translation.html#installing-and-configuring-a-third-party-provider
 SYMFONY DEPLOYMENT https://symfony.com/doc/current/deployment.html
 PRODUCTION

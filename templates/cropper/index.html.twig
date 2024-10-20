@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CropperController!{% endblock %}
+
+{% block meta %}
+	{{ parent() }}
+	{#
+		Symfony UX Cropper stimulus controller
+		calls for connect, event when it wasn't modified
+	#}
+	<meta name="turbo-refresh-method" content="replace">
+{% endblock %}
+
+{% block body %}
+	
+	{#
+	<turbo-frame
+		id="app_cropper_show_{{- entity.id -}}"
+		src="{{ path('app_cropper_show', { id: entity.id }) }}"
+		{{ stimulus_controller('turbo-frame-back-btn', controllerValues={
+			uri: app.request.uri,
+		}) }}
+		data-action="
+			turbo:before-frame-render->turbo-frame-back-btn#addBackBtnToNextElement
+		"
+	>
+		<twig:grinway:placeholder
+			placeholder:style="display: inline-block; height: 120px"
+		/>
+		<a href="{{- path('app_cropper_show', {
+			id: '10',
+		}) -}}">SHOW</a>
+	</turbo-frame>
+
+	{{ form_start(form, { attr: {
+		'novalidate': 'novalidate',
+		'data-controller': 'grinway--dropzone',
+		'data-action': 'dropzone:change->grinway--dropzone#dropzoneChange',
+	} }) }}
+		
+		{{ form_widget(form) }}
+		
+		{{ form_rest(form) }}
+		<button
+			type="submit"
+			class="btn btn-primary"
+		>
+			Update
+		</button>
+	{{ form_end(form) }}
+	#}
+	
+	{{ component('cropper:live-edit-form', {
+		entity,
+		entityFormType,
+		absImgDir,
+		app_public_img_dir,
+		is_cropped_version_exist,
+		app_public_cropped_img_dir,
+	}) }}
+	
+{% endblock %}

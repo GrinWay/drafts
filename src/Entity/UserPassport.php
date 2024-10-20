@@ -43,6 +43,18 @@ class UserPassport extends Passport
         );
     }
 
+    public function getFirstName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setFirstName(string $firstName): static
+    {
+        $this->name = $firstName;
+
+        return $this;
+    }
+
     public function getLastName(): ?string
     {
         return $this->lastName;

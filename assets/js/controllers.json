@@ -15,7 +15,28 @@
                 "enabled": true,
                 "fetch": "eager"
             }
-        }
+        },
+		"@symfony/ux-dropzone": {
+            "dropzone": {
+                "enabled": true,
+                "fetch": "eager",
+                "autoimport": {
+                    "@symfony/ux-dropzone/dist/style.min.css": true
+                }
+            }
+        },
+		"@symfony/ux-cropperjs": {
+			"cropper": {
+				"main": "dist/controller.js",
+				"webpackMode": "eager",
+				"fetch": "eager",
+				"enabled": true,
+				"autoimport": {
+					"cropperjs/dist/cropper.min.css": true,
+					"@symfony/ux-cropperjs/dist/style.min.css": true
+				}				
+			}
+		}
     },
     "entrypoints": []
 }

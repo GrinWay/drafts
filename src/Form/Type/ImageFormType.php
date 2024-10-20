@@ -5,6 +5,10 @@ namespace App\Form\Type;
 use function Symfony\component\string\u;
 use function App\Resources\t;
 
+use Symfony\Component\Form\FormView;
+use Symfony\UX\Cropperjs\Form\CropperType;
+use Symfony\UX\Dropzone\Form\DropzoneType;
+use App\EventSubscriber\Form\Live\AddFormFieldSubscriber;
 use Symfony\Component\Form\Event as FormEvent;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Form\FormInterface;
@@ -31,19 +35,34 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type as FormType;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
+use Symfony\Component\Asset\Packages;
 
 class ImageFormType extends AbstractFormType
 {
     public function __construct(
         PropertyAccessorInterface $pa,
         private readonly string $absPublicDir,
+		#[Autowire('%app.public_img_dir%')]
+        private readonly string $publicImgDir,
         private readonly AvatarRepository $avatarRepo,
+		private readonly Packages $asset,
         private $get,
     ) {
         parent::__construct(
             pa: $pa,
         );
     }
+
+	public function finishView(FormView $view, FormInterface $form, array $options)
+    {
+		$currentDataAction = $view['croppedImage']['options']->vars['attr']['data-action'] ?? '';
+
+		$view['croppedImage']['options']->vars['attr']['data-action'] = \trim($currentDataAction
+			//. ' ' . 'dropzone:change@window->symfony--ux-cropperjs--cropper#disconnect'
+			//. ' ' . 'dropzone:change@window->symfony--ux-cropperjs--cropper#connect'
+		);
+	}
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -90,19 +109,48 @@ class ImageFormType extends AbstractFormType
 
         //\dd(Carbon::now('UTC')->tz('+12:00'));
 
+		$filename = $this->pa->getValue($options, '[app_filename]');
+		$publicImgPathname = $this->asset->getUrl(\sprintf('%s/%s', $this->publicImgDir, $filename));
+
         $builder
             ->add(
-                'filepath', //FormType\TextType::class,
+                'file', DropzoneType::class,//CropperType::class,
                 options: [
 					'attr' => [
 						'autocomplete' => 'off',
+						'autofocus' => '',
 					],
 					'constraints' => [
-						new Constraints\NotBlank(),
+						//new Constraints\NotBlank(),
 					],
                 ],
             )
+			->add('isUseCrop', FormType\CheckboxType::class,
+				options: [
+					'required' => false,
+					'mapped' => false,
+					'data' => false,
+				],
+			)
+			->add('croppedImage', CropperType::class,
+				options: [
+					//'mapped' => false,
+					'public_url' => $publicImgPathname,
+					'cropper_options' => [
+						'aspectRatio' => 4 / 3,
+						'preview' => '#cropper-preview',
+						'scalable' => false,
+						'zoomable' => false,
+					],
+					'attr' => [
+						'data-skip-morph' => '',
+					],
+				],
+			)
 			/*
+			->add('keyFrames', LiveCollectionType::class,
+				options: [],
+			)
             ->add(
                 'fileOriginalName', //FormType\TextType::class,
                 options: [
@@ -223,6 +271,18 @@ class ImageFormType extends AbstractFormType
             //->addModelTransformer($mt)
 			*/
         ;
+		
+		return;
+		$builder->addEventSubscriber(new AddFormFieldSubscriber(
+			formFieldName: 'someName',
+			formFieldOptions: [
+				'mapped' => false,
+			],
+			isAddField: static function($event): bool {
+				$data = $event->getData();
+				return isset($data['filepath']) && '' !== \trim($data['filepath']);
+			},
+		));
     }
 
     public function configureOptions(OptionsResolver $resolver): void
@@ -233,6 +293,7 @@ class ImageFormType extends AbstractFormType
                 'id' => $this->getBlockPrefix(),
             ],
             'form_attr' => true,
+			'app_filename' => 'default.png',
         ]);
     }
 }

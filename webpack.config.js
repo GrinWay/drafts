@@ -43,7 +43,12 @@ Encore
 		}),
 	)
 	//addPlugin priority low
-    
+
+	.copyFiles({
+		from: './assets/image',
+		to: 'image/[path][name].[hash:8].[ext]',
+	})
+	
 	// directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
@@ -86,18 +91,18 @@ Encore
     //.enableVersioning(Encore.isProduction())
     .enableVersioning(true)
     
-	/*
 	.enablePostCssLoader(options => {
+	/*
 		options.postcssOptions = {
-			config: __dirname+'/postcss.config.js',
+			
 		}
-	})
 	*/
+	})
 
     // configure Babel
-    // .configureBabel((config) => {
-    //     config.plugins.push('@babel/a-babel-plugin');
-    // })
+    .configureBabel((config) => {
+        //config.plugins.push('@babel/a-babel-plugin');
+    })
 
     // enables and configure @babel/preset-env polyfills
     .configureBabelPresetEnv((config) => {

@@ -45,6 +45,7 @@ class TwigExtension extends AbstractExtension
             new TwigFunction('get_debug_type', \get_debug_type(...)),
             new TwigFunction('get_short_class', [TwigFunctionExtension::class, 'getShortClass']),
             new TwigFunction('random', [TwigFunctionExtension::class, 'random']),
+            new TwigFunction('resolve_twig_namespace', [TwigFunctionExtension::class, 'resolveTwigNamespace']),
         ];
     }
 

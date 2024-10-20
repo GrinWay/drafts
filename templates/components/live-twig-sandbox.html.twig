@@ -1,0 +1,216 @@
+<div {{ attributes }}>
+	{#
+	#}
+	
+	{% set input_data_loading = "data-loading='addClass(opacity-50) addAttribute(readonly)'" %}
+	
+	<div class="item">
+		<div class="badge">
+			<div
+				class="badge text-bg-success"
+				data-loading="model(input)|hide"
+			>👍</div>
+			<div
+				class="badge text-bg-warning"
+				data-loading="model(input)|show"
+			>...</div>
+		</div>
+		<input
+			{{ input_data_loading|raw }}
+			type="text"
+
+			data-model="norender|input"
+		>
+		<div class="badge text-bg-dark">
+			{{- input -}}
+		</div>
+	</div>
+	
+	<div class="item">
+		<label>
+			list
+			<select
+				class="form-control"
+				multiple
+				data-model="list"
+			>
+				<option
+					value="my1"
+				>
+					MY_1
+				</option>
+				
+				<option
+					value="my2"
+				>
+					MY_2
+				</option>
+				
+				<option
+					value="my3"
+				>
+					MY_3
+				</option>
+				
+				<option
+					value="my4"
+				>
+					MY_4
+				</option>
+				
+				<option
+					value="my5"
+				>
+					MY_5
+				</option>
+			</select>
+		</label>
+	</div>
+	
+	<div class="item">
+		<label>
+			userDto.firstName
+			<input
+				{{ input_data_loading|raw }}
+				type="text"
+
+				data-model="userDto.firstName"
+			>
+			<div class="badge text-bg-dark">
+				{{- userDto.firstName|default('null') -}}
+			</div>
+			userDto.lastName (without (de)hidration)
+			<input
+				{{ input_data_loading|raw }}
+				type="text"
+
+				data-model="userDto.lastName"
+			>
+			<div class="badge text-bg-dark">
+				{{- userDto.lastName|default('null') -}}
+			</div>
+		</label>
+	</div>
+	
+	<button
+		class="btn btn-large btn-danger"
+		data-model="input"
+		data-value="BUTTON WAS CLICKED"
+		data-action="live#update"
+		data-loading="addAttribute(disabled)"
+	>
+		live#update (data-model="input")
+	</button>
+	
+	{#
+	<div class="item">
+		<label>
+			images
+			<select
+				data-model="entityCollection"
+			>
+				{% for el in entityCollection %}
+					<option
+						data-model="{{ el.id }}"						
+					>
+						{{- el.filepath|default('null') -}}
+					</option>
+				{% endfor %}
+			</select>
+		</label>
+	</div>
+	
+	<div class="item">
+		<label>
+			image.filepath
+			<ul>
+				{% for el in entityCollection %}
+					<li class="badge text-bg-dark">
+						{{- el.filepath|default('null') -}}
+					</li>
+				{% endfor %}
+			</ul>
+		</label>
+	</div>
+	#}
+	
+	<div class="">
+		<button
+			data-loading="addAttribute(disabled)"
+			class="btn btn-sm btn-success"
+			
+			data-action="live#$render"
+		>
+			live#$render (Make an AJAX to render this twig component and update this HTML)
+		</button>
+	</div>
+	
+	<div class="">
+		<button
+			data-loading="addAttribute(disabled)"
+			class="btn btn-sm btn-primary"
+			
+			{{ live_action('reset', {
+				input: 'default',
+			}, {
+			
+			}) }}
+		>
+			reset action
+		</button>
+	</div>
+	
+	<input type="file" name="one_file">
+	<button class="btn btn-danger"
+		{{ live_action('submitFiles', {}, {
+			files: '',
+		}) }}
+	>
+		Send a file
+	</button>
+	
+	<div
+		class="p-1 rounded text-bg-dark my-1"
+	>
+		<div>
+			image id: {{- image.id|default('null') -}}
+		</div>
+		{{ form_start(form, { attr: {
+			'data-action': 'live#action',
+			'data-live-action-param': 'submitImage',
+			novalidate: '',
+		} }) }}
+			{{ form_widget(form.filepath) }}
+			{% for index, keyFrame in form.keyFrames %}
+				{{ form_widget(keyFrame) }}
+				{{ form_widget(keyFrame.vars.button_delete) }}
+			{% endfor %}
+			<div>
+				{{ form_widget(form.keyFrames.vars.button_add) }}
+			</div>
+			{{ form_rest(form) }}
+			<button class="btn btn-sm btn-success">
+				Отправить форму
+			</button>
+		{{ form_end(form, { render_rest: false }) }}
+	</div>
+	
+	<input type="checkbox"
+		data-model="parentIsCool"
+	>
+	
+	{{ component('listener-live-twig-sandbox', {
+		'data-model': 'input:input parentIsCool:isCool',
+	}) }}
+	
+	<button
+		class="btn btn-large btn-danger"
+		{{ live_action('emptyLiveAction') }}
+		data-live-input-param="NEW INPUT"
+	>
+		Dispatch event
+	</button>
+	
+	{{ dump() }}
+	
+</div>

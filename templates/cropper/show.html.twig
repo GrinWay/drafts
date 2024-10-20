@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello CropperController!{% endblock %}
+
+{% block meta %}
+	{{ parent() }}
+	<meta name="turbo-cache-control" content="no-cache">
+{% endblock %}
+
+{% block body %}
+	
+	<a href="{{- path('app_cropper_index', {
+		id: entity.id,
+	}) -}}">EDIT</a>
+	
+	{{ include('cropper/_show.html.twig') }}
+	
+{% endblock %}

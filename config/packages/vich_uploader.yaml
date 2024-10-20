@@ -13,11 +13,11 @@ vich_uploader:
         image:
             uri_prefix: '/%app.public_img_dir%'
             upload_destination: '%app.abs_img_dir%'
-            #namer: Vich\UploaderBundle\Naming\SlugNamer
-            namer: App\Service\Naming\SlugNamer
+            namer: Vich\UploaderBundle\Naming\SlugNamer
+            #namer: App\Service\Naming\SlugNamer
             
-            delete_on_remove: true # delete file on remove entity
-            delete_on_update: true # delete file on update entity
+            delete_on_remove: false # delete file on remove entity
+            delete_on_update: false # delete file on update entity
             inject_on_load: true # inject File object when fetch entity
             
         avatar:

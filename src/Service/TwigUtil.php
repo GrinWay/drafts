@@ -19,7 +19,7 @@ class TwigUtil
      *
      * @return string (Returns resolved resource path: @namespace/filename -> real_path/filename)
      */
-    public function getLocatedResource(string $resource): string
+    public function resolveTwigNamespace(string $resource): string
     {
         return $this->twig->getLoader()->getSourceContext($resource)->getPath();
     }

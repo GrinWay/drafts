@@ -2,9 +2,12 @@
 
 namespace App\Entity\Media;
 
+use function Symfony\Component\String\u;
+
 use Carbon\Carbon;
 use App\Type\Media\MediaType;
 use App\Repository\MediaRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints;
 use Symfony\Component\HttpFoundation\File\File;
@@ -30,11 +33,6 @@ class Media
     use CreatedAt;
     use UpdatedAt;
 
-    #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    protected ?int $id = null;
-
     #[UploadableField(
         mapping: 'media',
         fileNameProperty: 'filepath',
@@ -48,7 +46,17 @@ class Media
     #[ORM\Column(length: 60, nullable: true)]
     protected ?string $fileToken = null;
 
+    #[ORM\Column(type: Types::SIMPLE_ARRAY, nullable: true)]
+    protected ?array $keyFrames = null;
+
+    #[ORM\Column]
+    private int $fileVersion = 0;
+
     public function __construct(
+		#[ORM\Id]
+		#[ORM\GeneratedValue]
+		#[ORM\Column]
+		protected ?int $id = null,
         #[ORM\Column(length: 255)]
         protected ?string $filepath = null,
         #[ORM\Column(length: 255)]
@@ -59,14 +67,6 @@ class Media
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    //TODO: REMOVE
-    public function setId(?int $id): static
-    {
-        $this->id = $id;
-
-        return $this;
     }
 
     public function getVichFile(): ?VichFile
@@ -111,17 +111,7 @@ class Media
         return $this;
     }
 
-    public function setFileSize(?int $fileSize): static
-    {
-                $this->fileSize = $fileSize;
-                return $this;
-    }
 
-    public function setFileMimeType(?string $fileMimeType): static
-    {
-                $this->fileMimeType = $fileMimeType;
-                return $this;
-    }
 
     public function setFileOriginalName(?string $fileOriginalName): static
     {
@@ -129,15 +119,27 @@ class Media
                 return $this;
     }
 
+	/*
+    public function setFileMimeType(?string $fileMimeType): static
+    {
+                $this->fileMimeType = $fileMimeType;
+                return $this;
+    }
+    public function setFileSize(?int $fileSize): static
+    {
+                $this->fileSize = $fileSize;
+                return $this;
+    }
     public function getFileSize(): ?int
     {
                 return $this->fileSize;
     }
-
     public function getFileMimeType(): ?string
     {
                 return $this->fileMimeType;
     }
+	*/
+
 
     public function getFileOriginalName(): ?string
     {
@@ -163,7 +165,37 @@ class Media
 
     public function updateFileToken(): static
     {
-        $this->fileToken = \substr(\md5($this->filepath), 0, 60);
+        $this->fileToken = \substr(\md5($this->filepath.\time()), 0, 60);
+
+        return $this;
+    }
+
+    public function getKeyFrames(): ?array
+    {
+        return $this->keyFrames;
+    }
+
+    public function setKeyFrames(?array $keyFrames): static
+    {
+        $this->keyFrames = $keyFrames;
+
+        return $this;
+    }
+
+    public function getFileVersion(): int
+    {
+        return $this->fileVersion;
+    }
+
+    public function incrementFileVersion(): static
+    {
+        ++$this->fileVersion;
+		return $this;
+    }
+
+    public function setFileVersion(int $fileVersion): static
+    {
+        $this->fileVersion = $fileVersion;
 
         return $this;
     }

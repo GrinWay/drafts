@@ -1,3 +1,7 @@
 parameters:
 
     app.regexp.digit:   '[0-9]'
+    
+    # withOUT ~/
+    #    ~REGEX~ /REGEX/
+    app.regex.locale: '^[а-яa-z]{2}(?:_[А-ЯA-Z]{2})?$'

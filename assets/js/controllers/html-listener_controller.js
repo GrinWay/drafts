@@ -136,4 +136,11 @@ export default class extends Controller {
 	 * Always empty
 	 */
 	_(event) {}
+	
+	/**
+     * 
+     */
+	customSymfonyTwigLiveEvent(event) {
+		console.error(`CUSTOM EVENT`, event)
+	}
 }

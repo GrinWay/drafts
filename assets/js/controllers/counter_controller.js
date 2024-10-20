@@ -45,6 +45,7 @@ export default class extends Controller {
 	}
 	
 	connect() {
+		
 		const streamMessage = `
 <turbo-stream action="update" target="app_post_all_items">
 	<template>

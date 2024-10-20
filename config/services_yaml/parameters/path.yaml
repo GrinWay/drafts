@@ -7,13 +7,15 @@ parameters:
     ###< tests ###
     
     ###> media ###
-    app.public_media_dir: 'media'
+    app.public_media_dir: 'clients/media'
     app.abs_media_dir: '%app.abs_public_dir%/%app.public_media_dir%'
     ###< media ###
     
     ###> img ###
     app.public_img_dir: '%app.public_media_dir%/image'
+    app.public_cropped_img_dir: '%app.public_img_dir%/cropped'
     app.abs_img_dir: '%app.abs_public_dir%/%app.public_img_dir%'
+    app.abs_cropped_img_dir: '%app.abs_img_dir%/cropped'
     ###> qr_code ###
     app.public_qr_dir: '%app.public_media_dir%/qr_code'
     app.abs_qr_dir: '%app.abs_public_dir%/%app.public_qr_dir%'

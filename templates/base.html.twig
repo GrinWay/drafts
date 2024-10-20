@@ -15,6 +15,7 @@
 		turbo:morph->html-listener#turboMorph
 		turbo:submit-start->html-listener#turboSubmitStart
 		turbo:frame-load->html-listener#turboFrameLoad
+		app:live:custom_event->html-listener#customSymfonyTwigLiveEvent
 	"
 >
     <head>
@@ -22,7 +23,6 @@
 		
 		{% block meta %}
 			{#
-			<meta name="turbo-refresh-method" content="replace">
 			<meta name="turbo-cache-control" content="no-preview">
 			#}
 			<meta name="turbo-refresh-method" content="morph">
@@ -41,20 +41,23 @@
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
 		
 		{% block stylesheets %}
+			{#
+			#}
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
 
         {% block javascripts %}
+			{#
+            {% block importmap %}{{ importmap('app') }}{% endblock %}
+			#}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
 
-	{%- set theme = app.request.cookies.get('app_theme') ?? 'light' -%}
-	{%- set theme = 'light' -%}
-
-    <body class="theme-{{- theme -}}"
+    <body class="theme-{{- theme|default('light') -}}"
 		{{ stimulus_target('html-listener', 'body') }}
 	>
+	
 		<div class="container">
 			<div class="badge text-bg-secondary">
 				{{- random() -}}
@@ -67,31 +70,32 @@
 		
 		<twig:debug />
 		
-        <div class="container">	
-		
-			<div class=""
-				id="app_main_counter_controller"
-				data-turbo-permanent
-				{{ stimulus_controller('counter') }}
-			>
-				<h1>
-					<div class=""
-						{{ stimulus_target('counter', 'output') }}
-					></div>
-				</h1>
-				<div class="btn btn-primary"
-					{{ stimulus_target('counter', 'add') }}
-					data-action="
-						click->counter#add
-					"
-				>+</div>
-				<div class="btn btn-secondary"
-					{{ stimulus_target('counter', 'sub') }}
-					data-action="
-						click->counter#sub
-					"
-				>-</div>
-			</div>
+        <div class="container">
+			{% block base_controllers %}
+				<div class=""
+					id="app_main_counter_controller"
+					data-turbo-permanent
+					{{ stimulus_controller('counter') }}
+				>
+					<h1>
+						<div class=""
+							{{ stimulus_target('counter', 'output') }}
+						></div>
+					</h1>
+					<div class="btn btn-primary"
+						{{ stimulus_target('counter', 'add') }}
+						data-action="
+							click->counter#add
+						"
+					>+</div>
+					<div class="btn btn-secondary"
+						{{ stimulus_target('counter', 'sub') }}
+						data-action="
+							click->counter#sub
+						"
+					>-</div>
+				</div>
+			{% endblock %}
 			
 			<div class="">
 				{% block body %}{% endblock %}
