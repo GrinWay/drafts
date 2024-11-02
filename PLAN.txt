@@ -1363,53 +1363,59 @@ R: НА ОБРАТНОМ: SYMFONY WEBPACK ENCORE
 R: НА ОБРАТНОМ: ASSETS MAPPER
 	https://symfony.com/doc/current/frontend/asset_mapper.html
 	https://symfony.com/bundles/StimulusBundle/current/index.html#with-assetmapper
-***
 SYMFONY EasyAdmin
-	
-	https://symfony.com/bundles/EasyAdminBundle/current/crud.html
-		https://symfony.com/bundles/EasyAdminBundle/current/dashboards.html#crud-menu-item
-		https://symfony.com/bundles/EasyAdminBundle/current/crud.html#custom-redirect-after-creating-or-editing-entities
-	https://symfony.com/bundles/EasyAdminBundle/current/design.html
-	https://symfony.com/bundles/EasyAdminBundle/current/fields.html
-	https://symfony.com/bundles/EasyAdminBundle/current/filters.html
-	https://symfony.com/bundles/EasyAdminBundle/current/actions.html
-	https://symfony.com/bundles/EasyAdminBundle/current/security.html
-	https://symfony.com/bundles/EasyAdminBundle/current/events.html
-	https://symfony.com/bundles/EasyAdminBundle/current/tests.html
-	https://symfony.com/bundles/EasyAdminBundle/current/upgrade.html
-	
-	https://github.com/EasyCorp/EasyAdminBundle
-	https://symfony.com/bundles/EasyAdminBundle/current/upgrade.html
-	https://symfony.com/bundles/EasyAdminBundle/current/dashboards.html
-	
-	
-	https://wiki.c2.com/?ContextObject
-	https://symfony.com/doc/current/security.html#logging-out
-	https://symfony.com/doc/current/security.html#roles
-	https://symfony.com/bundles/EasyAdminBundle/current/security.html#security-menu
-	https://symfony.com/bundles/EasyAdminBundle/current/actions.html#actions-integrating-symfony
-	https://symfony.com/bundles/EasyAdminBundle/current/crud.html#generate-admin-urls
-	https://symfony.com/bundles/EasyAdminBundle/current/crud.html
-	https://symfony.com/bundles/EasyAdminBundle/current/crud.html
-	https://symfony.com/bundles/ux-chartjs/current/index.html
-	https://symfony.com/doc/current/controller.html
-	https://symfony.com/doc/current/routing.html#creating-routes-as-annotations
-	https://symfony.com/bundles/EasyAdminBundle/current/security.html#security-entire-backend
-	https://symfony.com/bundles/EasyAdminBundle/current/crud.html#generate-admin-urls
-	https://symfony.com/bundles/EasyAdminBundle/current/crud.html
-	https://symfony.com/bundles/EasyAdminBundle/current/crud.html
-	https://symfony.com/bundles/EasyAdminBundle/current/actions.html#actions-integrating-symfony
-	https://github.com/symfony/translation
-	https://github.com/symfony/translation#using-message-domains
-	https://symfony.com/bundles/EasyAdminBundle/current/actions.html#actions-integrating-symfony
-	
-	
+	***
+	finish C:\Workspace\SYMFONY\SYMFONY VIDEOS\SYMFONY 6\EasyAdmin! For an Awesomely Powerful Admin Area
+	https://symfony.com/bundles/EasyAdminBundle/current/fields/AssociationField.html
+	https://symfony.com/bundles/EasyAdminBundle/current/fields/CodeEditorField.html
+	https://symfony.com/bundles/EasyAdminBundle/current/fields/CollectionField.html
 	?
+	? На обратном: разобраться почему не работает форма login в EasyAdmin
+	? Почему с такой конфигурацией кнопка Aciton::DETAIL не работает
+		->update(
+			Crud::PAGE_INDEX,
+			Action::DETAIL,
+			static fn($a) => $a
+				->displayAsButton()
+				->linkToCrudAction(Action::DETAIL)
+				->setCssClass('btn bg-transparent w-100')
+		)
+	Почему не добавляется batch action (метод approveUsers есть в CRUD) + как решишь попробуй Request вместо BatchActionDto $request->request->all('batchActionEntityIds')
+		->addBatchAction(Action::new('approve', 'Approve Users')
+			->linkToCrudAction('approveUsers')
+			->addCssClass('btn btn-primary')
+			->setIcon('fa fa-user-check')
+		)
+	? А кудаже спрятались переменные, передаваемые в шаблон
+		https://symfony.com/bundles/EasyAdminBundle/current/crud.html#passing-additional-variables-to-crud-templates
+	? $searchDto->getSearchableProperties()
+	? В чём причина
+		В своей entry point webpack encore указал файл css, в котором переопределил :root var
+		но приоритета либо не хватает, либо по другой причине не устанавливается стиль
+	? Как CRUD контроллеры связаны с DashboardController вообще
+		Потому что при наличии нескольких DashboardController
+		при создании url необходимо указать определённый DashboardController
+	Не передаётся параметр перевода %entity_label_plural% ->setPageTitle(Crud::PAGE_INDEX, '%entity_label_plural%')
+	? Не понятно как это модифицирует интервал
+		если вооще такого типа поля нет
+		->setDateIntervalFormat('%%y Year(s) %%m Month(s) %%d Day(s)')
 	? При рендере MenuItem::linkToCrud возникает исключение
 		Call to a member function getAsDto() on null
 	? When using Doctrine filters, listings may not include some items because they were removed by those global Doctrine filters. Use the dashboard route name to not apply the filters when the request URL belongs to the dashboard You can also get the dashboard route name via the application context variable.
 	? Что это означает
 		TextField::new('firstName', t('Name'))
+codemirror5 Text Editor
+	https://codemirror.net/docs/
+	?
+	+ Не получилось найти селектор css для изменения стиля главного выделенного
+		(
+			Есть в официальной документации, но победил я это с использованием !important
+			и прозрачностью для background-color в cm-activeLine
+		)
+Trix Text Editor
+	R: На обратном: В своём компоненте twig:grinway:trix стилизовать иконки
+		с офф. сайта https://trix-editor.org/ самому сделать разметку trix-toolbar
+***
 SYMFONY WORKFLOW
 	R: Реализовать telegram bot для оформления заказа с компонентом workflow
 		init
@@ -1476,7 +1482,6 @@ SYMFONY FRONTEND (WEBPACK ENCORE/ASSET MAPPER)
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-assets-version
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-version-format
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-json-manifest-path
-Trix Text Editor https://trix-editor.org/
 Создать в WebAppBundle Stimulus controllers (короче сделать этот пакет UX)
 	https://symfony.com/doc/current/frontend/create_ux_bundle.html
 R: PUSH NOTIFICATION
@@ -1866,6 +1871,7 @@ TODO
 		// TODO: transition_controller
 		// TODO: before-cache-cleaner
 		// TODO: form-ignores-frame-on-success_controller.js
+		twig:grinway:trix
 	GsEnvProcessor
 		fix abstractions (only with functions)
 	Command
@@ -1874,6 +1880,14 @@ TODO
 		deploy command (bundles, doctrine, dotenv:dump`composer dump-env prod`)
 		избавиться от ENV переменных
 		добавить новых функций в expression_language
+		создать одну комманду "bin/use <absPath>" (для вставки всех недостающих use для переданного абсолютного пути файла)
+			Если вариантов несколько, отобрази список для выбора
+			1) на модификацию файла (и отображения, того что вставил)
+			передать:
+				1.1) данные из буффера обмена (путь к файлу)
+				путь к vendor сконструируй из переданного пути
+			по имени класса, трейтаTrait, интерфейсаInterface если с большой буквы
+			по имени метода если с маленькой
 	Services
 		для serviceLocator ServiceMethodsSubscriberTrait отложенная автопроводка .\src\Trait\ServiceLocator\Aware
 		позаимствовать App\CompillerPass\AbstractCompillerPass
@@ -1906,7 +1920,6 @@ TODO
 		Реализовать env processor grin_way_csv_decode для декодирования csv в массив
 			(использовать serializer.encoder.csv service)
 		//TODO: attributesAsArray
-		
 	Extensions
 		может перейти от OptionsResolver к Processor+TreeBuilder в global instance of
 	film

@@ -1,2 +1,38 @@
 framework:
-    workflows: null
+    workflows:
+        enabled: true
+        workflows:
+            user_order:
+                type: state_machine
+                marking_store:
+                    type: method
+                    property: status
+                supports:
+                -   App\Entity\UserOrder
+                initial_marking: ordered
+                transitions:
+                    
+                    sent_to_delivery:
+                        from: ordered
+                        to: sent_to_delivery
+                        
+                    start_delivery:
+                        from: sent_to_delivery
+                        to: delivery_in_process
+                    
+                    update_delivery:
+                        from: delivery_in_process
+                        to: delivery_in_process
+                    
+                    finish_delivery:
+                        from: delivery_in_process
+                        to: delivery_finished
+                    
+                    receive_order:
+                        from: delivery_finished
+                        to: user_got_order
+                    
+                    finish:
+                        from: user_got_order
+                        to: finish
+                    

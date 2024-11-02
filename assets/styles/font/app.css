@@ -2,3 +2,7 @@
   font-family: 'roman';
   src: url('./SchadowBTRoman.ttf');
 }
+@font-face {
+  font-family: 'cmd';
+  src: url('./cmd.ttf');
+}

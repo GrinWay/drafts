@@ -1,0 +1,94 @@
+{# Usage:
+trix_data_controller must extend "{ AbstractTrixController } from grinway/Stimulus/Controller/AbstractTrixController"
+
+<form action="" method="post">
+	<twig:grinway:trix
+		trix_data_controller="trix"
+		trix_input_id="default"
+		trix_editor_toolbar_id="grinway--trix-toolbar"
+		trix_input_name="default"
+		
+		trix_editor:autofocus=""
+		trix_editor:class="form-control"
+	>
+		<twig:block name="trix_editor_widget">
+			<label>
+				<h1>Editor</h1>
+			
+				{{ parent() }}
+			</label>
+		</twig:block>
+		
+		<twig:block name="footer">
+			<button
+				class="btn btn-danger btn-small"
+			>
+				Отправить форму
+			</button>
+		</twig:block>
+	</twig:grinway:trix>
+</form>
+#}
+
+{%- props 
+	trix_data_controller,
+	trix_input_id,
+	trix_editor_toolbar_id,
+	trix_input_name,
+	trix_init_value = null,
+	trix_actions = "",
+-%}
+
+{%- set dataTrixControllerTargetKey = 'data-'~trix_data_controller~'-target' -%}
+
+<div {{ attributes.nested('trix').defaults({
+		'data-controller': trix_data_controller,
+		'data-action': "
+			trix-before-initialize->"~trix_data_controller~"#trixBeforeInitialize
+			trix-initialize->"~trix_data_controller~"#trixInitialize
+			trix-change->"~trix_data_controller~"#trixСhange
+			trix-paste->"~trix_data_controller~"#trixPaste
+			trix-selection-change->"~trix_data_controller~"#trixSelectionChange
+			trix-focus->"~trix_data_controller~"#trixFocus
+			trix-blur->"~trix_data_controller~"#trixBlur
+			trix-action-invoke->"~trix_data_controller~"#trixActionInvoke
+			trix-attachment-add->"~trix_data_controller~"#trixAttachmentAdd
+			trix-attachment-remove->"~trix_data_controller~"#trixAttachmentRemove
+			trix-file-accept->"~trix_data_controller~"#trixFileAccept
+		"~trix_actions,
+		'class': 'container',
+	}) }}
+>	
+	<div class="row">
+		<trix-toolbar
+			{{ attributes.nested('trix_toolbar').defaults({
+				'id': trix_editor_toolbar_id,
+				(dataTrixControllerTargetKey): 'trixToolbar',
+			}) }}
+		>
+			{{-''-}}
+		</trix-toolbar>
+		
+		<input
+			{{ attributes.nested('trix_input').defaults({
+				'id': trix_input_id,
+				'name': trix_input_name,
+				'value': trix_init_value,
+				(dataTrixControllerTargetKey): 'input',
+				'type': 'hidden',
+			}) }}
+		>
+		{% block trix_editor_widget %}
+			<trix-editor
+				{{ attributes.nested('trix_editor').defaults({
+					'input': trix_input_id,
+					'toolbar': trix_editor_toolbar_id,
+					'class': 'app-trix-content',
+					(dataTrixControllerTargetKey): 'trixEditor',
+				}) }}
+			></trix-editor>
+		{% endblock %}
+		
+		{% block footer %}{% endblock %}
+	</div>
+</div>

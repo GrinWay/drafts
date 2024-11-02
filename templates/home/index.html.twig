@@ -14,6 +14,31 @@
 
 {% block body %}
 	
+	<div
+		class=""
+		{{ stimulus_controller('grinway--code-mirror') }}
+	>
+		<button
+			class="btn btn-danger"
+			{{ stimulus_action('grinway--code-mirror', 'setJavascriptLanguage') }}
+		>javascript</button>
+		<button
+			class="btn btn-danger"
+			{{ stimulus_action('grinway--code-mirror', 'setPhpLanguage') }}
+		>php</button>
+		<button
+			class="btn btn-danger"
+			{{ stimulus_action('grinway--code-mirror', 'setSimpleExample') }}
+		>simple</button>
+		<button
+			class="btn btn-danger"
+			{{ stimulus_action('grinway--code-mirror', 'setDefaultCursorPosition') }}
+		>default cursor position</button>
+		<div
+			{{ stimulus_target('grinway--code-mirror', 'editor') }}
+		></div>
+	</div>
+	
 	<button class="btn btn-large btn-primary"
 		{{ stimulus_controller('swal') }}
 		data-action="

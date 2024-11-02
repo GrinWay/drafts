@@ -393,11 +393,10 @@ class HomeController extends AbstractController
 	/**
 	* @var Carbon $nowModified -1second
 	*/
-    #[Route(path: '/{passedOtpNumber<\d+>?1}', methods: ['GET', 'POST'])]
+    #[Route(path: '/', methods: ['GET', 'POST'])]
     //#[IsCsrfTokenValid(id: 'default', tokenKey: '_token')]
     //#[SomeAttribute]
     public function home(
-        int $passedOtpNumber,
         Request $r,
         Request $request,
         RequestStack $requestStack,

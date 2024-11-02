@@ -14,6 +14,8 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use App\Entity\Media\Image;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Component\Asset\Packages;
 
 /**
 * @codeCoverageIgnore
@@ -27,6 +29,8 @@ class ApiController extends AbstractController
         private readonly Security $security,
         private readonly PropertyAccessorInterface $pa,
         private readonly EntityManagerInterface $em,
+		private readonly HttpClientInterface $client,
+		private readonly Packages $package,
     ) {
     }
 
@@ -37,6 +41,35 @@ class ApiController extends AbstractController
         ]);
     }
 
+    #[Route('/save/image', methods: ['POST'])]
+    public function saveImage(
+		Request $request,
+		#[Autowire('%app.abs_img_dir%')] string $absImgDir,
+		#[Autowire('%app.public_img_dir%')] string $publicImgDir,
+	) {
+		$payload = $request->getPayload()->all();
+		
+		$imageFilename = $this->pa->getValue($payload, '[imageFilename]');
+		$base64EncodedImage = $this->pa->getValue($payload, '[base64EncodedImage]');
+		
+		if (null === $imageFilename || null === $base64EncodedImage) {
+			return new JsonResponse(status: 400);
+		}
+		
+		$absImgPathname = \sprintf('%s/%s', $absImgDir, $imageFilename);
+		$base64EncodedImage = \base64_decode(\preg_replace('~(.*)[,](.+)~', '$2', $base64EncodedImage));
+		
+		\file_put_contents($absImgPathname, $base64EncodedImage);
+		
+		// return new AppJsonResponse(...);
+		return $this->json([
+			'absImgDir' => $absImgDir,
+			'publicImgDir' => $this->package->getUrl($publicImgDir),
+			'filename' => $imageFilename,
+			'absImgPathname' => $absImgPathname,
+		]);
+	}
+	
     #[Route('/save/client/image/{id<[0-9]+>}')]
     public function saveClientImage(
 		Request $request,

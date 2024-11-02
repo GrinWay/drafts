@@ -5,6 +5,12 @@ namespace App\Controller\Admin;
 use function Symfony\component\translation\t;
 use function Symfony\Component\String\u;
 
+use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\AppEasyAdminComment;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option\EA;
 use App\Controller\Admin\AppEasyAdminCommentCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
@@ -18,29 +24,38 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Option;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class DashboardController extends AbstractDashboardController
 {
-	//AdminContext $adminContext,
-	
 	public function __construct(
 		private readonly TranslatorInterface $t,
 		private readonly AdminContextProvider $adminContextProvider,
-	) {}
+		private readonly UrlGeneratorInterface $urlGenerator,
+		private readonly EntityManagerInterface $em,
+		private readonly PropertyAccessorInterface $pa,
+		private readonly RequestStack $requestStack,
+	) {
+		//\dump($em->getFilters());
+	}
 	
 	#[Route('/admin/{_locale<%app.regex.locale%>?ru}', name: 'app_admin_index')]
     public function index(): Response {
+		$request = $this->requestStack->getCurrentRequest();
 		$adminUriGenerator = $this->container->get(AdminUrlGenerator::class);
 		
-		\dump(
-			\get_debug_type($this->adminContextProvider->getContext()),
-			//\get_debug_type($adminContext),
-		);
+		$inputData = null;
+		if ($request->isMethod('POST')) {
+			$inputData = $this->pa->getValue($request->getPayload()->all(), '[default]');
+		}
 		
 		$uri = $adminUriGenerator->setController(Controller\AppEasyAdminCinemaController::class)->generateUrl();
 		//return $this->redirect($uri);
@@ -60,7 +75,9 @@ class DashboardController extends AbstractDashboardController
         // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
         // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
         //
-        return $this->render('admin/index/index.html.twig', []);
+        return $this->render('admin/index/index.html.twig', [
+			'inputData' => $inputData,
+		]);
     }
 
     public function configureDashboard(): Dashboard
@@ -90,51 +107,26 @@ class DashboardController extends AbstractDashboardController
 
     public function configureMenuItems(): iterable
     {
-		yield MenuItem::section('MAIN');
-		yield MenuItem::linkToDashboard('dashboard', null)
-			//->setCssClass('badge p-2 pb-3 text-bg-dark')
-			//->setLinkRel('alternate')
-			//->setLinkTarget('_blank')
-			//->setPermission('VOTE_IS_AUTH')
-			->setBadge('New', 'success', [
-			])
-		;
-		yield MenuItem::linkToRoute('login', null, 'app_admin_login');
-        
-		yield MenuItem::section();
-        //yield MenuItem::linkToCrud('Item', 'fa fa-tags', Entity\AppEasyAdminCinema::class);
-        //yield MenuItem::linkToCrud('Item', 'fa fa-tags', Controller\AppEasyAdminCinemaController::class);
-		
-		yield MenuItem::section('website_map');
-		yield MenuItem::linkToRoute('home', 'fa fa-home', 'app_home_home', [
-			'passedOtpNumber' => 1,
-		]);
-		yield MenuItem::subMenu('external_links', null)->setSubItems([
-			MenuItem::linkToUrl('Google', null, 'https://www.google.com/'),
-			MenuItem::linkToUrl('GitHub', null, 'https://github.com/'),
-			MenuItem::linkToUrl('vk', null, 'https://vk.com/'),
-		]);
-		
-		$appEasyAdminCommentCrudUrl = $this->container->get(AdminUrlGenerator::class)
+		yield MenuItem::section(
+			'Редактирование сущностей'
+		);
+		yield MenuItem::linkToCrud('Комментарии', 'fa fa-list', AppEasyAdminComment::class);
+		yield MenuItem::linkToUrl('Batch action', 'fa fa-list', $this->container->get(AdminUrlGenerator::class)
 			->unsetAll()
 			->setController(AppEasyAdminCommentCrudController::class)
-			->setAction(Crud::PAGE_EDIT)
-			->set(EA::ENTITY_ID, 1)
+			->setAction('approveUsers')
 			->generateUrl()
-		;
-        yield MenuItem::subMenu('Edit', null)->setSubItems([
-			/**
-			 * Crud::PAGE_INDEX
-			 * Crud::PAGE_DETAIL
-			 * Crud::PAGE_EDIT
-			 * Crud::PAGE_NEW
-			 */
-			//yield MenuItem::linkToCrud('Comment', null, Entity\AppEasyAdminComment::class),
-			//yield MenuItem::linkToUrl('Comment', null, $appEasyAdminCommentCrudUrl),
-		]);
+		);
 		
-		yield MenuItem::section();
+		yield MenuItem::section(
+			'Routes'
+		);
+		yield MenuItem::linkToUrl('Home', 'fas fa-home', $this->generateUrl('app_home_home'));
 		
+		yield MenuItem::section(
+			'Security'
+		);
+		yield MenuItem::linkToRoute('login', null, 'app_admin_login');
 		yield MenuItem::linkToLogout('logout', null);
 		yield MenuItem::linkToExitImpersonation('stop_impersonation', null);
     }
@@ -143,15 +135,55 @@ class DashboardController extends AbstractDashboardController
     {
 		//return UserMenu::new();
 		
-		\dump($user);
-		
 		return parent::configureUserMenu($user)
-			->displayUserName(true)
+			->displayUserName(false)
 			//->setName($user->getPassport()->getFirstName())
-			//->setAvatarUrl('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1EH58c8MFODbyIixSDhzUtohot5NU7-I0mw&s')
+			->setAvatarUrl('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1EH58c8MFODbyIixSDhzUtohot5NU7-I0mw&s')
 			->addMenuItems([
-				MenuItem::linkToUrl('GitHub', null, 'https://github.com/'),
-				MenuItem::linkToUrl('Google', null, 'https://google.com/'),
+			])
+		;
+	}
+	
+	public function configureActions(): Actions
+	{
+		$globalViewToAuthorAction = Action::new('authorGithub', 'Автор')
+			->setCssClass('btn bg-transparent')
+			->setHtmlAttributes([
+				'target' => '_blank',
+			])
+			->linkToUrl('https://github.com/GrinWay')
+			->createAsGlobalAction()
+		;
+		
+		$indexBtnsClass = 'btn d-block m-0 bg-transparent my-1';
+		
+		return parent::configureActions()
+			->update(Crud::PAGE_INDEX, Action::NEW, static fn(Action $action) => $action->setIcon('fa fa-plus')->setLabel(false)->addCssClass('py-1 px-4'))
+			->add(Crud::PAGE_INDEX, $globalViewToAuthorAction)
+			->add(Crud::PAGE_INDEX, Action::DETAIL)
+			->update(Crud::PAGE_INDEX,
+				Action::DETAIL,
+				static fn($a) => $a
+					//->displayAsButton()
+					//->linkToCrudAction(Action::EDIT)
+					->setCssClass($indexBtnsClass)
+			)
+			->update(Crud::PAGE_INDEX,
+				Action::EDIT,
+				static fn($a) => $a
+					//->displayAsButton()
+					->setCssClass($indexBtnsClass)
+			)
+			->update(Crud::PAGE_INDEX,
+				Action::DELETE,
+				static fn($a) => $a
+					//->displayAsButton()
+//					->linkToCrudAction(Action::DELETE)
+					->setCssClass($indexBtnsClass)
+			)
+			->reorder(Crud::PAGE_INDEX, [
+				Action::NEW, 'authorGithub',
+				Action::EDIT, Action::DETAIL, Action::DELETE,
 			])
 		;
 	}
@@ -159,12 +191,31 @@ class DashboardController extends AbstractDashboardController
 	public function configureCrud(): Crud
     {
         return Crud::new()
+		
+			//->setEntityPermission('ALWAYS_FORBIDDEN')
+			
+			->overrideTemplates([
+				'label/null' => 'admin/crud/field/null.html.twig',
+				'crud/field/avatar' => 'admin/crud/field/avatar.html.twig',
+			])
 			->setPaginatorPageSize(50)
 			->setPaginatorRangeSize(10)
 			->hideNullValues(false)
-			->overrideTemplate('crud/field/id', 'admin/component/field/id.html.twig')
 			->setDateTimeFormat('full', 'short')
-			->setEntityPermission('PUBLIC_ACCESS')
+			->setTimezone('UTC')
+			->renderContentMaximized()
+			->setAutofocusSearch()
+			->setDefaultSort(['id' => 'DESC'])
+			->setThousandsSeparator('\'')
+			->setDecimalSeparator('.')
+			->showEntityActionsInlined()
+		;
+	}
+	
+	public function configureAssets(): Assets
+    {
+		return parent::configureAssets()
+			->addWebpackEncoreEntry('easy_admin')
 		;
 	}
 }

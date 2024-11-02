@@ -1,11 +1,55 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
 
+{% block page_title %}{{ ea.context.dashboardTitle }}{% endblock %}
+
+{% block head_javascript %}
+	{{ parent() }}
+{% endblock %}
+
+{% block head_stylesheets %}
+	{{ parent() }}
+{% endblock %}
+
 {% block main %}
-	<h1>{{ ea.dashboardTitle }}</h1>
 	
-	<h6>{{ ea.templatePath('flash_messages') }}</h6>
+	<form action="" method="post">
+		<twig:grinway:trix
+			trix_data_controller="trix"
+			trix_input_id="default"
+			trix_editor_toolbar_id="grinway--trix-toolbar"
+			trix_input_name="default"
+			
+			trix_editor:autofocus=""
+			trix_editor:class="form-control"
+		>
+			<twig:block name="trix_editor_widget">
+				<label>
+					<h1>Editor</h1>
+				
+					{{ parent() }}
+				</label>
+			</twig:block>
+			
+			<twig:block name="footer">
+				<button
+					class="btn btn-danger btn-small"
+				>
+					Отправить форму
+				</button>
+				
+				<button type="button" class="btn btn-ghost"
+					{{ stimulus_action('grinway--trix', 'doSomething') }}
+					{#
+					#}
+				>
+					do something
+				</button>
+			</twig:block>
+		</twig:grinway:trix>
+	</form>
 	
-	<ul>
-		<li><a href="{{- ea_url().unsetAll.setController('App\\Controller\\Admin\\AppEasyAdminCommentCrudController').setAction('index') -}}">Comments</a></li>
-	</ul>
+	<div class="">
+		{{ inputData|default('null')|raw }}
+	</div>
+	
 {% endblock %}

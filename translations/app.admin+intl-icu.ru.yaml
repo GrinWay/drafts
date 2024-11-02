@@ -15,4 +15,7 @@ stop_impersonation: >-
     перестать прикидываться
 external_links: >-
     внешние ссылки
-#text: >-
+secondary_inf: >-
+    вторичная информация
+authorName: >-
+    имя автора

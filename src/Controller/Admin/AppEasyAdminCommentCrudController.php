@@ -2,6 +2,27 @@
 
 namespace App\Controller\Admin;
 
+use function Symfony\component\translation\t;
+
+use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
+use EasyCorp\Bundle\EasyAdminBundle\Router\AdminUrlGenerator;
+use EasyCorp\Bundle\EasyAdminBundle\Security\Permission;
+use Symfony\Component\ExpressionLanguage\Expression;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Action;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
+use Symfony\Component\Form\Extension\Core\Type as FormType;
+use App\Form\Field\Filter\HandyDateFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\ComparisonFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Filter\ChoiceFilter;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
+use EasyCorp\Bundle\EasyAdminBundle\Field\SlugField;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use App\Form\Field\PrefixedAvatarField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AvatarField;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
+use App\Form\Field\DateIntervalField;
 use EasyCorp\Bundle\EasyAdminBundle\Config\KeyValueStore;
 use Doctrine\ORM\QueryBuilder;
 use EasyCorp\Bundle\EasyAdminBundle\Collection\FilterCollection;
@@ -14,14 +35,24 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use App\Type\Comment\CommentType;
 use App\Entity\AppEasyAdminComment;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\Field;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\NumberField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field as EaField;
-use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
+use EasyCorp\Bundle\EasyAdminBundle\Provider\AdminContextProvider;
 
 class AppEasyAdminCommentCrudController extends AbstractCrudController
 {
+	public function __construct(
+		// ERR
+		//private readonly AdminContext $adminContext,
+		private readonly AdminContextProvider $adminContextProvider,
+		#[Autowire('%app.public_img_dir%')]
+		private readonly string $publicImgDir,
+	) {}
+	
     public static function getEntityFqcn(): string
     {
         return AppEasyAdminComment::class;
@@ -30,29 +61,18 @@ class AppEasyAdminCommentCrudController extends AbstractCrudController
 	public function configureCrud(Crud $crud): Crud
     {
         return $crud
+			->setEntityPermission(new Expression('auth_checker.isGranted("PUBLIC_ACCESS")'))
+			//->setEntityPermission(Permission::EA_ACCESS_ENTITY)
+			
 			->setEntityLabelInSingular(static fn($entity, $pageName) => 'Комментарий') // try callback (?Entity, ?pageName)
 			->setEntityLabelInPlural(static fn($entity, $pageName) => 'Комментарии') // try callback (?Entity, ?pageName)
-		/*
-			->setDateIntervalFormat('%%y Year(s) %%m Month(s) %%d Day(s)')
-			->setTimezone('UTC')
-			->renderContentMaximized()
-			->renderSidebarMinimized()
-			//   %entity_name%, %entity_as_string%,
-			//   %entity_id%, %entity_short_id%
-			//   %entity_label_singular%, %entity_label_plural%
-			->setPageTitle(Crud::PAGE_INDEX, '%entity_label_plural%') // try closure
-			->setHelp(Crud::PAGE_EDIT, '...')
-			->setNumberFormat('%.2d')
-			->setSearchFields(['authorName', 'text', 'type'])
-			->setAutofocusSearch()
-			->setDefaultSort(['id' => 'DESC'])
-			->setSearchMode(SearchMode::ANY_TERMS)
-			->setThousandsSeparator(''')
-			->setDecimalSeparator('.')
 			->setPaginatorUseOutputWalkers(true)
 			->setPaginatorFetchJoinCollection(true)
-			->overrideTemplate('label/null', 'admin/fields/my_id.html.twig')
-			->addFormTheme('foo.html.twig')
+			->overrideTemplates([
+				//'label/null' => 'admin/crud/comment/field/null.html.twig',
+			])
+			->addFormTheme('admin/crud/theme/field/text.html.twig')
+		/*
 			->setFormThemes(['my_theme.html.twig', 'admin.html.twig'])
 			->setFormOptions([
 				'validation_groups' => ['Default', 'my_validation_group']
@@ -64,38 +84,166 @@ class AppEasyAdminCommentCrudController extends AbstractCrudController
 		*/
 		;
 	}
+	
+	public function configureActions(Actions $actions): Actions
+	{
+		return $actions
+			->add(Crud::PAGE_INDEX, Action::new('testCalc', null, 'fa fa-home')
+				->linkToCrudAction('testCalcMethod')
+				->createAsGlobalAction()
+			)
+			/*
+			*/
+			->addBatchAction(Action::new('app.approve_users', 'Approve Users')
+				->linkToCrudAction('approveUsers')
+                ->addCssClass('btn btn-primary')
+                ->setIcon('fa fa-user-check')
+			)
+		;
+	}
+	
+	/**
+     * Batch Action
+     */
+	public function testCalcMethod(AdminContext $adminContext) {
+		//\dump(\get_debug_type($adminContext));
+		return $this->render('admin/test/test.html.twig');
+	}
+	
+	/**
+     * Batch Action
+     */
+	public function approveUsers(?BatchActionDto $batchActionDto) {
+		$defaultUrl = $this->container->get(AdminUrlGenerator::class)
+			->unsetAll()
+			->setDashboard(DashboardController::class)
+			->generateUrl()
+		;
+		if (null !== $batchActionDto) {
+			$entityFqcn = $batchActionDto->getEntityFqcn();
+			$ids = $batchActionDto->getEntityIds();
+			/*
+			\dump(
+				\sprintf('Batch Action for %s: (%s)', $entityFqcn, \implode(', ', $ids)),
+			);
+			*/
+		}
+		
+		return $this->redirect($batchActionDto?->getReferrerUrl() ?? $defaultUrl);
+	}
+	
+	public function configureFilters(Filters $filters): Filters
+    {
+        return $filters
+			//->add(ComparisonFilter::new('id'))
+            /*
+			->add(ComparisonFilter::new('authorName')
+				->setFormTypeOption('comparison_type', FormType\TextType::class)
+				->setFormTypeOption('value_type', FormType\TextType::class)
+			)
+			*/
+            ->add(ChoiceFilter::new('type')->setChoices(CommentType::ALL)->canSelectMultiple())
+			->add(HandyDateFilter::new('updatedAt'))
+        ;
+    }
 
 	protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse
 	{
+		if (Action::NEW === $action) {
+			//return $this->redirectToRoute('app_home_home');
+		}
+		
 		return parent::getRedirectResponseAfterSave($context, $action);
 	}
 
     public function configureFields(string $pageName): iterable
     {
-		if (Crud::PAGE_INDEX === $pageName || Crud::PAGE_DETAIL === $pageName) {
-			yield IdField::new('id');
-		}
-        yield TextField::new('authorName');
-		yield TextEditorField::new('text');
-		if (Crud::PAGE_INDEX === $pageName || Crud::PAGE_DETAIL === $pageName) {
-			yield EaField\DateTimeField::new('updatedAt');			
-		}
-		if (Crud::PAGE_NEW === $pageName || Crud::PAGE_EDIT === $pageName) {
-			yield EaField\ChoiceField::new('type')
-				->allowMultipleChoices(false)
-				->autocomplete()
-				->setChoices(CommentType::ALL)
-			;	
-		} else {
-			yield TextField::new('type');
-		}
+		//yield FormField::addTab('Main');
+		//yield FormField::addColumn(6);
+		//yield FormField::addFieldset('Набор полей');
+		yield IdField::new('id')
+			->hideOnForm()
+		;
+        yield TextField::new('authorName', t('authorName', domain: 'app.admin+intl-icu'))
+			->setSortable(false)
+			->setColumns('col-sm-6 col-md-3')
+			->setTemplatePath('admin/crud/comment/field/author_name.html.twig')
+		;
+		yield NumberField::new('numberFromZeroToHundred')
+			->setColumns('col-sm-6 col-md-3')
+		;
+		yield AvatarField::new('avatar')
+			->setHeight(50)
+		;
+		yield SlugField::new('slug')
+			->setTargetFieldName(['authorName', 'type', 'avatar'])
+			->setHelp('Это поле устанавливается автоматически, для цели поиска в поисковой строке')
+		;
+		yield FormField::addRow();
+		yield TextEditorField::new('text')
+			->formatValue(static fn($text, $e) => $text)
+			->setFormTypeOptions([
+				//'block_name' => 'my_block_name_text_editor',
+			])
+		;
+		
+		/*
+		yield FormField::addTab(
+			//t('secondary_inf', domain: 'app.admin+intl-icu')
+			//icon: 'home',
+		)
+			->setIcon('home')
+			//->setCssClass('my-class')
+			->setHelp('Оставшаяся часть')
+		;
+		*/
+		//yield FormField::addColumn(6);
+		//yield FormField::addFieldset('collapsible');
+		yield DateIntervalField::new('invitationInterval')
+			->setSortable(false)
+		;
+		yield EaField\DateTimeField::new('updatedAt')->hideOnForm();			
+		yield EaField\ChoiceField::new('type')
+			->allowMultipleChoices(false)
+			->autocomplete()
+			->setChoices(CommentType::ALL)
+			
+			->onlyOnForms()
+		;	
+		yield TextField::new('type')
+			->setTextAlign('center')
+			->hideOnForm()
+		;
     }
-	/*
-	*/
 	
 	public function createIndexQueryBuilder(SearchDto $searchDto, EntityDto $entityDto, FieldCollection $fields, FilterCollection $filters): QueryBuilder
     {
-		return parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
+		$qb = parent::createIndexQueryBuilder($searchDto, $entityDto, $fields, $filters);
+		
+		/*
+		\dump(
+			'getSort',
+			$searchDto->getSort(),
+			'count getSort',
+			\count($searchDto->getSort()),
+			'isSortingField',
+			$searchDto->isSortingField('id'),
+			'getSortDirection',
+			$searchDto->getSortDirection('id'),
+			'getQuery',
+			$searchDto->getQuery(),
+			'getQueryTerms',
+			$searchDto->getQueryTerms(),
+			'getSearchableProperties',
+			$searchDto->getSearchableProperties(),
+			'getAppliedFilters',
+			$searchDto->getAppliedFilters(),
+			'getSearchMode',
+			$searchDto->getSearchMode(),
+		);
+		*/
+		
+		return $qb;
 	}
 
 	public function createEntity(string $entityFqcn)
@@ -110,7 +258,12 @@ class AppEasyAdminCommentCrudController extends AbstractCrudController
 			$responseParameters->setIfNotSet('app_custom_value_added_in_method', 'value');
 		}
 		
-		return $responseParameters
+		return $responseParameters;
+	}
+	
+	public function configureAssets(Assets $assets): Assets
+    {
+		return $assets
 			
 		;
 	}
