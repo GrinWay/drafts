@@ -2,6 +2,7 @@
 
 namespace App\Entity\Product;
 
+use App\Entity\UserOrder;
 use Symfony\Component\Validator\Constraints\GroupSequence;
 use Symfony\Component\Validator\Mapping\ClassMetadata;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
@@ -52,6 +53,9 @@ class Product implements GroupSequenceProviderInterface//, AutoMappingEnabledInt
         'app.notifier.admin',
     ])]
     protected ?int $id = null;
+
+    #[ORM\ManyToOne(inversedBy: 'order_items')]
+    private ?UserOrder $userOrder = null;
 
     public function __construct(
         #[ORM\Column(length: 255)]
@@ -223,5 +227,17 @@ class Product implements GroupSequenceProviderInterface//, AutoMappingEnabledInt
             // No groups no validations
             return [];
         }
+    }
+
+    public function getUserOrder(): ?UserOrder
+    {
+        return $this->userOrder;
+    }
+
+    public function setUserOrder(?UserOrder $userOrder): static
+    {
+        $this->userOrder = $userOrder;
+
+        return $this;
     }
 }

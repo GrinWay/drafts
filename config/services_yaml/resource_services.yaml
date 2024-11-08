@@ -12,6 +12,11 @@ services:
             ###< KERNEL ###
 
             
+            ###> MOBILE DETECT ###
+            $mobileDetect: '@app.mobile_detect'
+            ###< MOBILE DETECT ###
+            
+            
             ###> SERVICES ###
             $t:                 '@Symfony\Contracts\Translation\TranslatorInterface'
             ###< SERVICES ###
@@ -39,6 +44,12 @@ services:
             ###< grinway ###
 
 
+            ###> WORKFLOW ###
+            $allWorkflowsLocator: !tagged_locator
+                tag: workflow
+            ###< WORKFLOW ###
+            
+            
             ###> PARAMS ###
             $kernelProjectDir:  '%kernel.project_dir%'
             $adminEmail:        '%env(APP_ADMIN_EMAIL)%'

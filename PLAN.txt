@@ -1415,26 +1415,76 @@ codemirror5 Text Editor
 Trix Text Editor
 	R: На обратном: В своём компоненте twig:grinway:trix стилизовать иконки
 		с офф. сайта https://trix-editor.org/ самому сделать разметку trix-toolbar
-***
 SYMFONY WORKFLOW
-	R: Реализовать telegram bot для оформления заказа с компонентом workflow
-		init
-		what_do_you_want
-		get_name
-		get_contact
-		send_order_to_master
-			крайним этапом отправь ответ в виде alert, что письмо админу отправлено, он свяжется с вами
-LIB MOBILE DETECT: https://github.com/serbanghita/Mobile-Detect
-	R: TODO: Mobile-detect
+	RRRRR: Telegram Bot API https://core.telegram.org/bots/api
+		+ создать telegramService
+			его стратегии ответа должны быть тегированы, чтобы не передавать параметром, а были в коллекции сразу у telegramService:
+				supports
+				getSubject
+				getOptions
+		+ telegram_user_order (workflow)
+	?
+	Не получилось получить контекст = WORKFLOW->apply(), который был изменён в workflow.enter EventListener
+LIB MOBILE DETECT:
 	RRR: Используя Stimulus Carousel Component назначить pointer-events: none;
 		в случае если это телефон, для запрета взаимодействия с картинкой
+	+? Stimulus Carousel Component все слайды отображаются одновременно
+		Я делал это в EasyAdmin index, где не было app Entry Point
+	? По неизвестной причине mobile detect не обнаружил что я вошёл с телефона
+***
 BOOTSTRAP (not deep)
+	
+	2 заметки
+	
+	после изучения
+	RRR: Обязательно просмотри ВЕСЬ ФАЙЛ!
+		C:\Workspace\SYMFONY\__SANDBOX__\drafts\node_modules\bootstrap\scss\_utilities.scss
+		Он очень важен, на основе $utilities ассоциативного массива (map)
+		ГЕНЕРИРУЮТСЯ ОСНОВНЫЕ BOOTSTRAP CSS classes
+		{class}-{breakpoint}-{value}-{state}
+		{flex} -{md}        -{grow-0}
+		
+		{class}-{print}-{value} // breakpoint & state не смешиваются с print (отдельная генерация)
 	https://symfony.com/doc/current/form/bootstrap5.html
 	опираясь на пример темы ".\vendor\symfony\twig-bridge\Resources\views\Form\form_div_layout.html.twig"
 		сделать свою тему на bootstrap (form/theme/grinway/light/index.html.twig)
 	освоив модальные окна, прослушать show.bs.modal, hidden.bs.modal в своём stimulus_controller
 	R: сделать свой стиль @symfony/ux-dropzone
 	?
+	? Возможно ли в d-flex элементам задать равную ширину, НЕЗАВИСИМО от содержимого
+		так как flex-fill === flex-grow-1 растягивают элементы во flex container в зависимости от содержимого
+		а col element должен использоваться внутри row если речь о flex container
+	+ ? Если flex-fill === flex-grow-1 даёт flex element возможность растягиваться
+		то я так и не понял что даёт flex-shrink-{1, 0}
+		(
+			flex-shrink-0 не позволяет сжиматься (зависит от содержимого)
+				Слова например не переносятся на новую строчку
+			flex-shrink-1 позволяет сжиматься (зависит от содержимого)
+		)
+	??? При html[dir="rtl"] Стиль всё равно применяется даже если указать /*rtl:ignore*/
+		https://rtlcss.com/learn/usage-guide/control-directives/index.html
+		использовал rtlcss js библиотеку https://habr.com/ru/companies/2gis/articles/416635/
+	+ ? Почему sticky не работает
+		Он ведь должен оставлять child el в определённой позиции of parent el
+		(
+			Из-за наличия overfow: hidden у parent sticky не работало
+			
+			Чтобы sticky работало (то есть дочерний элемент скользил внутри)
+			Полосы прокрутки у parent не должно быть
+		)
+	+ ? How to assign css pseudo class to HTML DOM element with javascript
+		(
+			el.<determinedCssPseudoClass> = true
+		)
+	+ ? Как убрать лишний отступ всерху и снизу
+		<div class="row">
+			<div class="col">1</div>
+			<div class="w-100"></div> {# Вот тут появляется очень большой отступ #}
+			<div class="col">2</div>
+		</div>
+		(
+			Не указывать фиксированную высоту блоку .row
+		)
 SYMFONY WebLink
 SYMFONY WEBHOOK https://symfony.com/doc/current/webhook.html
 SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
@@ -1872,6 +1922,8 @@ TODO
 		// TODO: before-cache-cleaner
 		// TODO: form-ignores-frame-on-success_controller.js
 		twig:grinway:trix
+		// TODO: bootstrap
+		<twig:grinway:grid-br br_up="md" /> -> <div class="w-100 d-none d-md-block"></div>
 	GsEnvProcessor
 		fix abstractions (only with functions)
 	Command

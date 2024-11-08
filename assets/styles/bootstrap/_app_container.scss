@@ -1,0 +1,19 @@
+$container-max-widths-rems: (
+  sm: 10rem,
+  md: 10rem,
+  lg: 10rem,
+  xl: 15rem,
+  xxl: 20rem
+);
+
+.app-container {
+	@include make-container(0rem);
+}
+
+@each $k, $v in $container-max-widths-rems {
+	.app-container {
+		@include up($k) {
+			@include make-container($v);
+		}
+	}
+}

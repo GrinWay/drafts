@@ -2,37 +2,155 @@ framework:
     workflows:
         enabled: true
         workflows:
+            ###>
+            telegram_user_order:
+                type: state_machine
+                marking_store:
+                    type: method
+                    property: telegram_status
+                
+                supports:
+                -   App\Entity\UserOrder
+                
+                initial_marking: wish_to_order
+                events_to_dispatch: []
+                
+                transitions:
+                
+                    to_choose_product:
+                        from: wish_to_order
+                        to: choose_product
+                        metadata: []
+                
+                    to_get_name:
+                        from: choose_product
+                        to: get_name
+                        metadata: []
+                
+                    to_get_contact:
+                        from: get_name
+                        to: get_contact
+                        metadata: []
+                
+                    to_notification:
+                        from: get_contact
+                        to: order_notification_sent_to_admin
+                        metadata: []
+                
+                    to_finish:
+                        from: order_notification_sent_to_admin
+                        to: finished
+                        metadata: []
+                        
+                places:
+                -   name: wish_to_order
+                    metadata: []
+                    
+                -   name: choose_product
+                    metadata: []
+                    
+                -   name: get_name
+                    metadata: []
+                    
+                -   name: get_contact
+                    metadata: []
+                    
+                -   name: order_sent_to_admin # ответ alert, что письмо админу отправлено, он свяжется с вами
+                    metadata: []
+            
+                # next user_order
+            
+            ###>
             user_order:
                 type: state_machine
                 marking_store:
                     type: method
                     property: status
+                
                 supports:
                 -   App\Entity\UserOrder
+                
                 initial_marking: ordered
-                transitions:
-                    
-                    sent_to_delivery:
+                events_to_dispatch: []
+                metadata:
+                    block_explanation: 'Blocked by reason: "%s"'
+                
+                places:
+                -   name: ordered
+                    metadata:
+                        description: '[PLACE] Init'
+                        
+                -   name: sent_to_delivery
+                    metadata:
+                        bg_color: '#eaf6f6'
+                        description: '[PLACE]'
+                        
+                -   name: delivery_in_process
+                    metadata:
+                        bg_color: '#eaf6f6'
+                        description: '[PLACE]'
+                        
+                -   name: delivery_finished
+                    metadata:
+                        bg_color: '#eaf6f6'
+                        description: '[PLACE]'
+                        
+                -   name: order_received
+                    metadata:
+                        bg_color: '#eaf6f6'
+                        description: '[PLACE]'
+                        
+                -   name: stored
+                    metadata:
+                        bg_color: '#eaf6f6'
+                        description: '[PLACE]'
+                
+                transitions:    
+                
+                    to_delivery:
                         from: ordered
                         to: sent_to_delivery
+                        metadata:
+                            label: 'transition 1'
+                            color: '#f76b8a'
+                            arrow_color: '#f76b8a'
                         
                     start_delivery:
                         from: sent_to_delivery
                         to: delivery_in_process
+                        metadata:
+                            label: 'transition 2'
+                            color: '#f76b8a'
+                            arrow_color: '#f76b8a'
                     
                     update_delivery:
                         from: delivery_in_process
                         to: delivery_in_process
-                    
+                        metadata:
+                            label: 'transition 3'
+                            color: '#f76b8a'
+                            arrow_color: '#f76b8a'
+                        
                     finish_delivery:
                         from: delivery_in_process
                         to: delivery_finished
-                    
-                    receive_order:
+                        metadata:
+                            label: 'transition 4'
+                            color: '#f76b8a'
+                            arrow_color: '#f76b8a'
+                            
+                    to_receive_order:
                         from: delivery_finished
-                        to: user_got_order
-                    
+                        to: order_received
+                        metadata:
+                            label: 'transition 5'
+                            color: '#f76b8a'
+                            arrow_color: '#f76b8a'
+                            
                     finish:
-                        from: user_got_order
-                        to: finish
-                    
+                        from: order_received
+                        to: stored
+                        metadata:
+                            label: 'transition 6'
+                            color: '#f76b8a'
+                            arrow_color: '#f76b8a'

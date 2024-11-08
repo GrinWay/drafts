@@ -1,0 +1,108 @@
+$variable-prefix: bs-;
+$prefix: $variable-prefix;
+
+$appCheckColor: black;
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px
+);
+
+$blue:    #0d6efd;
+$indigo:  #6610f2;
+$purple:  #6f42c1;
+$pink:    #d63384;
+$red:     #dc3545;
+$orange:  #fd7e14;
+$yellow:  #ffc107;
+$green:   #198754;
+$teal:    #20c997;
+$cyan:    #0dcaf0;
+
+$white:    #fff;
+$gray-100: #f8f9fa;
+$gray-200: #e9ecef;
+$gray-300: #dee2e6;
+$gray-400: #ced4da;
+$gray-500: #adb5bd;
+$gray-600: #6c757d;
+$gray-700: #495057;
+$gray-800: #343a40;
+$gray-900: #212529;
+$black:    #000;
+
+$colors: (
+  "blue":       $blue,
+  "indigo":     $indigo,
+  "purple":     $purple,
+  "pink":       $pink,
+  "red":        $red,
+  "orange":     $orange,
+  "yellow":     $yellow,
+  "green":      $green,
+  "teal":       $teal,
+  "cyan":       $cyan,
+  "black":      $black,
+  "white":      $white,
+  "gray":       $gray-600,
+  "gray-dark":  $gray-800
+);
+
+$min-contrast-ratio:   4.5;
+$color-contrast-dark:      $black;
+$color-contrast-light:     $white;
+
+//###>
+@each $k, $v in $colors {
+	.color-#{$k} {
+		background-color: $v;
+		color: color-contrast($v);
+	}
+}
+//###<
+
+$primary:       $blue;
+$secondary:     $gray-600;
+$success:       $green;
+$info:          $cyan;
+$warning:       $yellow;
+$danger:        tint-color(#c3195d, 30%);
+$light:         $gray-100;
+$dark:          $gray-900;
+
+$theme-colors: (
+  "primary":    $primary,
+  "secondary":  $secondary,
+  "success":    $success,
+  "info":       $info,
+  "warning":    $warning,
+  "danger":     $danger,
+  "light":      $light,
+  "dark":       $dark
+);
+
+$app-dop-theme-colors: (
+	"note":     #7c73e6
+);
+
+$theme-colors: map-merge($theme-colors, $app-dop-theme-colors);
+
+//###> light|dark-($theme-colors) ###
+@each $k, $v in $theme-colors {
+	.#{$k} {
+		background-color: $v !important;
+	}
+
+	.light-#{$k} {
+		background-color: tint-color($v, 50%) !important;
+	}
+
+	.dark-#{$k} {
+		background-color: shade-color($v, 50%) !important;
+	}
+}
+//###< light|dark-($theme-colors) ###

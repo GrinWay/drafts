@@ -6,6 +6,7 @@ export default class extends Controller {
 	eventSource = null
 	
 	connect() {
+		return;
 		this.eventSource = new EventSource("http://127.0.0.1:8000/product/types")
 		
 		this.eventSource.onmessage = event => {

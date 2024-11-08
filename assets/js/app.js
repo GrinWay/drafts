@@ -11,9 +11,11 @@ import 'lightgallery/css/lightgallery.css'
 
 import 'swiper/css/bundle' // за счёт ключа exports в package.json
 
-import '../styles/app.css';
+import '../styles/app.scss';
 import './bootstrap.js';
 import './turbo/settings.js';
+
+import 'rtlcss';
 
 //const instance1 = require('./default/new-instance.js')
 //const instance2 = require('./default/new-instance.js')

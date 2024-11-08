@@ -1,0 +1,8 @@
+App\Test\UsualClass:
+    group_sequence_provider: 'App\Validation\GroupProvider\Test\UsualClassGroupSequenceProvider'
+    
+    properties:
+        
+        secret:
+        
+        author:

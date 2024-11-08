@@ -20,6 +20,7 @@
 >
     <head>
         <meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		
 		{% block meta %}
 			{#
@@ -58,6 +59,9 @@
 		{{ stimulus_target('html-listener', 'body') }}
 	>
 	
+		{#
+		<div class="">
+		#}
 		<div class="container">
 			<div class="badge text-bg-secondary">
 				{{- random() -}}
@@ -70,7 +74,10 @@
 		
 		<twig:debug />
 		
-        <div class="container">
+		{#
+        <div class="">
+		#}
+		<div class="container overflow-clip px-2 px-md-4">
 			{% block base_controllers %}
 				<div class=""
 					id="app_main_counter_controller"

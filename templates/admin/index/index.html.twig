@@ -11,45 +11,4 @@
 {% endblock %}
 
 {% block main %}
-	
-	<form action="" method="post">
-		<twig:grinway:trix
-			trix_data_controller="trix"
-			trix_input_id="default"
-			trix_editor_toolbar_id="grinway--trix-toolbar"
-			trix_input_name="default"
-			
-			trix_editor:autofocus=""
-			trix_editor:class="form-control"
-		>
-			<twig:block name="trix_editor_widget">
-				<label>
-					<h1>Editor</h1>
-				
-					{{ parent() }}
-				</label>
-			</twig:block>
-			
-			<twig:block name="footer">
-				<button
-					class="btn btn-danger btn-small"
-				>
-					Отправить форму
-				</button>
-				
-				<button type="button" class="btn btn-ghost"
-					{{ stimulus_action('grinway--trix', 'doSomething') }}
-					{#
-					#}
-				>
-					do something
-				</button>
-			</twig:block>
-		</twig:grinway:trix>
-	</form>
-	
-	<div class="">
-		{{ inputData|default('null')|raw }}
-	</div>
-	
 {% endblock %}

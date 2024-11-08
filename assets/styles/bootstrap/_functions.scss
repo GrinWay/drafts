@@ -1,0 +1,7 @@
+// TODO: bootstrap
+/**
+ * Sizing function
+ */
+@function f($size: 2rem) {
+	@return rfs-fluid-value($size);
+}

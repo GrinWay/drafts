@@ -51,6 +51,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     #[ORM\Column()]
     private int $trustedVersion = 0;
 
+    #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist'], orphanRemoval: true)]
+    private ?UserOrder $userOrder = null;
+
     /**
      * @var array $roles list<string> The user roles
      * @var ?string $password string The hashed password
@@ -413,6 +416,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Passwor
     }
 	
 	public function __toString(): string {
-		return $this->getUserIdentifier();
-	}
+         		return $this->getUserIdentifier();
+         	}
+
+    public function getUserOrder(): ?UserOrder
+    {
+        return $this->userOrder;
+    }
+
+    public function setUserOrder(?UserOrder $userOrder): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($userOrder === null && $this->userOrder !== null) {
+            $this->userOrder->setUser(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($userOrder !== null && $userOrder->getUser() !== $this) {
+            $userOrder->setUser($this);
+        }
+
+        $this->userOrder = $userOrder;
+
+        return $this;
+    }
 }

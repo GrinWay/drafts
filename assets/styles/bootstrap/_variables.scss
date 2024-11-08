@@ -1,0 +1,21 @@
+// TODO: bootstrap
+$grid-gutter-width: 0rem !default;
+
+$spacer: 1rem !default;
+
+$gutters: (
+  0: 0,
+  
+  '010': $spacer * .10,
+  '012': $spacer * .12,
+  '014': $spacer * .14,
+  '016': $spacer * .16,
+  '018': $spacer * .18,
+  '020': $spacer * .20,
+  
+  1: $spacer * .25,
+  2: $spacer * .5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+) !default;

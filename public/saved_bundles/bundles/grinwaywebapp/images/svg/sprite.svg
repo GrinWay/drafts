@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<!-- After php bin/console assets:install you get this file in your /public
+	and you can change it
+	
+	Usage:
+	
+	#1
+	<svg xmlns="http://www.w3.org/2000/svg">
+		<use
+			xlink:href="<path>#<id>"
+			width="16px"
+			height="16px"
+			fill="#ffffff"
+		></use>
+	</svg>
+	
+	#2
+	{{ component('grinway:svg', { id: 'eye' }) }}
+	
+	#2
+	<twig:grinway:svg>{{- id -}}</twig:grinway:svg>
+-->
+
+	<!-- ###> Here you can add your own unique svg sprites to access them in templates ### -->
+	
+	<symbol id="info"
+		
+		viewBox="0 0 16 18"
+	>
+		<svg fill="currentColor" stroke="none">
+			<path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16zm.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>
+		</svg>
+	</symbol>
+	
+	<!-- ###< Here you can add your own unique svg sprites to access them in templates ### -->
+
+	<symbol id="eye"
+		
+		viewBox="0 0 24 24"
+	>
+		<svg fill="none" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"></path>
+		</svg>
+	</symbol>
+
+	<symbol id="eye-close"
+		
+		viewBox="0 0 24 24"
+	>
+		<svg fill="none" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"></path>
+		</svg>
+	</symbol>
+
+	<symbol id="ok"
+		
+		viewBox="0 0 24 24"
+	>
+		<svg fill="none" stroke="currentColor">
+			<polyline points="4 13 9 18 20 7"/>
+		</svg>
+	</symbol>
+
+	<symbol id="not"
+		
+		viewBox="0 0 4233.32 4233.32"
+	>
+		<svg>
+			<line stroke="#2B2A29" stroke-width="160" stroke-miterlimit="22.9256" fill="none" x1="457.18" y1="457.19" x2="3776.13" y2= "3776.14" />
+			<line stroke="#2B2A29" stroke-width="160" stroke-miterlimit="22.9256" fill="none" x1="457.18" y1="3776.14" x2="3776.13" y2= "457.19" />
+		</svg>
+	</symbol>
+	
+</svg>

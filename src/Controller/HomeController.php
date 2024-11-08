@@ -387,6 +387,7 @@ class HomeController extends AbstractController
     public function __construct(
         #[\App\Attribute\AutowireMyMethodOf(\App\Service\SomeService::class)]
         protected \Closure $getGenerator,
+        private $mobileDetect,
     ) {
     }
 
@@ -522,12 +523,9 @@ class HomeController extends AbstractController
 		*/
 		SerializerInterface $serializer,
 	) {
-		$response = $this->render('home/index.html.twig');
-		
-		\dump(
-			'IS TURBO FRAME',
-			$request->headers->get('Turbo-Frame'),
-		);
+		$response = $this->render('home/index.html.twig', [
+			'is_mobile' => $this->mobileDetect->isPhone() || $this->mobileDetect->isTablet(),
+		]);
 		
 		return $response;
 		

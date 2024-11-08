@@ -1,0 +1,4 @@
+services:
+
+    app.mobile_detect:
+        class: Detection\MobileDetect

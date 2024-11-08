@@ -1,0 +1,1 @@
+php bin/console workflow:dump user_order --dump-format=puml --with-metadata | java -jar 'plantuml.jar' -p > ./docs/user_order_workflow.png

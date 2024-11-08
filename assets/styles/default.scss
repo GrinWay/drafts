@@ -1,0 +1,92 @@
+.transition-rapid {
+	transition: all 70ms ease-in;
+}
+
+.transition-middle {
+	transition: all 200ms ease-in;
+}
+
+.transition-slow {
+	transition: all 600ms ease-in;
+}
+
+.app-width--small {
+	width: 200px;
+}
+
+.app-user-select--none {
+	user-select: none;
+}
+
+.app-test-rfs {
+	font-size: f(5rem);
+	@include down(lg) {
+		font-size: f();
+	}
+}
+
+.block {
+	//background-color: $gray-200;
+	border-radius: 0.5rem;
+	padding: 0.5rem;
+	//@include make-row();
+	
+	&__content {
+		@include gradient-bg($gray-600);
+		border-radius: 0.5rem;
+		padding: 0.5rem;
+	}
+	
+	&__item {
+		//@include make-col();
+		@include down(md) {
+			//@include make-col(12);
+		}
+		border-radius: 0.5rem;
+		//background-color: $gray-400;
+	}
+}
+
+.my-alert {
+	//@include alert-variant($dark, $green, $white);	
+}
+
+.my-div {
+	&-item {
+		font-size: f();
+		
+		@include up(md) {
+			font-size: f(3rem);
+		}
+		
+		a::after {
+		}
+	}
+}
+
+@each $k, $v in $theme-colors {
+	.app-link-title {
+		font-size: f();
+		text-decoration: none;
+		
+		@include up(sm) {
+			font-size: f(3rem);
+		}
+	}
+
+	.app-link-title.app-link-title-#{$k} {
+		color: mix($v, black, 90%);
+	}
+}
+
+.app-element {
+	background-color: $gray-200;
+	height: 400px;
+
+	&-item {
+		position: sticky;
+		top: 0;
+		background-color: $gray-600;
+		height: 100px;
+	}
+}

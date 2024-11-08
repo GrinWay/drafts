@@ -1,15 +1,27 @@
 {# Usage:
 	#1
-	<twig:grin_way_svg>{{ id_var }}</twig:grin_way_svg>
+	<twig:grinway:svg>{{ id_var }}</twig:grin_way_svg>
 	
 	#2
-	<twig:grin_way_svg :id="id_var"/>
+	<twig:grinway:svg :id="id_var"/>
 #}
 
-{% props svg_container_style = null %}
+{% set path_to_svg_symbols_file = asset('saved_bundles/bundles/grinwaywebapp/images/svg/sprite.svg') %}
+{% set symbol_id = attributes.has('id') ? attributes.render('id') : block('content') %}
 
-<div {{ attributes.nested('container').defaults({ style: "width: 24px; height: 24px; #{svg_container_style}" }) }}>
-	<svg {{ attributes.nested('svg').defaults({ class: 'w-100 h-100' }) }}>
-		<use xlink:href="{{- asset('grinwaywebappbundle/images/svg/sprite.svg') -}}#{{- attributes.has('id') ? attributes.render('id') : block('content') -}}"></use>
+<div
+	{{ attributes.nested('svg_container').defaults({}) }}
+>
+	<svg
+		{{ attributes.nested('svg').defaults({ 
+			xmlns: 'http://www.w3.org/2000/svg',
+			width: '24px',
+			height: '24px',
+		}) }}
+	>
+		<use
+			xlink:href={{ path_to_svg_symbols_file ~ '#' ~ symbol_id }}
+			{{ attributes.nested('svg_use').defaults({}) }}
+		></use>
 	</svg>
 </div>

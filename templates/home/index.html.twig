@@ -13,6 +13,102 @@
 {%- endblock -%}
 
 {% block body %}
+
+	
+	
+	
+	
+	
+	
+	
+	<div class="">
+		<h1 class="display-3" tabindex="1">GRID (row>col)</h1>
+		<div class="text-small mb-2">Просто кликни для выделения</div>
+	</div>
+	
+	<div id="test" class="app-test-grid text-bg-primary" tabindex="1">
+		<div class="block row g-1">
+			<div class="block__item h3 col-6">
+				<div class="border border-2 border-print-0 rounded p-2 user-select-all">
+					<div class="">DIV 1</div>
+				</div>
+			</div>
+			<div class="block__item  col-6">
+				<div class="bg-secondary bg-gradient rounded-1 p-2 user-select-all">
+					<var>DIV 2</var>
+				</div>
+			</div>
+			<div class="block__item  col">
+				<div class="bg-secondary bg-gradient rounded-1 p-2 user-select-all">
+					<samp>DIV 2</samp>
+				</div>
+			</div>
+			
+			<div class="block__item text-muted  col">
+				<div class="bg-secondary bg-gradient rounded-1 p-2 user-select-all">
+					DIV 3
+				</div>
+			</div>
+			
+			<div class="block__item  col">
+				<div class="bg-secondary bg-gradient rounded-1 p-2 text-truncate user-select-all">
+					DIV 4
+				</div>
+			</div>
+			<div class="block__item  col">
+				<div class="bg-secondary bg-gradient rounded-1 p-2 user-select-all">
+					DIV 5
+				</div>
+			</div>
+		</div>
+	</div>
+	
+	
+	
+	<div class="test-background row">
+		<div class="col-12 col-md-4 order-md-2">
+			<img class="img-thumbnail" src="{{ asset('clients/media/image/p1.jpg') }}" alt="test">
+		</div>
+		<div class="col-12 col-md-8 order-md-1">
+			<p class="lead position-sticky top-0 text-truncate">
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Veniam, officia, aut, neque eligendi odit est quidem dolorem voluptas delectus tenetur a nemo tempora excepturi ipsam maiores non nisi! Voluptate, natus sed. Quaerat, optio, a aperiam sunt aspernatur quod voluptate est quisquam in corporis minus ut unde rerum vero ipsa dolorem.
+			</p>
+		</div>
+	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+	{% set img_class = 'app-width--small' %}
+	{% set mobile_dop_class = is_mobile|default(false) ? ' app-user-select--none' %}
+
+	{{ dump(is_mobile) }}
+
+	<div
+		{{ stimulus_controller('carousel') }}
+		class="{{- 'swiper ms-0 ' ~ img_class ~ mobile_dop_class -}}"
+	>
+		<div class="swiper-wrapper text-center">
+			<div class="swiper-slide">
+				<img class="{{- img_class -}}" src="{{ asset('clients/media/image/p1.jpg') }}" alt="slide-image">
+			</div>
+			<div class="swiper-slide">
+				<img class="{{- img_class -}}" src="{{ asset('clients/media/image/p2.jpg') }}" alt="slide-image">
+			</div>
+			<div class="swiper-slide">
+				<img class="{{- img_class -}}" src="{{ asset('clients/media/image/p3.jpg') }}" alt="slide-image">
+			</div>
+		</div>
+	</div>
 	
 	<div
 		class=""
@@ -45,7 +141,6 @@
 			swal#showSwal:stop
 			turbo:before-cache@window->swal#close
 		"
-		autofocus
 	>
 		SHOW Sweet Alert
 	</button>
