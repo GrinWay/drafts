@@ -222,3 +222,44 @@ svg text {
 		fill: green;
 	}
 }
+
+.svg-rect {
+	stroke: none;
+	
+	&-red {
+		fill: red;
+	}
+}
+
+.animation-top-bottom {
+	animation: animation-top-bottom 1s ease-out;
+}
+
+@keyframes animation-top-bottom {
+	0% {
+		transform: translateY(-500px);
+	}
+	
+	100% {
+		transform: translateY(0);
+	}
+}
+
+.livitation {
+	animation: animation-livitate 1.8s ease-out infinite;
+	animation-delay: 0s;
+}
+
+@keyframes animation-livitate {
+	0% {
+		transform: translateY(0);
+	}
+	
+	50% {
+		transform: translateY(-30px);
+	}
+	
+	100% {
+		transform: translateY(0);
+	}
+}

@@ -1951,7 +1951,8 @@ TODO
 		stimulus_controller('grinway--html-inserter')
 			include in bundle
 			html: include('@WebAppBundle/svg/animate/_three_shapes.svg.twig'),
-		// TODO: grinway--attr
+		// TODO: grinway--dom-el
+		// TODO: animate-svg -> grinway--animate-svg
 	GsEnvProcessor
 		fix abstractions (only with functions)
 	Command

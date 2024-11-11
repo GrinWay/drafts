@@ -7,94 +7,27 @@
 {% set color_3 = '#b6cdbd' %}
 
 {% set svg_d_rect = '
-	M1354.67
-	1354.67c4515.57,0
-	9031.13,0
-	13546.7,0
-	0,4515.57
-	0,9031.13
-	0,13546.7
-	-4515.57,0
-	-9031.13,0
-	-13546.7,0
-	0,-4515.57
-	0,-9031.13
-	0,-13546.7z
+	
 ' %}
 
 {% set svg_d_triangle = '
-	M8128.02
-	1354.67c1806.23,4515.57
-	3612.45,9031.13
-	5418.68,13546.7
-	-3612.45,0
-	-7224.91,0
-	-10837.36,0
-	903.4,-2258.51
-	1806.82,-4517.02
-	2710.21,-6775.52
-	902.82,-2257.05
-	1805.64,-4514.12
-	2708.47,-6771.18z
+	
 ' %}
 
 {% set svg_d_circle   = '
-	M8128
-	1354.67c3740.79,0
-	6773.32,3032.53
-	6773.32,6773.32
-	0,3740.79
-	-3032.53,6773.32
-	-6773.32,6773.32
-	-3740.79,0
-	-6773.32,-3032.53
-	-6773.32,-6773.32
-	0,-3740.79
-	3032.53,-6773.32
-	6773.32,-6773.32z
+	
 ' %}
 
 {% set svg_three_shapes_key_splines = '
-	0.5 0 0.6 1;
-	0.5 0 0.6 1;
-	0.5 0 0.6 1;
-	0.5 0 0.6 1;
-	0.3 1 0.6 0.78;
+	
 ' %}
 
 {% set svg_three_shapes_key_times = '
-	0;
-	0.22;
-	0.33;
-	0.44;
-	0.66;
-	1;
+	
 ' %}
 
-<svg
-	xmlns="http://www.w3.org/2000/svg"
-	viewBox="-2500 -2500 21000 21000"
-	width="160px"
-	height="160px"
->
-	{###> SHAPE ###}
-	<path
-		d="{{- svg_d_triangle -}}"
-		id="svg-three-shapes"
-		
-		transform-origin="center" {# for rotating #}
-		fill="{{- color_1 -}}"
-		stroke="transparent"
-		stroke-width="5rem"
-		stroke-miterlimit="22.9256"
-	/>
-	{###< SHAPE ###}
-
-	{###> ANIMATE ROTATION ###}
-	<animate
-		id="animate_svg_three_shapes_shape"
-
-		xlink:href="#svg-three-shapes"
+{#
+xlink:href="#svg-three-shapes"
 		attributeName="d"
 		dur="{{- svg_three_shapes_dur -}}"
 		
@@ -113,52 +46,44 @@
 		fill="freeze"
 		additive="replace"
 		begin="click"
+#}
+
+<svg
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox=""
+	width="160px"
+	height="160px"
+>
+	{###> SHAPE ###}
+	<path
+		id="svg-three-shapes"
+		
+		d="{{- svg_d_triangle -}}"
+		fill="{{- color_1 -}}"
+		
+		transform-origin="center" {# for rotating #}
+		
+		stroke="transparent"
+		stroke-width="5rem"
+		stroke-miterlimit="22.9256"
+	/>
+	{###< SHAPE ###}
+
+	{###> ANIMATE ROTATION ###}
+	<animate
+		id=""
 	/>
 	{###< ANIMATE ROTATION ###}
 
 	{###> ANIMATE COLORS ###}
 	<animate
-		id="animate_svg_three_shapes_color"
-		
-		xlink:href="#svg-three-shapes"
-		attributeName="fill"
-		dur="{{- svg_three_shapes_dur -}}"
-		
-		values="
-			{{- color_1 -}};
-			{{- color_3 -}};
-			{{- color_2 -}};
-			{{- color_1 -}};
-			{{- color_2 -}};
-			{{- color_1 -}};
-		"
-		keySplines="{{- svg_three_shapes_key_splines -}}"
-		keyTimes="{{- svg_three_shapes_key_times -}}"
-		calcMode="spline"
-		repeatCount="indefinite"
-		fill="freeze"
-		additive="replace"
-		end="0s"
+		id=""
 	/>
 	{###< ANIMATE COLORS ###}
 
 	{###> ANIMATE TRANSFORM ###}
 	<animateTransform
-		id="animate_three_shapes_rotate"
-		
-		xlink:href="#svg-three-shapes"
-		attributeName="transform"
-		type="rotate"
-		dur="{{- svg_three_shapes_dur -}}"
-		
-		
-		
-		values="
-			0 -2500 -2500;
-			360 -2500 -2500;
-		"
-		repeatCount="indefinite"
-		end="0s"
+		id=""
 	/>
 	{###< ANIMATE TRANSFORM ###}
 </svg>

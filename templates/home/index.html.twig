@@ -166,6 +166,9 @@
 					<div class="p-1 m-0 border border-1 border-gray-500 rounded-4 text-transparent">
 						
 						<svg
+							{{ stimulus_controller('grinway--attr', {
+								useHover: true,
+							}) }}
 							xmlns="http://www.w3.org/2000/svg"
 							viewBox="0 0 16256 16255.98"
 							width="160px"
@@ -195,7 +198,7 @@
 							
 								<path
 									id="svg-path-circle"
-									fill="none"
+									fill="yellow"
 									stroke="#000000"
 									stroke-width="30"
 									d="M8128.02 4064.01c2244.48,0 4064.01,1819.53 4064.01,4064.01 0,2244.48 -1819.53,4064.01 -4064.01,4064.01 -2244.48,0 -4064.01,-1819.53 -4064.01,-4064.01 0,-2244.48 1819.53,-4064.01 4064.01,-4064.01z"
@@ -231,28 +234,52 @@
 							#}
 							
 							<animateTransform
+								id="limusin_put_to_origin_clear"
+								
+								href="#limusin"
+								attributeName="transform"
+								dur="0.0001s"
+								
+								type="translate"
+								values="0, 0;"
+								fill="freeze"
+								begin="animate_limusin_motion.end"
+							/>
+							
+							<animateTransform
 								id="limusin_put_to_origin"
 								
 								href="#limusin"
 								attributeName="transform"
-								dur="0.0001s" {##}
+								dur="0.0001s"
 								
 								type="translate"
 								values="0, 0; -6313.95, -8128.02;"
 								fill="freeze"
 								begin="animate_limusin_motion.begin"
-								end="animate_limusin_motion.end"
 							/>
 							
 							<animateMotion
+								{#
+								{{ stimulus_target('grinway--attr', 'attr') }}
+								data-controller-actions='mouseEnter mouseLeave'
+								data-mouse-enter-set-attribute='repeatDur=0.0001s'
+								data-mouse-leave-set-attribute='repeatDur=1000s'
+								#}
 								id="animate_limusin_motion"
 								
-								href="#limusin"
+								
+								xlink:href="#limusin"
 								dur="5s"
 								
 								rotate="auto"
-								begin="click"
+								begin="
+									0s;
+								"
+								
 								repeatCount="indefinite"
+								repeatDur="1s"
+								min="2s"
 							>
 								<mpath href="#svg-path-circle" />
 							</animateMotion>
@@ -347,6 +374,231 @@
 								begin="set_text_color_2.end"
 							/>
 
+						</svg>
+						
+					</div>
+				</div>
+				
+				<div class="col-auto">
+					<div class="p-1 m-0 border border-1 border-gray-500 rounded-4 text-transparent">
+						
+						<svg
+							id="blink-shape-svg-container"
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 16256 16255.98"
+							width="160px"
+							height="160px"
+						>
+								 <defs>
+								  
+								   <clipPath id="blick-clip-path">
+									<path d="M1354.67 1354.67l13546.66 0 0 13546.65 -13546.66 0 0 -13546.65z"/>
+								   </clipPath>
+								  
+								  <linearGradient id="rect-linear-gradient" gradientUnits="userSpaceOnUse" x1="1862.67" y1="1727.19" x2="14689.67" y2="15036.79">
+								   <stop offset="0" style="stop-opacity:1; stop-color:#016A41"/>
+								   <stop offset="1" style="stop-opacity:1; stop-color:#009846"/>
+								  </linearGradient>
+								
+								 </defs>
+								 
+								 {% set translate_1 = '0 0' %}
+								 {% set translate_2 = '21000 0' %}
+								 {% set translate_3 = '27000 0' %}
+								
+								<g id="blink_rect">
+									<polygon mask="url(#blink_mask)" id="blink_rect_shape" fill="url(#rect-linear-gradient)" points="1354.67,1354.67 14901.33,1354.67 14901.33,14901.32 1354.67,14901.32 "/>
+									<g style="clip-path:url(#blick-clip-path)">
+										<rect id="blink_rect_part_blink" fill="#008644" transform="matrix(1 -0 -0.750068 1 736.69 0)" width="1354.67" height="16256.04"/>
+									</g>
+								</g>
+								
+									<mask id="blink_mask">
+										<rect x="1354.63" y="6773.35" width="13546.74" height="2709.28" fill="#000000"/>
+									</mask>
+								<set
+									id="animate_assign_class_attr"
+									
+									xlink:href="#blink_rect"
+									attributeName="class"
+									dur="1000s"
+									end="animate_blink_rect.end"
+									
+									to="animation-top-bottom"
+									begin="animate_blink_rect.begin"
+								/>
+
+								<animateTransform
+									id="animate_blink_rect"
+									
+									xlink:href="#blink_rect_part_blink"
+									attributeName="transform"
+									dur="1s"
+									calcMode="spline"
+									keySplines="
+										.29,.59,.88,.84;
+										.18,.16,.28,.66;
+									"
+									
+									type="translate"
+									begin="{{-'
+										blink_rect.click;
+									'-}}"
+									values="
+										{{- translate_1 -}};
+										{{- translate_2 -}};
+										{{- translate_3 -}};
+									"
+									additive="sum" {# not to replace matrix #}
+									restart="whenNotActive"
+									repeatCount="1"
+								/>
+								
+						</svg>
+						
+					</div>
+				</div>
+				
+				<div class="col-auto">
+					<div class="p-1 m-0 border border-1 border-gray-500 rounded-4 text-transparent">
+						
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 846.66 846.66"
+							width="160px"
+							height="160px"
+							
+							{{ stimulus_controller('animate-svg', {
+								useHover: true,
+								useClick: true,
+							}) }}
+						>
+							
+							<defs>
+								<circle
+									id="circle_lg"
+									cx="423.3"
+									cy="423.3"
+									r="380.96"
+								/>
+							
+								<mask
+									id="gradient_mask"
+								>
+									{% set animate_mask_origin1 = 697 %}
+									{% set animate_mask_origin2 = 677 %}
+									{% set animate_mask_dur_sec = 1 %}
+									
+									<linearGradient id="transparency_gradient" gradientUnits="userSpaceOnUse" x1="155.81" y1="152.04" x2="{{- animate_mask_origin1 -}}" y2="{{- animate_mask_origin2 -}}">
+										<stop offset="0" style="stop-opacity:0; stop-color:#FFFFFF"/>
+										<stop offset="1" style="stop-opacity:1; stop-color:#FFFFFF"/>
+									</linearGradient>
+								
+									<use
+										xlink:href="#circle_lg"
+										stroke="none"
+										stroke-width="0"
+										fill="url(#transparency_gradient)"
+									/>
+								</mask>
+							</defs>
+							
+							<g
+								id="masked_shape_group"
+							>
+								<use
+									xlink:href="#circle_lg"
+									fill="green"
+									stroke="none"
+									stroke-width="0"
+								/>
+								<use
+									id="masked_shape"
+									mask="url(#gradient_mask)"
+									xlink:href="#circle_lg"
+									fill="yellow"
+									stroke="none"
+									stroke-width="0"
+								/>
+							
+								<animate
+									id="animate_mask_origin"
+									
+									xlink:href="#transparency_gradient"
+									attributeName="x2"
+									dur="{{- animate_mask_dur_sec -}}s"
+									
+									{{ stimulus_target('animate-svg', 'hover') }}
+									data-animate-svg-dispatch-click-to-id="masked_shape"
+									data-animate-svg-run-on-enter
+									
+									additive="sum"
+									values="
+										0;
+										200;
+										0;
+									"
+									begin="
+										masked_shape.click;
+									"
+									repeatCount="indefinite"
+									restart="whenNotActive"
+								/>
+							
+								<animate
+									xlink:href="#transparency_gradient"
+									attributeName="y2"
+									dur="{{- animate_mask_dur_sec -}}s"
+									
+									additive="sum"
+									values="
+										0;
+										200;
+										0;
+									"
+									restart="whenNotActive"
+									begin="
+										animate_mask_origin.begin;
+									"
+									end="
+										animate_mask_origin.end;
+									"
+								/>
+								
+								<set
+									xlink:href="#masked_shape_group"
+									attributeName="class"
+									to="livitation"
+									dur="100h"
+									begin="
+										animate_mask_origin.begin;
+									"
+									end="
+										animate_mask_origin.end;
+									"
+								/>
+								
+								<animate
+									xlink:href="#masked_shape"
+									attributeName="fill"
+									dur="1s"
+									
+									{{ stimulus_target('animate-svg', 'click') }}
+									data-animate-svg-dispatch-click-to-id="masked_shape"
+									data-animate-svg-stop-on-click
+									
+									repeatCount="indefinite"
+									values="
+										yellow;
+										blue;
+									"
+									begin="
+										masked_shape.click
+									"
+									restart="whenNotActive"
+								/>
+							</g>
+								
 						</svg>
 						
 					</div>
