@@ -13,55 +13,415 @@
 {%- endblock -%}
 
 {% block body %}
+	
+	<div class="overflow-clip bg-gray-300">
+		<div class="row row-cols-1 w-100 h-100 py-2 justify-content-center">
+			
+			<div class="col">
+				<div id="test" class="text-center">
+					<h1 class="text-decoration-underline user-select-none lead display-1">SVG</h1>
+				</div>
+			</div>
+			
+			<div class="col d-flex gap-4 flex-wrap align-items-center justify-content-center">
+				<div class="col-auto">
+					<div class="p-1 m-0 border border-1 border-gray-500 rounded-4 text-transparent">
+						
+						<div>
+							{{ include('svg/animated/_three_shapes.svg.twig') }}
+						</div>
+						
+					</div>
+				</div>
+				
+				<div class="col-auto">
+					<div class="p-1 m-0 border border-1 border-gray-500 rounded-4 text-transparent">
+						
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 4233.32 4233.32"
+							width="160px"
+							height="160px"
+						>
+						
+							{% set points_1 = '296.32,296.33 3936.99,296.33 3936.99,3937 296.32,3937' %}
+							{% set points_2 = '750.11,1206.5 3026.82,753.53 3475.56,3031.73 1206.5,3485.72' %}
+							{% set points_3 = '296.32,2116.66 2116.66,296.33 3936.99,2116.66 2116.66,3937' %}
+						
+							{% set color_1 = 'currentColor' %}
+							{% set color_2 = 'gray' %}
+						
+							<polygon
+								id="main-polygon"
+								stroke="#2B2A29"
+								stroke-width="16.93"
+								stroke-miterlimit="22.9256"
+								fill="{{- color_1 -}}"
+								points="{{ points_1 }}"
+							/>
+							
+							<animate
+								id="animate_rotate_1"
+								
+								xlink:href="#main-polygon"
+								attributeName="points"
+								dur=".3s"
+								
+								values="
+									{{- points_1 -}};
+									{{- points_2 -}};
+								"
+								begin="click"
+								fill="freeze"
+								repeatCount="1"
+								calcMode="spline"
+								keySplines="
+									0 0 0 1;
+								"
+								
+								min="1.6s" {#
+									чтобы продлить активное время анимации и её нельзя было запустить снова restart="whenNotActive"
+									min = this.dur + allNext.dur
+								#}
+								restart="whenNotActive"
+							/>
+							
+							<animate
+								id="animate_rotate_2"
+								
+								xlink:href="#main-polygon"
+								attributeName="points"
+								dur=".3s"
+								
+								restart="whenNotActive"
+								begin="animate_rotate_1.end - 1.3s"
+								
+								values="{{ points_2 }};{{ points_3 }}"
+								fill="freeze"
+								repeatCount="1"
+								calcMode="spline"
+								keySplines="
+									0 0 1 0;
+								"
+							/>
+							
+							<animate
+								id="animate_rotate_color"
+								
+								xlink:href="#main-polygon"
+								attributeName="fill"
+								dur=".3s"
+								fill="freeze"
+								values="
+									currentColor;
+									{{- color_2 -}};
+								"
+								repeatCount="1"
+								restart="whenNotActive"
+								
+								begin="animate_rotate_2.begin"
+							/>
+							
+							<animate
+								id="animate_rotate_reset"
+								
+								xlink:href="#main-polygon"
+								attributeName="points"
+								dur=".6s"
+								
+								restart="whenNotActive"
+								begin="animate_rotate_2.end + 1s"
+								
+								values="{{ points_3 }};{{ points_1 }}"
+								fill="freeze"
+								repeatCount="1"
+								restart="whenNotActive"
+								calcMode="spline"
+								keySplines="
+									0 0 0 1;
+								"
+							/>
+							
+							<animate
+								id="animate_rotate_color_reset"
+								
+								xlink:href="#main-polygon"
+								attributeName="fill"
+								dur=".3s"
+								values="
+									{{- color_2 -}};
+									{{- color_1 -}};
+								"
+								fill="freeze"
+								restart="whenNotActive"
+								begin="animate_rotate_reset.begin"							
+							/>
+							
+						</svg>
+						
+					</div>
+				</div>
+				
+				<div class="col-auto">
+					<div class="p-1 m-0 border border-1 border-gray-500 rounded-4 text-transparent">
+						
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 16256 16255.98"
+							width="160px"
+							height="160px"
+						>
+								<g
+									id="limusin"
+									transform="translate(0, 0)"
+								>
+									<circle
+										cx="8127.99" cy="8127.99" r="677.34"
+										stroke="#000000"
+									/>
+									<circle
+										cx="10837.35" cy="8128.02" r="677.34"								
+										stroke="none"
+										fill='#000000'
+									/>
+									<path
+										id="limusin-body"
+										stroke="none"
+										fill='#000000'
+										d="M6313.95 8128.02l919.03 0c0,0 -222.54,-973.45 895.04,-973.45 1117.58,0 914,973.45 914,973.45l841.63 0c0,0 -155.4,-1031.49 953.71,-1031.49 1109.11,0 932.74,1031.49 932.74,1031.49l1615.55 0c0,0 50.95,-1117.62 -482.45,-1109.16 -533.4,8.46 -440.27,-956.74 -440.27,-956.74l-1625.57 -643.44 -8128.02 0 0 2709.34 3604.61 0z"
+									/>
+								</g>
+							
+							
+								<path
+									id="svg-path-circle"
+									fill="none"
+									stroke="#000000"
+									stroke-width="30"
+									d="M8128.02 4064.01c2244.48,0 4064.01,1819.53 4064.01,4064.01 0,2244.48 -1819.53,4064.01 -4064.01,4064.01 -2244.48,0 -4064.01,-1819.53 -4064.01,-4064.01 0,-2244.48 1819.53,-4064.01 4064.01,-4064.01z"
+								/>
+							<defs>
+							</defs>
+							
+							{#
+							<animate
+								id="reset_limusin_position"
+								
+								xlink:href="#limusin"
+								attributeName="x"
+								dur="0.001s"
+								fill="freeze"
+								begin="click"
+								to="0"
+								
+								keyTimes="0;0.7;0.7;1"
+								keyPoints="0.3;1;0;0.3"
+								calcMode="linear"
+							/>
+							<animate
+								id="reset_limusin_position_y"
+								
+								xlink:href="#limusin"
+								attributeName="y"
+								dur="0.001s"
+								fill="freeze"
+								begin="reset_limusin_position.begin"
+								to="0"
+							/>
+							#}
+							
+							<animateTransform
+								id="limusin_put_to_origin"
+								
+								href="#limusin"
+								attributeName="transform"
+								dur="0.0001s" {##}
+								
+								type="translate"
+								values="0, 0; -6313.95, -8128.02;"
+								fill="freeze"
+								begin="animate_limusin_motion.begin"
+								end="animate_limusin_motion.end"
+							/>
+							
+							<animateMotion
+								id="animate_limusin_motion"
+								
+								href="#limusin"
+								dur="5s"
+								
+								rotate="auto"
+								begin="click"
+								repeatCount="indefinite"
+							>
+								<mpath href="#svg-path-circle" />
+							</animateMotion>
+						</svg>
+						
+					</div>
+				</div>
+				
+				<div class="col-auto">
+					<div class="p-1 m-0 border border-1 border-gray-500 rounded-4 text-transparent">
+						
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 16256 16255.98"
+							width="160px"
+							height="160px"
+						>
+							{% set textPathStartOffset = '63%' %}
+							{% set textPathEndOffset = '62%' %}
+						
+							<text
+								id="svg-text"
+								class="text-md"
+								id="svg-text"
+								fill="#000000"
+								stroke="none"
+							>
+								<textPath
+									id="svg-text-path"
+									xlink:href="#svg-text-path-shape"
+									startOffset="0%"
+								>
+									Some svg text
+								</textPath>
+							</text>
+							
+							<circle
+								id="svg-text-path-shape"
+								cx="8128.02"
+								cy="8128.02"
+								r="5418.68"
+								fill="none"
+								stroke="#000000"
+								stroke-width="30"
+							/>
+							<defs>
+							</defs>
+							
+							{% set animate_text_motion_dur = '4s' %}
+							
+							<animate
+								id="animate_text_motion"
+								
+								xlink:href="#svg-text-path"
+								attributeName="startOffset"
+								dur="{{- animate_text_motion_dur -}}"
+								values="
+									0%;
+									100%;
+								"
+								repeatCount="indefinite"
+							/>
+							
+							<set
+								id="set_text_color_1"
+								
+								xlink:href="#svg-text-path"
+								attributeName="fill"
+								to="red"
+								dur="{{- animate_text_motion_dur -}}"
+								repeatCount="1"
+								begin="animate_text_motion.begin; set_text_color_3.end"
+							/>
+							<set
+								id="set_text_color_2"
+								
+								xlink:href="#svg-text-path"
+								attributeName="fill"
+								to="green"
+								dur="{{- animate_text_motion_dur -}}"
+								repeatCount="1"
+								begin="set_text_color_1.end"
+							/>
+							<set
+								id="set_text_color_3"
+								
+								xlink:href="#svg-text-path"
+								attributeName="fill"
+								to="blue"
+								dur="{{- animate_text_motion_dur -}}"
+								repeatCount="1"
+								begin="set_text_color_2.end"
+							/>
 
-	
-	
-	
-	
-	
-	
-	
-	<div class="">
-		<h1 class="display-3" tabindex="1">GRID (row>col)</h1>
-		<div class="text-small mb-2">Просто кликни для выделения</div>
-	</div>
-	
-	<div id="test" class="app-test-grid text-bg-primary" tabindex="1">
-		<div class="block row g-1">
-			<div class="block__item h3 col-6">
-				<div class="border border-2 border-print-0 rounded p-2 user-select-all">
-					<div class="">DIV 1</div>
+						</svg>
+						
+					</div>
 				</div>
-			</div>
-			<div class="block__item  col-6">
-				<div class="bg-secondary bg-gradient rounded-1 p-2 user-select-all">
-					<var>DIV 2</var>
-				</div>
-			</div>
-			<div class="block__item  col">
-				<div class="bg-secondary bg-gradient rounded-1 p-2 user-select-all">
-					<samp>DIV 2</samp>
-				</div>
+				
 			</div>
 			
-			<div class="block__item text-muted  col">
-				<div class="bg-secondary bg-gradient rounded-1 p-2 user-select-all">
-					DIV 3
+			<div class="col row row-cols-1 justify-content-center gap-4">
+				<div class="col">
+					<div class="text-center">
+						<h1 class="text-decoration-underline user-select-none lead display-1">CSS</h1>
+					</div>
+				</div>
+					
+					<div class="col-auto">
+						<div class="p-2 m-0 border border-1 border-gray-500 rounded-4 text-transparent" style="width: 80px; height: 80px">
+							
+							<div class="css-animation-1 w-100 h-100 rounded-1"></div>
+							
+						</div>
+					</div>
+					
+					<div class="col-auto">
+						<div class="p-2 m-0 border border-1 border-gray-500 rounded-4 text-transparent" style="width: 80px; height: 80px">
+							
+							<div class="css-animation-2
+								w-100 h-100 rounded-1 text-dark fs-8 text-center d-flex justify-content-center align-items-center"
+							>
+								Текст появился
+							</div>
+							
+						</div>
+					</div>
+					
+					<div class="col-auto">
+						<div class="p-2 m-0 border border-1 border-gray-500 rounded-4 text-transparent" style="width: 80px; height: 80px">
+							
+							<div class="css-animation-3 rounded-circle
+								w-100 h-100 rounded-1 bg-dark"
+							></div>
+							
+						</div>
+					</div>
+					
+					<div class="col-auto">
+						<div class="p-2 m-0 border border-1 border-gray-500 rounded-4 text-transparent" style="width: 80px; height: 80px">
+							
+							<div class="d-none
+								w-100 h-100 rounded-1 bg-secondary bg-gradient"
+							></div>
+							
+						</div>
+					</div>
+					
 				</div>
 			</div>
-			
-			<div class="block__item  col">
-				<div class="bg-secondary bg-gradient rounded-1 p-2 text-truncate user-select-all">
-					DIV 4
-				</div>
-			</div>
-			<div class="block__item  col">
-				<div class="bg-secondary bg-gradient rounded-1 p-2 user-select-all">
-					DIV 5
-				</div>
-			</div>
+
 		</div>
 	</div>
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 	
@@ -163,7 +523,9 @@
 	{{ dump(asset_version('media/image/symfony.png')) }}
 	#}
 
-	Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, ut, odit aperiam delectus dolorem fugiat doloremque molestiae recusandae molestias provident omnis vel adipisci atque. Sit, dicta, ad, exercitationem mollitia nobis numquam ullam minus cum officia praesentium dolore quaerat tempora doloribus dolor quia illo quis consequuntur modi repellendus vel soluta doloremque et quos expedita eum molestias voluptatem. Ut, voluptates reprehenderit ipsum odio? Aperiam, sapiente, quia, aliquid nisi totam necessitatibus animi mollitia laudantium nostrum magnam amet esse reiciendis eligendi accusantium blanditiis sunt facilis a neque possimus ipsam quaerat veniam dolorum illo. Hic, fuga, velit, eius, nostrum expedita possimus atque natus ipsa suscipit vel accusamus veniam voluptatem non ut quam obcaecati rerum? Repellat, doloremque, perspiciatis deleniti nostrum adipisci minus ipsa est veniam vero itaque voluptates id corrupti quam mollitia sunt voluptas repellendus ducimus accusamus autem dolores doloribus praesentium illo illum. Facilis, magnam, maxime, voluptatibus vel molestias quod accusantium suscipit officiis velit tenetur iste ex consequatur cumque aut eius repudiandae voluptates ea ut nemo exercitationem? Deserunt, consequuntur, consectetur temporibus dignissimos nihil pariatur dolorem ratione assumenda eum ducimus. Magni, reiciendis ipsum magnam unde cum doloribus facilis tempore quo iusto quas illum sint voluptates eius pariatur excepturi veritatis fugiat praesentium nesciunt dolorem odio mollitia saepe natus iure. Alias, ipsa, porro sapiente fuga tenetur iste expedita quae aut sed sit tempore placeat neque voluptate. Voluptatibus, culpa, veniam, consequuntur temporibus nostrum fugiat veritatis provident dolorum ab fugit cupiditate sit expedita quod nam architecto doloremque aspernatur optio odio enim voluptate. Nam, tenetur quia accusamus nisi explicabo delectus officia inventore ut. Nihil, labore, in, quis, obcaecati totam distinctio odit quae hic perferendis reprehenderit delectus impedit ab architecto sapiente voluptatem error eius ipsum ullam voluptates porro. Eligendi, ipsa cum officia iure distinctio nisi ab cupiditate commodi quidem praesentium omnis consequatur iste eaque. Porro, dolores sit ab fuga adipisci maiores et quas!
+	<div class="lead lh-1 lh-sm-sm lh-md-base">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quidem, ut, odit aperiam delectus dolorem fugiat doloremque molestiae recusandae molestias provident omnis vel adipisci atque. Sit, dicta, ad, exercitationem mollitia nobis numquam ullam minus cum officia praesentium dolore quaerat tempora doloribus dolor quia illo quis consequuntur modi repellendus vel soluta doloremque et quos expedita eum molestias voluptatem. Ut, voluptates reprehenderit ipsum odio? Aperiam, sapiente, quia, aliquid nisi totam necessitatibus animi mollitia laudantium nostrum magnam amet esse reiciendis eligendi accusantium blanditiis sunt facilis a neque possimus ipsam quaerat veniam dolorum illo. Hic, fuga, velit, eius, nostrum expedita possimus atque natus ipsa suscipit vel accusamus veniam voluptatem non ut quam obcaecati rerum? Repellat, doloremque, perspiciatis deleniti nostrum adipisci minus ipsa est veniam vero itaque voluptates id corrupti quam mollitia sunt voluptas repellendus ducimus accusamus autem dolores doloribus praesentium illo illum. Facilis, magnam, maxime, voluptatibus vel molestias quod accusantium suscipit officiis velit tenetur iste ex consequatur cumque aut eius repudiandae voluptates ea ut nemo exercitationem? Deserunt, consequuntur, consectetur temporibus dignissimos nihil pariatur dolorem ratione assumenda eum ducimus. Magni, reiciendis ipsum magnam unde cum doloribus facilis tempore quo iusto quas illum sint voluptates eius pariatur excepturi veritatis fugiat praesentium nesciunt dolorem odio mollitia saepe natus iure. Alias, ipsa, porro sapiente fuga tenetur iste expedita quae aut sed sit tempore placeat neque voluptate. Voluptatibus, culpa, veniam, consequuntur temporibus nostrum fugiat veritatis provident dolorum ab fugit cupiditate sit expedita quod nam architecto doloremque aspernatur optio odio enim voluptate. Nam, tenetur quia accusamus nisi explicabo delectus officia inventore ut. Nihil, labore, in, quis, obcaecati totam distinctio odit quae hic perferendis reprehenderit delectus impedit ab architecto sapiente voluptatem error eius ipsum ullam voluptates porro. Eligendi, ipsa cum officia iure distinctio nisi ab cupiditate commodi quidem praesentium omnis consequatur iste eaque. Porro, dolores sit ab fuga adipisci maiores et quas!
+	</div>
 	
 	<div class=""
 		{{ stimulus_controller('lightbox') }}

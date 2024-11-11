@@ -7,37 +7,6 @@
  * @import '~bootstrap/scss/utilities';
  */
 
-//###> APP FONT SIZES ###
-$app-font-size-div: 1 !default;
-
-// (small)
-$app-n1-font-size:                $font-size-base * 0.8 / $app-font-size-div !default;
-$app-n2-font-size:                $font-size-base * 0.85 / $app-font-size-div !default;
-$app-n3-font-size:                $font-size-base * 0.9 / $app-font-size-div !default;
-$app-n4-font-size:                $font-size-base * 0.95 / $app-font-size-div !default;
-$app-n5-font-size:                $font-size-base * 1 / $app-font-size-div !default;
-$app-5-font-size:                $font-size-base * 1.25 / $app-font-size-div !default;
-$app-4-font-size:                $font-size-base * 1.5 / $app-font-size-div !default;
-$app-3-font-size:                $font-size-base * 1.75 / $app-font-size-div !default;
-$app-2-font-size:                $font-size-base * 2 / $app-font-size-div !default;
-$app-1-font-size:                $font-size-base * 2.5 / $app-font-size-div !default;
-// (big)
-
-$app-font-sizes: (
-  n1: $app-n1-font-size,
-  n2: $app-n2-font-size,
-  n3: $app-n3-font-size,
-  n4: $app-n4-font-size,
-  n5: $app-n5-font-size,
-  1: $app-1-font-size,
-  2: $app-2-font-size,
-  3: $app-3-font-size,
-  4: $app-4-font-size,
-  5: $app-5-font-size,
-  6: null /* not included */
-) !default;
-//###< APP FONT SIZES ###
-
 //$utilities: () !default;
 
 $utilities: map-merge(
@@ -70,17 +39,30 @@ $utilities: map-merge(
 				),
 			),
 		),
-		font-size: (
-			property: 'font-size',
-			values: map-merge(
-				$app-font-sizes,
-				(
-					def: inherit,
+		font-size: map-merge(
+			map-get($utilities, font-size),
+			(
+				values: map-merge(
+					map-get(map-get($utilities, font-size), values),
+					(
+						6: $font-size-base * 1,
+						7: $font-size-base * 0.9,
+						8: $font-size-base * 0.8,
+					),
 				),
+				responsive: true,
 			),
-			rfs: true,
-			class: fz,
-			responsive: true,
+		),
+		line-height: map-merge(
+			map-get($utilities, line-height),
+			(
+				responsive: true,
+			),
+		),
+		grinway-color: (
+			property: color,
+			class: text,
+			values: transparent,
 		),
 	),
 );

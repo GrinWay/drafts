@@ -1432,9 +1432,29 @@ LIB MOBILE DETECT:
 		Я делал это в EasyAdmin index, где не было app Entry Point
 	? По неизвестной причине mobile detect не обнаружил что я вошёл с телефона
 ***
+SVG ANIMATIONS
+
+	ПОСЛЕ CSS АНИМАЦИИ
+		заставь svg анимацию проиграться 1 раз при hover
+			реализуй разные анимации для hover, click
+			
+	?
+	? Для чего нужен svg by attribute
+	? Как сделать анимацию вращения текста по окружности непрерывной (startOffset думаю не подойдёт)
+	???? Как перезапустить svg анимацию через js
+		Как же всё таки запустить svg анимацию по hover
+		что нужно сделать в stimulus controller when useHover
+		если установка begin="0s", и удаление end аттрибутов бессмысленна так как время отсчитывается с момента появления svg изображения
+		и даже удаление и внесение обратно в DOM в с помощью JS не помогает
 BOOTSTRAP (not deep)
 	
-	2 заметки
+	Доделай анимацию shapes добавив ротацию
+	animateMotion понять когда
+		фигура начинает движение из своего положения
+		фигура переносится в начало path
+	как назначить центр трансформации (теперь можно переместить target перед началом animateMotion)
+	как отобразить существующий path в другом месте просто ссылаясь на него (не спрайт)
+
 	
 	после изучения
 	RRR: Обязательно просмотри ВЕСЬ ФАЙЛ!
@@ -1443,8 +1463,11 @@ BOOTSTRAP (not deep)
 		ГЕНЕРИРУЮТСЯ ОСНОВНЫЕ BOOTSTRAP CSS classes
 		{class}-{breakpoint}-{value}-{state}
 		{flex} -{md}        -{grow-0}
-		
+
 		{class}-{print}-{value} // breakpoint & state не смешиваются с print (отдельная генерация)
+
+		class, valueMapKey и valueMapValue могут быть null
+	R: использовать анимации svg со спрайтами
 	https://symfony.com/doc/current/form/bootstrap5.html
 	опираясь на пример темы ".\vendor\symfony\twig-bridge\Resources\views\Form\form_div_layout.html.twig"
 		сделать свою тему на bootstrap (form/theme/grinway/light/index.html.twig)
@@ -1924,6 +1947,11 @@ TODO
 		twig:grinway:trix
 		// TODO: bootstrap
 		<twig:grinway:grid-br br_up="md" /> -> <div class="w-100 d-none d-md-block"></div>
+		// TODO: html-inserter
+		stimulus_controller('grinway--html-inserter')
+			include in bundle
+			html: include('@WebAppBundle/svg/animate/_three_shapes.svg.twig'),
+		// TODO: grinway--attr
 	GsEnvProcessor
 		fix abstractions (only with functions)
 	Command
