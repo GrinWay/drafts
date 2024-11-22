@@ -9,14 +9,32 @@ use Symfony\Component\Notifier\Recipient\RecipientInterface;
 
 class SubjectPlusContentNotification extends Notification implements ChatNotificationInterface
 {
+	public function __construct(
+		string $subject = '',
+		array $channels = [],
+		private ?object $optionsObject = null,
+	) {
+		parent::__construct(
+			subject: $subject,
+			channels: $channels,
+		);
+	}
+	
     public function asChatMessage(RecipientInterface $recipient, ?string $transport = null): ?ChatMessage
     {
-        if ('telegram' === $transport) {
-            $clone = clone $this;
-            $clone->subject($clone->getSubject() . \PHP_EOL . $clone->getContent());
-            return ChatMessage::fromNotification($clone);
-        }
-
-        return null;
+		$clone = clone $this;
+		$clone->subject($clone->getSubject() . \PHP_EOL . $clone->getContent());
+		
+		$chatMessage = ChatMessage::fromNotification($clone);
+		
+		if (null !== $transport) {
+			$chatMessage->transport($transport);
+		}
+		
+		if (null !== $this->optionsObject) {
+			$chatMessage->options($this->optionsObject);
+		}
+		
+		return $chatMessage;
     }
 }

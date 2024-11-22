@@ -11,8 +11,8 @@ services:
             priority: -1
             
     #// TODO: TranlationDomainFormTypeExtension (через конфиг default_translation_domain)
-    App\Form\TypeExtension\Default\TranlationDomainFormTypeExtension:
-        class: App\Form\TypeExtension\Default\TranlationDomainFormTypeExtension
-        tags:
-        -   name: 'form.type_extension'
-            priority: -1
+    #App\Form\TypeExtension\Default\TranlationDomainFormTypeExtension:
+    #    class: App\Form\TypeExtension\Default\TranlationDomainFormTypeExtension
+    #    tags:
+    #    -   name: 'form.type_extension'
+    #        priority: -1

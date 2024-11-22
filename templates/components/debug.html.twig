@@ -2,7 +2,7 @@
 
 	{%- set impersonation_email = 'cvetkov.ignatij@agafonova.com' -%}
 	
-	{%- set securitySvgClass = "m-auto pt-1" -%}
+	{%- set securitySvgClass = "m-auto pt-1 mt-n1 ms-1" -%}
 	
 	<div class="">
 		SESSION
@@ -21,83 +21,129 @@
 	
 	{%- if is_granted('VOTE_IS_AUTH') -%}
 		<div class="badge text-bg-secondary me-1">
-			VOTE_IS_AUTH <twig:grinway:svg container:class="{{ securitySvgClass }}" id="ok" />
+			<div class="d-flex align-items-center">
+				<div class="">VOTE_IS_AUTH</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}" id="ok" />
+			</div>
 		</div>
 	{%- else -%}
 		<div class="badge text-bg-secondary me-1">
-			NOT VOTE_IS_AUTH <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+			<div class="d-flex align-items-center">
+				<div class="">NOT VOTE_IS_AUTH</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}"  id="no" />
+			</div>
 		</div>
 	{%- endif -%}
 	
 	{%- if is_granted('IS_AUTHENTICATED_ANONYMOUSLY') -%}
 		<div class="badge text-bg-secondary me-1">
-			IS_AUTHENTICATED_ANONYMOUSLY <twig:grinway:svg container:class="{{ securitySvgClass }}" id="ok" />
+			<div class="d-flex align-items-center">
+				<div class="">IS_AUTHENTICATED_ANONYMOUSLY</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}" id="ok" />
+			</div>			
 		</div>
 	{%- else -%}
 		<div class="badge text-bg-secondary me-1">
-			NOT IS_AUTHENTICATED_ANONYMOUSLY <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+			<div class="d-flex align-items-center">
+				<div class="">NOT IS_AUTHENTICATED_ANONYMOUSLY</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}"  id="no" />
+			</div>
 		</div>
 	{%- endif -%}
 	
 	{%- if is_granted('IS_AUTHENTICATED_FULLY') -%}
 		<div class="badge text-bg-secondary me-1">
-			IS_AUTHENTICATED_FULLY <twig:grinway:svg container:class="{{ securitySvgClass }}" id="ok" />
+			<div class="d-flex align-items-center">
+				<div class="">IS_AUTHENTICATED_FULLY</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}" id="ok" />
+			</div>
 		</div>
 	{%- else -%}
 		<div class="badge text-bg-secondary me-1">
-			NOT IS_AUTHENTICATED_FULLY <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+			<div class="d-flex align-items-center">
+				<div class="">NOT IS_AUTHENTICATED_FULLY</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}"  id="no" />
+			</div>
 		</div>
 	{%- endif -%}
 	
 	{%- if is_granted('IS_REMEMBERED') -%}
 		<div class="badge text-bg-secondary me-1">
-			IS_REMEMBERED <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="ok" />			
+			<div class="d-flex align-items-center">
+				<div class="">IS_REMEMBERED</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}"  id="ok" />			
+			</div>
 		</div>
 	{%- else -%}
 		<div class="badge text-bg-secondary me-1">
-			NOT IS_REMEMBERED <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+			<div class="d-flex align-items-center">
+				<div class="">NOT IS_REMEMBERED</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}"  id="no" />
+			</div>
 		</div>
 	{%- endif -%}
 	
 	{%- if is_granted('IS_AUTHENTICATED_REMEMBERED') -%}
 		<div class="badge text-bg-secondary me-1">
-			IS_AUTHENTICATED_REMEMBERED <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="ok" />			
+			<div class="d-flex align-items-center">
+				<div class="">IS_AUTHENTICATED_REMEMBERED</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}"  id="ok" />			
+			</div>
 		</div>
 	{%- else -%}
 		<div class="badge text-bg-secondary me-1">
-			NOT IS_AUTHENTICATED_REMEMBERED <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+			<div class="d-flex align-items-center">
+				<div class="">NOT IS_AUTHENTICATED_REMEMBERED</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}"  id="no" />
+			</div>
 		</div>
 	{%- endif -%}
 	
 	{%- if is_granted('IS_AUTHENTICATED') -%}
 		<div class="badge text-bg-secondary me-1">
-			IS_AUTHENTICATED
-			<twig:grinway:svg container:class="{{ securitySvgClass }}"  id="ok" />
-			<div class="">
-				{{ get_short_class(app.token) }}
+			<div class="d-flex align-items-center">
+				<div class="">IS_AUTHENTICATED</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}"  id="ok" />
+				<div class="">
+					{{ get_short_class(app.token) }}
+				</div>
 			</div>
 		</div>
 	{%- else -%}
 		<div class="badge text-bg-secondary me-1">
-			NOT IS_AUTHENTICATED <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+			<div class="d-flex align-items-center">
+				<div class="">NOT IS_AUTHENTICATED</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}"  id="no" />
+			</div>
 		</div>
 	{%- endif -%}
 	
 	{%- if is_granted('IS_IMPERSONATOR') -%}
 		<div class="badge text-bg-secondary me-1">
-			IS_IMPERSONATOR <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="ok" />
+			<div class="d-flex align-items-center">
+				<div class="">IS_IMPERSONATOR</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}"  id="ok" />
+			</div>
 		</div>
 		<div class="d-inline">
-			IS_IMPERSONATOR <a href="{{ impersonation_exit_path() }}" class="">EXIT</a>
+			<div class="d-flex align-items-center">
+				<div class="">IS_IMPERSONATOR</div>
+				<a href="{{ impersonation_exit_path() }}" class="">EXIT</a>
+			</div>
 		</div>
 		{%- if attribute(app.token, 'originalToken') is defined -%}
-			<div class="d-inline">
-				But actually you're: "{{ app.token.originalToken.user.userIdentifier -}}"
+			<div class="d-flex align-items-center">
+				<div class="d-inline">
+					But actually you're: "{{ app.token.originalToken.user.userIdentifier -}}"
+				</div>
 			</div>
 		{%- endif -%}
 	{%- else -%}
 		<div class="badge text-bg-secondary me-1">
-			NOT IS_IMPERSONATOR <twig:grinway:svg container:class="{{ securitySvgClass }}"  id="not" />
+			<div class="d-flex align-items-center">
+				<div class="">NOT IS_IMPERSONATOR</div>
+				<twig:grinway:svg width="20px" height="20px" stroke="black" stroke-width="10" class="{{ securitySvgClass }}"  id="no" />
+			</div>
 		</div>
 		<div class="d-inline">
 			<a href="{{- impersonation_path(impersonation_email) -}}" class="">PRETEND</a>

@@ -22,10 +22,10 @@ class TemplatedEmailNotification extends Notification implements EmailNotificati
 {
     public function __construct(
         string $subject,
-        array $channels,
         //###> Priority 2 (high)
         private readonly ?string $theme = null,
         //###> Priority 1 (low)
+        array $channels = ['email'],
         private readonly ?string $template = null,
         private readonly array $context = [],
         private readonly ?string $actionText = null,

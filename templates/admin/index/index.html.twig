@@ -10,5 +10,14 @@
 	{{ parent() }}
 {% endblock %}
 
+{% block content %}
+	<div
+	{{ stimulus_controller('html-listener') }}
+	class="container {{ block('theme', 'blocks/_cookie.html.twig') }}">
+		{{ parent() }}
+	</div>
+{% endblock %}
+
 {% block main %}
+	
 {% endblock %}

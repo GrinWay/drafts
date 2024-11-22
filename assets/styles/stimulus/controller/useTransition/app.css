@@ -49,7 +49,7 @@
 /* ### */
 
 .fade-enter-active {
-	transition: opacity 300ms ease-out;
+	transition: opacity 500ms ease-out;
 }
 .fade-enter-from {
 	opacity: 0;

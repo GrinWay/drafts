@@ -6,6 +6,12 @@ yarn install
 
 #yarn run dev
 
+echo 'set MERCURE_PUBLISHER_JWT_KEY to the GLOBAL ENVIRONMENT'
+echo '\r\n'
+
+echo 'set MERCURE_SUBSCRIBER_JWT_KEY to the GLOBAL ENVIRONMENT'
+echo '\r\n'
+
 echo 'APP_ADMIN_MAILER_LOGIN'
 php bin/console secrets:set APP_ADMIN_MAILER_LOGIN
 echo 'APP_ADMIN_MAILER_PASS'
@@ -66,3 +72,15 @@ bin/console secrets:set APP_EXPO_TOKEN
 
 echo 'MERCURE_JWT_SECRET'
 bin/console secrets:set MERCURE_JWT_SECRET
+
+echo 'MAILER_MAILGUN_TRANSPORT_DOMAIN'
+bin/console secrets:set MAILER_MAILGUN_TRANSPORT_DOMAIN
+
+echo 'MAILER_MAILGUN_TRANSPORT_API_KEY'
+bin/console secrets:set MAILER_MAILGUN_TRANSPORT_API_KEY
+
+echo 'MAILER_MAILGUN_TRANSPORT_REGION'
+bin/console secrets:set MAILER_MAILGUN_TRANSPORT_REGION
+
+echo 'APP_WEBHOOK_MAILER_MAILGUN_SECRET'
+bin/console secrets:set APP_WEBHOOK_MAILER_MAILGUN_SECRET

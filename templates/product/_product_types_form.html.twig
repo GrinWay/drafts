@@ -5,6 +5,10 @@
 
 {% block body %}
 	
+	<div id="swup">
+		Содержимое со страницы "{{ url(app.current_route) }}"
+	</div>
+	
 	{% set s = 'Lorem :kiwi-fruit::interrobang: ipsum dolor sit amet, consectetur adipisicing elit. Omnis magni explicabo ab molestias     asperiores laboriosam quod sequi sed. Atque, harum.' %}
 	{% set len = s|u.length %}
 	

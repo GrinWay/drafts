@@ -30,7 +30,7 @@ framework:
                 default_lifetime: 60
                 adapters:
                 
-                # VERY FAST
+                # VERY FAST (but for tests only, it doesn't save anything: https://symfony.com/doc/current/components/cache/adapters/array_cache_adapter.html)
                 -   cache.adapter.array
                 
                 #-   app.cache_adapter.php_files
@@ -43,5 +43,9 @@ framework:
                 default_lifetime: 60
                 
             app.cache.day:
+                adapter: 'cache.adapter.filesystem'
+                default_lifetime: 3600
+                
+            app.cache.lazy_image:
                 adapter: 'cache.adapter.filesystem'
                 default_lifetime: 3600

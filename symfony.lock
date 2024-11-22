@@ -274,6 +274,15 @@
             "./config/packages/mailer.yaml"
         ]
     },
+    "symfony/mailgun-mailer": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.4",
+            "ref": "addcb559b32d9dbb4843826b063565e1b15a2a57"
+        }
+    },
     "symfony/maker-bundle": {
         "version": "1.59",
         "recipe": {
@@ -294,6 +303,15 @@
         "files": [
             "./config/packages/mercure.yaml"
         ]
+    },
+    "symfony/mercure-notifier": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "5.3",
+            "ref": "98a27687305d236709390ff01d7a6a9818735b97"
+        }
     },
     "symfony/messenger": {
         "version": "7.1",
@@ -457,11 +475,50 @@
             "ref": "0df5844274d871b37fc3816c57a768ffc60a43a5"
         }
     },
+    "symfony/ux-autocomplete": {
+        "version": "2.21",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.6",
+            "ref": "07d9602b7231ba355f484305d6cea58310c01741"
+        },
+        "files": [
+            "./config/routes/ux_autocomplete.yaml"
+        ]
+    },
+    "symfony/ux-chartjs": {
+        "version": "v2.21.0"
+    },
     "symfony/ux-cropperjs": {
         "version": "v2.20.0"
     },
     "symfony/ux-dropzone": {
         "version": "v2.20.0"
+    },
+    "symfony/ux-icons": {
+        "version": "2.20",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.17",
+            "ref": "803a3bbd5893f9584969ab8670290cdfb6a0a5b5"
+        },
+        "files": [
+            "./assets/icons/symfony.svg"
+        ]
+    },
+    "symfony/ux-lazy-image": {
+        "version": "2.21",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.18",
+            "ref": "f6554b7efe60280645ac979c80700f66b8432131"
+        },
+        "files": [
+            "./config/packages/lazy_image.yaml"
+        ]
     },
     "symfony/ux-live-component": {
         "version": "2.20",
@@ -475,8 +532,41 @@
             "./config/routes/ux_live_component.yaml"
         ]
     },
+    "symfony/ux-notify": {
+        "version": "v2.21.0"
+    },
+    "symfony/ux-svelte": {
+        "version": "2.21",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.9",
+            "ref": "4a6ee82d817d4e9be8d4a861476a112011d701e1"
+        },
+        "files": [
+            "./assets/svelte/controllers/Hello.svelte"
+        ]
+    },
+    "symfony/ux-swup": {
+        "version": "v2.21.0"
+    },
     "symfony/ux-toggle-password": {
         "version": "v2.18.0"
+    },
+    "symfony/ux-translator": {
+        "version": "2.21",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.9",
+            "ref": "bc396565cc4cab95692dd6df810553dc22e352e1"
+        },
+        "files": [
+            "./assets/translator.js",
+            "./config/packages/ux_translator.yaml",
+            "./var/translations/configuration.js",
+            "./var/translations/index.js"
+        ]
     },
     "symfony/ux-turbo": {
         "version": "v2.20.0"
@@ -492,6 +582,9 @@
         "files": [
             "./config/packages/twig_component.yaml"
         ]
+    },
+    "symfony/ux-typed": {
+        "version": "v2.21.0"
     },
     "symfony/validator": {
         "version": "7.1",
@@ -516,6 +609,18 @@
         "files": [
             "./config/packages/web_profiler.yaml",
             "./config/routes/web_profiler.yaml"
+        ]
+    },
+    "symfony/webhook": {
+        "version": "7.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.3",
+            "ref": "0bc853a74c98e448116ba53e118a7b6b3cdf9a03"
+        },
+        "files": [
+            "./config/routes/webhook.yaml"
         ]
     },
     "symfony/webpack-encore-bundle": {

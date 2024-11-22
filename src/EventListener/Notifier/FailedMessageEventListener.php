@@ -12,12 +12,5 @@ class FailedMessageEventListener
     {
         $message = $event->getMessage();
         $error = $event->getError();
-
-        \dump(
-            __METHOD__,
-            \get_debug_type($message),
-            \get_debug_type($error),
-            $error->getDebug(),
-        );
     }
 }

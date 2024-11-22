@@ -1,0 +1,13 @@
+.loading .ts-dropdown .spinner::after {
+	background-color: transparent;
+	content: '';
+	border: none;
+	animation: none;
+}
+
+.loading .ts-dropdown .spinner {
+	background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Crect%20x%3D%270%27%20y%3D%270%27%20width%3D%27100%27%20height%3D%27100%27%20fill%3D%27%23000000%27%20stroke%3D%27none%27%3E%3Canimate%20attributeName%3D%27fill%27%20values%3D%27%23000000%3B%23FFFFFF%3B%23000000%27%20dur%3D%272s%27%20repeatCount%3D%27indefinite%27%3E%3C%2Fanimate%3E%3C%2Frect%3E%3C%2Fsvg%3E");
+	background-size: cover;
+	background-repeat: no-repeat;
+	padding: 0;
+}

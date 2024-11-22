@@ -1,16 +1,3 @@
-when@test: &test
-    framework:
-        notifier:
-            texter_transports:
-                onesignal:      'null://null'
-                novu:           'null://null'
-                
-                expo:           'null://null'
-                twilio:         'null://null'
-
-            chatter_transports:
-                telegram:       'null://null'
-
 framework:
     notifier:
         message_bus: messenger.default_bus
@@ -22,7 +9,8 @@ framework:
             twilio:             '%env(APP_TWILIO_DSN)%'
         
         chatter_transports:
-            telegram:           '%env(APP_TELEGRAM_DSN)%'
+            mercure:  '%env(MERCURE_DSN)%'
+            telegram: '%env(APP_TELEGRAM_DSN)%'
 
         channel_policy:
             # use chat/slack, chat/telegram, sms/twilio or sms/nexmo
@@ -45,3 +33,17 @@ framework:
         admin_recipients:
             -   email:          '%env(APP_ADMIN_EMAIL)%'
                 phone:          '%env(APP_ADMIN_PHONE)%'
+
+when@test: &test
+    framework:
+        notifier:
+            texter_transports:
+                onesignal:      'null://null'
+                novu:           'null://null'
+                
+                expo:           'null://null'
+                twilio:         'null://null'
+
+            chatter_transports:
+                telegram:       'null://null'
+                mercure:        'null://null'

@@ -2,6 +2,7 @@
 
 namespace App\Form\TypeExtension\Default;
 
+use Symfony\Component\DependencyInjection\Attribute\AutoconfigureTag;
 use App\Translation\TranslatableMessage;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\OptionsResolver\Options;
@@ -15,6 +16,7 @@ use Symfony\Component\Validator\Constraints;
 use App\Service\PureStatic\DefaultFormExtendedTypesSupplier;
 
 // TODO: TranlationDomainFormTypeExtension (через конфиг default_translation_domain)
+#[AutoconfigureTag('form.type_extension', ['priority' => -1])]
 class TranlationDomainFormTypeExtension extends AbstractTypeExtension
 {
     public const DOMAIN = 'app.form+intl-icu';

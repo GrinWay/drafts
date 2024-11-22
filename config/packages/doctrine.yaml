@@ -22,6 +22,7 @@ doctrine:
             string_functions:
                 STR_TO_UPPER: App\Doctrine\DQL\Functions\StrToUpperFunction
                 DATE_FORMAT: DoctrineExtensions\Query\Mysql\DateFormat
+                REGEXP: DoctrineExtensions\Query\Mysql\Regexp
             #numeric_functions:
             #datetime_functions:
                 

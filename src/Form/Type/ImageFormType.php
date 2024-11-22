@@ -5,6 +5,9 @@ namespace App\Form\Type;
 use function Symfony\component\string\u;
 use function App\Resources\t;
 
+use App\Form\Type\Unit\TogglePasswordType;
+use Doctrine\ORM;
+use App\Form\Type\MediaAutocompleteField;
 use Symfony\Component\Form\FormView;
 use Symfony\UX\Cropperjs\Form\CropperType;
 use Symfony\UX\Dropzone\Form\DropzoneType;
@@ -56,6 +59,9 @@ class ImageFormType extends AbstractFormType
 
 	public function finishView(FormView $view, FormInterface $form, array $options)
     {
+		if (!isset($view['croppedImage'])) {
+			return;
+		}
 		$currentDataAction = $view['croppedImage']['options']->vars['attr']['data-action'] ?? '';
 
 		$view['croppedImage']['options']->vars['attr']['data-action'] = \trim($currentDataAction
@@ -132,6 +138,20 @@ class ImageFormType extends AbstractFormType
 					'data' => false,
 				],
 			)
+			->add('choice', MediaAutocompleteField::class,
+				options: [
+					'mapped' => false,
+					'extra_options' => [
+						//'excluded_ids' => [31],
+					],
+				],
+			)
+			->add('password', TogglePasswordType::class,
+				options: [
+					'mapped' => false,
+				],
+			)
+			/*
 			->add('croppedImage', CropperType::class,
 				options: [
 					//'mapped' => false,
@@ -146,10 +166,6 @@ class ImageFormType extends AbstractFormType
 						'data-skip-morph' => '',
 					],
 				],
-			)
-			/*
-			->add('keyFrames', LiveCollectionType::class,
-				options: [],
 			)
             ->add(
                 'fileOriginalName', //FormType\TextType::class,
@@ -271,7 +287,7 @@ class ImageFormType extends AbstractFormType
             //->addModelTransformer($mt)
 			*/
         ;
-		
+
 		return;
 		$builder->addEventSubscriber(new AddFormFieldSubscriber(
 			formFieldName: 'someName',

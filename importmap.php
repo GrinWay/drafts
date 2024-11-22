@@ -35,4 +35,70 @@ return [
     '@hotwired/turbo' => [
         'version' => '7.3.0',
     ],
+    'tom-select' => [
+        'version' => '2.4.0',
+    ],
+    '@orchidjs/sifter' => [
+        'version' => '1.1.0',
+    ],
+    '@orchidjs/unicode-variants' => [
+        'version' => '1.1.2',
+    ],
+    'chart.js' => [
+        'version' => '3.9.1',
+    ],
+    'svelte/internal' => [
+        'version' => '3.59.2',
+    ],
+    '@symfony/ux-svelte' => [
+        'path' => './vendor/symfony/ux-svelte/assets/dist/loader.js',
+    ],
+    '@swup/fade-theme' => [
+        'version' => '1.0.5',
+    ],
+    '@swup/slide-theme' => [
+        'version' => '1.0.5',
+    ],
+    '@swup/forms-plugin' => [
+        'version' => '2.0.1',
+    ],
+    '@swup/plugin' => [
+        'version' => '2.0.3',
+    ],
+    'swup' => [
+        'version' => '3.1.1',
+    ],
+    'delegate-it' => [
+        'version' => '6.0.1',
+    ],
+    '@swup/debug-plugin' => [
+        'version' => '3.0.0',
+    ],
+    'intl-messageformat' => [
+        'version' => '10.7.7',
+    ],
+    'tslib' => [
+        'version' => '2.8.1',
+    ],
+    '@formatjs/fast-memoize' => [
+        'version' => '2.2.3',
+    ],
+    '@formatjs/icu-messageformat-parser' => [
+        'version' => '2.9.4',
+    ],
+    '@formatjs/icu-skeleton-parser' => [
+        'version' => '1.8.8',
+    ],
+    '@symfony/ux-translator' => [
+        'path' => './vendor/symfony/ux-translator/assets/dist/translator_controller.js',
+    ],
+    '@app/translations' => [
+        'path' => './var/translations/index.js',
+    ],
+    '@app/translations/configuration' => [
+        'path' => './var/translations/configuration.js',
+    ],
+    'typed.js' => [
+        'version' => '2.1.0',
+    ],
 ];

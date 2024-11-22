@@ -10,7 +10,10 @@ twig:
     form_themes:
         # LOW PRIORITY
         - form_div_layout.html.twig 
-        - bootstrap_5_layout.html.twig
+        
+        #- bootstrap_5_layout.html.twig
+        - form/theme/bootstrap/index.html.twig
+        
         - form/theme/grinway/index.html.twig
         #- form/theme/user.html.twig
         #- form/theme/file.html.twig
@@ -30,6 +33,8 @@ twig:
         # @email for TwigBridge
         templates/email/theme: email
     globals:
+        abs_img_dir: '%app.abs_img_dir%'
+        public_img_dir: '%app.public_img_dir%'
         app_note_type: !php/const App\Type\Note\NoteType::SNAKE_KEYS_TYPES
     cache: '%kernel.project_dir%/var/cache/dev/twig'
     charset:              '%kernel.charset%'

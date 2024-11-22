@@ -29,7 +29,7 @@ export default class extends Controller {
 	}
 	
 	/**
-     * Stimulus targets
+     * Stimulus targets for animation svg elements (animate, animateMotion, ...)
      */
 	static targets = [
 		'hover',
@@ -161,7 +161,9 @@ export default class extends Controller {
 			elementToDispatchClick = document.getElementById(elementToDispatchClickId)
 		}
 		
-		elementToDispatchClick?.dispatchEvent(new Event('click'))
+		elementToDispatchClick?.dispatchEvent(new Event('click', {
+			bubbles: false, // Ensure don't influence on parents
+		}))
 	}
 	
 	/**
@@ -169,6 +171,9 @@ export default class extends Controller {
      */
 	#stopSvgAnimation(animationElement) {
 		animationElement.setAttribute('repeatDur', '0.001s')
+		requestAnimationFrame(() => {
+			animationElement.removeAttribute('repeatDur')			
+		})
 	}
 	
 	/**

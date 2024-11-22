@@ -28,6 +28,7 @@
         "hwi/oauth-bundle": "^2.2",
         "khanamiryan/qrcode-detector-decoder": "^2.0",
         "knpuniversity/oauth2-client-bundle": "^2.18",
+        "kornrunner/blurhash": "^1.2",
         "league/commonmark": "^2.5",
         "league/oauth2-github": "*",
         "league/oauth2-google": "^4.0",
@@ -65,13 +66,16 @@
         "symfony/ldap": "7.1.*",
         "symfony/loco-translation-provider": "7.1.*",
         "symfony/mailer": "7.1.*",
+        "symfony/mailgun-mailer": "7.1.*",
         "symfony/mercure-bundle": "^0.3.9",
+        "symfony/mercure-notifier": "7.1.*",
         "symfony/messenger": "7.1.*",
         "symfony/mime": "7.1.*",
         "symfony/monolog-bundle": "^3.10",
         "symfony/notifier": "7.1.*",
         "symfony/one-signal-notifier": "7.1.*",
         "symfony/options-resolver": "7.1.*",
+        "symfony/process": "7.1.*",
         "symfony/property-access": "7.1.*",
         "symfony/property-info": "7.1.*",
         "symfony/rate-limiter": "7.1.*",
@@ -86,14 +90,24 @@
         "symfony/twig-bundle": "7.1.*",
         "symfony/twilio-notifier": "7.1.*",
         "symfony/uid": "7.1.*",
+        "symfony/ux-autocomplete": "^2.21",
+        "symfony/ux-chartjs": "^2.21",
         "symfony/ux-cropperjs": "^2.20",
         "symfony/ux-dropzone": "^2.20",
+        "symfony/ux-icons": "^2.20",
+        "symfony/ux-lazy-image": "^2.21",
         "symfony/ux-live-component": "^2.20",
-        "symfony/ux-toggle-password": "^2.18",
+        "symfony/ux-notify": "^2.21",
+        "symfony/ux-svelte": "^2.21",
+        "symfony/ux-swup": "^2.21",
+        "symfony/ux-toggle-password": "^2.21",
+        "symfony/ux-translator": "^2.21",
         "symfony/ux-turbo": "^2.20",
         "symfony/ux-twig-component": "^2.18",
+        "symfony/ux-typed": "^2.21",
         "symfony/validator": "7.1.*",
         "symfony/web-link": "7.1.*",
+        "symfony/webhook": "7.1.*",
         "symfony/webpack-encore-bundle": "^2.1",
         "symfony/workflow": "7.1.*",
         "symfony/yaml": "7.1.*",
@@ -153,6 +167,7 @@
         "symfony/panther": "^2.1",
         "symfony/phpunit-bridge": "^7.1",
         "symfony/stopwatch": "7.1.*",
+        "symfony/var-exporter": "7.1.*",
         "symfony/web-profiler-bundle": "7.1.*"
     },
     "config": {
@@ -215,7 +230,10 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ],
+		],
+		"app_js_deps_download": [
+			"App\\Composer\\Scripts\\JsDeps::load"
+		],
 		"app_fpdf_download": [
 			"App\\Composer\\Scripts\\Download\\FpdfDownloader::download"
 		]

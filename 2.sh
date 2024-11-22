@@ -1,3 +1,3 @@
 #!/usr/bin/bash
 
-echo "clear && symfony server:start --no-tls"
+echo "clear && symfony server:stop && symfony server:start --no-tls"

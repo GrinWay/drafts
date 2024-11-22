@@ -5,6 +5,19 @@ namespace App\Controller\Admin;
 use function Symfony\component\translation\t;
 use function Symfony\Component\String\u;
 
+use Symfony\Component\Notifier\Message\ChatMessage;
+use Symfony\Component\Notifier\ChatterInterface;
+use Symfony\Component\Notifier\Bridge\Mercure\MercureOptions;
+use App\Notification\ChatNotification\ChatterNotification;
+use Symfony\Component\Notifier\Notification\Notification;
+use Symfony\Component\Notifier\Recipient\NoRecipient;
+use Symfony\Component\Notifier\NotifierInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\Asset\Packages;
+use Symfony\Component\WebLink\Link;
+use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
+use Carbon\Carbon;
+use Symfony\UX\Chartjs\Model\Chart;
 use Symfony\Component\PropertyAccess\PropertyAccessorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\AppEasyAdminComment;
@@ -33,17 +46,26 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use EasyCorp\Bundle\EasyAdminBundle\Context\AdminContext;
 use EasyCorp\Bundle\EasyAdminBundle\Dto\BatchActionDto;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 class DashboardController extends AbstractDashboardController
 {
 	public function __construct(
+		private readonly MessageBusInterface $bus,
 		private readonly TranslatorInterface $t,
 		private readonly AdminContextProvider $adminContextProvider,
 		private readonly UrlGeneratorInterface $urlGenerator,
 		private readonly EntityManagerInterface $em,
+		private readonly ChatterInterface $chatter,
 		private readonly PropertyAccessorInterface $pa,
 		private readonly RequestStack $requestStack,
+		private readonly NotifierInterface $notifier,
+		private readonly Packages $asset,
+		private $faker,
+		#[Autowire('%app.public_img_dir%')]
+		private readonly string $publicImgDir,
 		private $mobileDetect,
+		private readonly ChartBuilderInterface $chartBuilder,
 	) {
 		//\dump($em->getFilters());
 	}
@@ -53,32 +75,20 @@ class DashboardController extends AbstractDashboardController
 		$request = $this->requestStack->getCurrentRequest();
 		$adminUriGenerator = $this->container->get(AdminUrlGenerator::class);
 		
-		$inputData = null;
-		if ($request->isMethod('POST')) {
-			$inputData = $this->pa->getValue($request->getPayload()->all(), '[default]');
-		}
+		//
+		/*
+		$publicImgFilename = $this->asset->getUrl(\sprintf('%s/p4.jpg', $this->publicImgDir));
+		$this->addLink($request, (new Link('preload', $publicImgFilename))
+			->withAttribute('as', 'image')
+			->withAttribute('fetchpriority', 'high')
+		);
+		*/
 		
-		$uri = $adminUriGenerator->setController(Controller\AppEasyAdminCinemaController::class)->generateUrl();
-		//return $this->redirect($uri);
-		
-        //return parent::index();
-
-        // Option 1. You can make your dashboard redirect to some common page of your backend
-        //
-        // return $this->redirect($adminUrlGenerator->setController(OneOfYourCrudController::class)->generateUrl());
-
-        // Option 2. You can make your dashboard redirect to different pages depending on the user
-        //
-        // if ('jane' === $this->getUser()->getUsername()) {
-        //     return $this->redirect('...');
-        // }
-
-        // Option 3. You can render some custom template to display a proper dashboard with widgets, etc.
-        // (tip: it's easier if your template extends from @EasyAdmin/page/content.html.twig)
-        //
+		//$this->bus->dispatch($message);
 		
         return $this->render('admin/index/index.html.twig', [
-			'inputData' => $inputData,
+			//'chart' => $chart,
+			//'publicImgFilename' => $publicImgFilename,
 		]);
     }
 
@@ -112,7 +122,7 @@ class DashboardController extends AbstractDashboardController
 		yield MenuItem::section(
 			'Редактирование сущностей'
 		);
-		yield MenuItem::linkToCrud('Комментарии', 'fa fa-list', AppEasyAdminComment::class);
+		yield MenuItem::linkToCrud('Комментарии', 'bi-battery-charging', AppEasyAdminComment::class);
 		yield MenuItem::linkToUrl('Batch action', 'fa fa-list', $this->container->get(AdminUrlGenerator::class)
 			->unsetAll()
 			->setController(AppEasyAdminCommentCrudController::class)
@@ -217,7 +227,7 @@ class DashboardController extends AbstractDashboardController
 	public function configureAssets(): Assets
     {
 		return parent::configureAssets()
-			->addWebpackEncoreEntry('easy_admin')
+			->addWebpackEncoreEntry('app')
 		;
 	}
 }

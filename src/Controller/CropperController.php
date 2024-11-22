@@ -46,6 +46,7 @@ class CropperController extends AbstractController
 		#[Autowire('%app.public_cropped_img_dir%')]
 		string $publicCroppedImgDir,
 	): Response {
+		return new Response(null, 204);
 		$entity = $image;
 		$absImgFilepath = \sprintf('%s/%s', $absImgDir, $entity->getFilepath());
 		

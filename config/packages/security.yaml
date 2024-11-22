@@ -277,7 +277,6 @@ security:
     -   path: ^/(?:login|logout|register)
         roles:
         -   PUBLIC_ACCESS
-        #requires_channel: '%env(APP_REQUIRED_SCHEME)%'
         
     #-   ips:
     #    -   '127.0.0.1/8' # 127.0.0.255

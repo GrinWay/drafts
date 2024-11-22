@@ -1,0 +1,25 @@
+.shader {
+	@include make-shader();
+	
+	background-color: white;
+	color: black;
+
+	//###> MASKS ###
+	&-random-mask {
+		@include make-shader-item();
+		background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxMDAgMTAwJz48Y2lyY2xlIGZpbGw9JyNFQkVDRUMnIGN4PScyOS4yJyBjeT0nNTAuOCcgcj0nMjguMTQnLz48Y2lyY2xlIGZpbGw9JyNCMkIzQjMnIGN4PScyOS4yJyBjeT0nNTAuOCcgcj0nMjEuOTMnLz48Y2lyY2xlIGZpbGw9JyM3MjcyNzEnIGN4PScyOS4yJyBjeT0nNTAuOCcgcj0nMTQuMjEnLz48Y2lyY2xlIGZpbGw9JyM0MzQyNDInIGN4PScyOS4yJyBjeT0nNTAuOCcgcj0nNi41NCcvPjxjaXJjbGUgZmlsbD0nI0VCRUNFQycgY3g9Jzc2LjY4JyBjeT0nNjkuMDcnIHI9JzI4LjE0Jy8+PGNpcmNsZSBmaWxsPScjRUJFQ0VDJyBjeD0nNzEuMzcnIGN5PScyNC4xMScgcj0nMjguMTQnLz48Y2lyY2xlIGZpbGw9JyNCMkIzQjMnIGN4PSc3MS4zNycgY3k9JzI0LjExJyByPScyMS45MycvPjxjaXJjbGUgZmlsbD0nIzcyNzI3MScgY3g9JzcxLjM3JyBjeT0nMjQuMTEnIHI9JzE0LjIxJy8+PGNpcmNsZSBmaWxsPScjNDM0MjQyJyBjeD0nNzEuMzcnIGN5PScyNC4xMScgcj0nNi41NCcvPjxjaXJjbGUgZmlsbD0nI0IyQjNCMycgY3g9Jzc2LjY4JyBjeT0nNjkuMDcnIHI9JzIxLjkzJy8+PGNpcmNsZSBmaWxsPScjNzI3MjcxJyBjeD0nNzYuNjgnIGN5PSc2OS4wNycgcj0nMTQuMjEnLz48Y2lyY2xlIGZpbGw9JyM0MzQyNDInIGN4PSc3Ni42OCcgY3k9JzY5LjA3JyByPSc2LjU0Jy8+PC9zdmc+");
+		mix-blend-mode: color-dodge;
+	}
+
+
+	&-cross-mask {
+		@include make-shader-item();
+		
+		background-image: url("data:image/svg+xml,<svg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27 width='1000' height='1000'><rect x=%270%27 y=%270%27 width=%27100%27 height=%27100%27 fill=%27white%27 stroke=%27none%27/><polygon stroke=%27none%27 fill=%27black%27 points=%2744.2,5.8 54.2,5.8 54.2,25.8 79.2,25.8 79.2,35.8 54.2,35.8 54.2,95.8 44.2,95.8 44.2,35.8 19.2,35.8 19.2,25.8 44.2,25.8 %27/></svg>");
+		background-repeat: no-repeat;
+		background-position: 12% 37%;
+		background-size: unset;
+		mix-blend-mode: lighten;
+	}
+	//###< MASKS ###
+}

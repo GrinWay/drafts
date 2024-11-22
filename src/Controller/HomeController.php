@@ -7,6 +7,21 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use App\Messenger\Event\Message\TestUserWasCreated;
+use Symfony\Component\Filesystem\Filesystem;
+use Symfony\Component\VarExporter\ProxyHelper;
+use Symfony\Component\VarExporter\LazyGhostTrait;
+use Symfony\Component\VarExporter\Hydrator;
+use Symfony\Component\VarExporter\Instantiator;
+use Symfony\Component\VarExporter\VarExporter;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerInterface;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Process\InputStream;
+use Symfony\Component\Process\Process;
+use Symfony\Component\Process\PhpProcess;
+use Symfony\Component\Process\ExecutableFinder;
+use Symfony\Component\Process\PhpExecutableFinder;
+use Symfony\Component\Process\PhpSubprocess;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\UX\Turbo\TurboBundle;
@@ -347,6 +362,7 @@ use App\Messenger\Notifier\SendEmail;
 use App\Messenger\Notifier\ToAdminSendEmail;
 use App\Messenger\Notifier\NotifierHandlers;
 use Doctrine\ORM\Event\PostPersistEventArgs;
+use Doctrine\ORM;
 use Doctrine\ORM\Events;
 use Symfony\Component\Messenger\Exception\StopWorkerException;
 use App\Messenger\Test\Query\ListUsers;
@@ -519,13 +535,17 @@ class HomeController extends AbstractController
 		Service\FirebaseService $firebaseService,
 		#[Autowire('%env(APP_FIREBASE_FCM_V1_API_KEY)%')]
 		$firebaseApiKey,
+		LoggerInterface $appDevLogger,
 		/*
 		*/
 		SerializerInterface $serializer,
+		HtmlSanitizerInterface $sanitizer,
 	) {
 		$response = $this->render('home/index.html.twig', [
 			'is_mobile' => $this->mobileDetect->isPhone() || $this->mobileDetect->isTablet(),
 		]);
+		
+		$bus->dispatch(new TestUserWasCreated());
 		
 		return $response;
 		
@@ -1266,13 +1286,7 @@ class HomeController extends AbstractController
 		//$data = '';
 		//$form = $this->createForm(ImageFormType::class, $obj, options: [
 		$form = $this->createForm(ImageFormType::class, $obj, options: [
-			//'validation_groups' => [
-			//	'TestForTestFormType',
-			//	'AbstractTestForTestFormType',
-			//	'Default',
-			//],
-			//'forbid_modify_props_feature' => false,
-			//'action' => $this->generateUrl($r->attributes->get('_route', 'app_home_producttypes')),
+			
 		]);
 		$emptyForm = $this->createForm(ImageFormType::class)->createView();
 		
@@ -1298,29 +1312,15 @@ class HomeController extends AbstractController
 				*/
 				
 				$obj = $form->getData();
-					/*
-				\dd(
-					$form->getData(),
-					$form->get('id')->getData(),
-					$payload,
-					
-					$obj->getFileSize(),
-					$obj->getFileMimeType(),
-					$obj->getFileOriginalName(),
-					$obj->getFileDimensions(),
-					$form->get('file')->get('delete')->getData(),
-					$form->get('file')->getData(),
-					$obj->getVichFile(),
-				$em->persist($obj);
-				$em->remove($obj);
-				);
-				$em->flush();
-					\dd($obj);
-					*/
-				//\dd($payload, $data);
-				\dump('SUBMITTED and VALID');
-				$this->addFlash(NoteType::NOTICE, 'Форма отправлена');
 				
+				if (isset($form['choice'])) {
+					\dump(
+						'choice',
+						$form['choice']->getData(),
+					);
+				}
+				
+				/*
 				if (TurboBundle::STREAM_FORMAT === $request->getPreferredFormat()) {
 					$request->setRequestFormat(TurboBundle::STREAM_FORMAT);
 					$template = 'product/_product_types_form.html.twig';
@@ -1333,6 +1333,7 @@ class HomeController extends AbstractController
 						],
 					);
 				}
+				*/
 				return $this->redirectToRoute('app_home_producttypes', $r->attributes->get('_route_params')/* make template rendered */);
 			}
 		//}
@@ -1376,7 +1377,25 @@ __EVENT_STREAM__;
 
 class MyClass
 {
-	public $k1;
-	public $k2;
-	public $k3;
+	use LazyGhostTrait;
+	
+	public ?string $varPublic = null;
+	
+	private ?string $varPrivate = null;
+	
+	private ?string $heavyCalculationVar = null;
+	
+	public function __construct() {
+		\dump(__METHOD__);
+		$this->heavyCalculation();
+	}
+	
+	public function heavyCalculation(): void {
+		sleep(5);
+		$this->heavyCalculationVar = 'data';
+	}
+	
+	public function doNothing(): void {
+		$this->varPublic;
+	}
 }

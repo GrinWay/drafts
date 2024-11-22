@@ -1,3 +1,4 @@
+import { registerSvelteControllerComponents } from '@symfony/ux-svelte';
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -6,4 +7,5 @@
  */
 import './styles/app.css';
 
-console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+registerSvelteControllerComponents(require.context('./svelte/controllers', true, /\.svelte$/));
+registerSvelteControllerComponents();

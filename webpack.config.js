@@ -49,6 +49,13 @@ Encore
 		to: 'image/[path][name].[hash:8].[ext]',
 	})
 	
+	/*
+	.copyFiles({
+		from: 'node_modules/bootstrap-icons/font/fonts',
+		to: 'fonts/[path][name].[hash:8].[ext]',
+	})
+	*/
+	
 	// directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
@@ -63,10 +70,11 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
-    .addEntry('easy_admin', './assets/js/easy_admin/app.js')
 
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
+
+    .enableSvelte()
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/js/controllers.json')
@@ -128,4 +136,8 @@ Encore
     //.autoProvidejQuery()
 ;
 
-module.exports = Encore.getWebpackConfig();
+const config = Encore.getWebpackConfig()
+
+config.resolve.conditionNames = ['browser', 'import', 'svelte']
+
+module.exports = config

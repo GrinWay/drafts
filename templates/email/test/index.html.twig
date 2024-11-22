@@ -5,6 +5,14 @@
 		TEST with image
 	</div>
 	<div class="">
+		{#
 		<img src="{{- email.image('@abs_img_dir/png.png') -}}" alt="test image">
+		#}
+		<div>
+			AN IMAGE IS HERE
+		</div>
+		<div>
+			TEXT: {{ text|default('null') }}
+		</div>
 	</div>
 {%- endblock  -%}

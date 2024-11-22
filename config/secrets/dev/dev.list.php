@@ -22,8 +22,12 @@ return [
     'APP_TWILIO_RECOVERY_CODE' => null,
     'APP_TWILIO_SID' => null,
     'APP_TWILIO_TOKEN' => null,
+    'APP_WEBHOOK_MAILER_MAILGUN_SECRET' => null,
     'CACHE_0_DECRYPTION_KEY' => null,
     'CACHE_1_DECRYPTION_KEY' => null,
+    'MAILER_MAILGUN_TRANSPORT_API_KEY' => null,
+    'MAILER_MAILGUN_TRANSPORT_DOMAIN' => null,
+    'MAILER_MAILGUN_TRANSPORT_REGION' => null,
     'MERCURE_JWT_SECRET' => null,
     'ONESIGNAL_DSN_AUTH_KEY' => null,
 ];

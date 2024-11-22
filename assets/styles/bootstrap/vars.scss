@@ -53,16 +53,13 @@ $theme-colors: map-merge($theme-colors, $app-dop-theme-colors);
 
 //###> light|dark-($theme-colors) ###
 @each $k, $v in $theme-colors {
-	.#{$k} {
-		background-color: $v !important;
-	}
+	.theme-#{$k} {
 
-	.light-#{$k} {
-		background-color: tint-color($v, 50%) !important;
-	}
+		& .content .content-header {
+			@include bg-color-contrast($v);
+		}
 
-	.dark-#{$k} {
-		background-color: shade-color($v, 50%) !important;
 	}
+	
 }
 //###< light|dark-($theme-colors) ###

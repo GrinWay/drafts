@@ -93,3 +93,7 @@ home:
 condition:
     alias: 'app_home_condition'
 ###< Add alias ###
+
+ux_autocomplete_admin_prefixed:
+    controller: ux.autocomplete.entity_autocomplete_controller
+    path: '/admin/autocomplete/{alias}'

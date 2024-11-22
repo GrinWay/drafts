@@ -1,0 +1,20 @@
+.toggle-password-container {
+	position: relative;
+}
+
+.toggle-password-button {
+	position: absolute;
+	top: -3px;
+	right: 0;
+	height: 110%;
+	overflow: clip;
+	
+	display: flex;
+	align-items: center;
+	
+	background-color: transparent;
+	border: none;
+	margin: 0 0.25rem 0 0;
+	padding: 0;
+	font-size: f(1.8rem);
+}

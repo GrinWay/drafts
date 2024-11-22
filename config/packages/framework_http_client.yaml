@@ -1,12 +1,3 @@
-when@dev: &when_dev
-    framework:
-        http_client:
-            default_options:
-                verify_peer: false
-                verify_host: false
-                extra:
-                    trace_content: true
-
 framework:
     http_client:
         default_options:
@@ -23,3 +14,12 @@ framework:
         scoped_clients:
             client:
                 base_uri: '%env(DEFAULT_URI)%'
+                
+when@dev: &when_dev
+    framework:
+        http_client:
+            default_options:
+                verify_peer: false
+                verify_host: false
+                extra:
+                    trace_content: true

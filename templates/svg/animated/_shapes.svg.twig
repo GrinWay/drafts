@@ -1,0 +1,307 @@
+{% set dur = dur|default(2) %}
+
+{# ! CHANGE ME IF COUNT OF SHAPES INCREASES ! #}
+{% set animate_svg_multiple_shapes_transitions_count = 3 %}
+
+{% set animate_svg_multiple_shapes_part_dur_sec =
+	dur / animate_svg_multiple_shapes_transitions_count
+%}
+
+{% set svg_multiple_shapes_color_1 = '#ff6f3c' %}
+
+{% set svg_multiple_shapes_color_2 = '#ff9a3c' %}
+
+{% set svg_multiple_shapes_color_3 = '#f06f32' %}
+
+{% set svg_multiple_shapes_d_rect = '
+	M94.2
+	5.8c0,30
+	0,60
+	0,90
+	-30,0
+	-60,0
+	-90,0
+	0,-30
+	0,-60
+	0,-90
+	30,0
+	60,0
+	90,0z
+' %}
+
+{% set svg_multiple_shapes_d_triangle = '
+	M49.2
+	5.8c7.5,15
+	15,30
+	22.5,45
+	7.5,15
+	15,30
+	22.5,45
+	-30,0
+	-60,0
+	-90,0
+	15,-30
+	30,-60
+	45,-90z
+' %}
+
+{% set svg_multiple_shapes_d_circle   = '
+	M49.2
+	5.8c24.85,0
+	45,20.15
+	45,45
+	0,24.85
+	-20.15,45
+	-45,45
+	-24.85,0
+	-45,-20.15
+	-45,-45
+	0,-24.85
+	20.15,-45
+	45,-45z
+'%}
+
+<svg
+	id="svg_container_multiple_shapes"
+
+	xmlns="http://www.w3.org/2000/svg"
+	viewBox="-20 -20 140 140"
+	width="{{ width|default('100%') }}"
+	height="{{ height|default('100%') }}"
+>
+	<defs>
+		<style type="text/css">
+			
+			.transform_rotation_center {
+				transform-origin: center;
+				transform-box: fill-box;
+			}
+			
+		</style>
+	</defs>
+
+
+	{###> SHAPE ###}
+	<path
+		id="svg_multiple_shapes"
+		class="transform_rotation_center"
+		
+		d="{{- svg_multiple_shapes_d_triangle -}}"
+		fill="{{- svg_multiple_shapes_color_1 -}}"
+		
+		transform-origin="center" {# for rotating #}
+		
+		stroke="none"
+		stroke-width="0"
+	/>
+	{###< SHAPE ###}
+
+
+	{###> ANIMATE PATH ###}
+	<animate
+		id="animate_svg_multiple_shapes_origin"
+		
+		xlink:href="#svg_multiple_shapes"
+		attributeName="d"
+		dur="{{- animate_svg_multiple_shapes_part_dur_sec -}}s"
+		
+		values="
+			{{- svg_multiple_shapes_d_triangle -}};
+			{{- svg_multiple_shapes_d_rect -}};
+		"
+		calcMode="spline"
+		keySplines="
+			0.5 0 0.8 1;
+		"
+		repeatCount="1" {# always 1, cuz there are other parts of shaping #}
+		begin="
+			{#
+			0s;
+			#}
+			animate_svg_multiple_shapes_3.end;
+			svg_container_multiple_shapes.click;
+		"
+		restart="whenNotActive"
+		min="{{ dur }}s" {# consider the whole time of shape animations #}
+	/>
+	
+	<animate
+		id="animate_svg_multiple_shapes_2"
+		
+		xlink:href="#svg_multiple_shapes"
+		attributeName="d"
+		dur="{{- animate_svg_multiple_shapes_part_dur_sec -}}s"
+		
+		values="
+			{{- svg_multiple_shapes_d_rect -}};
+			{{- svg_multiple_shapes_d_circle -}};
+		"
+		calcMode="spline"
+		keySplines="
+			.32,.5,.6,.54;
+		"
+		repeatCount="1"
+		begin="
+			animate_svg_multiple_shapes_origin.end - {{ animate_svg_multiple_shapes_part_dur_sec * ( animate_svg_multiple_shapes_transitions_count - 1 ) }}s;
+		"
+		restart="whenNotActive"
+	/>
+	
+	<animate
+		id="animate_svg_multiple_shapes_3"
+		
+		xlink:href="#svg_multiple_shapes"
+		attributeName="d"
+		dur="{{- animate_svg_multiple_shapes_part_dur_sec -}}s"
+		
+		values="
+			{{- svg_multiple_shapes_d_circle -}};
+			{{- svg_multiple_shapes_d_triangle -}};
+		"
+		calcMode="spline"
+		keySplines="
+			.25,.36,.4,.63;
+		"
+		repeatCount="1"
+		begin="
+			animate_svg_multiple_shapes_2.end;
+		"
+		restart="whenNotActive"
+	/>
+	{###< ANIMATE PATH ###}
+
+
+	{###> ANIMATE ROTATION ###}
+	<animateTransform
+		id="animate_svg_multiple_shapes_rotate_1"
+	
+		xlink:href="#svg_multiple_shapes"
+		attributeName="transform"
+		type="rotate"
+		dur="{{- animate_svg_multiple_shapes_part_dur_sec -}}s"
+		
+		calcMode="spline"
+		keySplines="
+			.44,.5,.49,.53;
+		"
+		values="
+			0;
+			120;
+		"
+		begin="
+			animate_svg_multiple_shapes_origin.begin;
+		"
+		end="
+			animate_svg_multiple_shapes_origin.end;
+		"
+		fill="freeze"
+	/>
+	<animateTransform
+		id="animate_svg_multiple_shapes_rotate_2"
+		
+		xlink:href="#svg_multiple_shapes"
+		attributeName="transform"
+		type="rotate"
+		dur="{{- animate_svg_multiple_shapes_part_dur_sec -}}s"
+		
+		calcMode="spline"
+		keySplines="
+			0 0 1 1;
+		"
+		additive="sum"
+		values="
+			0;
+			120;
+		"
+		begin="
+			animate_svg_multiple_shapes_rotate_1.end;
+		"
+		fill="freeze"
+	/>
+	<animateTransform
+		xlink:href="#svg_multiple_shapes"
+		attributeName="transform"
+		type="rotate"
+		dur="{{- animate_svg_multiple_shapes_part_dur_sec -}}s"
+		
+		calcMode="spline"
+		keySplines="
+			.52,.2,.71,.71;
+		"
+		additive="sum"
+		values="
+			0;
+			120;
+		"
+		begin="
+			animate_svg_multiple_shapes_rotate_2.end;
+		"
+		fill="freeze"
+	/>
+	{###< ANIMATE ROTATION ###}
+
+
+	{###> ANIMATE COLORS ###}
+	<animate
+		id="animate_svg_multiple_shapes_color_1"
+	
+		xlink:href="#svg_multiple_shapes"
+		attributeName="fill"
+		dur="{{- animate_svg_multiple_shapes_part_dur_sec -}}s"
+		
+		calcMode="spline"
+		keySplines="
+			0 0 1 1;
+		"
+		values="
+			{{ svg_multiple_shapes_color_1 }};
+			{{ svg_multiple_shapes_color_2 }};
+		"
+		begin="
+			animate_svg_multiple_shapes_origin.begin;
+		"
+		end="
+			animate_svg_multiple_shapes_origin.end;
+		"
+		fill="freeze"
+	/>
+	<animate
+		id="animate_svg_multiple_shapes_color_2"
+		
+		xlink:href="#svg_multiple_shapes"
+		attributeName="fill"
+		dur="{{- animate_svg_multiple_shapes_part_dur_sec -}}s"
+		
+		calcMode="spline"
+		keySplines="
+			0 0 1 1;
+		"
+		values="
+			{{ svg_multiple_shapes_color_2 }};
+			{{ svg_multiple_shapes_color_3 }};
+		"
+		begin="
+			animate_svg_multiple_shapes_color_1.end;
+		"
+		fill="freeze"
+	/>
+	<animate
+		xlink:href="#svg_multiple_shapes"
+		attributeName="fill"
+		dur="{{- animate_svg_multiple_shapes_part_dur_sec -}}s"
+		
+		calcMode="spline"
+		keySplines="
+			0 0 1 1;
+		"
+		values="
+			{{ svg_multiple_shapes_color_3 }};
+			{{ svg_multiple_shapes_color_1 }};
+		"
+		begin="
+			animate_svg_multiple_shapes_color_2.end;
+		"
+		fill="freeze"
+	/>
+	{###< ANIMATE COLORS ###}
+</svg>

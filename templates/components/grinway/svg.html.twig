@@ -9,19 +9,16 @@
 {% set path_to_svg_symbols_file = asset('saved_bundles/bundles/grinwaywebapp/images/svg/sprite.svg') %}
 {% set symbol_id = attributes.has('id') ? attributes.render('id') : block('content') %}
 
-<div
-	{{ attributes.nested('svg_container').defaults({}) }}
+<svg
+	{{ attributes.defaults({ 
+		xmlns: 'http://www.w3.org/2000/svg',
+		viewBox: '0 0 100 100',
+		width: '100%',
+		height: '100%',
+	}) }}
 >
-	<svg
-		{{ attributes.nested('svg').defaults({ 
-			xmlns: 'http://www.w3.org/2000/svg',
-			width: '24px',
-			height: '24px',
-		}) }}
-	>
-		<use
-			xlink:href={{ path_to_svg_symbols_file ~ '#' ~ symbol_id }}
-			{{ attributes.nested('svg_use').defaults({}) }}
-		></use>
-	</svg>
-</div>
+	<use
+		xlink:href={{ path_to_svg_symbols_file ~ '#' ~ symbol_id }}
+		{{ attributes.nested('use') }}
+	></use>
+</svg>

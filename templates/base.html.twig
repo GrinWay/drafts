@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html
+	data-symfony-ux-translator-locale="{{ app.request.locale }}"
 	{{ stimulus_controller('html-listener') }}
 	data-action="
 		turbo:click->html-listener#turboClick
@@ -55,7 +56,10 @@
         {% endblock %}
     </head>
 
-    <body class="theme-{{- theme|default('light') -}}"
+	{#
+		theme name => Theme.themeCookieName
+	#}
+    <body class="{{ block('theme', 'blocks/_cookie.html.twig') }}"
 		{{ stimulus_target('html-listener', 'body') }}
 	>
 	
@@ -72,7 +76,17 @@
 		
 		<twig:menu />
 		
+		<twig:theme
+			class="container"
+			label:class="p-1"
+			checkbox:class="mt-2"
+		/>
+		
 		<twig:debug />
+		
+		<div id="svg_shapes" class="d-flex justify-content-center">
+			{% include 'svg/animated/_shapes.svg.twig' with { width: '160', height: '160' } %}
+		</div>
 		
 		{#
         <div class="">

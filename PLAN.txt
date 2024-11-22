@@ -848,6 +848,7 @@ OneSignal  x
 ###
 	***
 	(Аккаунт должен быть разрешён)	https://www.twilio.com/login?g=%2Fconsole-zen%2Fhttps%3A%2F%2Fconsole.twilio.com%2Fdashboard&t=ad3c73fe63c122a65d222f37889edc531c449dd2bb55f20c74e6f8a6afbb057b
+	
 	R: отправить sms на телефон
 		//###>
 		$subject = 'Symfony Notifier';
@@ -902,6 +903,7 @@ __TEXT__;
 		);
 		
 		$sentMessage = $texter->send($sms);
+	RRR: захватить twilio webhook https://symfony.com/doc/current/webhook.html#usage-in-combination-with-the-notifier-component
 	?
 	? Попробуй через Notifier отправить обновление turbo-stream
 		https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Notifier/Bridge/Mercure/README.md
@@ -1431,32 +1433,27 @@ LIB MOBILE DETECT:
 	+? Stimulus Carousel Component все слайды отображаются одновременно
 		Я делал это в EasyAdmin index, где не было app Entry Point
 	? По неизвестной причине mobile detect не обнаружил что я вошёл с телефона
-***
 SVG ANIMATIONS
-
-	ПОСЛЕ CSS АНИМАЦИИ
-		заставь svg анимацию проиграться 1 раз при hover
-			реализуй разные анимации для hover, click
-			
+	RRR: На обратном: реализуй разные анимации для
+		анимация простоя (css)
+		hover (svg иммитация клика, по тому элементу, которому не достанется за счёт bubbling событие клика когда будет реальный клик от css анимации)
+		click (css)
 	?
-	? Для чего нужен svg by attribute
-	? Как сделать анимацию вращения текста по окружности непрерывной (startOffset думаю не подойдёт)
-	???? Как перезапустить svg анимацию через js
+	+ ? Для чего нужен svg "by" attribute
+		(
+			для анимации через наращивание значения (values, additive="sum" === from, by)
+		)
+	?? Как сделать анимацию вращения текста по окружности непрерывной (startOffset думаю не подойдёт)
+	+ ???? Как перезапустить svg анимацию через js
 		Как же всё таки запустить svg анимацию по hover
 		что нужно сделать в stimulus controller when useHover
 		если установка begin="0s", и удаление end аттрибутов бессмысленна так как время отсчитывается с момента появления svg изображения
 		и даже удаление и внесение обратно в DOM в с помощью JS не помогает
+		(
+			Остановить: repeatDur="0.001s" 
+			Запустить: repeatDur="100h"
+		)
 BOOTSTRAP (not deep)
-	
-	Доделай анимацию shapes добавив ротацию
-	animateMotion понять когда
-		фигура начинает движение из своего положения
-		фигура переносится в начало path
-	как назначить центр трансформации (теперь можно переместить target перед началом animateMotion)
-	как отобразить существующий path в другом месте просто ссылаясь на него (не спрайт)
-
-	
-	после изучения
 	RRR: Обязательно просмотри ВЕСЬ ФАЙЛ!
 		C:\Workspace\SYMFONY\__SANDBOX__\drafts\node_modules\bootstrap\scss\_utilities.scss
 		Он очень важен, на основе $utilities ассоциативного массива (map)
@@ -1468,12 +1465,8 @@ BOOTSTRAP (not deep)
 
 		class, valueMapKey и valueMapValue могут быть null
 	R: использовать анимации svg со спрайтами
-	https://symfony.com/doc/current/form/bootstrap5.html
-	опираясь на пример темы ".\vendor\symfony\twig-bridge\Resources\views\Form\form_div_layout.html.twig"
-		сделать свою тему на bootstrap (form/theme/grinway/light/index.html.twig)
-	освоив модальные окна, прослушать show.bs.modal, hidden.bs.modal в своём stimulus_controller
-	R: сделать свой стиль @symfony/ux-dropzone
 	?
+	? Как из " получить &#34; а не &quote;
 	? Возможно ли в d-flex элементам задать равную ширину, НЕЗАВИСИМО от содержимого
 		так как flex-fill === flex-grow-1 растягивают элементы во flex container в зависимости от содержимого
 		а col element должен использоваться внутри row если речь о flex container
@@ -1509,22 +1502,73 @@ BOOTSTRAP (not deep)
 			Не указывать фиксированную высоту блоку .row
 		)
 SYMFONY WebLink
-SYMFONY WEBHOOK https://symfony.com/doc/current/webhook.html
-SYMFONY PROCESS COMPONENT https://symfony.com/doc/current/components/process.html
-SYMFONY SANTIZER https://symfony.com/doc/current/html_sanitizer.html
-SYMFONY VAR EXPORTER https://symfony.com/doc/current/components/var_exporter.html
+SYMFONY WEBHOOK
+	?
+	? Mailgun говорит что используя webhook ты можешь даже получать какие-то данные
+		https://www.mailgun.com/blog/email/your-guide-to-webhooks/
+	? Mailgun получи наконец событие ::handleMailEngagement()
+SYMFONY PROCESS COMPONENT
+	?
+	+? Никак не получается передать по ходу диалога с командой более 1-го параметра
+		(
+			Получилось только благодаря смекалочке, Process ни при чём
+			
+			$command = Process::fromShellCommandLine('echo "n,n" | xargs -n1 -d"," echo | php.exe "../bin/console" test');
+		)
+SYMFONY SANTIZER
+	?
+	+ ? Такое чувство что недостаточно просто добавить framework.html_sanitizer.sanitizers
+		чтобы появился новый sanitizer service	
+		(
+			Этого достаточно, была ошибка в написании
+		)
+SYMFONY VAR EXPORTER
 SYMFONY FILESYSTEM
-Реализовать переключение тем с тёмной на светлую
 HOTWIRE: SYMFONY STIMULUS UX PACKAGES
-	https://symfony.com/bundles/StimulusBundle/current/index.html#the-ux-packages
+@SYMFONY/UX-AUTOCOMPLETE
+	?
+	? Оказывается, что все поисковые записи регистро-нечувствительны
+		и у меня не получилось понять как мне заставить в filter_query: 'entity.<> LIKE :query'
+		стать регистрозависимой ведь нативно она так то должна быть регистрозависимой
+@SYMFONY/UX-NOTIFY
+	?
+	????when@docker Оба примера ниже выдают исключение, но почему?!
+		//#1
+		$message = (new ChatMessage(
+				subject: 'Ну штош Время платить 15 денег',
+				options: new MercureOptions(['native_browser_notification'])
+			))
+				->transport('mercure')
+		;
+		$this->chatter->send($message);
+
+		//#2
+		$notification = (new ChatterNotification(
+			subject: 'Ну штош',
+			channels: ['chat/mercure'],
+			options: new MercureOptions(['native_browser_notification']),
+		))
+            ->content('Время платить 15 денег')
+		;
+		$recipient = new NoRecipient();
+		$this->notifier->send($notification, $recipient);
+		
+		//# HandlerFailedException
+		Handling "Symfony\Component\Notifier\Message\ChatMessage" failed: Call to undefined method Symfony\Component\Notifier\Exception\RuntimeException::getDebug()
+		(
+			Во первых ты в своём же слушателе FailedMessageEvent вызввал несуществующий метод getDebug()
+			Но сразу же за ним последовало
+			Handling "Symfony\Component\Notifier\Message\ChatMessage" failed: Unable to post the Mercure message: Failed to send an update
+			А вот эта ошибка никогда не проходит, попробуй с docker
+			Короче ошибка точно связана с Mercure, просто что-то произошло и Mercure отказывается работать, происходит какая-то ошибка
+		)
+@SYMFONY/UX-ICONS
+	?
+	? Похоже на то, что ignore_not_found просто отрисовывает вместо иконки ошибку
+		вместо выбрасывания исключения о ней
+***
 SYMFONY FRONTEND (WEBPACK ENCORE/ASSET MAPPER)
-	# 1
-	https://github.com/symfony/stimulus-bridge
 	
-	https://symfony.com/doc/5.x/frontend/encore/cdn.html
-	https://symfony.com/doc/5.x/frontend/encore/versioning.html
-	https://symfony.com/doc/5.x/frontend/encore/split-chunks.html
-	https://symfony.com/doc/5.x/frontend/encore/split-chunks.html
 	https://symfony.com/doc/5.x/setup/symfony_server.html#symfony-server_configuring-workers
 	
 	# 2
@@ -1545,6 +1589,8 @@ SYMFONY FRONTEND (WEBPACK ENCORE/ASSET MAPPER)
 	Раздел позже
 		https://symfony.com/doc/5.x/components/asset.html#absolute-assets-and-cdns
 	?
+	
+	Ничего не упустил?: https://symfony.com/doc/5.x/frontend.html
 	+ ? не могу утверждать, но мне кажется, что при различных параметрах GET
 		браузер создаёт различный кеш
 		(
@@ -1555,7 +1601,6 @@ SYMFONY FRONTEND (WEBPACK ENCORE/ASSET MAPPER)
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-framework-assets-version
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-version-format
 		https://symfony.com/doc/current/reference/configuration/framework.html#reference-assets-json-manifest-path
-Создать в WebAppBundle Stimulus controllers (короче сделать этот пакет UX)
 	https://symfony.com/doc/current/frontend/create_ux_bundle.html
 R: PUSH NOTIFICATION
 	(после java scripting)
@@ -1652,11 +1697,10 @@ R: PUSH NOTIFICATION
 		;
 		
 		$texter->send($message);
-SYMFONY CONTAINER BUILDER
+SYMFONY CONTAINER BUILDER (вопросы)
 	?
 	https://github.com/violet-php/class-scanner
 	Yaml::PARSE_CONSTANT add into grin_way_service to allow !const 'GrinWay\WebApp\Type\Messenger\BusTypes::QUERY_BUS' into C:\Рабочий стол\PHP SYMFONY\__SANDBOX__\SYMFONY 7\bundles\grinway\web-app-bundle\config\services.yaml
-SYMFONY Process Component https://symfony.com/doc/current/components/process.html
 SYMFONY INTL COMPONENT https://symfony.com/doc/current/components/intl.html
 SYMFONY MONOLOG https://symfony.com/doc/current/logging.html
 ###> EXCERPTS TO ANSWER ###
@@ -1668,11 +1712,6 @@ SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
 	? по каким-то причинам profiler тупо иногда либо не отображается либо просто перестаёт работать
 	Почему сервис @Psr\Container\ContainerInterface не доступен из services.yaml
 https://symfony.com/doc/current/reference/dic_tags.html
-OpenSSL:
-	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.
-	Как создать самоподписанные сертификаты
-	Куда класть самоподписанные сертификаты
-	Как разрешить самоподписанные сертификаты
 DOCKER
 	https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
 	https://symfony.com/doc/current/setup/docker.html
@@ -1680,10 +1719,32 @@ DOCKER
 	https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
 	https://symfony.com/doc/current/setup/symfony_server.html#symfony-server-docker
 	https://github.com/dunglas/symfony-docker
+	https://symfony.com/doc/5.x/setup/symfony_server.html#configuring-workers
 	MERCURE: C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\UX\Symfony UX Turbo\48-mercure-service (1080p).mp4
+	RRR: when@docker
 	?
 	Неужели чтобы транслировать изменения не нужно запускать Mercure.hub бинарный файл
 		при использовании docker
+SYMFONY LOCAL WEB SERVER
+	https://symfony.com/doc/5.x/setup/symfony_server.html
+SYMFONY COMMAND
+	https://symfony.com/doc/current/components/console/helpers/questionhelper.html#testing-a-command-that-expects-input
+	+ R: Посмотреть как реализована замена строки у команды bin/console ux:icons:import bi:arrow-left-short
+		Подозреваю что это progress bar
+		(
+			Нет, для перемещения по терминалу используй
+			$cursor = new Cursor($output);
+		)
+	?
+	возможно ли сделать автодополнение для своих имён комманд
+	возможно ли динамически переименовывать команды, задавать алиасы
+	command --param --param: InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY
+	Autowire RequestStack -> RequestStack::getCurrentRequest() === null
+OpenSSL:
+	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.
+	Как создать самоподписанные сертификаты
+	Куда класть самоподписанные сертификаты
+	Как разрешить самоподписанные сертификаты
 SYMFONY API PLATFORM
 	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 1 Mythically Good RESTful APIs
 	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 2 Security for your Treasures
@@ -1713,13 +1774,6 @@ browser-driver-installer https://github.com/dbrekelmans/browser-driver-installer
 SYMFONY BUNDLE FOSJsRoutingBundle (route -> uri in js)
 SYMFONY BUNDLE FOSHttpCacheBundle (invalidate cache)
 SYMFONY Dotenv class
-SYMFONY COMMAND
-	https://symfony.com/doc/current/components/console/helpers/questionhelper.html#testing-a-command-that-expects-input
-	?
-	возможно ли сделать автодополнение для своих имён комманд
-	возможно ли динамически переименовывать команды, задавать алиасы
-	command --param --param: InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY
-	Autowire RequestStack -> RequestStack::getCurrentRequest() === null
 LiipFunctionalTestBundle https://github.com/liip/LiipFunctionalTestBundle
 SYMFONY ROUTE
 	CMF Routing Bundle
@@ -1884,7 +1938,44 @@ TODO
 		каждый bundle должен иметь docs/index.md
 			так что разбей документацию на секции
 			и сделай ссылки в README.md
+	Если по мере реализаций потребуется оптимизировать выполнение метода
+		(может выполнится или может никогда не выполнится (из созданного объекта
+		вместо его создания через new MyClass()
+		VarExporter/createLazyGhost(func)
+		тем, самым даже конструктор не вызовится, а объект будет
+		func вызовется когда произойдёт доступ к любому свойству
+	
+	Ещё разок перед созданием своих бандлов: https://symfony.com/doc/current/bundles/best_practices.html
 	WebApp
+		Создать Stimulus controllers (короче сделать этот пакет UX)
+			https://symfony.com/doc/current/frontend/create_ux_bundle.html
+			in dependencies "package.json": "@grinway/<>": "file:vendor/grinway/<>/assets",
+		Данные указаны по умолчанию
+			переданное пользователем merge с дефолтным
+				leaveOn
+				enterOn
+			{{ stimulus_controller('animate', {
+				style: 'fade',
+				targetActiveClass: 'active',
+				enterAfterLeave: true,
+				
+				leaveOn: ['turbo:before-fetch-request', 'turbo:before-frame-render', 'turbo:before-render'],
+				{# OR
+				enterOn: [''],
+				#}
+			})
+			Сниппет реализации
+			async f(event) {
+				if has method (event.detail.resume)
+				event.preventDefault()
+				await this.leave()
+				if has method (event.detail.resume)
+				event.detail.resume()
+				requestAnimationFrame(() => {
+					this.enter()
+				})
+			}
+			
 		themes
 			./templates\form\theme\custom.html.twig
 				class="immutable" & TextType -> displays immutably
@@ -1953,9 +2044,24 @@ TODO
 			html: include('@WebAppBundle/svg/animate/_three_shapes.svg.twig'),
 		// TODO: grinway--dom-el
 		// TODO: animate-svg -> grinway--animate-svg
+		TODO: theme -> grinway--theme
+			Пока что данный компонент с js controller
+			способны устанавливать только 1 тему (<>, и светлую)
+			Задача: реализовать возможность применения одной темы из __списка__ тем (checkbox -> radio)
+			данные о всевозможных темах должны быть доступны как component так и js controller
+			так что просто перетащи данные с компонента в контроллер
+		// TODO: lazy-image -> grinway--lazy-image
 	GsEnvProcessor
 		fix abstractions (only with functions)
 	Command
+		добавить аргумент ioDump(startFromPrevLine: false)
+			$cursor->moveUp(2 /* how to know that ?! maybe that's an argument */);
+			$cursor->clearLine();
+			$this->io->text('<CLIENT_TEXT_IS_HERE>');
+			if (?) $cursor->moveDown(1);
+		добавить аргумент ioDump(startFromTop: false)
+			$cursor->restorePosition();
+			$cursor->clearOutput();
 		monolog.logger.grin_way_command.dev_logger -> monolog.logger.grin_way_command.dev
 		public function initialize -> protected function initialize
 		deploy command (bundles, doctrine, dotenv:dump`composer dump-env prod`)
@@ -2004,8 +2110,13 @@ TODO
 	Extensions
 		может перейти от OptionsResolver к Processor+TreeBuilder в global instance of
 	film
-		remove .exe from repository (make command that downloads the appropriate ffmpeg file)
-			add STEP to execute this command
+		remove .exe from repository
+			$ffmpegAbsPath = (new ExecutableFinder())->find('ffmpeg', null, [$dopBasePath]);
+			if null === $ffmpegAbsPath скачать ffmpeg в $dopBasePath
+			if null !== $ffmpegAbsPath не скачивать ffmpeg
+			в любом случае в конце красным сделать дамп абсолютного пути где распологается ffmpeg (чтобы пользователь сам смог его заменить)
+				так как ExecutableFinder со своим приоритетом может выбрать ffmpeg не из $dopBasePath
+		вместо \exec() от PHP использовать компонент Process, Process::fromShellCommandLine(command: '<>', cwd: $this->projectDir)
 	bundles directory -> packages
 	
 SYMFONY TRANSLATION
@@ -2022,3 +2133,10 @@ Composer https://getcomposer.org/doc/articles/custom-installers.md#the-custom-in
 	Что за команда status
 	Что за команда archive
 	Что за команда upgrade
+Оптимизировать готовый сайт
+	для каждой страницы определить <link rel="preload"> с использованием компонента https://symfony.com/doc/current/web_link.html
+		на каждую картинку, чтобы сайт считался более быстрым с точки зрения LCP https://symfony.com/bundles/ux-lazy-image/current/index.html#largest-contentful-paint-lcp-and-web-performance-considerations
+		$this->addLink($request, (new Link('preload', $publicImgFilename))->withAttribute('as', 'image'));
+		
+		это будет + к поисковым запросам
+	
