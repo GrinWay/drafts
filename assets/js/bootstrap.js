@@ -11,5 +11,3 @@ export const app = startStimulusApp(require.context(
 app.stimulusUseDebug = process.env.NODE_ENV === 'development'
 
 registerActionOptions(app)
-
-//app.register('animated-number', AnimatedNumber);

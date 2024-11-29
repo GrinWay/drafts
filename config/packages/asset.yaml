@@ -1,4 +1,10 @@
 framework:
     assets:
-        #version_strategy: 'app.assets.version_strategy'
         json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
+        #packages:
+            #config_1:
+            #    json_manifest_path: '%kernel.project_dir%/public/build/manifest.json'
+                #version_strategy: 'app.assets.version_strategy'
+            #config_2:
+            #    json_manifest_path: '%kernel.project_dir%/public/config_2/build/manifest.json'
+                #version_strategy: 'app.assets.version_strategy'

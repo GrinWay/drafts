@@ -40,7 +40,7 @@ class ApiController extends AbstractController
             'current_utc_date' => \Carbon\Carbon::now('UTC')->isoFormat('LLLL'),
         ]);
     }
-
+	
     #[Route('/save/image', methods: ['POST'])]
     public function saveImage(
 		Request $request,

@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus'
-import { toastSwal, defaultSwal } from '../swal/swal_collection'
+import { toastSwal, defaultSwal } from '../swal/swal_collection.js'
 import Swal from 'sweetalert2/src/sweetalert2.js'
 
 //import somethingDefault1 from '../check-import-a-new-instance/test.js'

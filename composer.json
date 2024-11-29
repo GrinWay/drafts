@@ -19,6 +19,7 @@
         "fpdf/fpdf": "^1.86",
         "fzaninotto/faker": "dev-bugfix",
         "google/apiclient": "^2.15.0",
+        "graylog2/gelf-php": "^2.0",
         "grinway/command-bundle": "^1.2",
         "grinway/env-processor-bundle": "^1.0",
         "grinway/installer": "*",
@@ -45,8 +46,6 @@
         "scheb/2fa-trusted-device": "^7.5",
         "seld/jsonlint": "^1.11",
         "symfony-bundles/redis-bundle": "^3.1",
-        "symfony/asset": "7.1.*",
-        "symfony/asset-mapper": "7.1.*",
         "symfony/cache": "7.1.*",
         "symfony/clock": "7.1.*",
         "symfony/console": "7.1.*",
@@ -63,6 +62,7 @@
         "symfony/framework-bundle": "7.1.*",
         "symfony/html-sanitizer": "7.1.*",
         "symfony/http-client": "7.1.*",
+        "symfony/intl": "7.1.*",
         "symfony/ldap": "7.1.*",
         "symfony/loco-translation-provider": "7.1.*",
         "symfony/mailer": "7.1.*",
@@ -96,7 +96,9 @@
         "symfony/ux-dropzone": "^2.20",
         "symfony/ux-icons": "^2.20",
         "symfony/ux-lazy-image": "^2.21",
+        "symfony/ux-leaflet-map": "^2.21",
         "symfony/ux-live-component": "^2.20",
+        "symfony/ux-map": "^2.20",
         "symfony/ux-notify": "^2.21",
         "symfony/ux-svelte": "^2.21",
         "symfony/ux-swup": "^2.21",
@@ -114,6 +116,7 @@
         "symfonycasts/reset-password-bundle": "^1.22",
         "symfonycasts/verify-email-bundle": "^1.17",
         "tales-from-a-dev/twig-tailwind-extra": "^0.2.1",
+        "twbs/bootstrap": "^5.3",
         "twig/cssinliner-extra": "^3.11",
         "twig/extra-bundle": "^3.11",
         "twig/inky-extra": "^3.11",
@@ -190,8 +193,7 @@
         "auto-scripts": {
             "cache:clear": "symfony-cmd",
             "telegram:set_webhook": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd",
-            "importmap:install": "symfony-cmd"
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
         },
 		"app_reinstall_grinway_bundles": [
 			"rm -rf ./vendor/grinway",

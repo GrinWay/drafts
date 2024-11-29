@@ -5,7 +5,11 @@ framework:
         texter_transports:
             #novu:               '%env(APP_NOVU_DSN)%'
             #expo:               '%env(APP_EXPO_DSN)%'
+            
+            # push
             onesignal:          '%env(APP_ONESIGNAL_DSN)%'
+            
+            # sms
             twilio:             '%env(APP_TWILIO_DSN)%'
         
         chatter_transports:

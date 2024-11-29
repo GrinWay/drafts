@@ -1,4 +1,11 @@
 parameters:
-
-    router.request_context.scheme: '%env(APP_REQUIRED_SCHEME)%'
-    asset.request_context.secure: '%env(bool:APP_HTTPS)%'
+    
+    # UrlGeneratorInterface
+    #router.request_context.host: '%env(APP_HOST)%'
+    router.request_context.host: 'localhost'
+    router.request_context.base_url: 'localhost'
+    router.request_context.scheme: 'https'
+    
+    # asset() | \Symfony\Component\Asset\Packages
+    #asset.request_context.base_path: '%env(APP_DEFAULT_URI)%'
+    #asset.request_context.secure: '%env(bool:APP_HTTPS)%'

@@ -5,7 +5,6 @@
 /assets/media
 /google-services.json
 /firebase_service_account.json
-/firebase-service-account.json
 /local
 /t.txt
 /tests/coverage
@@ -52,8 +51,3 @@ yarn-error.log
 /phpunit.xml
 .phpunit.result.cache
 ###< phpunit/phpunit ###
-
-###> symfony/asset-mapper ###
-/public/assets/
-/assets/vendor/
-###< symfony/asset-mapper ###

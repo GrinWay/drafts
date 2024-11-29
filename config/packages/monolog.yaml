@@ -5,6 +5,7 @@ monolog:
         - security
         - security.entry_point
         - app.dev
+        - enable_debug_processor
 
 when@dev:
     monolog:
@@ -12,8 +13,9 @@ when@dev:
             main:
                 type: stream
                 path: "%kernel.logs_dir%/%kernel.environment%.log"
-                level: debug
-                channels: ["!event"]
+                level: error
+                channels:
+                -   '!event'
             # uncomment to get logging in your browser
             # you may have to allow bigger header sizes in your Web server configuration
             #firephp:
@@ -50,6 +52,42 @@ when@dev:
                 path:  '%kernel.logs_dir%/app_dev_%kernel.environment%.log'
                 level: 'info'
                 max_files: 1
+            
+            ###> ERROR TO MAIL ###
+            app.mail.crossed_with_error:
+                type: fingers_crossed
+                action_level: error
+                excluded_http_codes:
+                -   404
+                -   403
+                handler: 'app.mail.deduplicated'
+            app.mail.deduplicated:
+                type: deduplication
+                time: 1 #86400 # 86400 == 24 hours
+                handler: 'app.mail.groupped'
+            app.mail.groupped:
+                type: group
+                members:
+                -   'app.mail.email.deduplication'
+            #    -   'app.mail.console'
+            #app.mail.console:
+            #    type: stream
+            #    path: php://stderr
+            #    level: error
+            #    formatter: 'monolog.formatter.mail_sent_mark_line_formatter'
+            app.mail.email.deduplication:
+                type: deduplication
+                time: 1
+                handler: 'app.mail'
+            app.mail:
+                type: symfony_mailer
+                from_email: '%env(APP_ADMIN_EMAIL)%'
+                to_email: '%env(APP_TO_TEST_EMAIL)%'
+                subject: '[AUTO][ERROR] %%message%%'
+                level: error
+                formatter:  monolog.formatter.html
+                content_type: plain/text
+            ###< ERROR TO MAIL ###
                 
 when@test:
     monolog:
@@ -79,6 +117,13 @@ when@prod:
                 path: php://stderr
                 level: debug
                 formatter: monolog.formatter.json
+            
+            app.prod.files:
+                type: rotating_file
+                level: debug
+                path: '%kernel.logs_dir%/prod_last_days/%kernel.environment%.log'
+                max_files: 3
+            
             console:
                 type: console
                 process_psr_3_messages: false

@@ -1,15 +1,16 @@
-import zoomPlugin from 'chartjs-plugin-zoom'
+//import zoomPlugin from 'chartjs-plugin-zoom'
 import { BoxPlotController, BoxAndWiskers } from '@sgratzl/chartjs-chart-boxplot'
 import { Chart, LinearScale, CategoryScale } from 'chart.js'
 import { BarWithErrorBarsController, BarWithErrorBar } from 'chartjs-chart-error-bars'
 
 class InitChartjs {
 	constructor() {
-		this.boundInit = this.init.bind(this)
-
-		document.addEventListener('chartjs:init', this.boundInit)
-
-		console.log('__ Chartjs event listeners were added __')
+		
+		if (__webpack_modules__[require.resolveWeak('chart.js')]) {
+			this.boundInit = this.init.bind(this)
+			document.addEventListener('chartjs:init', this.boundInit)
+			console.log('__ Chartjs event listeners were added __')			
+		}
 	}
 
 	/**
@@ -34,7 +35,7 @@ class InitChartjs {
      */
 	#registerPlugins(chart) {
 		chart.register(
-			zoomPlugin,
+			//zoomPlugin,
 			BoxPlotController,
 			BoxAndWiskers,
 			LinearScale,

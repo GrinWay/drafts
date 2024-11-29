@@ -12,21 +12,21 @@ class PushController extends AbstractController
     #[Route('/displayed/webhook', name: 'displayed_webhook', methods: ['GET', 'POST'])]
     public function displayedWebhook()
     {
-        \dump('PUSH: ' . __METHOD__);
+        \dump('PUSH WEBHOOK: ' . __METHOD__);
         return $this->json([]);
     }
 
     #[Route('/clicked/webhook', name: 'clicked_webhook', methods: ['GET', 'POST'])]
     public function clickedWebhook()
     {
-        \dump('PUSH: ' . __METHOD__);
+        \dump('PUSH WEBHOOK: ' . __METHOD__);
         return $this->json([]);
     }
 
     #[Route('/dismissed/webhook', name: 'dismissed_webhook', methods: ['GET', 'POST'])]
     public function dismissedWebhook()
     {
-        \dump('PUSH: ' . __METHOD__);
+        \dump('PUSH WEBHOOK: ' . __METHOD__);
         return $this->json([]);
     }
 }

@@ -16,6 +16,10 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 class ChatController extends AbstractController
 {
+	public function __construct(
+		#[Autowire('@profiler')] private $profiler,
+	) {}
+	
     #[Route('/chat', name: 'app_chat')]
     public function index(
 		Request $request,
@@ -46,7 +50,7 @@ class ChatController extends AbstractController
 		
 		$form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $data = $form->getData();
+			$data = $form->getData();
 			
 			$message = $pa->getValue($data, '[message]');
 			$templateParameters = [

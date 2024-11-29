@@ -20,11 +20,12 @@ webpack_encore:
     # preload: true
 
     # Throw an exception if the entrypoints.json file is missing or an entry is missing from the data
-    # strict_mode: false
+    strict_mode: false
 
     # If you have multiple builds:
     # builds:
-        # frontend: '%kernel.project_dir%/public/frontend/build'
+    #    config_1: '%kernel.project_dir%/public/build'
+    #    config_2: '%kernel.project_dir%/public/config_2/build'
 
         # pass the build name as the 3rd argument to the Twig functions
         # {{ encore_entry_script_tags('entry1', null, 'frontend') }}

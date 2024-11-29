@@ -14,10 +14,9 @@
 
 {% block body %}
 
-	{% set iconName = 'dots' %}
-	<div id="test" class="d-flex align-items-center my-2">
-		<twig:ux:icon aria-hidden="false" name="{{ iconName }}"></twig:ux:icon>
-		<span class="fs-4 ms-1 p-0">Иконочка</span>
+	<div id="test" class="col-12 col-sm-3"
+	>
+		{{ ':heart:'|emojify }}
 	</div>
 	
 	
@@ -26,7 +25,9 @@
 	
 	
 	
-	
+	<div class="lead">
+		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam, perferendis vitae vel distinctio cum tenetur doloremque temporibus repellat accusantium dolore voluptate consequatur aliquid animi maiores earum laboriosam dignissimos ut aut voluptatibus possimus! Veritatis, voluptatum, laboriosam dolore temporibus voluptatibus accusantium veniam necessitatibus illo soluta incidunt earum similique voluptas velit eveniet nam ab commodi dignissimos quo accusamus consequuntur harum dolorem provident ea sequi perspiciatis! Illo, blanditiis maiores iusto iure corrupti sed. Repudiandae, ex, recusandae ipsam iusto veniam voluptatibus nihil a id nesciunt ad dignissimos tempora nisi itaque eligendi exercitationem iste vero. Ex, facilis, cupiditate, nihil officiis accusantium veniam ad reiciendis atque cumque tempora iure velit voluptatum quis quam laudantium repudiandae a doloribus. Cupiditate, dicta, voluptates, id ratione consequatur explicabo recusandae quisquam veritatis magnam minus maxime quos accusantium asperiores cum repudiandae tempore quia! Sit, hic, laborum ea maxime autem iusto vel voluptate cupiditate aspernatur ipsa obcaecati ullam quae ab nisi saepe neque unde nostrum magni quaerat asperiores similique a officiis nulla eos porro quas quo praesentium nesciunt quisquam voluptatum! Tempore, molestiae, illum tempora dolore delectus neque reprehenderit commodi et mollitia reiciendis eius eveniet voluptatum voluptatibus vitae asperiores nisi consectetur perspiciatis temporibus necessitatibus libero dolores eum architecto. Non, voluptatum omnis quisquam deserunt. Quae, numquam, enim, illum, natus velit porro excepturi adipisci facilis totam tempore debitis doloribus cum hic voluptatibus officia laborum unde alias nihil optio dicta error minima quis autem! Cumque accusamus error ullam natus facilis vel tempora dolores impedit! Sed, enim possimus distinctio voluptas placeat! Vitae, magnam, tenetur consequatur unde quidem eum explicabo pariatur eveniet est nulla. Hic, tenetur, nesciunt, incidunt distinctio accusamus doloribus voluptas libero est ea officiis nulla obcaecati quos laudantium nihil possimus fuga sit voluptatum cumque soluta quas dignissimos totam sequi atque quia deserunt eveniet dolore consectetur cupiditate porro quis ab praesentium odio quod voluptates harum velit placeat eligendi sapiente!
+	</div>
 
 	<div>
 		{{ dump(''~stimulus_controller('symfony/ux-autocomplete/autocomplete')) }}
@@ -36,7 +37,7 @@
 	<div class="test-background row shader">
 		
 		<div class="col-12 col-md-4 order-md-2">
-			<img class="img-thumbnail" src="{{ asset('clients/media/image/p1.jpg') }}" alt="test">
+			<img class="img-thumbnail" src="{{ asset('image/png.png') }}" alt="test">
 		</div>
 		
 		<div class="col-12 col-md-8 order-md-1 bg-crosses position-relative">

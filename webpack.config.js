@@ -1,6 +1,7 @@
 const Encore = require('@symfony/webpack-encore');
 const Dotenv = require('dotenv-webpack');
 const path = require('path');
+const webpack = require('webpack');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -8,6 +9,7 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 
+// config_1
 Encore
 	//addPlugin priority high
     .addPlugin(
@@ -42,11 +44,35 @@ Encore
 			allowEmptyValues: true,
 		}),
 	)
+    .addPlugin(
+		new webpack.BannerPlugin({
+		  banner: () => {
+			  if (Encore.isProduction()) {
+				  return 'I 💗 Symfony'
+			  }
+			  return ''
+		  },
+		}),
+	)
 	//addPlugin priority low
 
+	.addAliases({
+		'leaflet/dist/leaflet.min.css': 'leaflet/dist/leaflet.css',
+	})
+
+	.addLoader({
+		test: /\.md$/,
+		loader: 'markdown-loader',
+	})
+	
 	.copyFiles({
 		from: './assets/image',
 		to: 'image/[path][name].[hash:8].[ext]',
+	})
+	
+	.copyFiles({
+		from: './assets/js/firebase/copy_to_public',
+		to: '../[path][name].[ext]',
 	})
 	
 	/*
@@ -60,8 +86,8 @@ Encore
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
     .setPublicPath('/build')
-    // only needed for CDN's or subdirectory deploy
-    //.setManifestKeyPrefix('build/')
+    // The prefix you pass to: asset('<PREFIX>...')
+    .setManifestKeyPrefix('')
 
     /*
      * ENTRY CONFIG
@@ -70,11 +96,9 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/js/app.js')
-
+	
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
-
-    .enableSvelte()
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/js/controllers.json')
@@ -96,9 +120,9 @@ Encore
      */
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
-    .enableSourceMaps(!Encore.isProduction())
-    //.enableVersioning(Encore.isProduction())
-    .enableVersioning(true)
+    // for debugging aims
+	.enableSourceMaps(!Encore.isProduction())
+    .enableVersioning(Encore.isProduction())
     
 	.enablePostCssLoader(options => {
 	/*
@@ -134,10 +158,24 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
+	
+	.autoProvideVariables({
+		//handyVarForPackage: 'chartjs-plugin-zoom',
+	})
+	
+	// css url('<path>') will be represented as url('data:image/jpeg;base64,<data>')
+	.configureImageRule({
+		type: 'asset',
+		maxSize: 10 * 1024,
+	})
+	.configureFontRule({
+		type: 'asset',
+		maxSize: 10 * 1024,
+	})
 ;
 
-const config = Encore.getWebpackConfig()
+const config_1 = Encore.getWebpackConfig()
 
-config.resolve.conditionNames = ['browser', 'import', 'svelte']
+config_1.resolve.conditionNames = ['browser', 'import', 'svelte']
 
-module.exports = config
+module.exports = config_1

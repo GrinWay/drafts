@@ -7,6 +7,22 @@ use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\HttpKernel\KernelInterface;
+use Monolog\Attribute\WithMonologChannel;
+use Symfony\Component\Intl\Timezones;
+use Symfony\Component\Intl\Currencies;
+use Symfony\Component\Intl\Locales;
+use Symfony\Component\Intl\Countries;
+use Symfony\Component\Intl\Scripts;
+use Symfony\Component\Intl\Languages;
+use Symfony\UX\Map\Polygon;
+use Symfony\UX\Map\Bridge\Leaflet\LeafletOptions;
+use Symfony\UX\Map\Bridge\Leaflet\Option\TileLayer;
+use Symfony\UX\Map\InfoWindow;
+use Symfony\UX\Map\Map;
+use Symfony\UX\Map\Marker;
+use Symfony\UX\Map\Point;
+use Symfony\WebpackEncoreBundle\Asset\EntrypointLookupInterface;
 use App\Messenger\Event\Message\TestUserWasCreated;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\VarExporter\ProxyHelper;
@@ -396,6 +412,7 @@ use App\Messenger\Query\Message\Task\TaskForm;
 use Symfony\Component\Security\Http\Attribute\IsCsrfTokenValid;
 use App\Trait\Security\GitHub\GitHubAccessTokenAware;
 
+#[WithMonologChannel('app.dev')]
 class HomeController extends AbstractController
 {
 	use GitHubAccessTokenAware;
@@ -404,6 +421,7 @@ class HomeController extends AbstractController
         #[\App\Attribute\AutowireMyMethodOf(\App\Service\SomeService::class)]
         protected \Closure $getGenerator,
         private $mobileDetect,
+		private readonly LoggerInterface $logger,
     ) {
     }
 
@@ -490,6 +508,7 @@ class HomeController extends AbstractController
 		#[Autowire('%env(APP_REQUIRED_SCHEME)%')]
 		$requiredScheme,
 		HttpClientInterface $client,
+		HttpClientInterface $oneSignalClient,
 		//TransportInterface $mailer,
 		#[Autowire('%env(APP_ADMIN_MAILER_LOGIN)%')]
 		$appAdminEmailLogin,
@@ -531,21 +550,31 @@ class HomeController extends AbstractController
 		#[Autowire('%env(APP_ONESIGNAL_ID)%')]
 		$onesignalAppId,
 		#[Autowire('%env(APP_ONESIGNAL_DEFAULT_RECIPIENT_ID)%')]
-		$appOnesignalDefaultRecipientId,
+		$recipientId,
 		Service\FirebaseService $firebaseService,
 		#[Autowire('%env(APP_FIREBASE_FCM_V1_API_KEY)%')]
 		$firebaseApiKey,
-		LoggerInterface $appDevLogger,
+		LoggerInterface $logger,
+		EntrypointLookupInterface $entrypointLookup,
+		#[Autowire('%env(APP_ONESIGNAL_ID)%')] $oneSignalAppId,
+		LocaleSwitcher $localeSwitcher,
 		/*
 		*/
+		#[Autowire('%env(APP_FIREBASE_PROJECT_ID)%')] $firebaseProjectId,
+		#[Autowire('%env(APP_FIREBASE_SEND_URI)%')] $firebaseSendUri,
 		SerializerInterface $serializer,
 		HtmlSanitizerInterface $sanitizer,
+		KernelInterface $kernel,
 	) {
+		$isMobile = $this->mobileDetect->isMobile() || $this->mobileDetect->isTablet();
+		
 		$response = $this->render('home/index.html.twig', [
-			'is_mobile' => $this->mobileDetect->isPhone() || $this->mobileDetect->isTablet(),
+			'is_mobile' => $isMobile,
 		]);
 		
-		$bus->dispatch(new TestUserWasCreated());
+		//\dump($kernel->locateResource('@MonologBundle/Resources/config/monolog.xml'));
+		
+		//###> DUMP ALL
 		
 		return $response;
 		
@@ -1221,6 +1250,7 @@ class HomeController extends AbstractController
 		UserPasswordHasherInterface $userPasswordHasherInterface,
 		PasswordHasherFactoryInterface $hasherFacotry,
 		?TokenInterface $token,
+		EntrypointLookupInterface $entrypointLookup,
 	) {
 		$random = Carbon::now('UTC')->second.\random_int(0, 10);
 		

@@ -1,7 +1,7 @@
 import { Controller } from '@hotwired/stimulus';
 import { useHotkeys } from 'stimulus-use/hotkeys'
 import { useTargetMutation } from 'stimulus-use'
-import { htmlDecode } from '../../function/parser'
+import { htmlDecode } from '../../function/parser.js'
 
 /* Usage:
 <div

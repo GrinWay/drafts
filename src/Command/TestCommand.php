@@ -2,6 +2,9 @@
 
 namespace App\Command;
 
+use Psr\Log\LoggerInterface;
+use Symfony\Contracts\Service\Attribute\Required;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Console\Cursor;
 use Symfony\Component\Process\Process;
 use Symfony\Component\Filesystem\Filesystem;
@@ -21,10 +24,24 @@ class TestCommand extends AbstractCommand
     public const HELP = 'JUST A TEST COMMAND';
     public const DESCRIPTION = 'JUST A TEST COMMAND';
     
+	private UrlGeneratorInterface $urlGenerator;
+	private LoggerInterface $logger;
+	
+	#[Required]
+	public function _setRequired(
+		LoggerInterface $logger,
+		UrlGeneratorInterface $urlGenerator,
+	): void {
+		$this->logger = $logger;
+		$this->urlGenerator = $urlGenerator;
+	}
+	
     protected function command(
         InputInterface $input,
         OutputInterface $output,
     ): int {
+		
+		$this->logger->info('Да уш');
 		
 		$this->ioDump(
             'Ask',

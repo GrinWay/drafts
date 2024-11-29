@@ -1,5 +1,5 @@
 import { Controller } from '@hotwired/stimulus';
-import { useTransition } from '../stimulus-use/useTransition';
+import { useTransition } from '../stimulus-use/useTransition.js';
 
 // TODO: lazy-image -> grinway--lazy-image
 /** Note: Exactly this arrangement of controllers definitions

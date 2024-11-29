@@ -1,8 +1,8 @@
 import { Controller } from '@hotwired/stimulus'
-import { useTransition } from '../stimulus-use/useTransition'
+import { useTransition } from '../stimulus-use/useTransition.js'
 import Trix from "trix"
 import axios from 'axios'
-import { AbstractTrixController } from './grinway/Stimulus/Controller/AbstractTrixController'
+import { AbstractTrixController } from './grinway/Stimulus/Controller/AbstractTrixController.js'
 
 export default class extends AbstractTrixController {
 	

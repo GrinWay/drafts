@@ -1,0 +1,3 @@
+services:
+    monolog.formatter.mail_sent_mark_line_formatter: '@App\Monolog\Formatter\MailSentMarkLineFormatter'
+        

@@ -162,21 +162,6 @@
             "./config/packages/sb_redis.yaml"
         ]
     },
-    "symfony/asset-mapper": {
-        "version": "7.1",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "6.4",
-            "ref": "6c28c471640cc2c6e60812ebcb961c526ef8997f"
-        },
-        "files": [
-            "./assets/app.js",
-            "./assets/styles/app.css",
-            "./config/packages/asset_mapper.yaml",
-            "./importmap.php"
-        ]
-    },
     "symfony/console": {
         "version": "7.1",
         "recipe": {
@@ -520,6 +505,15 @@
             "./config/packages/lazy_image.yaml"
         ]
     },
+    "symfony/ux-leaflet-map": {
+        "version": "2.21",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.19",
+            "ref": "bed7e7f6d7c04e0de9665859ddbf0e842e5323e3"
+        }
+    },
     "symfony/ux-live-component": {
         "version": "2.20",
         "recipe": {
@@ -530,6 +524,18 @@
         },
         "files": [
             "./config/routes/ux_live_component.yaml"
+        ]
+    },
+    "symfony/ux-map": {
+        "version": "2.20",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.19",
+            "ref": "04de870967555f00bd82f542e9e2d29683c3d39e"
+        },
+        "files": [
+            "./config/packages/ux_map.yaml"
         ]
     },
     "symfony/ux-notify": {
