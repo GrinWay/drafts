@@ -63,7 +63,7 @@ when@dev:
                 handler: 'app.mail.deduplicated'
             app.mail.deduplicated:
                 type: deduplication
-                time: 1 #86400 # 86400 == 24 hours
+                time: 86400 #86400 # 86400 == 24 hours
                 handler: 'app.mail.groupped'
             app.mail.groupped:
                 type: group

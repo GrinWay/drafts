@@ -2,22 +2,26 @@
 
 namespace App\Service;
 
-use App\Service\StringService;
+use Symfony\Contracts\Translation\LocaleAwareInterface;
 
-class ServiceForTesting
+class ServiceForTesting implements LocaleAwareInterface
 {
-    public function __construct(
-		private readonly mixed $data = null,
-    ) {
+    private string $locale;
+
+    /**
+     * @param string $locale
+     * @return void
+     */
+    public function setLocale(string $locale): void
+    {
+        $this->locale = $locale;
     }
 
-    public function getPassedString(string $string): string
+    /**
+     * @return string
+     */
+    public function getLocale(): string
     {
-        return $string;
-    }
-
-    public function getFilenameWithExt(string $string, string $ext): string
-    {
-        return '';
+        return $this->locale;
     }
 }

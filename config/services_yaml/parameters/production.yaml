@@ -1,0 +1,11 @@
+when@prod:
+    
+    parameters:
+        
+        # https://symfony.com/doc/current/performance.html#dump-the-service-container-into-a-single-file
+        # dump_container_into_a_single_file
+        .container.dumper.inline_factories: true
+        
+        # https://symfony.com/doc/current/performance.html#disable-dumping-the-container-as-xml-in-debug-mode
+        # This XML file is used by various debugging commands such as debug:container and debug:autowiring
+        debug.container.dump: false

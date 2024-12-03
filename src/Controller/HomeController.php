@@ -2,11 +2,14 @@
 
 namespace App\Controller;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use function Symfony\Component\Translation\t;
 use function Symfony\component\string\u;
 use function Symfony\component\string\b;
 use function Symfony\Component\Clock\now;
 
+use Symfony\Component\ExpressionLanguage\Expression;
+use Symfony\Component\Stopwatch\Stopwatch;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Monolog\Attribute\WithMonologChannel;
 use Symfony\Component\Intl\Timezones;
@@ -320,7 +323,6 @@ use App\Dto\User\NullUserDto;
 use App\Doctrine\DTO\UserDto;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\HttpKernel\Exception\HttpException;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Symfony\Component\Filesystem\Path;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -431,8 +433,10 @@ class HomeController extends AbstractController
     #[Route(path: '/', methods: ['GET', 'POST'])]
     //#[IsCsrfTokenValid(id: 'default', tokenKey: '_token')]
     //#[SomeAttribute]
+	//#[IsGranted(new Expression('is_object(subject)'), 'r')]
     public function home(
         Request $r,
+		Stopwatch $stopwatch,
         Request $request,
         RequestStack $requestStack,
         ParameterBagInterface $parameters,
@@ -565,6 +569,8 @@ class HomeController extends AbstractController
 		SerializerInterface $serializer,
 		HtmlSanitizerInterface $sanitizer,
 		KernelInterface $kernel,
+		#[Autowire('@app.cache.day')] $cacheDay,
+		Service\ServiceForTesting $serviceForTesting,
 	) {
 		$isMobile = $this->mobileDetect->isMobile() || $this->mobileDetect->isTablet();
 		

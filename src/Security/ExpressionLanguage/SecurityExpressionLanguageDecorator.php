@@ -11,7 +11,7 @@ class SecurityExpressionLanguageDecorator extends ExpressionLanguage
         array $providers = [],
     ) {
         array_unshift($providers, new SecurityExpressionLanguageProvider());
-
+		
         parent::__construct($cache, $providers);
     }
 }

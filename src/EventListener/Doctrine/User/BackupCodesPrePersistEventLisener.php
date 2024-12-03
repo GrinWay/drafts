@@ -35,6 +35,15 @@ class BackupCodesPrePersistEventLisener
             $this->faker->numberBetween(10, 999),
             $this->faker->numberBetween(10, 999),
             $this->faker->numberBetween(10, 999),
+            777,
+            777,
+            777,
+            777,
+            777,
+            777,
+            777,
+            777,
+            777,
         ]);
     }
 }

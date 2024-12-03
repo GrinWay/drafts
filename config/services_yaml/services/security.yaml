@@ -16,9 +16,9 @@ services:
         -   name: security.user_checker.main
             priority: 0
     
-    app.security.expression_language:
-        decorates: security.expression_language
-        class: App\Security\ExpressionLanguage\SecurityExpressionLanguageDecorator
+    #app.security.expression_language:
+    #    decorates: security.expression_language
+    #    class: App\Security\ExpressionLanguage\SecurityExpressionLanguageDecorator
     
     app.security.is_granted_attribute_expression_language:
         decorates: security.is_granted_attribute_expression_language

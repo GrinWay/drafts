@@ -44,6 +44,10 @@ export default class extends Controller {
 		return this.hasOutputTarget ? this.outputTarget : undefined
 	}
 	
+	disconnect() {
+		
+	}
+	
 	connect() {
 	
 		const streamMessage = `

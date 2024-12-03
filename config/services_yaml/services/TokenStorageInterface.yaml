@@ -1,0 +1,11 @@
+services:
+
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    # Did it with compiler pass
+    #security.token_storage:
+    #    class: Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage
+    #    tags:
+    #    -   name: container.hot_path

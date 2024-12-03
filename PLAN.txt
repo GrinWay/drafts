@@ -1779,26 +1779,82 @@ SYMFONY PROFILER
 			хочешь провести что-то по service id который совпадает с типом: bin/console debug:autowiring
 			если идентификатор не совпадает с типом: bin/console debug:container
 	)
-***
 SYMFONY PERFOMANCE
-	https://symfony.com/doc/current/performance.html
 SYMFONY BUILT-IN SERVICE TAGS
-	https://symfony.com/doc/current/reference/dic_tags.html
-DOCKER
-	https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
-	https://symfony.com/doc/current/setup/docker.html
-	https://symfony.com/doc/current/setup.html
-	https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
-	https://symfony.com/doc/current/setup/symfony_server.html#symfony-server-docker
-	https://github.com/dunglas/symfony-docker
-	https://symfony.com/doc/5.x/setup/symfony_server.html#configuring-workers
-	MERCURE: C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\UX\Symfony UX Turbo\48-mercure-service (1080p).mp4
-	RRR: when@docker
-	?
-	Неужели чтобы транслировать изменения не нужно запускать Mercure.hub бинарный файл
-		при использовании docker
+***
 SYMFONY LOCAL WEB SERVER
 	https://symfony.com/doc/5.x/setup/symfony_server.html
+DOCKER
+
+	mcHost исполнить php --ini
+		и выяснить есть ли opcache
+	mcHost есть ли у них docker
+
+	https://symfony.com/doc/current/setup/docker.html
+	https://github.com/dunglas/symfony-docker
+	https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
+	https://symfony.com/doc/current/setup/symfony_server.html#symfony-server-docker
+	https://symfony.com/doc/5.x/setup/symfony_server.html#configuring-workers
+	https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
+	MERCURE: C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\UX\Symfony UX Turbo\48-mercure-service (1080p).mp4
+	RRR: when@docker
+	R: Запустить "docker pull phpmyadmin" чтобы не пользоваться openserver
+	R: Запустить "docker run ngrok/ngrok" https://hub.docker.com/r/ngrok/ngrok
+	?
+	? Хочу открыть сайт на 127.0.0.1:8000, почему описывая в Dockerfile ENTRYPOINT ["php", "-S", "0.0.0.0:80"]
+		-p 8000:80
+		Я попадаю на 127.0.0.1:8000 без ошибок
+	? Короче вопрос: если docker container имеет несколько networks то указав -p 8000:80,
+		порт 80 вообще к какой сети привязан? Это же нигде не описывается
+
+		Если для docker container имеет 2 network и так же указан -p 8000:80 то docker порт 80
+		он к какой сети то вообще привязан, это же не описывается нигде
+	+ ? Зачем вообще нужен -it когда делаешь docker run
+		docker run ... -it IMAGE CMD // Есть ли в этом -it вообще смысл?
+		(
+			-it == -i -t == interactive tty
+			Краткий ответ: НЕТ
+
+			Потому что не все консоли поддерживают вход в interactive tty mode при запуске run
+			Better: Используй: "docker exec -it CONTAINER /bin/bash" уже после создания контейнера
+				чтоб уж наверняка зайти в interactive tty mode
+		)
+	? Как создать инструкции Dockerfile так чтобы ты мог при docker run сразу исполнить -it /bin/bash
+		и тем самым войти в Linux OS
+	? Не смог найти где хранится именованый volume
+	? По неизвестной мне причине, открыв порт в docker container, заходя 1 раз по этому ip
+		фактически на ip заходишь дважды! Но почему и как это исправить
+	? Как же быть когда хочешь и php image и node image в одном и том же image
+	? Хочу запустить простейший локальный сервер, создав и запустив контейнер, но не могу
+		Что не так
+
+		# Файл Dockerfile
+		FROM php
+		EXPOSE 8000
+		COPY . .
+		CMD ["php", "-S", "127.0.0.1:8000"]
+
+		# Запуск
+		docker build .
+		docker images
+		docker run -p 8000:8000 <>
+
+	? Неужели чтобы транслировать изменения не нужно запускать Mercure.hub бинарный файл
+		при использовании docker
+WEBSTORM
+	https://www.youtube.com/watch?v=WlBrhM1_t5k&pp=ygUJd2Vic3Rvcm0g
+	https://www.youtube.com/watch?v=hH5xZ2lt_-o
+	https://www.youtube.com/watch?v=J4bJ118vWKo
+	https://www.youtube.com/watch?v=k1ehwDmDiXY&pp=ygUTd2Vic3Rvcm0g0YPRgNC-0LrQuA%3D%3D
+SYMFONY SETUP
+	https://symfony.com/doc/current/setup.html
+SYMFONY REDIS BUNDLE
+	https://github.com/phpredis/phpredis
+	https://symfony.com/doc/current/security/login_link.html#configure-a-maximum-use-of-a-link
+	LOCK: The priority policy of Symfony's shared locks depends on the underlying store (e.g. Redis store prioritizes readers vs writers).
+	https://symfony.com/doc/current/components/lock.html#redisstore
+	CACHE: Используй TagAwareAdapter(для файлов кеша используй FilesystemAdapter, а для тегов используй RedisAdapter)
+	R: использовать сервис 'cache.adapter.redis' для кеширования
 RSYNC (выгрузка файлов на сервер)
 	Очень пригодится при проверках push от firebase
 	https://www.servers.ru/knowledge/linux-administration/how-to-copy-files-between-linux-servers-using-rsync
@@ -1833,12 +1889,6 @@ SYMFONY API PLATFORM
 	R: У своей точки API проверить обновляются ли данные в profiler
 		если нет верни определённый заголовок с контроллера api
 		$response->headers->set('Symfony-Debug-Toolbar-Replace', '1');
-SYMFONY REDIS BUNDLE
-	https://github.com/phpredis/phpredis
-	https://symfony.com/doc/current/security/login_link.html#configure-a-maximum-use-of-a-link
-	LOCK: The priority policy of Symfony's shared locks depends on the underlying store (e.g. Redis store prioritizes readers vs writers).
-	https://symfony.com/doc/current/components/lock.html#redisstore
-	CACHE: Используй TagAwareAdapter(для файлов кеша используй FilesystemAdapter, а для тегов используй RedisAdapter)
 doctrine-test-bundle https://github.com/dmaicher/doctrine-test-bundle
 Cache with Memcached
 	https://habr.com/ru/articles/14939/
@@ -2018,8 +2068,23 @@ PUSH (Firebase) реализовать на https хостинге (по сут�
 	https://firebase.google.com/docs/cloud-messaging/js/client?authuser=0#next_steps
 Enable APC and then use this cache to save something on local server
 	https://stackoverflow.com/questions/24448261/how-to-install-apcu-in-windows
-	
-RRR: WATCH ALL RAYAN WAVER VIDEOS
+Очисти OPcache на развёрнутом сервере
+	\opcache_reset()
+BLACKFIRE
+	https://docs.blackfire.io/introduction
+Настроить Varnish HTTP Cache
+	https://symfony.com/doc/current/http_cache/varnish.html
+	https://symfony.com/doc/current/deployment/proxies.html
+	https://varnish-cache.org/docs/index.html
+Придумать ситуацию, в которой ты будешь использовать kernel.fragment_renderer
+	https://symfony.com/doc/current/reference/dic_tags.html#kernel-fragment-renderer
+Реализуй с помощюь mercure + turbo stream смену title favicon для: (основываясь на turbo:<events>)
+	default favicon (/assets/images/favicon/favicon.svg)
+	чего-то нового (/assets/images/favicon/favicon_new.svg)
+	загрузки (иммитация загрузки анимацией svg, иммитация потому что turbo drive работает) (/assets/images/favicon/favicon_loading.svg)
+https://www.youtube.com/watch?v=n_21ya2MoKg&list=PLqVeG_R3qMSzYe_s3-q7TZeawXxTyltGC
+
+RRR?: WATCH ALL RAYAN WAVER VIDEOS
 RRR: READ БАНДА ЧЕТЫРЁХ
 
 TODO
@@ -2235,4 +2300,3 @@ Composer https://getcomposer.org/doc/articles/custom-installers.md#the-custom-in
 		$this->addLink($request, (new Link('preload', $publicImgFilename))->withAttribute('as', 'image'));
 		
 		это будет + к поисковым запросам
-	

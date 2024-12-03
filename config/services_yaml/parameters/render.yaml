@@ -1,0 +1,5 @@
+parameters:
+
+    # Defined strategy only in one place (@app.reader service will be the appropriate one)
+    # See: \config\services_yaml\services\reader.yaml
+    app.render_strategy: inline

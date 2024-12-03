@@ -1,7 +1,7 @@
 services:
 
+    _defaults:
+        autoconfigure: true
+
     App\Service\ServiceForTesting:
         class: App\Service\ServiceForTesting
-        public: true
-        arguments:
-            $data: '@Psr\Container\ContainerInterface $parameterBag'

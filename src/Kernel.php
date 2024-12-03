@@ -108,6 +108,8 @@ class Kernel extends BaseKernel implements CompilerPassInterface
             //$container->findDefinition('security.token_storage')->clearTag('kernel.reset');
             //$container->findDefinition('doctrine')->clearTag('kernel.reset');
         }
+		
+		$this->addContainerHotPathTag($container);
 
         $serviceId = 'App\Service\SomeService';
 
@@ -137,6 +139,24 @@ class Kernel extends BaseKernel implements CompilerPassInterface
     }
 
     //###> HELPER ###
+	
+	/**
+     * Inner
+     */
+	private function addContainerHotPathTag(ContainerBuilder $container): void {
+		foreach([
+			'security.token_storage',
+			'property_accessor',
+		] as $serviceId) {
+			if (false === $container->hasDefinition($serviceId)) {
+				return;
+			}
+			
+			$container->findDefinition($serviceId)
+				->addTag('container.hot_path')
+			;
+		}
+	}
 
     private function registerAutowireMyMethodOf(ContainerBuilder $container): void
     {
