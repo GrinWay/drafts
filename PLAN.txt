@@ -1781,18 +1781,16 @@ SYMFONY PROFILER
 	)
 SYMFONY PERFOMANCE
 SYMFONY BUILT-IN SERVICE TAGS
-***
 SYMFONY LOCAL WEB SERVER
 	?
 	? Почему-то не получается создать локальное доменное имя за счёт proxy
+***
 DOCKER
 
 	mcHost исполнить php --ini
 		и выяснить есть ли opcache
 	mcHost есть ли у них docker
 
-	https://symfony.com/doc/current/setup/docker.html
-	https://github.com/dunglas/symfony-docker
 	https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
 	https://symfony.com/doc/current/setup/symfony_server.html#symfony-server-docker
 	https://symfony.com/doc/5.x/setup/symfony_server.html#configuring-workers
@@ -1801,6 +1799,7 @@ DOCKER
 	RRR: when@docker
 	R: Запустить "docker pull phpmyadmin" чтобы не пользоваться openserver
 	R: Запустить "docker run ngrok/ngrok" https://hub.docker.com/r/ngrok/ngrok
+	https://github.com/dunglas/symfony-docker
 	?
 	? Хочу открыть сайт на 127.0.0.1:8000, почему описывая в Dockerfile ENTRYPOINT ["php", "-S", "0.0.0.0:80"]
 		-p 8000:80
@@ -1837,6 +1836,12 @@ DOCKER
 
 	? Неужели чтобы транслировать изменения не нужно запускать Mercure.hub бинарный файл
 		при использовании docker
+SYMFONY DOCKER
+	?
+	? Неужели symfony не может сделать docker compose из-за исключения на / route
+	? Хотел указать базу данных под ключом db, но "docker compose" выдаёт ошибку 15
+		поменял service.db на service.database docker compose собрал контейнеры
+		Вопрос: понять бы как symfony взаимодействует с docker, что вместо docker-compose.yaml мы пишем compose.yaml
 WEBSTORM
 	https://www.youtube.com/watch?v=WlBrhM1_t5k&pp=ygUJd2Vic3Rvcm0g
 	https://www.youtube.com/watch?v=hH5xZ2lt_-o

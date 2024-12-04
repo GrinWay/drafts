@@ -51,8 +51,6 @@
 	{% set img_class = 'app-width--small' %}
 	{% set mobile_dop_class = is_mobile|default(false) ? ' app-user-select--none' %}
 
-	{{ dump(is_mobile) }}
-
 	<div
 		{{ stimulus_controller('carousel') }}
 		class="{{- 'swiper ms-0 ' ~ img_class ~ mobile_dop_class -}}"

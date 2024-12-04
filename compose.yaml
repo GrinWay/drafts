@@ -1,56 +1,25 @@
-version: '3.8'
-
 networks:
     default:
         name: app_net
-        driver: test
+        driver: bridge
 
 services:
-    ###> doctrine/doctrine-bundle ###
-#    database:
-#        image: mysql:8.0-debian
-#        container_name: app_mysql
-#        ports:
-#            - '3306'
-#        restart: always
-#        environment:
-#            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-
-        ###< doctrine/doctrine-bundle ###
-
-
-
-        ###> symfony/mercure-bundle ###
-#    mercure:
-#        image: dunglas/mercure
-#        container_name: app_mercure
-#        restart: unless-stopped
-#        environment:
-#            # Uncomment the following line to disable HTTPS,
-#            SERVER_NAME: ':80'
-##            MERCURE_PUBLISHER_JWT_KEY: '${MERCURE_PUBLISHER_JWT_KEY}'
-##            MERCURE_SUBSCRIBER_JWT_KEY: '${MERCURE_SUBSCRIBER_JWT_KEY}'
-#            MERCURE_PUBLISHER_JWT_KEY: 'woodenalexruwoodenalexruwoodenal'
-#            MERCURE_SUBSCRIBER_JWT_KEY: 'woodenalexruwoodenalexruwoodenal'
-#            # Set the URL of your Symfony project (without trailing slash!) as value of the cors_origins directive
-#            MERCURE_EXTRA_DIRECTIVES: |
-#                cors_origins http://127.0.0.1:8000
-#            # Comment the following line to disable the development mode
-#            command: /usr/bin/caddy run --config /etc/caddy/dev.Caddyfile
-#            #healthcheck:
-#            #  test: ["CMD", "curl", "-f", "https://localhost/healthz"]
-#            #  timeout: 5s
-#            #  retries: 5
-#            #  start_period: 60s
-#            volumes:
-#                - 'mercure_data:/data'
-#                - 'mercure_config:/config'
-###< symfony/mercure-bundle ###
-
-volumes:
-
-
-    ###> symfony/mercure-bundle ###
-#    mercure_data:
-#    mercure_config:
-###< symfony/mercure-bundle ###
+    ###>
+    # docker exec -it app_db mysql -p
+    #     CREATE DATABASE main;
+    ###<
+    database:
+        image: 'mysql:8.0-debian'
+        restart: always
+        container_name: app_db
+        ports:
+            - '3306:3306'
+        environment:
+            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+    phpmyadmin:
+        image: phpmyadmin:5.2.1-apache
+        restart: always
+        ports:
+            - '8080:80'
+        environment:
+            - PMA_ARBITRARY=1
