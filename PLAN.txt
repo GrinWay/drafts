@@ -1783,7 +1783,8 @@ SYMFONY PERFOMANCE
 SYMFONY BUILT-IN SERVICE TAGS
 ***
 SYMFONY LOCAL WEB SERVER
-	https://symfony.com/doc/5.x/setup/symfony_server.html
+	?
+	? Почему-то не получается создать локальное доменное имя за счёт proxy
 DOCKER
 
 	mcHost исполнить php --ini
@@ -1812,12 +1813,7 @@ DOCKER
 	+ ? Зачем вообще нужен -it когда делаешь docker run
 		docker run ... -it IMAGE CMD // Есть ли в этом -it вообще смысл?
 		(
-			-it == -i -t == interactive tty
-			Краткий ответ: НЕТ
-
-			Потому что не все консоли поддерживают вход в interactive tty mode при запуске run
-			Better: Используй: "docker exec -it CONTAINER /bin/bash" уже после создания контейнера
-				чтоб уж наверняка зайти в interactive tty mode
+            Правило такое: run -it когда потенциально будет интерактивный tty(консоль может что-то ввоидить) режим с контейнером
 		)
 	? Как создать инструкции Dockerfile так чтобы ты мог при docker run сразу исполнить -it /bin/bash
 		и тем самым войти в Linux OS
@@ -1846,6 +1842,15 @@ WEBSTORM
 	https://www.youtube.com/watch?v=hH5xZ2lt_-o
 	https://www.youtube.com/watch?v=J4bJ118vWKo
 	https://www.youtube.com/watch?v=k1ehwDmDiXY&pp=ygUTd2Vic3Rvcm0g0YPRgNC-0LrQuA%3D%3D
+	?
+	? yaml: как перейти от (неполучилось)
+		key:
+			- value
+		
+		к
+		
+		key:
+		-	value
 SYMFONY SETUP
 	https://symfony.com/doc/current/setup.html
 SYMFONY REDIS BUNDLE
@@ -1859,7 +1864,7 @@ RSYNC (выгрузка файлов на сервер)
 	Очень пригодится при проверках push от firebase
 	https://www.servers.ru/knowledge/linux-administration/how-to-copy-files-between-linux-servers-using-rsync
 	https://selectel.ru/blog/rsync-guide/
-SYMFONY COMMAND
+SYMFONY CONSOLE / COMMAND https://symfony.com/doc/current/console.html https://symfony.com/doc/current/console.html
 	https://symfony.com/doc/current/components/console/helpers/questionhelper.html#testing-a-command-that-expects-input
 	+ R: Посмотреть как реализована замена строки у команды bin/console ux:icons:import bi:arrow-left-short
 		Подозреваю что это progress bar

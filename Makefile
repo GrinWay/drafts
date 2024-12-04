@@ -1,11 +1,17 @@
 run:
-	cls && symfony server:stop && symfony server:start --no-tls
-	
+	clear && symfony server:stop && symfony server:start
+
 stop:
-	cls && symfony server:stop
+	clear && symfony server:stop
+
+open:
+	clear && symfony open:local
 
 dump:
-	cls && php "./bin/console" server:dump
-	
+	clear && php "./bin/console" server:dump
+
+cc:
+	clear && php bin/console cache:clear
+
 build:
-	cls && yarn encore production --progress
+	clear && yarn encore production --progress

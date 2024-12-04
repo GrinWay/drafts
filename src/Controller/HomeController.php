@@ -427,14 +427,20 @@ class HomeController extends AbstractController
     ) {
     }
 
-	/**
+    #[Route(path: '/', methods: ['GET', 'POST'])]
+    public function home() {
+        $response = $this->render('home/index.html.twig');
+        return $response;
+    }
+
+    /**
 	* @var Carbon $nowModified -1second
 	*/
-    #[Route(path: '/', methods: ['GET', 'POST'])]
+    #[Route(path: '/old', methods: ['GET', 'POST'])]
     //#[IsCsrfTokenValid(id: 'default', tokenKey: '_token')]
     //#[SomeAttribute]
 	//#[IsGranted(new Expression('is_object(subject)'), 'r')]
-    public function home(
+    public function oldHome(
         Request $r,
 		Stopwatch $stopwatch,
         Request $request,
@@ -573,8 +579,8 @@ class HomeController extends AbstractController
 		Service\ServiceForTesting $serviceForTesting,
 	) {
 		$isMobile = $this->mobileDetect->isMobile() || $this->mobileDetect->isTablet();
-		
-		$response = $this->render('home/index.html.twig', [
+
+        $response = $this->render('home/index.html.twig', [
 			'is_mobile' => $isMobile,
 		]);
 		
