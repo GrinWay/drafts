@@ -1,9 +1,0 @@
-turbo:
-    broadcast:
-        enabled:              true
-        entity_template_prefixes:
-            App\Entity\:         broadcast/
-        doctrine_orm:
-            enabled:              true
-
-    default_transport:    default

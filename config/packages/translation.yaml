@@ -1,22 +1,7 @@
 framework:
-    default_locale: '%env(APP_LOCALE)%'
-    enabled_locales: '%app.enabled_locales%'
-    
+    default_locale: en
     translator:
-    
-        pseudo_localization:
-                enabled: false
-                accents: false
-                expansion_factor: 1.4
-                brackets: false
-                parse_html: true
-                localizable_html_attributes:
-                -   title
-                -   form
         default_path: '%kernel.project_dir%/translations'
-        fallbacks: '%app.enabled_locales%'
+        fallbacks:
+            - en
         providers:
-            loco:
-                dsn: '%env(LOCO_DSN)%'
-                domains: ['messages']
-                locales: ['ru', 'en']

@@ -1,7 +1,0 @@
-framework:
-    secret:                 '%env(APP_SECRET)%'
-    ###> FRAGMENT ###
-    fragments:
-        enabled:    true
-        path:       /_fragment
-    ###< FRAGMENT ###

@@ -2,119 +2,28 @@ framework:
     messenger:
         failure_transport: failed
 
-        default_bus: command.bus
-
-        buses:
-            
-            ###> MAIN BASES ###
-            
-            ###> COMMAND: $bus
-            command.bus:
-                default_middleware:
-                    enabled: true
-                    allow_no_handlers: false
-                    allow_no_senders: true
-                middleware:
-                -   id:         'validation'
-                #-   id:         'App\Messenger\Middleware\HowStampWorksMiddleware'
-                -   id:         'doctrine_open_transaction_logger' # DOCTRINE TRANSACTION LOG
-                #-   id:         'doctrine_transaction' # AUTO FLUSH
-            
-            ###> EVENT: $eventBus
-            event.bus:
-                default_middleware:
-                    enabled: true
-                    allow_no_handlers: true
-                    allow_no_senders: true
-                middleware:
-                -   id:         'validation'
-                #-   id:         'App\Messenger\Middleware\HowStampWorksMiddleware'
-                -   id:         'doctrine_open_transaction_logger' # DOCTRINE TRANSACTION LOG
-                -   id:         'doctrine_transaction' # AUTO FLUSH
-            
-            ###> QUERY
-            # grin_way_web_app.messenger.query.bus
-            
-            ###< MAIN BASES ###
-            
-            messenger.bus.handler_has_router_context:
-                middleware:
-                -   id: 'app.messenger.middleware.add_handler_argument_from'
-                    arguments:
-                        $stamps:
-                            -   id: 'Symfony\Component\Messenger\Stamp\RouterContextStamp'
-                                methods:
-                                    baseUrl:
-                                        name: 'getBaseUrl'
-                                        args: []
-                                    pathInfo:
-                                        name: 'getPathInfo'
-                                        args: []
-                -   id:         'router_context'
-                -   id:         'validation'
-                -   id:         'doctrine_open_transaction_logger' # DOCTRINE TRANSACTION LOG
-                -   id:         'doctrine_transaction' # AUTO FLUSH
-                
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
-            sync: 'sync://'
-            
             async:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
-                    queue_name: async
+                    use_notify: true
+                    check_delayed_interval: 60000
                 retry_strategy:
                     max_retries: 3
-                    delay: 3000
                     multiplier: 2
-                    max_delay: 10000
-                rate_limiter: async
-            
-            failed:
-                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
-                options:
-                    queue_name: failed
-                retry_strategy:
-                    max_retries: 10
-                    delay: 1000
-                    multiplier: 5
-                    max_delay: 3600000
-                rate_limiter: failed
-            
+            failed: 'doctrine://default?queue_name=failed'
+            # sync: 'sync://'
+
+        default_bus: messenger.bus.default
+
+        buses:
+            messenger.bus.default: []
+
         routing:
-            'App\Messenger\*': async
-            'App\Messenger\Command\*': sync
-            
-            'App\Messenger\Command\Message\HowStampWorks': async
-            'App\Messenger\Event\Message\TestUserWasCreated': async
-            
-            # CACHE
-            'Symfony\Component\Cache\Messenger\EarlyExpirationMessage': async
-            
-            # MAILER
-            'Symfony\Component\Mailer\Messenger\SendEmailMessage': sync
+            Symfony\Component\Mailer\Messenger\SendEmailMessage: async
+            Symfony\Component\Notifier\Message\ChatMessage: async
+            Symfony\Component\Notifier\Message\SmsMessage: async
 
-            # NOTIFIER
-            'Symfony\Component\Notifier\*': sync
-            
-            # MERCURE
-            'Symfony\Component\Mercure\*': sync
-
-when@prod: &prod
-    framework:
-        messenger:
-            routing:
-                'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
-
-when@test: &test
-    framework:
-        messenger:
-            transports:
-                ###> 
-                # With this config tests work INCORRECTLY
-                #
-                # sync: '%env(APP_MESSENGER_TEST)%'
-                # async: '%env(APP_MESSENGER_TEST)%'
-                # failed: '%env(APP_MESSENGER_TEST)%'
-                #
-                ###<
+            # Route your messages to the transports
+            # 'App\Message\YourMessage': async

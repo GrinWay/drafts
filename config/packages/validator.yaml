@@ -1,15 +1,9 @@
 framework:
     validation:
-        enabled: true
-        enable_attributes: true
-        static_method: null
-        #translation_domain: validators
-        auto_mapping: ~
+        # Enables validator auto-mapping support.
+        # For instance, basic validation constraints will be inferred from Doctrine's metadata.
         #auto_mapping:
-        #-   App\Entity\
-        #not_compromised_password:
-        #    enabled: true
-        #    endpoint: null
+        #    App\Entity\: []
 
 when@test:
     framework:

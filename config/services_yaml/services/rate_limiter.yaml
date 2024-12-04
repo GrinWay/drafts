@@ -1,7 +1,0 @@
-services:
-
-    _defaults:
-        autowire: true
-        autoconfigure: true
-        
-    app.rate_limiter_storage.default: '@App\RateLimit\Storage\DefaultRateLimiterStorage'

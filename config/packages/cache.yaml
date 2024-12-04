@@ -1,9 +1,5 @@
 framework:
     cache:
-        directory: '%kernel.cache_dir%/app_cache'
-        
-        #app: 'app.cache_adapter.php_files'
-        
         # Unique name of your app: used to compute stable namespaces for cache keys.
         #prefix_seed: your_vendor_name/app_name
 
@@ -19,33 +15,5 @@ framework:
         #app: cache.adapter.apcu
 
         # Namespaced pools use the above "app" backend by default
-        pools:
-        
-            app.cache.async:
-                default_lifetime: 20
-                adapter: 'cache.adapter.filesystem'
-                early_expiration_message_bus: messenger.default_bus
-        
-            app.cache.chain:
-                default_lifetime: 60
-                adapters:
-                
-                # VERY FAST (but for tests only, it doesn't save anything: https://symfony.com/doc/current/components/cache/adapters/array_cache_adapter.html)
-                -   cache.adapter.array
-                
-                #-   app.cache_adapter.php_files
-                
-                # SAVES LOTS OF INFORMATION
-                -   cache.adapter.filesystem
-        
-            app.cache.minute:
-                adapter: 'cache.adapter.filesystem'
-                default_lifetime: 60
-                
-            app.cache.day:
-                adapter: 'cache.adapter.filesystem'
-                default_lifetime: 3600
-                
-            app.cache.lazy_image:
-                adapter: 'cache.adapter.filesystem'
-                default_lifetime: 3600
+        #pools:
+            #my.dedicated.cache: null

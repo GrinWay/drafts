@@ -7,247 +7,56 @@
         "php": ">=8.2",
         "ext-ctype": "*",
         "ext-iconv": "*",
-        "amphp/http-client": "^4",
-        "beberlei/doctrineextensions": "^1.5",
-        "doctrine/doctrine-bundle": "^2.12",
+        "doctrine/dbal": "^3",
+        "doctrine/doctrine-bundle": "^2.13",
         "doctrine/doctrine-migrations-bundle": "^3.3",
-        "doctrine/orm": "^3.2",
-        "dragonmantank/cron-expression": "^3.3",
-        "easycorp/easyadmin-bundle": "^4.13",
-        "endroid/qr-code": "^5.0",
-        "endroid/qr-code-bundle": "^5.0",
-        "fpdf/fpdf": "^1.86",
-        "fzaninotto/faker": "dev-bugfix",
-        "google/apiclient": "^2.15.0",
-        "graylog2/gelf-php": "^2.0",
-        "grinway/command-bundle": "^1.2",
-        "grinway/env-processor-bundle": "^1.0",
-        "grinway/installer": "*",
-        "grinway/service-bundle": "^3.0",
-        "grinway/symfony-extensions": ">=1",
-        "grinway/web-app-bundle": "^1.0",
-        "hwi/oauth-bundle": "^2.2",
-        "khanamiryan/qrcode-detector-decoder": "^2.0",
-        "knpuniversity/oauth2-client-bundle": "^2.18",
-        "kornrunner/blurhash": "^1.2",
-        "league/commonmark": "^2.5",
-        "league/oauth2-github": "*",
-        "league/oauth2-google": "^4.0",
-        "mobiledetect/mobiledetectlib": "4.8.x",
-        "nesbot/carbon": "^3.5",
-        "nikic/php-parser": "^5.3",
-        "phpdocumentor/reflection-docblock": "^5.4",
-        "phpdocumentor/type-resolver": "^1.8",
-        "phpstan/phpdoc-parser": "^1.29",
-        "scheb/2fa-backup-code": "^7.5",
-        "scheb/2fa-bundle": "^7.5",
-        "scheb/2fa-email": "^7.5",
-        "scheb/2fa-google-authenticator": "^7.5",
-        "scheb/2fa-totp": "^7.5",
-        "scheb/2fa-trusted-device": "^7.5",
-        "seld/jsonlint": "^1.11",
-        "symfony-bundles/redis-bundle": "^3.1",
-        "symfony/cache": "7.1.*",
-        "symfony/clock": "7.1.*",
-        "symfony/console": "7.1.*",
-        "symfony/debug-bundle": "7.1.*",
-        "symfony/doctrine-messenger": "7.1.*",
-        "symfony/dotenv": "7.1.*",
-        "symfony/emoji": "7.1.*",
-        "symfony/expo-notifier": "7.1.*",
-        "symfony/expression-language": "7.1.*",
-        "symfony/filesystem": "7.1.*",
-        "symfony/finder": "7.1.*",
+        "doctrine/orm": "^3.3",
+        "phpdocumentor/reflection-docblock": "^5.6",
+        "phpstan/phpdoc-parser": "^2.0",
+        "symfony/asset": "7.2.*",
+        "symfony/console": "7.2.*",
+        "symfony/doctrine-messenger": "7.2.*",
+        "symfony/dotenv": "7.2.*",
+        "symfony/expression-language": "7.2.*",
         "symfony/flex": "^2",
-        "symfony/form": "7.1.*",
-        "symfony/framework-bundle": "7.1.*",
-        "symfony/html-sanitizer": "7.1.*",
-        "symfony/http-client": "7.1.*",
-        "symfony/intl": "7.1.*",
-        "symfony/ldap": "7.1.*",
-        "symfony/loco-translation-provider": "7.1.*",
-        "symfony/mailer": "7.1.*",
-        "symfony/mailgun-mailer": "7.1.*",
-        "symfony/mercure-bundle": "^0.3.9",
-        "symfony/mercure-notifier": "7.1.*",
-        "symfony/messenger": "7.1.*",
-        "symfony/mime": "7.1.*",
-        "symfony/monolog-bundle": "^3.10",
-        "symfony/notifier": "7.1.*",
-        "symfony/one-signal-notifier": "7.1.*",
-        "symfony/options-resolver": "7.1.*",
-        "symfony/process": "7.1.*",
-        "symfony/property-access": "7.1.*",
-        "symfony/property-info": "7.1.*",
-        "symfony/rate-limiter": "7.1.*",
-        "symfony/runtime": "7.1.*",
-        "symfony/scheduler": "7.1.*",
-        "symfony/security-bundle": "7.1.*",
-        "symfony/security-csrf": "7.1.*",
-        "symfony/serializer": "7.1.*",
-        "symfony/stimulus-bundle": "^2.19",
-        "symfony/telegram-notifier": "7.1.*",
-        "symfony/translation": "7.1.*",
-        "symfony/twig-bundle": "7.1.*",
-        "symfony/twilio-notifier": "7.1.*",
-        "symfony/uid": "7.1.*",
-        "symfony/ux-autocomplete": "^2.21",
-        "symfony/ux-chartjs": "^2.21",
-        "symfony/ux-cropperjs": "^2.20",
-        "symfony/ux-dropzone": "^2.20",
-        "symfony/ux-icons": "^2.20",
-        "symfony/ux-lazy-image": "^2.21",
-        "symfony/ux-leaflet-map": "^2.21",
-        "symfony/ux-live-component": "^2.20",
-        "symfony/ux-map": "^2.20",
-        "symfony/ux-notify": "^2.21",
-        "symfony/ux-svelte": "^2.21",
-        "symfony/ux-swup": "^2.21",
-        "symfony/ux-toggle-password": "^2.21",
-        "symfony/ux-translator": "^2.21",
-        "symfony/ux-turbo": "^2.20",
-        "symfony/ux-twig-component": "^2.18",
-        "symfony/ux-typed": "^2.21",
-        "symfony/validator": "7.1.*",
-        "symfony/web-link": "7.1.*",
-        "symfony/webhook": "7.1.*",
-        "symfony/webpack-encore-bundle": "^2.1",
-        "symfony/workflow": "7.1.*",
-        "symfony/yaml": "7.1.*",
-        "symfonycasts/reset-password-bundle": "^1.22",
-        "symfonycasts/verify-email-bundle": "^1.17",
-        "tales-from-a-dev/twig-tailwind-extra": "^0.2.1",
-        "twbs/bootstrap": "^5.3",
-        "twig/cssinliner-extra": "^3.11",
-        "twig/extra-bundle": "^3.11",
-        "twig/inky-extra": "^3.11",
-        "twig/intl-extra": "^3.10",
-        "twig/markdown-extra": "^3.11",
-        "twig/string-extra": "*",
-        "twig/twig": ">=3.5 <4",
-        "unicodeveloper/novu": "^1.2",
-        "vich/uploader-bundle": "^2.4",
-        "web-token/jwt-library": "*",
-        "wohali/oauth2-discord-new": "^1.2"
-    },
-	"repositories": [
-		{
-			"type": "path",
-			"url": "./bundles/grinway/service-bundle"
-		},
-		{
-			"type": "path",
-			"url": "./bundles/grinway/command-bundle"
-		},
-		{
-			"type": "path",
-			"url": "./bundles/grinway/env-processor-bundle"
-		},
-		{
-			"type": "path",
-			"url": "./bundles/grinway/web-app-bundle"
-		},
-		{
-			"type": "path",
-			"url": "./bundles/grinway/symfony-extensions"
-		},
-		{
-			"type": "path",
-			"url": "./bundles/grinway/installer"
-		},
-		{
-			"type": "vcs",
-			"url": "https://github.com/GrinWay/Faker.git"
-		}
-	],
-    "require-dev": {
-        "dama/doctrine-test-bundle": "^8.2",
-        "dbrekelmans/bdi": "^1.3",
-        "doctrine/doctrine-fixtures-bundle": "^3.6",
-        "phpunit/phpunit": "^11.3|^12",
-        "symfony/browser-kit": "7.1.*",
-        "symfony/css-selector": "7.1.*",
-        "symfony/maker-bundle": "^1.60",
-        "symfony/panther": "^2.1",
-        "symfony/phpunit-bridge": "^7.1",
-        "symfony/stopwatch": "7.1.*",
-        "symfony/var-exporter": "7.1.*",
-        "symfony/web-profiler-bundle": "7.1.*"
+        "symfony/form": "7.2.*",
+        "symfony/framework-bundle": "7.2.*",
+        "symfony/http-client": "7.2.*",
+        "symfony/intl": "7.2.*",
+        "symfony/mailer": "7.2.*",
+        "symfony/mime": "7.2.*",
+        "symfony/monolog-bundle": "^3.0",
+        "symfony/notifier": "7.2.*",
+        "symfony/process": "7.2.*",
+        "symfony/property-access": "7.2.*",
+        "symfony/property-info": "7.2.*",
+        "symfony/runtime": "7.2.*",
+        "symfony/security-bundle": "7.2.*",
+        "symfony/serializer": "7.2.*",
+        "symfony/stimulus-bundle": "^2.22",
+        "symfony/string": "7.2.*",
+        "symfony/translation": "7.2.*",
+        "symfony/twig-bundle": "7.2.*",
+        "symfony/ux-turbo": "^2.22",
+        "symfony/validator": "7.2.*",
+        "symfony/web-link": "7.2.*",
+        "symfony/webpack-encore-bundle": "^2.2",
+        "symfony/yaml": "7.2.*",
+        "twig/extra-bundle": "^2.12|^3.0",
+        "twig/twig": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {
             "php-http/discovery": true,
             "symfony/flex": true,
-            "symfony/runtime": true,
-            "endroid/installer": true,
-            "grinway/installer": true
+            "symfony/runtime": true
         },
+        "bump-after-update": true,
         "sort-packages": true
     },
-    "extra": {
-        "symfony": {
-            "allow-contrib": false,
-            "require": "7.1.*"
-        }
-    },
-    "scripts": {
-        "auto-scripts": {
-            "cache:clear": "symfony-cmd",
-            "telegram:set_webhook": "symfony-cmd",
-            "assets:install %PUBLIC_DIR%": "symfony-cmd"
-        },
-		"app_reinstall_grinway_bundles": [
-			"rm -rf ./vendor/grinway",
-			"@composer require grinway/command-bundle grinway/env-processor-bundle grinway/service-bundle grinway/web-app-bundle"
-		],
-		"app_after_composer_install": [
-			"@app_fpdf_download",
-			"@telegram_set_webhook"
-		],
-		"watch": "yarn encore dev --watch",
-		
-        "telegram_set_webhook": [
-			"App\\Command\\Telegram\\TelegramSetWebhook"
-		],
-        "command": [
-			"php -r \"echo 'INLINE CLI COMMAND'.\\PHP_EOL;\"",
-			"App\\Composer\\Scripts\\Command::execute"
-		],
-        "pre-package-uninstall": [
-			"App\\Composer\\Scripts\\PrePackageUninstall::execute"
-		],
-        "pre-package-install": [
-			"App\\Composer\\Scripts\\PrePackageInstall::execute"
-		],
-        "post-package-install": [
-			"App\\Composer\\Scripts\\PostPackageInstall::execute"
-		],
-        "pre-install-cmd": [
-			"App\\Composer\\Scripts\\PreInstallCmd::execute"
-		],
-        "post-autoload-dump": [
-			"App\\Composer\\Scripts\\PostAutoloadDump::execute"
-		],
-        "post-install-cmd": [
-            "@auto-scripts"
-        ],
-        "post-update-cmd": [
-            "@auto-scripts"
-		],
-		"app_js_deps_download": [
-			"App\\Composer\\Scripts\\JsDeps::load"
-		],
-		"app_fpdf_download": [
-			"App\\Composer\\Scripts\\Download\\FpdfDownloader::download"
-		]
-    },
     "autoload": {
-		"files": [
-			"src/Resources/functions.php"
-		],
         "psr-4": {
-            "App\\": "src/",
-            "DataFixtures\\": "fixtures/"
+            "App\\": "src/"
         }
     },
     "autoload-dev": {
@@ -265,7 +74,35 @@
         "symfony/polyfill-php81": "*",
         "symfony/polyfill-php82": "*"
     },
+    "scripts": {
+        "auto-scripts": {
+            "cache:clear": "symfony-cmd",
+            "assets:install %PUBLIC_DIR%": "symfony-cmd"
+        },
+        "post-install-cmd": [
+            "@auto-scripts"
+        ],
+        "post-update-cmd": [
+            "@auto-scripts"
+        ]
+    },
     "conflict": {
         "symfony/symfony": "*"
+    },
+    "extra": {
+        "symfony": {
+            "allow-contrib": false,
+            "require": "7.2.*"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "7.2.*",
+        "symfony/css-selector": "7.2.*",
+        "symfony/debug-bundle": "7.2.*",
+        "symfony/maker-bundle": "^1.0",
+        "symfony/phpunit-bridge": "^7.2",
+        "symfony/stopwatch": "7.2.*",
+        "symfony/web-profiler-bundle": "7.2.*"
     }
 }

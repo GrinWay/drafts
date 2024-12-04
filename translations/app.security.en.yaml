@@ -1,3 +1,0 @@
-o_auth_needs_exception: 'You have to authorize with social media.'
-form_login_needs_exception: 'You have to authorize with form login.'
-lack_of_permission: 'Lack of permissions.'

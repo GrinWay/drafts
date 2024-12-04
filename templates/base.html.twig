@@ -1,131 +1,18 @@
 <!DOCTYPE html>
-
-<html
-	data-symfony-ux-translator-locale="{{ app.request.locale }}"
-	{{ stimulus_controller('html-listener') }}
-	data-action="
-		turbo:click->html-listener#turboClick
-		turbo:visit->html-listener#turboVisit
-		turbo:render->html-listener#turboRender
-		turbo:before-visit->html-listener#turboBeforeVisit
-		turbo:before-render->html-listener#turboBeforeRender
-		turbo:before-fetch-request->html-listener#turboBeforeFetchRequest
-		turbo:before-fetch-response->html-listener#turboBeforeFetchResponse
-		turbo:before-prefetch->html-listener#turboBeforePrefetch
-		turbo:frame-missing->html-listener#turboFrameMissing
-		turbo:load->html-listener#turboLoad
-		turbo:morph->html-listener#turboMorph
-		turbo:submit-start->html-listener#turboSubmitStart
-		turbo:frame-load->html-listener#turboFrameLoad
-		app:live:custom_event->html-listener#customSymfonyTwigLiveEvent
-	"
->
-
+<html>
     <head>
         <meta charset="UTF-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
-		
-		{% block meta %}
-			{#
-			<meta name="turbo-cache-control" content="no-preview">
-			#}
-			<meta name="turbo-refresh-method" content="morph">
-			<meta name="turbo-refresh-scroll" content="preserve">
-			<meta name="turbo-prefetch" content="false">
-			<meta name="csrf-token" content="csrfTokenApp123j3nfsldkj324">
-		{% endblock %}
-        
-		{%- block outside_title -%}
-			<title>
-				{%- block title -%}
-					Welcome!
-				{%- endblock -%}
-			</title>
-		{%- endblock -%}
+        <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-		
-		{% block stylesheets %}
-			{#
-			{{ encore_entry_link_tags('app', null, 'config_1') }}
-			#}
-			{{ encore_entry_link_tags('app') }}
-		{% endblock %}
+        {% block stylesheets %}
+            {{ encore_entry_link_tags('app') }}
+        {% endblock %}
 
         {% block javascripts %}
-			{#
-            {{ encore_entry_script_tags('app', null, 'config_1') }}
-			{% block importmap %}{{ importmap('app') }}{% endblock %}
-			#}
             {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
-
-	{#
-		theme name => Theme.themeCookieName
-	#}
-    <body class="{{ block('theme', 'blocks/_cookie.html.twig') }}"
-		{{ stimulus_target('html-listener', 'body') }}
-	>
-	
-		{#
-		<div class="">
-		#}
-		<div class="container">
-			<div class="badge text-bg-secondary">
-				{{- random() -}}
-			</div>
-		</div>
-	
-		{{ include('default/_flash.html.twig') }}
-		
-		<twig:menu />
-		
-		<twig:theme
-			class="container"
-			label:class="p-1"
-			checkbox:class="mt-2"
-		/>
-		
-		<twig:debug />
-		
-		<div id="svg_shapes" class="d-flex justify-content-center">
-			{% include 'svg/animated/_shapes.svg.twig' with { width: '160', height: '160' } %}
-		</div>
-		
-		{#
-        <div class="">
-		#}
-		<div class="container overflow-clip px-2 px-md-4">
-			{% block base_controllers %}
-				<div class=""
-					id="app_main_counter_controller"
-					data-turbo-permanent
-					{{ stimulus_controller('counter') }}
-				>
-					<h1>
-						<div class=""
-							{{ stimulus_target('counter', 'output') }}
-						></div>
-					</h1>
-					<div class="btn btn-primary"
-						{{ stimulus_target('counter', 'add') }}
-						data-action="
-							click->counter#add
-						"
-					>+</div>
-					<div class="btn btn-secondary"
-						{{ stimulus_target('counter', 'sub') }}
-						data-action="
-							click->counter#sub
-						"
-					>-</div>
-				</div>
-			{% endblock %}
-			
-			<div class="">
-				{% block body %}{% endblock %}
-			</div>
-		</div>		
-		{{ block('weather_widget', 'widget/_weather_widget.html.twig') }}
+    <body>
+        {% block body %}{% endblock %}
     </body>
 </html>

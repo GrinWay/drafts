@@ -1,4 +1,0 @@
-parameters:
-
-    env(APP_FIREBASE_PROJECT_ID): '%env(key:project_id:json:file:resolve:APP_FIREBASE_SERVICE_ACCOUNT_FILEPATH)%'
-    env(APP_FIREBASE_SEND_URI): 'https://fcm.googleapis.com/v1/projects/%env(APP_FIREBASE_PROJECT_ID)%/messages:send'

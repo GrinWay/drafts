@@ -1,5 +1,0 @@
-services:
-    App\Service\IDontWant:
-        class: App\Service\IDontWant
-        arguments:
-            $string: 'Testing'

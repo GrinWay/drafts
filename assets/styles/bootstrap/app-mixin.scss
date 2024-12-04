@@ -1,7 +1,0 @@
-/**
- * 
- */
-@mixin bg-color-contrast($color) {
-	color: color-contrast($color);
-	background-color: $color;
-}

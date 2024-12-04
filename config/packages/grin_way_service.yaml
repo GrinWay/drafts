@@ -1,8 +1,0 @@
-grin_way_service:
-    locale: '%env(APP_LOCALE)%'
-    timezone: '%env(APP_TIMEZONE)%'
-    #global_instanceof_rel_path: ~
-#    load_packs_configs:
-#    -   pack_name:      'grin_way_service'
-#        pack_rel_path:  'config/packages'
-#        does_not_exist_mess: 'your_namespace.exception.file_must_exist' # (NOT REQUIRED) Translated message    

@@ -1,6 +1,0 @@
-parameters:
-
-    app.default_locale_route_dot_suffix: en
-    app.enabled_locales:
-    -   en
-    -   ru

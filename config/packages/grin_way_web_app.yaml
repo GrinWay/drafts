@@ -1,2 +1,0 @@
-grin_way_web_app:
-    doctrine:     '%grin_way_web_app.doctrine%'

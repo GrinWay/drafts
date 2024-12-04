@@ -1,40 +1,22 @@
-/.php-version
-*.png
-/.idea
-/.symfony.local.yaml
-/mercure
-/assets/image
-/assets/media
-/google-services.json
-/firebase_service_account.json
-/local
-/t.txt
-/tests/coverage
-/public/media/
-/public/downloads/
-
-/drivers/*
-!/drivers/.gitignore
-
 ###> symfony/framework-bundle ###
 /.env.local
 /.env.local.php
 /.env.*.local
 /config/secrets/prod/prod.decrypt.private.php
-/config/secrets/dev/dev.decrypt.private.php
 /public/bundles/
 /var/
 /vendor/
 ###< symfony/framework-bundle ###
 
-###> safe /vendor/symfony/http-kernel/Kernel.php for Kernel::build()
-/vendor/*
-#!/vendor/symfony
-#/vendor/symfony/*
-#!/vendor/symfony/http-kernel
-#/vendor/symfony/http-kernel/*
-#!/vendor/symfony/http-kernel/Kernel.php
-###< safe /vendor/symfony/http-kernel/Kernel.php for Kernel::build()
+###> phpunit/phpunit ###
+/phpunit.xml
+.phpunit.result.cache
+###< phpunit/phpunit ###
+
+###> symfony/phpunit-bridge ###
+.phpunit.result.cache
+/phpunit.xml
+###< symfony/phpunit-bridge ###
 
 ###> symfony/webpack-encore-bundle ###
 /node_modules/
@@ -42,14 +24,3 @@
 npm-debug.log
 yarn-error.log
 ###< symfony/webpack-encore-bundle ###
-
-/bundles/
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
-
-###> phpunit/phpunit ###
-/phpunit.xml
-.phpunit.result.cache
-###< phpunit/phpunit ###

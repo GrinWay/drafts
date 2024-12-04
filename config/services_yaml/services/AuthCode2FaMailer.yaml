@@ -1,8 +1,0 @@
-services:
-
-    _defaults:
-        autowire: true
-        autoconfigure: true
-
-    App\Mailer\Auth2Fa\AuthCode2FaMailer:
-        class: App\Mailer\Auth2Fa\AuthCode2FaMailer

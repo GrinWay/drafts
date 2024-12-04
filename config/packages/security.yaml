@@ -1,292 +1,39 @@
-when@dev: &when_dev
+security:
+    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
+    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
+    providers:
+        users_in_memory: { memory: null }
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+        main:
+            lazy: true
+            provider: users_in_memory
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#the-firewall
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        # - { path: ^/admin, roles: ROLE_ADMIN }
+        # - { path: ^/profile, roles: ROLE_USER }
+
+when@test:
     security:
-        firewalls:
-            main:
-                form_login:
-                    enable_csrf: false
         password_hashers:
-            admin_hasher:
-                algorithm: auto
-                cost: 5
-                migrate_from:
-                -   no_hash
-            
+            # By default, password hashers are resource intensive and take time. This is
+            # important to generate secure password hashes. In tests however, secure hashes
+            # are not important, waste resources and increase test times. The following
+            # reduces the work factor to the lowest possible values.
             Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
                 algorithm: auto
                 cost: 4 # Lowest possible value for bcrypt
                 time_cost: 3 # Lowest possible value for argon
                 memory_cost: 10 # Lowest possible value for argon
-when@test: *when_dev
-
-security:
-    
-    hide_user_not_found: true
-    
-    #session_fixation_strategy: !php/const Symfony\Component\Security\Http\Session\SessionAuthenticationStrategy::INVALIDATE
-    
-    access_decision_manager:
-        
-    role_hierarchy:
-        
-        ROLE_ADMIN:
-        -   ROLE_USER
-        
-        ROLE_OWNER:
-        -   ROLE_ADMIN
-    
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
-    password_hashers:
-        
-        # Named hasher
-        no_hash:
-            id: 'App\Security\PasswordHasher\NoHashPasswordHasher'
-        
-        # Named hasher
-        low_cost_bcrypt:
-            algorithm: bcrypt
-            cost: 7
-            
-        # Named hasher
-        admin_hasher:
-            algorithm: auto
-            cost: 14
-            migrate_from:
-            -   no_hash
-        
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
-            algorithm: auto
-            cost: 4
-            
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
-    providers:
-        # used to reload user from session & other features (e.g. switch_user)
-        app_user_provider:
-            entity:
-                class: App\Entity\User
-                property: email
-                
-        oauth:
-            id: knpu.oauth2.user_provider
-            
-        #app.user_provider.doctrine_decorator:
-        #    id: 'app.user_provider.doctrine_decorator'
-        
-        #app_admin_provider:
-        #    entity:
-        #        class: App\Entity\Admin
-        #        property: email
-    
-    firewalls:
-        dev:
-            pattern:
-                - ^/_profiler/
-                - ^/_wdt/
-                - ^/css/
-                - ^/images/
-                - ^/js/
-            security: false
-        #admin:
-        #    pattern: '^/admin'
-            #user_checker: security.user_checker.chain.admin
-
-            #entry_point: 'App\Security\ProtectedResourceHandler\EntryPoint\ExceptionDependedEntryPoint'
-            #access_denied_handler: 'App\Security\ProtectedResourceHandler\AccessDenied\DefaultAccessDeniedHandler'
-            
-        #    provider: app_admin_provider
-        
-        api:
-            pattern: '^/api'
-            provider: 'app_user_provider'
-            #provider: 'app.user_provider.doctrine_decorator'
-            lazy: true
-            methods:
-            -   GET
-            -   POST
-            
-            json_login:
-            #    check_path: api_generate_new_token
-                check_path: api_login
-                username_path: _username
-                password_path: _password
-                success_handler: 'App\Security\Handler\JsonLogin\SuccessHandler'
-            
-            access_token:
-                token_extractors:
-                -   'header'
-                #-   'security.access_token_extractor.request_body'
-                #-   'security.access_token_extractor.query_string'
-                token_handler: App\Security\Authenticator\AccessTokenAuthenticator\TokenHandler\DefaultTokenHandler
-                    
-        main:
-            pattern: '^/'
-                
-            #context: main_admin
-            lazy: true
-            stateless: false
-            #anonymous: true
-            
-            #provider: 'app.user_provider.doctrine_decorator'
-            provider: app_user_provider
-            
-            entry_point: 'App\Security\ProtectedResourceHandler\EntryPoint\ExceptionDependedEntryPoint'
-            user_checker: security.user_checker.chain.main
-            access_denied_handler: 'App\Security\ProtectedResourceHandler\AccessDenied\DefaultAccessDeniedHandler'
-
-            #host: '^127[.]0[.]0[.]1$'
-            #methods:
-            #-   GET
-            #-   POST
-            #request_matcher: App\Security\RequestMatcher\CustomRequestMatcher            
-            
-            login_throttling:
-                limiter: 'App\RateLimit\Request\DefaultRequestRateLimiter'
-                
-            two_factor:
-                multi_factor: true
-                trusted_parameter_name: _trusted
-                enable_csrf: true
-                auth_form_path: 2fa_login    # The route name you have used in the routes.yaml
-                check_path: 2fa_login_check  # The route name you have used in the routes.yaml
-
-            oauth:
-                resource_owners:
-                    github:         app_github_login
-                login_path:         app_home_home
-                use_forward:        true
-                failure_path:       app_home_home
-
-                oauth_user_provider:
-                    service: hwi_oauth.user.provider.entity
-
-            #access_token:
-                #provider: 'app.user_provider.doctrine_decorator'
-            #    success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
-            #    failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
-            #    remember_me: true
-            #    token_extractors:
-            #    -   'query_string'
-            #    token_handler: 'App\Security\Authenticator\AccessTokenAuthenticator\TokenHandler\DefaultTokenHandler'
-                
-            #remember_me:
-            #    lifetime: '%app.remember_me.cookie_lifetime%'
-            #    name: REMEMBERME_MAIN
-            #    always_remember_me: true
-            #    remember_me_parameter: _remember_me
-                
-            #    secret: '%env(APP_ENV)%'
-            #    signature_properties:
-                #-   passport.rememberMeUpdatedAt
-                #-   email
-            #    -   password
-                #-   switchUserAble
-                
-            form_login:
-                # Redirect if denied
-                #login_path: app_login
-                # Для перехвата аутентификатором
-                check_path: app_login
-                #remember_me: false
-                
-                csrf_parameter: '%app.csrf_name%'
-                csrf_token_id: youWillNotHackMe
-                
-                success_handler: 'App\Security\Handler\FormLogin\SuccessHandler'
-                #failure_handler: 'App\Security\Handler\FormLogin\FailureHandler'
-                #failure_path: 'app_home_home'
-                
-                #default_target_path: 2fa_login
-                #always_use_default_target_path: false
-                #use_referer: true
-                
-                #form_only: true
-                use_forward: true
-                
-            custom_authenticators:
-            -   App\Security\Authenticator\FormLoginAuthenticator
-            #-   App\Security\Authenticator\GitHubAuthenticator
-
-            #guard:
-            #    authenticators:
-            #    -   'App\Security\Authenticator\GuardAuthenticator\GitHubGuardAuthenticator'
-            
-            #http_basic:
-            #    realm: 'Secured Area'
-                
-            #http_digest:
-            
-            #form_login_ldap:
-            
-            #http_basic_ldap:
-            
-            #x509:
-            
-            #remote_user:
-                #provider: ~
-                #user: APP_REMOTE_USER
-            
-            login_link:
-                check_route: app_login_link
-                signature_properties:
-                -   email
-                -   password
-                lifetime: 600
-                ###> MAX 1 === POST only ###
-                check_post_only: true
-                max_uses: 1
-                ###< MAX 1 === POST only ###
-                
-                #login_path: app_login
-                always_use_default_target_path: false
-                default_target_path: app_home_home
-            
-            #json_login:
-            #    login_path: app_login
-            #    check_path: app_json_login
-            #    username_path: username
-            #    password_path: password
-            
-            logout:
-                path: app_logout
-                target: app_login
-                #delete_cookies:
-                #    app_theme:
-                #clear_site_data:
-                #-   '*'
-                #-   'cache'
-                #-   'cookies'
-                #-   'storage'
-                #-   'executionContexts'
-                invalidate_session: false
-                
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
-
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            switch_user:
-                target_route: app_home_home
-                #role: VOTE_SWITCH_USER
-                #parameter: 'X-Switch-User'
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
-    access_control:
-
-    -   path: ^/2fa
-        roles: IS_AUTHENTICATED_2FA_IN_PROGRESS 
-        #requires_channel: '%env(APP_REQUIRED_SCHEME)%'
-        
-    -   path: ^/(?:login|logout|register)
-        roles:
-        - PUBLIC_ACCESS
-        
-    #-   ips:
-    #    -   '127.0.0.1/8' # 127.0.0.255
-    #    roles: ALWAYS_FORBIDDEN
-    #    requires_channel: '%env(APP_REQUIRED_SCHEME)%'
-        
-    #-   request_matcher: 'app.request_matcher.localhost_home'
-    #    roles: ALWAYS_FORBIDDEN
-    #    requires_channel: '%env(APP_REQUIRED_SCHEME)%'
-        
-    -   path: ^/
-        roles: PUBLIC_ACCESS
-        #requires_channel: '%env(APP_REQUIRED_SCHEME)%'

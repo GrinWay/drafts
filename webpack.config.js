@@ -1,7 +1,4 @@
 const Encore = require('@symfony/webpack-encore');
-const Dotenv = require('dotenv-webpack');
-const path = require('path');
-const webpack = require('webpack');
 
 // Manually configure the runtime environment if not already configured yet by the "encore" command.
 // It's useful when you use tools that rely on webpack.config.js file.
@@ -9,85 +6,13 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
     Encore.configureRuntimeEnvironment(process.env.NODE_ENV || 'dev');
 }
 
-// config_1
 Encore
-	//addPlugin priority high
-    .addPlugin(
-		new Dotenv({
-			path: '.env.dev.local',
-			defaults: '.env',
-			systemvars: true,
-			allowEmptyValues: true,
-		}),
-	)
-    .addPlugin(
-		new Dotenv({
-			path: '.env.dev',
-			defaults: '.env',
-			systemvars: true,
-			allowEmptyValues: true,
-		}),
-	)
-    .addPlugin(
-		new Dotenv({
-			path: '.env.local',
-			defaults: '.env',
-			systemvars: true,
-			allowEmptyValues: true,
-		}),
-	)
-    .addPlugin(
-		new Dotenv({
-			path: '.env',
-			defaults: '.env',
-			systemvars: true,
-			allowEmptyValues: true,
-		}),
-	)
-    .addPlugin(
-		new webpack.BannerPlugin({
-		  banner: () => {
-			  if (Encore.isProduction()) {
-				  return 'I 💗 Symfony'
-			  }
-			  return ''
-		  },
-		}),
-	)
-	//addPlugin priority low
-
-	.addAliases({
-		'leaflet/dist/leaflet.min.css': 'leaflet/dist/leaflet.css',
-	})
-
-	.addLoader({
-		test: /\.md$/,
-		loader: 'markdown-loader',
-	})
-	
-	.copyFiles({
-		from: './assets/image',
-		to: 'image/[path][name].[hash:8].[ext]',
-	})
-	
-	.copyFiles({
-		from: './assets/js/firebase/copy_to_public',
-		to: '../[path][name].[ext]',
-	})
-	
-	/*
-	.copyFiles({
-		from: 'node_modules/bootstrap-icons/font/fonts',
-		to: 'fonts/[path][name].[hash:8].[ext]',
-	})
-	*/
-	
-	// directory where compiled assets will be stored
+    // directory where compiled assets will be stored
     .setOutputPath('public/build/')
     // public path used by the web server to access the output path
     .setPublicPath('/build')
-    // The prefix you pass to: asset('<PREFIX>...')
-    .setManifestKeyPrefix('')
+    // only needed for CDN's or subdirectory deploy
+    //.setManifestKeyPrefix('build/')
 
     /*
      * ENTRY CONFIG
@@ -95,21 +20,14 @@ Encore
      * Each entry will result in one JavaScript file (e.g. app.js)
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
-    .addEntry('app', './assets/js/app.js')
-	
+    .addEntry('app', './assets/app.js')
+
     // When enabled, Webpack "splits" your files into smaller pieces for greater optimization.
     .splitEntryChunks()
-
-    // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
-    .enableStimulusBridge('./assets/js/controllers.json')
 
     // will require an extra script tag for runtime.js
     // but, you probably want this, unless you're building a single-page app
     .enableSingleRuntimeChunk()
-	.configureSplitChunks(function (splitChunks) {
-		splitChunks.automaticNameDelimiter = '_'
-		splitChunks.chunks = 'all'
-	})
 
     /*
      * FEATURE CONFIG
@@ -120,27 +38,19 @@ Encore
      */
     .cleanupOutputBeforeBuild()
     .enableBuildNotifications()
-    // for debugging aims
-	.enableSourceMaps(!Encore.isProduction())
+    .enableSourceMaps(!Encore.isProduction())
+    // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
-    
-	.enablePostCssLoader(options => {
-	/*
-		options.postcssOptions = {
-			
-		}
-	*/
-	})
 
     // configure Babel
-    .configureBabel((config) => {
-        //config.plugins.push('@babel/a-babel-plugin');
-    })
+    // .configureBabel((config) => {
+    //     config.plugins.push('@babel/a-babel-plugin');
+    // })
 
     // enables and configure @babel/preset-env polyfills
     .configureBabelPresetEnv((config) => {
         config.useBuiltIns = 'usage';
-        config.corejs = '3.23';
+        config.corejs = '3.38';
     })
 
     // enables Sass/SCSS support
@@ -158,24 +68,10 @@ Encore
 
     // uncomment if you're having problems with a jQuery plugin
     //.autoProvidejQuery()
-	
-	.autoProvideVariables({
-		//handyVarForPackage: 'chartjs-plugin-zoom',
-	})
-	
-	// css url('<path>') will be represented as url('data:image/jpeg;base64,<data>')
-	.configureImageRule({
-		type: 'asset',
-		maxSize: 10 * 1024,
-	})
-	.configureFontRule({
-		type: 'asset',
-		maxSize: 10 * 1024,
-	})
 ;
 
-const config_1 = Encore.getWebpackConfig()
+const config = Encore.getWebpackConfig();
 
-config_1.resolve.conditionNames = ['browser', 'import', 'svelte']
 
-module.exports = config_1
+
+module.exports = config

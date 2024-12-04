@@ -1,7 +1,0 @@
-App\Entity\TaskTopic\TaskTopic:
-
-    properties:
-        tasks:
-        -   Valid:
-
-App\Entity\TaskTopic\TaskFoodTopic:

@@ -1,87 +1,38 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <!-- https://phpunit.readthedocs.io/en/latest/configuration.html -->
-<phpunit
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/11.3/phpunit.xsd"
-    backupGlobals="false"
-    backupStaticProperties="false"
-    cacheDirectory="var/cache/phpunit"
-    colors="true"
-    columns="max"
-    testdox="true"
-    
-    requireCoverageMetadata="true"
-    beStrictAboutCoverageMetadata="true"
-    beStrictAboutChangesToGlobalState="true"
-    beStrictAboutOutputDuringTests="false"
-    testdoxSummary="false"
-	
-    bootstrap="tests/bootstrap.php"
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         backupGlobals="false"
+         colors="true"
+         bootstrap="tests/bootstrap.php"
+         convertDeprecationsToExceptions="false"
 >
-  <php>
-    <ini name="display_errors" value="1"/>
-    <ini name="error_reporting" value="-1"/>
-    <ini name="date.timezone" value="UTC"/>
-    
-	<server name="APP_ENV" value="test" force="true"/>
-    <server name="SHELL_VERBOSITY" value="-1"/>
-    <server name="SYMFONY_PHPUNIT_REMOVE" value=""/>
-    <server name="SYMFONY_PHPUNIT_VERSION" value="9.6"/>
-    <!---->
-    <server name="APP_CLEAR_ERROR_SCREENSHORTS" value="1"/>
-    <server name="APP_CLEAR_CACHE" value=""/>
-    <server name="APP_TRUNCATE_DB" value=""/>
-    <!---->
-  </php>
-  <coverage includeUncoveredFiles="true"
-    pathCoverage="false"
-    ignoreDeprecatedCodeUnits="true"
-    disableCodeCoverageIgnore="true"
-  >
-    <!-- ... -->
-  </coverage>
-  <testsuites>
-  
-    <testsuite name="u">
-      <directory>tests/Unit</directory>
-    </testsuite>
-    
-    <testsuite name="i">
-      <directory>tests/Integration</directory>
-    </testsuite>
-    <testsuite name="f">
-      <directory>tests/Integration</directory>
-    </testsuite>
-    
-    <testsuite name="a">
-      <directory>tests/Application</directory>
-    </testsuite>
-    
-    <testsuite name="e">
-      <directory>tests/E2E</directory>
-    </testsuite>
-    
-    <testsuite name="grin_way_service.i">
-      <directory>vendor/grinway/service-bundle/tests/Integration</directory>
-    </testsuite>
-    
-  </testsuites>
-  
-  <extensions>
-    <bootstrap class="Symfony\Component\Panther\ServerExtension"/>
-	<!-- 
-	-->
-    <bootstrap class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
-  </extensions>
-  
-  <source
-      ignoreIndirectDeprecations="true"
-      restrictNotices="true"
-      restrictWarnings="true"
-  >
-    <include>
-      <directory suffix=".php">src</directory>
-    </include>
-  </source>
-  
+    <php>
+        <ini name="display_errors" value="1" />
+        <ini name="error_reporting" value="-1" />
+        <server name="APP_ENV" value="test" force="true" />
+        <server name="SHELL_VERBOSITY" value="-1" />
+        <server name="SYMFONY_PHPUNIT_REMOVE" value="" />
+        <server name="SYMFONY_PHPUNIT_VERSION" value="9.5" />
+    </php>
+
+    <testsuites>
+        <testsuite name="Project Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </coverage>
+
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener" />
+    </listeners>
+
+    <extensions>
+    </extensions>
 </phpunit>

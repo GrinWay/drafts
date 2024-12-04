@@ -1,28 +1,15 @@
 # see https://symfony.com/doc/current/reference/configuration/framework.html
 framework:
     secret: '%env(APP_SECRET)%'
-        
-    fragments:
-        path: /_fragment
-        hinclude_default_template: placeholder/_placeholder.html.twig
-    
-    http_method_override: true
-    
-    esi: true
+
     # Note that the session will be started ONLY if you read or write from it.
-    session:
-        handler_id: ~
-
-        gc_probability:       1
-        gc_divisor:           1
-        
-        gc_maxlifetime: '%app.session.max_idle_sec%'
-
-        save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
-        cookie_lifetime: '%app.cookie_lifetime%'
-        #cookie_path: '%kernel.project_dir%/var/cookies/%kernel.environment%'
-        
-    #error_controller: App\Controller\ErrorController
+    session: true
 
     #esi: true
     #fragments: true
+
+when@test:
+    framework:
+        test: true
+        session:
+            storage_factory_id: session.storage.factory.mock_file

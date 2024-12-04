@@ -1,3 +1,0 @@
-lazy_image:
-    fetch_image_content: 'App\LazyImage\BlurHash\FetchImageContent'
-    cache: app.cache.lazy_image

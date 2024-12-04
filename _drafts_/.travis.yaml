@@ -1,5 +1,0 @@
-language:       php
-install:
--   composer install
-script:
--   php bin/phpunit tests/Unit/Init.php

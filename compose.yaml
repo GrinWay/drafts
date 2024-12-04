@@ -1,25 +1,25 @@
 networks:
     default:
-        name: app_net
+        name: pure_docker_app_net
         driver: bridge
 
 services:
     ###>
-    # docker exec -it app_db mysql -p
+    # docker exec -it app_pure_db mysql -p
     #     CREATE DATABASE main;
     ###<
     database:
         image: 'mysql:8.0-debian'
         restart: always
-        container_name: app_db
+        container_name: app_pure_db
         ports:
-            - '3306:3306'
+        - '3306:3306'
         environment:
             MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
     phpmyadmin:
         image: phpmyadmin:5.2.1-apache
         restart: always
         ports:
-            - '8080:80'
+        - '8080:80'
         environment:
-            - PMA_ARBITRARY=1
+        - PMA_ARBITRARY=1

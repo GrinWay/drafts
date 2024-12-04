@@ -1,53 +1,12 @@
 framework:
     notifier:
-        message_bus: messenger.default_bus
-        
-        texter_transports:
-            #novu:               '%env(APP_NOVU_DSN)%'
-            #expo:               '%env(APP_EXPO_DSN)%'
-            
-            # push
-            onesignal:          '%env(APP_ONESIGNAL_DSN)%'
-            
-            # sms
-            twilio:             '%env(APP_TWILIO_DSN)%'
-        
         chatter_transports:
-            mercure:  '%env(MERCURE_DSN)%'
-            telegram: '%env(APP_TELEGRAM_DSN)%'
-
+        texter_transports:
         channel_policy:
             # use chat/slack, chat/telegram, sms/twilio or sms/nexmo
-            urgent:
-            -   'browser'
-            #-   'sms/twilio'
-            #-   'email'
-            #-   'push/onesignal'
-            #-   'chat/telegram'
-            
-            high:
-            -   'browser'
-            
-            medium:
-            -   'browser'
-            
-            low:
-            -   'browser'
-
+            urgent: ['email']
+            high: ['email']
+            medium: ['email']
+            low: ['email']
         admin_recipients:
-            -   email:          '%env(APP_ADMIN_EMAIL)%'
-                phone:          '%env(APP_ADMIN_PHONE)%'
-
-when@test: &test
-    framework:
-        notifier:
-            texter_transports:
-                onesignal:      'null://null'
-                novu:           'null://null'
-                
-                expo:           'null://null'
-                twilio:         'null://null'
-
-            chatter_transports:
-                telegram:       'null://null'
-                mercure:        'null://null'
+            - { email: admin@example.com }

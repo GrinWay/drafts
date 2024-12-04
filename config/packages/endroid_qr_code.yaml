@@ -1,5 +1,0 @@
-endroid_qr_code:
-    default: '%app.qr_code.svg%'
-    
-    svg: '%app.qr_code.svg%'
-    png: '%app.qr_code.png%'

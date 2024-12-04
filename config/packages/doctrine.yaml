@@ -1,13 +1,5 @@
 doctrine:
     dbal:
-        types:
-            datetime:
-                class: Carbon\Doctrine\DateTimeType
-            datetime_immutable:
-                class: Carbon\Doctrine\DateTimeImmutableType
-            key_val:
-                class: App\Doctrine\Type\KeyValType
-        
         url: '%env(resolve:DATABASE_URL)%'
 
         # IMPORTANT: You MUST configure your server version,
@@ -17,20 +9,13 @@ doctrine:
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
     orm:
-        
-        dql:
-            string_functions:
-                STR_TO_UPPER: App\Doctrine\DQL\Functions\StrToUpperFunction
-                DATE_FORMAT: DoctrineExtensions\Query\Mysql\DateFormat
-                REGEXP: DoctrineExtensions\Query\Mysql\Regexp
-            #numeric_functions:
-            #datetime_functions:
-                
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
         report_fields_where_declared: true
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        identity_generation_preferences:
+            Doctrine\DBAL\Platforms\PostgreSQLPlatform: identity
         auto_mapping: true
         mappings:
             App:
@@ -40,7 +25,7 @@ doctrine:
                 prefix: 'App\Entity'
                 alias: App
         controller_resolver:
-            auto_mapping: true
+            auto_mapping: false
 
 when@test:
     doctrine:

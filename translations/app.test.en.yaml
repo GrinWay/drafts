@@ -1,2 +1,0 @@
-instance_of: 'The passed object is not instanceof "{class}"'
-word_count: 'The count of words not matched: passed: {passed}, required: {required}'

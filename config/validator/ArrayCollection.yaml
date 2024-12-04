@@ -1,4 +1,0 @@
-App\Doctrine\Collection\ArrayCollection:
-
-    constraints:
-    -   Traverse: true

@@ -1,3 +1,0 @@
-parameters:
-    env(APP_MAILER_HEADER_FROM_TITLE): '[Мастер] %env(APP_TITLE)%'
-    env(APP_MAILER_HEADER_SUBJECT): '%env(APP_TITLE)%'

@@ -1,5 +1,0 @@
-{%- if markdown is defined and true == markdown -%}
-	{{- content|markdown_to_html -}}
-{%- else -%}
-	{{- content -}}
-{%- endif -%}

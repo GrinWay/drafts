@@ -8,10 +8,10 @@ open:
 	clear && symfony open:local
 
 dump:
-	clear && php "./bin/console" server:dump
+	clear && symfony console server:dump
 
 cc:
-	clear && php bin/console cache:clear
+	clear && symfony console cache:clear
 
 build:
 	clear && yarn encore production --progress

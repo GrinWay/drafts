@@ -1,16 +1,13 @@
+# Slash "/" at the end is needed for dirs
+imports:
+# priority (low)
+-   resource: 'services_rest.yaml'
+-   resource: 'parameters/'
+-   resource: 'services/'
+-   resource: 'client/'
+# priority (hight)
+
+# "when@*" always overrides
 when@test: &when_test
     imports:
-        -   resource: 'services_yaml/test/services/'
-        -   resource: 'services_yaml/test/parameters/'
-
-###> imports are loaded first (imports not override existing services) ###
-imports:
-    # (last)
-    -   resource: 'services_yaml/resource_services.yaml'    #
-    -   resource: 'services_yaml/services/'                 # 
-    -   resource: 'services_yaml/parameters/'               #
-    -   resource: 'services_yaml/custom/'                   #
-    # (first)
-
-###> then services.yaml (what below overrides imports) ###
-###>... it's better to use only imports
+    - 'test/'

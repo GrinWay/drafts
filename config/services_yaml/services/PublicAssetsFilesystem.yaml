@@ -1,7 +1,0 @@
-services:
-    
-    _defaults:
-        autowire: true
-        autoconfigure: true
-        
-    #asset_mapper.local_public_assets_filesystem: '@App\AssetMapper\Path\PublicAssetsFilesystem'

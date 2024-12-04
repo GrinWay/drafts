@@ -1,4 +1,0 @@
-.turbo-progress-bar + body
-/* html[aria-busy] body */ {
-	opacity: 0.8;
-}

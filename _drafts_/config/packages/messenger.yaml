@@ -1,4 +1,0 @@
-framework:
-    messenger:
-        buses:
-            grin_way_generic_parts.messenger.bus:     ~
