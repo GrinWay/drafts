@@ -15,3 +15,9 @@ cc:
 
 build:
 	clear && yarn encore production --progress
+
+test:
+	clear && php bin/phpunit --testsuite all
+
+test_c:
+	clear && php bin/phpunit --testsuite c

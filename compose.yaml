@@ -4,6 +4,7 @@ networks:
         driver: bridge
 
 services:
+
     ###>
     # docker exec -it app_pure_db mysql -p
     #     CREATE DATABASE main;
@@ -15,7 +16,8 @@ services:
         ports:
         - '3306:3306'
         environment:
-            MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
+            MYSQL_ROOT_PASSWORD: 'root'
+
     phpmyadmin:
         image: phpmyadmin:5.2.1-apache
         restart: always

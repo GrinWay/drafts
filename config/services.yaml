@@ -6,8 +6,11 @@ imports:
 -   resource: 'services/'
 -   resource: 'client/'
 # priority (hight)
-
 # "when@*" always overrides
+
 when@test: &when_test
     imports:
-    - 'test/'
+        # priority (low)
+    -   resource: 'test/services/'
+    -   resource: 'test/parameters/'
+         # priority (hight)

@@ -1791,16 +1791,17 @@ DOCKER
 		и выяснить есть ли opcache
 	mcHost есть ли у них docker
 
-	https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
-	https://symfony.com/doc/current/setup/symfony_server.html#symfony-server-docker
-	https://symfony.com/doc/5.x/setup/symfony_server.html#configuring-workers
-	https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
+	
 	MERCURE: C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\UX\Symfony UX Turbo\48-mercure-service (1080p).mp4
 	RRR: when@docker
 	R: Запустить "docker pull phpmyadmin" чтобы не пользоваться openserver
 	R: Запустить "docker run ngrok/ngrok" https://hub.docker.com/r/ngrok/ngrok
 	https://github.com/dunglas/symfony-docker
+	
+	Запусти E2E тесты в контейнере
+		https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
 	?
+	? Я до сих пор не понял о каком email catcher они говорят: https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
 	? Хочу открыть сайт на 127.0.0.1:8000, почему описывая в Dockerfile ENTRYPOINT ["php", "-S", "0.0.0.0:80"]
 		-p 8000:80
 		Я попадаю на 127.0.0.1:8000 без ошибок
@@ -1838,6 +1839,17 @@ DOCKER
 		при использовании docker
 SYMFONY DOCKER
 	?
+	+ ? Symfony некак не видит контейнер mysql (DSN: mysql://root:root@172.18.0.1:3306/main?charset=utf8mb4)
+		An exception occurred in the driver: SQLSTATE[HY000] [2002]
+		Интересно в чём же ошибка, уже 4-ый час сижу и понять не могу
+		(
+			Дело в том что есть ip, domain для общения ТОЛЬКО между docker containers:
+				gateway ip, domain
+			А для того чтобы через браузер получить доспуп к docker container
+				необходим host(current PC) ip, и тот самый тунельный port, который связывает host ip with docker container
+			То есть если тип сети bridge, ip это вещь постоянная и зависит от current host(PC) ip
+				а вот разнится только тунельный ip (-P)
+		)
 	? Неужели symfony не может сделать docker compose из-за исключения на / route
 	? Хотел указать базу данных под ключом db, но "docker compose" выдаёт ошибку 15
 		поменял service.db на service.database docker compose собрал контейнеры
@@ -2115,6 +2127,9 @@ TODO
 		func вызовется когда произойдёт доступ к любому свойству
 	
 	Ещё разок перед созданием своих бандлов: https://symfony.com/doc/current/bundles/best_practices.html
+	
+	git pull --tags
+	git checkout before-pure-docker
 	WebApp
 		Add Yaml::PARSE_CONSTANT to allow !const 'GrinWay\WebApp\Type\Messenger\BusTypes::QUERY_BUS' into web-app-bundle\config\services.yaml
 		Создать Stimulus controllers (короче сделать этот пакет UX)

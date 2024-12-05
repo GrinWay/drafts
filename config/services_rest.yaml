@@ -2,6 +2,11 @@ services:
     _defaults:
         autoconfigure: true
         autowire: true
+        bind:
+            ###> EMAIL ###
+            $appTestEmail: '%env(APP_TEST_EMAIL)%'
+            ###< EMAIL ###
+
     App\:
         resource: '../src/'
         exclude:

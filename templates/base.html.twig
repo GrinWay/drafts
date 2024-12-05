@@ -13,6 +13,11 @@
         {% endblock %}
     </head>
     <body>
-        {% block body %}{% endblock %}
+    {% block menu %}
+        <twig:menu></twig:menu>
+    {% endblock %}
+    <div class="container overflow-clip">
+            {% block body %}{% endblock %}
+        </div>
     </body>
 </html>

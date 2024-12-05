@@ -4,11 +4,13 @@ proxy:
 
 http:
     no_tls: true # Always
+    ###> Uncomment when no_tls: false
+    #p12: 'C:/Users/son5-/.symfony5/certs/default.p12'
+    ###< Uncomment when no_tls: false
     document_root: 'public/' # Always
     passthru: 'index.php' # Always
     daemon: false # Always
     no_workers: false # Always
-    p12: 'C:/Users/son5-/.symfony5/certs/default.p12'
     #allow_http: true # Prevent auto-redirection from HTTP to HTTPS
     use_gzip: true
 
@@ -29,7 +31,7 @@ workers:
         - encore
         - 'dev-server'
         - '--port'
-        - '8080'
+        - '8081'
         - '--client-logging'
         - error
         - '--hot'
@@ -71,6 +73,7 @@ workers:
         - 'messenger:consume'
         - '--all'
         - '--memory-limit=128M'
+        - '--silent'
         watch:
         - config
         - src

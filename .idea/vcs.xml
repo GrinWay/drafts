@@ -2,5 +2,12 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/bundles/GrinWay/command-bundle" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/bundles/GrinWay/docs" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/bundles/GrinWay/env-processor-bundle" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/bundles/GrinWay/installer" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/bundles/GrinWay/service-bundle" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/bundles/GrinWay/symfony-extensions" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/bundles/GrinWay/web-app-bundle" vcs="Git" />
   </component>
 </project>
