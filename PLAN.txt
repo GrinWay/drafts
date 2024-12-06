@@ -1843,12 +1843,7 @@ SYMFONY DOCKER
 		поменял service.db на service.database docker compose собрал контейнеры
 		Вопрос: понять бы как symfony взаимодействует с docker, что вместо docker-compose.yaml мы пишем compose.yaml
 SYMFONY SETUP
-***
 WEBSTORM
-	https://www.youtube.com/watch?v=WlBrhM1_t5k&pp=ygUJd2Vic3Rvcm0g
-	https://www.youtube.com/watch?v=hH5xZ2lt_-o
-	https://www.youtube.com/watch?v=J4bJ118vWKo
-	https://www.youtube.com/watch?v=k1ehwDmDiXY&pp=ygUTd2Vic3Rvcm0g0YPRgNC-0LrQuA%3D%3D
 	?
 	? yaml: как перейти от (неполучилось)
 		key:
@@ -1858,6 +1853,7 @@ WEBSTORM
 		
 		key:
 		-	value
+***
 SYMFONY REDIS BUNDLE
 	https://hub.docker.com/_/redis
 	https://www.youtube.com/watch?v=C03dRFEUQq8
@@ -1887,11 +1883,6 @@ SYMFONY CONSOLE / COMMAND https://symfony.com/doc/current/console.html https://s
 	?
 	? Как задать контекст комманде, чтобы был https, и вместо localhost было 127.0.0.1:8000
 		так как изменение параметров router, asset не повлияло на сервис UrlGeneratorInterface
-OpenSSL:
-	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.
-	Как создать самоподписанные сертификаты
-	Куда класть самоподписанные сертификаты
-	Как разрешить самоподписанные сертификаты
 SYMFONY API PLATFORM
 	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 1 Mythically Good RESTful APIs
 	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 2 Security for your Treasures
@@ -2112,6 +2103,13 @@ https://symfony.com/doc/current/page_creation.html
 https://symfony.com/doc/current/setup/web_server_configuration.html#nginx
 RECTOR
 	detect Symfony deprications https://getrector.com/documentation/
+UPGRADING TO A NEW MAJOR
+	https://symfony.com/doc/current/setup/upgrade_major.html
+OpenSSL:
+	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.
+	Как создать самоподписанные сертификаты
+	Куда класть самоподписанные сертификаты
+	Как разрешить самоподписанные сертификаты
 
 RRR?: WATCH ALL RAYAN WAVER VIDEOS
 RRR: READ БАНДА ЧЕТЫРЁХ
