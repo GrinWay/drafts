@@ -1,6 +1,6 @@
 proxy:
-    domains:
-    - 'app'
+    domains: []
+#    - 'app'
 
 http:
     no_tls: true # Always

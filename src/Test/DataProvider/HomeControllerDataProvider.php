@@ -6,8 +6,9 @@ class HomeControllerDataProvider
 {
     public static function titles(): array
     {
+        $title = 'Home';
         return [
-            ['Home'],
+            $title => [$title],
         ];
     }
 }

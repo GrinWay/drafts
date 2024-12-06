@@ -1,4 +1,4 @@
-when@dev:
+when@dev: &when_dev
     web_profiler:
         toolbar: true
         intercept_redirects: false
@@ -8,7 +8,7 @@ when@dev:
             only_exceptions: false
             collect_serializer_data: true
 
-when@test:
+when@test: &when_test
     web_profiler:
         toolbar: false
         intercept_redirects: false

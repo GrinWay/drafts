@@ -1784,22 +1784,7 @@ SYMFONY BUILT-IN SERVICE TAGS
 SYMFONY LOCAL WEB SERVER
 	?
 	? Почему-то не получается создать локальное доменное имя за счёт proxy
-***
 DOCKER
-
-	mcHost исполнить php --ini
-		и выяснить есть ли opcache
-	mcHost есть ли у них docker
-
-	
-	MERCURE: C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\UX\Symfony UX Turbo\48-mercure-service (1080p).mp4
-	RRR: when@docker
-	R: Запустить "docker pull phpmyadmin" чтобы не пользоваться openserver
-	R: Запустить "docker run ngrok/ngrok" https://hub.docker.com/r/ngrok/ngrok
-	https://github.com/dunglas/symfony-docker
-	
-	Запусти E2E тесты в контейнере
-		https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
 	?
 	? Я до сих пор не понял о каком email catcher они говорят: https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
 	? Хочу открыть сайт на 127.0.0.1:8000, почему описывая в Dockerfile ENTRYPOINT ["php", "-S", "0.0.0.0:80"]
@@ -1839,6 +1824,9 @@ DOCKER
 		при использовании docker
 SYMFONY DOCKER
 	?
+	? Не могу запустить panther(E2E) test в docker container
+		для локального ПК помогла установка папки drivers в переменные среды! Удивительно.
+		https://symfony.com/doc/current/testing/end_to_end.html#docker-integration
 	+ ? Symfony некак не видит контейнер mysql (DSN: mysql://root:root@172.18.0.1:3306/main?charset=utf8mb4)
 		An exception occurred in the driver: SQLSTATE[HY000] [2002]
 		Интересно в чём же ошибка, уже 4-ый час сижу и понять не могу
@@ -1854,6 +1842,8 @@ SYMFONY DOCKER
 	? Хотел указать базу данных под ключом db, но "docker compose" выдаёт ошибку 15
 		поменял service.db на service.database docker compose собрал контейнеры
 		Вопрос: понять бы как symfony взаимодействует с docker, что вместо docker-compose.yaml мы пишем compose.yaml
+SYMFONY SETUP
+***
 WEBSTORM
 	https://www.youtube.com/watch?v=WlBrhM1_t5k&pp=ygUJd2Vic3Rvcm0g
 	https://www.youtube.com/watch?v=hH5xZ2lt_-o
@@ -1868,9 +1858,9 @@ WEBSTORM
 		
 		key:
 		-	value
-SYMFONY SETUP
-	https://symfony.com/doc/current/setup.html
 SYMFONY REDIS BUNDLE
+	https://hub.docker.com/_/redis
+	https://www.youtube.com/watch?v=C03dRFEUQq8
 	https://github.com/phpredis/phpredis
 	https://symfony.com/doc/current/security/login_link.html#configure-a-maximum-use-of-a-link
 	LOCK: The priority policy of Symfony's shared locks depends on the underlying store (e.g. Redis store prioritizes readers vs writers).
@@ -1989,7 +1979,16 @@ TESTS
 		https://www.youtube.com/watch?v=WW6ZUw9IExA
 		https://symfony.com/doc/current/bundles/best_practices.html#continuous-integration
 	Travis CI https://www.travis-ci.com/
+		https://symfony.com/doc/current/setup/bundles.html#update-the-travis-ci-configuration
 	Gitlab CI https://docs.gitlab.com/ee/ci/
+	?
+	+ ? Почему title несуществует в E2E
+		(
+			WebDevChromium browser не отображает некоторые неотображаемые элементы
+			head > meta , head > title упускаются
+			
+			Просто не используй реальный браузер для таких вещей
+		)
 Endroid\QrCode QR Code for Symfony https://github.com/endroid/qr-code-bundle
 	?
 	выдаёт исключение imagettfbbox(): Could not find/open font (label)
@@ -2105,6 +2104,14 @@ BLACKFIRE
 	чего-то нового (/assets/images/favicon/favicon_new.svg)
 	загрузки (иммитация загрузки анимацией svg, иммитация потому что turbo drive работает) (/assets/images/favicon/favicon_loading.svg)
 https://www.youtube.com/watch?v=n_21ya2MoKg&list=PLqVeG_R3qMSzYe_s3-q7TZeawXxTyltGC
+	mcHost исполнить php --ini
+		и выяснить есть ли opcache
+	mcHost есть ли у них docker
+https://symfony.com/doc/current/contributing/community/releases.html
+https://symfony.com/doc/current/page_creation.html
+https://symfony.com/doc/current/setup/web_server_configuration.html#nginx
+RECTOR
+	detect Symfony deprications https://getrector.com/documentation/
 
 RRR?: WATCH ALL RAYAN WAVER VIDEOS
 RRR: READ БАНДА ЧЕТЫРЁХ
@@ -2304,6 +2311,9 @@ TODO
 				так как ExecutableFinder со своим приоритетом может выбрать ffmpeg не из $dopBasePath
 		вместо \exec() от PHP использовать компонент Process, Process::fromShellCommandLine(command: '<>', cwd: $this->projectDir)
 	bundles directory -> packages
+	
+	Создай рецепты для бандлов
+		https://symfony.com/doc/current/setup/flex_private_recipes.html
 	
 SYMFONY TRANSLATION
 	phrase https://phrase.com/

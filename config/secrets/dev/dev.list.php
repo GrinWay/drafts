@@ -8,4 +8,5 @@ return [
     'APP_MAILER_MAILGUN_TRANSPORT_API_KEY' => null,
     'APP_MAILER_MAILGUN_TRANSPORT_DOMAIN' => null,
     'APP_TEST_EMAIL' => null,
+    'MERCURE_JWT_SECRET' => null,
 ];

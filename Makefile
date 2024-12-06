@@ -1,8 +1,8 @@
 run:
-	clear && symfony server:stop && symfony server:start
+	clear && symfony server:stop && docker compose stop && symfony server:start
 
 stop:
-	clear && symfony server:stop
+	clear && symfony server:stop && docker compose stop
 
 open:
 	clear && symfony open:local

@@ -12,7 +12,7 @@ Encore
     // public path used by the web server to access the output path
     .setPublicPath('/build')
     // only needed for CDN's or subdirectory deploy
-    //.setManifestKeyPrefix('build/')
+    .setManifestKeyPrefix('')
 
     /*
      * ENTRY CONFIG
@@ -41,6 +41,8 @@ Encore
     .enableSourceMaps(!Encore.isProduction())
     // enables hashed filenames (e.g. app.abc123.css)
     .enableVersioning(Encore.isProduction())
+
+    .enableStimulusBridge('./assets/controllers.json')
 
     // configure Babel
     // .configureBabel((config) => {

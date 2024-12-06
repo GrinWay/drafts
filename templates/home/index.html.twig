@@ -3,5 +3,10 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-
+    <div
+            {{ turbo_stream_listen('test') }}
+            class="test"
+    >
+        {{ symfony_version }}
+    </div>
 {% endblock %}
