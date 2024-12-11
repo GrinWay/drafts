@@ -2,9 +2,8 @@
 
 namespace App\Service;
 
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
 class ForTesting
 {
-    public function __construct()
-    {
-    }
 }

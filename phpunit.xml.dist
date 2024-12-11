@@ -19,8 +19,11 @@
     <!-- ... -->
   </coverage>
   <testsuites>
-    <testsuite name="c">
+    <testsuite name="con">
       <directory>tests/Controller</directory>
+    </testsuite>
+    <testsuite name="com">
+      <directory>tests/Command</directory>
     </testsuite>
     <testsuite name="all">
       <directory>tests</directory>

@@ -5,6 +5,13 @@ networks:
 
 services:
 
+    redis:
+        image: redis:latest
+        container_name: redis_container
+        restart: unless-stopped
+        ports:
+        - '6379:6379'
+
     # docker rm app && docker rmi drafts-app && docker compose up
     # for testing
     #    app:

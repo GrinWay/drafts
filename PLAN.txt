@@ -1745,6 +1745,8 @@ R: PUSH NOTIFICATION
 SYMFONY INTL COMPONENT
 SYMFONY MONOLOG
 	?
+	? Как прекратить дамп в консоль при "symfony console messenger:consume --all"
+		Application level, doctrine channel: постоянно дампит
 	? symfony server:start --no-tls (возможно ли обнаружить logger.hander или logger.channel у [Application])
 		который используется для дампа Application информации, или он вообще не имеет ни того не другого
 		что самое интересное, независимо от handler, channel он использует все процессоры
@@ -1853,36 +1855,71 @@ WEBSTORM
 		
 		key:
 		-	value
-***
 SYMFONY REDIS BUNDLE
-	https://hub.docker.com/_/redis
-	https://www.youtube.com/watch?v=C03dRFEUQq8
-	https://github.com/phpredis/phpredis
-	https://symfony.com/doc/current/security/login_link.html#configure-a-maximum-use-of-a-link
-	LOCK: The priority policy of Symfony's shared locks depends on the underlying store (e.g. Redis store prioritizes readers vs writers).
-	https://symfony.com/doc/current/components/lock.html#redisstore
-	CACHE: Используй TagAwareAdapter(для файлов кеша используй FilesystemAdapter, а для тегов используй RedisAdapter)
-	R: использовать сервис 'cache.adapter.redis' для кеширования
+	?
+	? В redis docker не получилось передать свой конфиг из за ошибки несуществующего пути
+		просто нужен правильный конфиг, хотел сделать "maxmemory 500mb"
+		https://symfony.com/doc/current/components/cache/adapters/redis_adapter.html#configuring-redis
 RSYNC (выгрузка файлов на сервер)
-	Очень пригодится при проверках push от firebase
-	https://www.servers.ru/knowledge/linux-administration/how-to-copy-files-between-linux-servers-using-rsync
-	https://selectel.ru/blog/rsync-guide/
-SYMFONY CONSOLE / COMMAND https://symfony.com/doc/current/console.html https://symfony.com/doc/current/console.html
-	https://symfony.com/doc/current/components/console/helpers/questionhelper.html#testing-a-command-that-expects-input
+	?
+	+ ? Не получается выгрузить на сервер файлы с помощюь команды
+		(
+			просто запусти rsync из docker container, на windows он действительно не работает
+		)
+.htaccess
+SYMFONY CONSOLE / COMMAND
+	?
+	+ возможно ли динамически переименовывать команды, задавать алиасы
+	(
+		Просто вместо #[AsCommand] опиши имя и алиасы в Command::configure
+	)
+	+ ? Test hidden question: Тест скрытого question зависает навсегда
+	(
+		Symfony скрывает ввод в консоли другими бинарниками, которые читают пользовательский ввод
+		я же в тесте назначаю именно для ArrayInput resource fopen(php://memory...)
+		Это означает что бинарники никогда не получают ввод, а значит его и не получает скрытое поле
+		
+		Плохое Решение: Во время теста вбей данные на лету
+		Хорошее Решение: Тестируй на Linux через docker
+	)
+	+ ? Это не критично, но как запретить вывод переданных аргументов для тестируемой команды
+		(
+			Ты просто по ошибке в своей же команде делал дамп...
+		)
 	+ R: Посмотреть как реализована замена строки у команды bin/console ux:icons:import bi:arrow-left-short
 		Подозреваю что это progress bar
 		(
 			Нет, для перемещения по терминалу используй
 			$cursor = new Cursor($output);
 		)
-	?
-	возможно ли сделать автодополнение для своих имён комманд
-	возможно ли динамически переименовывать команды, задавать алиасы
-	command --param --param: InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY
-	Autowire RequestStack -> RequestStack::getCurrentRequest() === null
-	?
-	? Как задать контекст комманде, чтобы был https, и вместо localhost было 127.0.0.1:8000
+	+ ? Зачем и как вообще пользоваться ApplicationTester
+		(
+			ApplicationTester то же самое что и CommandTester
+			
+			НО
+			
+			CommandTester         НЕ отправляет консольные события
+			ApplicationTester     ОТПРАВЛЯЕТ консольные события
+		)
+	+ ? Похоже используя output::section невозможно тестировать команды
+		(
+			Нет, это возможно но будет сложнее
+		
+			Потребуется реализовать ConsoleOutputInterface
+			И тестировать без использования CommandTester, ApplicationTester
+			потому что output нужно будет передавать вручную
+		)
+	+ ? Как задать контекст комманде, чтобы был https, и вместо localhost было 127.0.0.1:8000
 		так как изменение параметров router, asset не повлияло на сервис UrlGeneratorInterface
+		(
+			На самом деле параметры router, asset действительно влияют на UrlGeneratorInterface service
+			
+			php bin/console debug:container --parameter=router
+			php bin/console debug:container --parameter=asset
+			
+			Просто проект был большим, и где-то эти параметры конфликтовали
+		)
+***
 SYMFONY API PLATFORM
 	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 1 Mythically Good RESTful APIs
 	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 2 Security for your Treasures
@@ -2110,6 +2147,41 @@ OpenSSL:
 	Как создать самоподписанные сертификаты
 	Куда класть самоподписанные сертификаты
 	Как разрешить самоподписанные сертификаты
+https://habr.com/ru/articles/784660/
+REDIS если захочешь
+	https://www.youtube.com/watch?v=C03dRFEUQq8
+Переключиться на prod и понять почему 500 ошибка
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 RRR?: WATCH ALL RAYAN WAVER VIDEOS
 RRR: READ БАНДА ЧЕТЫРЁХ
@@ -2133,6 +2205,7 @@ TODO
 	
 	Ещё разок перед созданием своих бандлов: https://symfony.com/doc/current/bundles/best_practices.html
 	
+	take clear bundle realization from: https://github.com/symfony/ux/tree/2.x/src/Typed/src
 	git pull --tags
 	git checkout before-pure-docker
 	WebApp
@@ -2243,6 +2316,7 @@ TODO
 		// TODO: lazy-image -> grinway--lazy-image
 	GsEnvProcessor
 		fix abstractions (only with functions)
+		// TODO: HttpsToStringEnvVarProcessor
 	Command
 		убрать из конструктора все symfony зависимости (добавить их через #[Required])
 		добавить аргумент ioDump(startFromPrevLine: false)
@@ -2266,6 +2340,7 @@ TODO
 				путь к vendor сконструируй из переданного пути
 			по имени класса, трейтаTrait, интерфейсаInterface если с большой буквы
 			по имени метода если с маленькой
+		// TODO: ErrorEventListener
 	Services
 		для serviceLocator ServiceMethodsSubscriberTrait отложенная автопроводка .\src\Trait\ServiceLocator\Aware
 		позаимствовать App\CompillerPass\AbstractCompillerPass

@@ -1,5 +1,5 @@
 proxy:
-    domains: []
+    domains: [ ]
 #    - 'app'
 
 http:
@@ -15,6 +15,12 @@ http:
     use_gzip: true
 
 workers:
+
+#    completion:
+#        cmd:
+#        - symfony
+#        - completion
+#        - '--help'
 
     proxy:
         cmd:
@@ -58,12 +64,12 @@ workers:
         - '--live-reload'
         - '--no-client-overlay'
         - '--client-reconnect'
-#    yarn_encore_dev_watch:
-#        cmd:
-#        - yarn
-#        - encore
-#        - dev
-#        - '--watch'
+    #    yarn_encore_dev_watch:
+    #        cmd:
+    #        - yarn
+    #        - encore
+    #        - dev
+    #        - '--watch'
     ###< 'webpack_dev_server' OR 'yarn_encore_dev_watch' ###
     
     messenger_consume_all:
@@ -73,19 +79,19 @@ workers:
         - 'messenger:consume'
         - '--all'
         - '--memory-limit=128M'
-        - '--silent'
+        - '-q'
         watch:
         - config
         - src
         - templates
         - vendor
 
-#    mercure:
-#        cmd:
-#        - './mercure/windows/mercure.exe'
-#        - 'run'
-#        - '--config'
-#        - './mercure/windows/dev.Caddyfile'
+    #    mercure:
+    #        cmd:
+    #        - './mercure/windows/mercure.exe'
+    #        - 'run'
+    #        - '--config'
+    #        - './mercure/windows/dev.Caddyfile'
 
     # auto start Docker compose when starting server (available since Symfony CLI 5.7.0)
     docker_compose: ~
