@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Movie;
+use Doctrine\ORM\EntityManagerInterface;
 use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
 use SensioLabs\AnsiConverter\Theme\SolarizedTheme;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
@@ -19,8 +21,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Cache\ItemInterface;
 use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\UX\Turbo\TurboBundle;
+use function Zenstruck\Foundry\faker;
 
-#[Route('', name: 'app_')]
 class HomeController extends AbstractController
 {
     public function __construct(
@@ -30,25 +32,20 @@ class HomeController extends AbstractController
     }
 
     /**
-     *
      * ### HOME ###
-     *
-     * @param $appDatabaseUrl
-     * @param Request $request
-     * @return Response
      */
-    #[Route('/', name: 'home')]
+    #[Route('/', name: 'app_home')]
     public function home(
-        #[Autowire('%env(APP_DATABASE_URL)%')] $appDatabaseUrl,
+        #[Autowire('%env(APP_DATABASE_URL)%')] $databaseUrl,
         Request                                $request,
         KernelInterface                        $kernel,
-        #[Autowire('%env(resolve:APP_URL)%')]   $env,
+        EntityManagerInterface                 $em,
     ): Response
     {
-        \dump($env);
-
         $template = 'home/index.html.twig';
-        $parameters = [];
+        $parameters = [
+            'databaseUrl' => $databaseUrl,
+        ];
         return $this->render($template, $parameters);
     }
 
@@ -57,7 +54,7 @@ class HomeController extends AbstractController
      * @param HubInterface $hub
      * @return Response
      */
-    #[Route('/turbo/stream/test', name: 'mercure_test')]
+    #[Route('/turbo/stream/test', name: 'app_mercure_test')]
     public function mercureTest(
         Request      $request,
         HubInterface $hub,

@@ -550,6 +550,13 @@ SYMFONY TESTS
 	https://symfony.com/doc/current/components/phpunit_bridge.html
 	??? Как работать с тестами бандла
 	?
+	+ ? Как получить env в тесте без $_ENV
+		(
+			с помощью сервиса 'container.getenv'
+			
+			php bin/console debug:container | grep -i env
+			self::getContainer()->get('<FOUND_SERVICE>')...
+		)
 	???: Похоже тут уже ничего не сделать, PANTHER_APP_ENV тупо не переопределяет APP_ENV
 		в экземпляре браузера
 	? notifier: По неизвестной причине тест не видит что в очередь был добавлен ASYNC message
@@ -1919,17 +1926,67 @@ SYMFONY CONSOLE / COMMAND
 			
 			Просто проект был большим, и где-то эти параметры конфликтовали
 		)
-***
 SYMFONY API PLATFORM
-	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 1 Mythically Good RESTful APIs
-	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 2 Security for your Treasures
-	C:\Workspace\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 3 Custom Resources
-	https://api-platform.com/docs/symfony/
-	https://symfony.com/doc/current/mercure.html#web-apis
-	R: У своей точки API проверить обновляются ли данные в profiler
-		если нет верни определённый заголовок с контроллера api
-		$response->headers->set('Symfony-Debug-Toolbar-Replace', '1');
-doctrine-test-bundle https://github.com/dmaicher/doctrine-test-bundle
+	Не понятно
+	https://api-platform.com/docs/guides/error-provider/
+	https://api-platform.com/docs/guides/return-the-iri-of-your-resources-relations/#section-1
+	https://api-platform.com/docs/guides/extend-openapi-documentation/
+	https://api-platform.com/docs/guides/http-cache-tags/
+	https://api-platform.com/docs/guides/how-to/
+	https://api-platform.com/docs/core/operations/#defining-which-operation-to-use-to-generate-the-iri
+	https://api-platform.com/docs/core/operations/#expose-a-model-without-any-routes
+	?
+	? Как параметры uriTemplate сделать опциональными...
+	? Как задать default uri value id, чтобы api platform его не спрашивал
+	? SerializedName не читается при запросе на создание (POST)
+	? Почему-то под этот фильтр попадают и "al" части
+		#[ApiFilter(SearchFilter::class, properties: ['description' => 'partial'])]
+	+ ? Почему-то глобальные и ApiResource настройки для pagination не читаются
+		(
+			Разные вещи:
+			
+			pagination_items_per_page
+			pagination_maximum_items_per_page
+		)
+	- ? ApiResource не появляются в /api/docs.html
+		я подозреваю что это из-за того что пользуясь docker, symfony устанавливает
+		свою DATABASE_URL, в то время как я её тоже определяю
+		(
+			Это однозначно конфликт! Но вот только с чем я не понял
+			
+			Потому что я создал новый проект с api resource и всё появилось.
+			Так что установку api platform лучше делать заранее,
+		)
+FOUNDRY (faker + symfony)
+SYMFONY TEST BUNDLE
+	?
+	? Не получается поймать исключения как assertion
+	+ ? PANTHER_BROWSER: Использует подключение не к тестовой базе данных
+		(
+			Используй "BROWSER_ALWAYS_START_WEBSERVER" в .env.test
+		)
+	+ ? PANTHER_BROWSER: Не получается с помощью Foundry загрузить базу данных данными
+		Соединение установлено правильно за счёт "BROWSER_ALWAYS_START_WEBSERVER" именно с тестовой БД
+		так же база данных удаляется и воссоздаётся заново
+		Но данные не грузятся
+		(
+			Конечно же это из-за DAMA extension
+			Транзакция тупо отменялась, по этой причине я не вижу смысла использовать DAMA Extension
+			Если есть ZENSTRUCK BROWSER
+		)
+***
+SYMFONY Dotenv class
+SYMFONY VARDUMPER https://symfony.com/doc/current/components/var_dumper.html#components-var-dumper-dump
+doctrine-test-bundle
+	Все заметки
+	https://github.com/dmaicher/doctrine-test-bundle
+SYMFONY сопостовитель полей в DTO
+	https://github.com/SymfonyCasts/micro-mapper
+	C:\Workspace\1_PROJECTS\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 3 Custom Resources\25-micro-mapper (1080p).mp4
+SYMFONY ROUTE
+	CMF Routing Bundle
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/index.html
+		https://symfony.com/bundles/CMFRoutingBundle/current/index.html
 Cache with Memcached
 	https://habr.com/ru/articles/14939/
 	https://habr.com/ru/articles/42607/
@@ -1941,40 +1998,26 @@ Cache with Memcached
 		Если сделать ChainAdapter то можно ли решить проблему отказоустойчивоости
 		допустим использовать MemcachedAdapter
 		но если произошёл сбой использовать FilesystemAdapter
-Framework Configuration Reference https://symfony.com/doc/current/reference/configuration/framework.html#reference-cache-prefix-seed
-browser-driver-installer https://github.com/dbrekelmans/browser-driver-installer
-SYMFONY BUNDLE FOSJsRoutingBundle (route -> uri in js)
-SYMFONY BUNDLE FOSHttpCacheBundle (invalidate cache)
-SYMFONY Dotenv class
-LiipFunctionalTestBundle https://github.com/liip/LiipFunctionalTestBundle
-SYMFONY ROUTE
-	CMF Routing Bundle
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/index.html
-		https://symfony.com/bundles/CMFRoutingBundle/current/index.html
-SYMFONY COMPONENTS: https://symfony.com/components
-https://symfony.com/doc/current/reference/index.html
 The Runtime Component https://symfony.com/doc/current/components/runtime.html
-REFERENCE https://symfony.com/doc/current/reference/index.html
 EMAIL MESSENGES INKY https://get.foundation/emails/docs/inky.html
-SYMFONY MAKER BUNDLE https://symfony.com/bundles/SymfonyMakerBundle/current/index.html
-SYMFONY BEST PRACTIES https://symfony.com/doc/current/best_practices.html
+VIDEO.JS
+	https://videojs.com/
+	(после изучения библиотеки)
+		реализовать свой grinway/video stimulus controller
+		И не забывать использовать асинхронные import предоставленные webpack
+			import('<>').then(({ default: <> }) => { /**/ }).catch(error => console.error(error))
+Endroid\QrCode QR Code for Symfony https://github.com/endroid/qr-code-bundle
+	?
+	выдаёт исключение imagettfbbox(): Could not find/open font (label)
+PNG WRITER https://github.com/endroid/qr-code
+(QR Code)
+	GENERATE QR CODE: https://github.com/Bacon/BaconQrCode
+	DETECT AND READ QR CODE: https://github.com/khanamiryan/php-qrcode-detector-decoder
 PHP CREATE PICTURES https://github.com/moust/Paint
 	https://github.com/Gregwar/Image
 	https://www.youtube.com/watch?v=ek1TCYqAvbg&ab_channel=CodeWithDary
-SYMFONY DOCTRINE
-	https://symfony.com/doc/current/reference/configuration/doctrine.html
-	https://github.com/KnpLabs/DoctrineBehaviors
-	https://github.com/doctrine-extensions/DoctrineExtensions
-	https://github.com/stof/StofDoctrineExtensionsBundle
-	?
-	? По какой-то непонятной причине если есть папка src/Bundle Doctrine выдаёт исключение что нет src/Bundle/Entity
-	как найти имя сущности в Repository
-	реализовать (MappedSuperClass)Authentication и её сущность UserAuthentication(сущность CustomAuth[access_token], сущность Auth2FA[totp, google code, email, backup codes], сущность OAuth[github, telegram, google])
-Cache with Couchbase
-	https://www.couchbase.com/
-	https://docs.couchbase.com/sdk-api/couchbase-php-client/namespaces/couchbase.html
-	https://symfony.com/doc/current/components/cache/adapters/couchbasecollection_adapter.html
-SYMFONY HTTP CLIENT [DIFFICULT ONE MORE] https://symfony.com/doc/current/http_client.html
+SYMFONY HTTP CLIENT [DIFFICULT ONE MORE and answer the questions]
+	https://symfony.com/doc/current/http_client.html
 	?
 	? Как же загадочно, что используя ngrok я не могу используя HttpClientInterface service запросить содержимое своей страницы, проблем с сертификатом ssl нет, но запрос просто виснет... Но ПОЧЕМУ
 	?? Декорировать клиента и возвращать chunk каким-то образом изменённым
@@ -1993,14 +2036,58 @@ SYMFONY HTTP CLIENT [DIFFICULT ONE MORE] https://symfony.com/doc/current/http_cl
 	? как указать самоподписанный SSL сертификат, при обращении к другим сайтам: CAfile: C:/OSPanel/data/ssl/cacert.pem
 	? не понятно куда скачивается файл
 	+ нет вызова callback на прогресс HttpClient(HttpOptions::setOnProgress) (используя сервисный HttpClientInterface on_progress действительно не вызывается, но если создать вручную то вызывается)
+SYMFONY DOCTRINE
+	https://symfony.com/doc/current/reference/configuration/doctrine.html
+	https://github.com/KnpLabs/DoctrineBehaviors
+	https://github.com/doctrine-extensions/DoctrineExtensions
+	https://github.com/stof/StofDoctrineExtensionsBundle
+	?
+	+? Оказывается при выполнении "symfony console"
+		есть env DATABASE_URL определённая когда есть docker
+		то есть используя docker можно вообще не определять DATABASE_URL
+		так как symfony определит переменную автоматически
+	? По какой-то непонятной причине если есть папка src/Bundle Doctrine выдаёт исключение что нет src/Bundle/Entity
+	как найти имя сущности в Repository
+	реализовать (MappedSuperClass)Authentication и её сущность UserAuthentication(сущность CustomAuth[access_token], сущность Auth2FA[totp, google code, email, backup codes], сущность OAuth[github, telegram, google])
+browser-driver-installer https://github.com/dbrekelmans/browser-driver-installer
 PHP PARALLEL https://habr.com/ru/companies/oleg-bunin/articles/715844/
 	https://www.php.net/manual/ru/book.parallel.php
-VIDEO.JS
-	https://videojs.com/
-	(после изучения библиотеки)
-		реализовать свой grinway/video stimulus controller
-		И не забывать использовать асинхронные import предоставленные webpack
-			import('<>').then(({ default: <> }) => { /**/ }).catch(error => console.error(error))
+PHP TOTP LIB
+	https://github.com/Spomky-Labs/otphp/blob/11.4.x/doc/index.md#advanced-features
+PHP УПРАВЛЕНИЕ ПРОЦЕССАМИ (не работает в windows) https://www.php.net/manual/ru/book.pcntl.php
+JWT lcobucci
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/index.html
+PHP FPDF
+	https://www.youtube.com/watch?v=aSTLAjLjJqk
+	__TOGETHER WITH__
+	http://www.fpdf.org/en/doc/index.php
+JS
+	LIB https://lodash.com/docs/4.17.15#cloneDeep
+SYMFONY BUNDLE FOSJsRoutingBundle (route -> uri in js) ~
+SYMFONY BUNDLE FOSHttpCacheBundle (invalidate cache) ~
+EmojiTransliterator::create('text-emoji')->transliterate() used it https://github.com/unicode-org/cldr?tab=readme-ov-file
+security через передачу заголовка impersonator не сработал https://symfony.com/doc/current/security/impersonating_user.html
+SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
+SYMFONY RESPONSE сохранить куки
+	зависящую от параметра Entity чтобы можно было инвалидировать
+PHPUnit assertEqualsWithDelta
+	https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
+php-webdriver (зачем если можно $client->click(HttpBrowser::request()->filter()->link())
+	https://github.com/php-webdriver/php-webdriver
+HTML-TO-MARKDOWN
+	https://github.com/erusev/parsedown
+	https://github.com/thephpleague/html-to-markdown?tab=readme-ov-file
+COMMONMARK https://github.com/thephpleague/commonmark
+SYMFONY SERVER https://symfony.com/doc/current/setup/symfony_server.html
+php GD installation for PngWriter(label)
+проверить что postcss (autoprefixer) работает
+	https://symfony.com/doc/current/frontend/encore/postcss.html
+SYMFONY SECURITY
+	LDAP
+		https://www.youtube.com/watch?v=0FwOcZNjjQA&t=55s&ab_channel=TalentedDeveloper
+		https://www.youtube.com/watch?v=Xj6FtOvlRCg&ab_channel=AFIDistribution
+		https://symfony.com/doc/current/security/ldap.html
+		https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
 TESTS
 	R: использовать кэш в тестах используя ArrayAdapter
 	GitHub Actions https://help.github.com/en/actions
@@ -2017,56 +2104,23 @@ TESTS
 			
 			Просто не используй реальный браузер для таких вещей
 		)
-Endroid\QrCode QR Code for Symfony https://github.com/endroid/qr-code-bundle
-	?
-	выдаёт исключение imagettfbbox(): Could not find/open font (label)
-(QR Code)
-	GENERATE QR CODE: https://github.com/Bacon/BaconQrCode
-	DETECT AND READ QR CODE: https://github.com/khanamiryan/php-qrcode-detector-decoder
-JS
-	LIB https://lodash.com/docs/4.17.15#cloneDeep
-PHP TOTP LIB
-	https://github.com/Spomky-Labs/otphp/blob/11.4.x/doc/index.md#advanced-features
-PHP УПРАВЛЕНИЕ ПРОЦЕССАМИ (не работает в windows) https://www.php.net/manual/ru/book.pcntl.php
-JWT lcobucci
-PHP FPDF
-	https://www.youtube.com/watch?v=aSTLAjLjJqk
-	__TOGETHER WITH__
-	http://www.fpdf.org/en/doc/index.php
-AMQP
-	?
-	https://habr.com/ru/articles/62502/
-	https://www.rabbitmq.com/tutorials/tutorial-one-php
-	https://symfony.com/doc/current/messenger.html#amqp-transport
-	https://github.com/cloudamqp/amqproxy
 Beanstalkd Transport https://habr.com/ru/companies/shopozzcom/articles/240483/
 SYMFONY TRANSLATION
 	RRR: Определиться раз и навсегда как переводить ($this->t->trans() | t())
 		чтобы была возможность отслеживать состояния переводов (переведено, не переведено, не используется)
 		с помощью команды (посмотреть)
 	Использовать провайдера Loco зарегайся с VPN: https://symfony.com/doc/current/translation.html#installing-and-configuring-a-third-party-provider
-SYMFONY DEPLOYMENT https://symfony.com/doc/current/deployment.html
-PRODUCTION
-	cache: https://symfony.com/doc/current/components/cache/adapters/apcu_adapter.html
-	cache: будет полезно поставить Shedule для выполнения php bin/console cache:pool:prune раз в неделю
-	как сделать скриншот монитора
-	как сделать pdf
-	https://symfony.com/doc/current/reference/configuration/kernel.html
+AMQP
 	?
-	process manager Supervisor or systemd for messenger	
-	проверить timezone у messenger doctrine
-	Утилиты для управления ENV_VAR https://docs.platform.sh/guides/symfony/environment-variables.html?utm_source=symfony-cloud-sign-up&utm_medium=backlink&utm_campaign=Symfony-Cloud-sign-up&utm_content=docs
-	custom env loader (configuraiton)
-	https://symfony.com/doc/current/contributing/code/conventions.html
-	??? запустить "php bin/console lint:twig --format=github" GitHub Actions
-hinclude.js (HOTWIRE круче)
-https://docs.github.com/en/actions
+	https://habr.com/ru/articles/62502/
+	https://www.rabbitmq.com/tutorials/tutorial-one-php
+	https://symfony.com/doc/current/messenger.html#amqp-transport
+	https://github.com/cloudamqp/amqproxy
 SYMFONY MESSENGER
 	https://symfony.com/doc/current/messenger.html#transactional-messages-handle-new-messages-after-handling-is-done
 	https://symfony.com/doc/current/components/messenger.html#transports
 	https://symfony.com/doc/current/messenger/custom-transport.html
 	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Messenger/Handler/RedispatchMessageHandler.php
-PNG WRITER https://github.com/endroid/qr-code
 TWIG
 	https://symfony.com/doc/current/reference/twig_reference.html
 	https://symfony.com/doc/current/reference/configuration/twig.html
@@ -2081,56 +2135,17 @@ TWIG
 		)
 SYMFONY SESSION
 	не получилось https://symfony.com/doc/current/session.html#encryption-of-session-data
-SYMFONY VARDUMPER https://symfony.com/doc/current/components/var_dumper.html#components-var-dumper-dump
-SYMFONY SECURITY
-	LDAP
-		https://www.youtube.com/watch?v=0FwOcZNjjQA&t=55s&ab_channel=TalentedDeveloper
-		https://www.youtube.com/watch?v=Xj6FtOvlRCg&ab_channel=AFIDistribution
-		https://symfony.com/doc/current/security/ldap.html
-		https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
-EmojiTransliterator::create('text-emoji')->transliterate() used it https://github.com/unicode-org/cldr?tab=readme-ov-file
-Telegram Bot Api: https://core.telegram.org/bots/api#available-types
-security через передачу заголовка impersonator не сработал https://symfony.com/doc/current/security/impersonating_user.html
-SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
-SYMFONY RESPONSE сохранить куки
-	зависящую от параметра Entity чтобы можно было инвалидировать
-PHPUnit assertEqualsWithDelta
-	https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
-php-webdriver (зачем если можно $client->click(HttpBrowser::request()->filter()->link())
-	https://github.com/php-webdriver/php-webdriver
 SYMFONY FORMATS/STANDARDS
 	https://symfony.com/doc/current/contributing/documentation/format.html
 	https://symfony.com/doc/current/contributing/documentation/standards.html
-HTML-TO-MARKDOWN
-	https://github.com/erusev/parsedown
-	https://github.com/thephpleague/html-to-markdown?tab=readme-ov-file
-Php texteditor lib for websites
-COMMONMARK https://github.com/thephpleague/commonmark
-SYMFONY SERVER https://symfony.com/doc/current/setup/symfony_server.html
-php GD installation for PngWriter(label)
-проверить что postcss (autoprefixer) работает
-	https://symfony.com/doc/current/frontend/encore/postcss.html
-SYMFONY UX-AMP LEAFMAP GET STARTED
-	настроить карту под себя
-	https://leafmap.org/get-started/#use-ipyleaflet-plotting-backend
++ ? Php texteditor lib for websites
+	(TRIX)
 PUSH (Firebase) реализовать на https хостинге (по сути на реальном сайте)
 	https://firebase.google.com/docs/cloud-messaging/js/client?authuser=0#next_steps
 Enable APC and then use this cache to save something on local server
 	https://stackoverflow.com/questions/24448261/how-to-install-apcu-in-windows
 Очисти OPcache на развёрнутом сервере
 	\opcache_reset()
-BLACKFIRE
-	https://docs.blackfire.io/introduction
-Настроить Varnish HTTP Cache
-	https://symfony.com/doc/current/http_cache/varnish.html
-	https://symfony.com/doc/current/deployment/proxies.html
-	https://varnish-cache.org/docs/index.html
-Придумать ситуацию, в которой ты будешь использовать kernel.fragment_renderer
-	https://symfony.com/doc/current/reference/dic_tags.html#kernel-fragment-renderer
-Реализуй с помощюь mercure + turbo stream смену title favicon для: (основываясь на turbo:<events>)
-	default favicon (/assets/images/favicon/favicon.svg)
-	чего-то нового (/assets/images/favicon/favicon_new.svg)
-	загрузки (иммитация загрузки анимацией svg, иммитация потому что turbo drive работает) (/assets/images/favicon/favicon_loading.svg)
 https://www.youtube.com/watch?v=n_21ya2MoKg&list=PLqVeG_R3qMSzYe_s3-q7TZeawXxTyltGC
 	mcHost исполнить php --ini
 		и выяснить есть ли opcache
@@ -2151,17 +2166,40 @@ https://habr.com/ru/articles/784660/
 REDIS если захочешь
 	https://www.youtube.com/watch?v=C03dRFEUQq8
 Переключиться на prod и понять почему 500 ошибка
-
-
-
-
-
-
-
-
-
-
-
+LiipFunctionalTestBundle https://github.com/liip/LiipFunctionalTestBundle
+Реализуй с помощюь mercure + turbo stream смену title favicon для: (основываясь на turbo:<events>)
+	default favicon (/assets/images/favicon/favicon.svg)
+	чего-то нового (/assets/images/favicon/favicon_new.svg)
+	загрузки (иммитация загрузки анимацией svg, иммитация потому что turbo drive работает) (/assets/images/favicon/favicon_loading.svg)
+Настроить Varnish HTTP Cache
+	https://symfony.com/doc/current/http_cache/varnish.html
+	https://symfony.com/doc/current/deployment/proxies.html
+	https://varnish-cache.org/docs/index.html
+SYMFONY UX-MAP LEAFMAP GET STARTED
+	настроить карту под себя
+	https://leafmap.org/get-started/#use-ipyleaflet-plotting-backend
+PRODUCTION
+	cache: https://symfony.com/doc/current/components/cache/adapters/apcu_adapter.html
+	cache: будет полезно поставить Shedule для выполнения php bin/console cache:pool:prune раз в неделю
+	как сделать скриншот монитора
+	как сделать pdf
+	https://symfony.com/doc/current/reference/configuration/kernel.html
+	?
+	process manager Supervisor or systemd for messenger	
+	проверить timezone у messenger doctrine
+	Утилиты для управления ENV_VAR https://docs.platform.sh/guides/symfony/environment-variables.html?utm_source=symfony-cloud-sign-up&utm_medium=backlink&utm_campaign=Symfony-Cloud-sign-up&utm_content=docs
+	custom env loader (configuraiton)
+	https://symfony.com/doc/current/contributing/code/conventions.html
+	SYMFONY DEPLOYMENT https://symfony.com/doc/current/deployment.html
+	??? запустить "php bin/console lint:twig --format=github" GitHub Actions
+SYMFONY MAKER BUNDLE https://symfony.com/bundles/SymfonyMakerBundle/current/index.html
+SYMFONY BEST PRACTIES https://symfony.com/doc/current/best_practices.html
+Cache with Couchbase
+	https://www.couchbase.com/
+	https://docs.couchbase.com/sdk-api/couchbase-php-client/namespaces/couchbase.html
+	https://symfony.com/doc/current/components/cache/adapters/couchbasecollection_adapter.html
+https://docs.github.com/en/actions
+RRR Оч слоно: Telegram Bot Api: https://core.telegram.org/bots/api#available-types
 
 
 
@@ -2373,6 +2411,7 @@ TODO
 		Реализовать env processor grin_way_csv_decode для декодирования csv в массив
 			(использовать serializer.encoder.csv service)
 		//TODO: attributesAsArray
+		https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#faker
 	Extensions
 		может перейти от OptionsResolver к Processor+TreeBuilder в global instance of
 	film
@@ -2408,3 +2447,13 @@ Composer https://getcomposer.org/doc/articles/custom-installers.md#the-custom-in
 		$this->addLink($request, (new Link('preload', $publicImgFilename))->withAttribute('as', 'image'));
 		
 		это будет + к поисковым запросам
+PRODUCTION:
+	Протестируй отправку email with "ZENSTRUCK MAILER TEST"
+		https://github.com/zenstruck/mailer-test
+Framework Configuration Reference https://symfony.com/doc/current/reference/configuration/framework.html#reference-cache-prefix-seed
+SYMFONY COMPONENTS: https://symfony.com/components
+https://symfony.com/doc/current/reference/index.html
+Придумать ситуацию, в которой ты будешь использовать kernel.fragment_renderer
+	https://symfony.com/doc/current/reference/dic_tags.html#kernel-fragment-renderer
+BLACKFIRE
+	https://docs.blackfire.io/introduction

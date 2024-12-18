@@ -9,6 +9,7 @@ use Symfony\Component\Console\Command\LockableTrait;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
@@ -21,8 +22,9 @@ class TestCommand extends Command
     use LockableTrait;
 
     public function __construct(
-        private readonly MessageBusInterface $bus,
-        private readonly LoggerInterface     $logger,
+        private readonly MessageBusInterface                  $bus,
+        private readonly LoggerInterface                      $logger,
+        #[Autowire('%env(APP_DATABASE_URL)%')] private readonly string $env,
     )
     {
         parent::__construct();
@@ -43,7 +45,7 @@ class TestCommand extends Command
 
         $stderr = $io->getErrorStyle();
 
-        $stderr->error('ERRORRRORORORORORO');
+        $stderr->error($this->env);
 
         return Command::SUCCESS;
     }

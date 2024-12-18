@@ -13,7 +13,7 @@ services:
         - '6379:6379'
 
     # docker rm app && docker rmi drafts-app && docker compose up
-    # for testing
+    # for testing, including E2E
     #    app:
     #        build: .
     #        container_name: app
@@ -23,7 +23,7 @@ services:
 
     ###>
     # docker exec -it app_pure_db mysql -p
-    #     CREATE DATABASE main;
+    #     CREATE DATABASE <>;
     ###<
     database:
         image: 'mysql:8.0-debian'
@@ -34,13 +34,13 @@ services:
         environment:
             MYSQL_ROOT_PASSWORD: 'root'
 
-    phpmyadmin:
-        image: phpmyadmin:5.2.1-apache
-        restart: always
-        ports:
-        - '8080:80'
-        environment:
-        - PMA_ARBITRARY=1
+#    phpmyadmin:
+#        image: phpmyadmin:5.2.1-apache
+#        restart: always
+#        ports:
+#        - '8080:80'
+#        environment:
+#        - PMA_ARBITRARY=1
 
     ###> symfony/mercure-bundle ###
     mercure:
