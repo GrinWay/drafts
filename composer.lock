@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "90f1d205aed46639a7f961629fb0eec2",
+    "content-hash": "239d87ff9e20b78b24657907243b1da7",
     "packages": [
         {
             "name": "doctrine/cache",
@@ -1830,6 +1830,63 @@
             "time": "2024-06-24T21:25:28+00:00"
         },
         {
+            "name": "phpcr/phpcr",
+            "version": "2.1.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpcr/phpcr.git",
+                "reference": "164715db7b351feabe8d35c72b62545daa326fc8"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpcr/phpcr/zipball/164715db7b351feabe8d35c72b62545daa326fc8",
+                "reference": "164715db7b351feabe8d35c72b62545daa326fc8",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.1 || ^8.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "^5.7 || ^6.0 || ^7.0 || ^8.0 || ^9.0 || ^10.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-0": {
+                    "PHPCR": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT",
+                "Apache-2.0"
+            ],
+            "authors": [
+                {
+                    "name": "David Buchmann",
+                    "email": "david@liip.ch"
+                },
+                {
+                    "name": "Karsten Dambekalns",
+                    "email": "karsten@typo3.org"
+                },
+                {
+                    "name": "Lukas Kahwe Smith",
+                    "email": "smith@pooteeweet.org"
+                }
+            ],
+            "description": "PHP Content Repository interfaces",
+            "homepage": "http://phpcr.github.io",
+            "keywords": [
+                "contentrepository",
+                "phpcr"
+            ],
+            "support": {
+                "issues": "https://github.com/phpcr/phpcr/issues",
+                "source": "https://github.com/phpcr/phpcr/tree/2.1.14"
+            },
+            "time": "2024-12-13T10:03:07+00:00"
+        },
+        {
             "name": "phpdocumentor/reflection-common",
             "version": "2.2.0",
             "source": {
@@ -2579,6 +2636,147 @@
                 "source": "https://github.com/sensiolabs/ansi-to-html/tree/v1.2.1"
             },
             "time": "2020-10-06T05:48:55+00:00"
+        },
+        {
+            "name": "symfony-cmf/routing",
+            "version": "3.0.4",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony-cmf/Routing.git",
+                "reference": "86c3e36a94f8e47a94f7b92ce09877ba3a0809fb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony-cmf/Routing/zipball/86c3e36a94f8e47a94f7b92ce09877ba3a0809fb",
+                "reference": "86c3e36a94f8e47a94f7b92ce09877ba3a0809fb",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.0",
+                "psr/log": "^1.0 || ^2.0 || ^3.0",
+                "symfony/http-kernel": "^6.0 || ^7.0",
+                "symfony/routing": "^6.0 || ^7.0"
+            },
+            "require-dev": {
+                "symfony/config": "^6.0 || ^7.0",
+                "symfony/dependency-injection": "^6.0 || ^7.0",
+                "symfony/event-dispatcher": "^6.0 || ^7.0",
+                "symfony/phpunit-bridge": "^7.0.3"
+            },
+            "suggest": {
+                "symfony/event-dispatcher": "DynamicRouter can optionally trigger an event at the start of matching. Minimal version ^6.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Cmf\\Component\\Routing\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony CMF Community",
+                    "homepage": "https://github.com/symfony-cmf/Routing/contributors"
+                }
+            ],
+            "description": "Extends the Symfony routing component for dynamic routes and chaining several routers",
+            "homepage": "http://cmf.symfony.com",
+            "keywords": [
+                "database",
+                "routing"
+            ],
+            "support": {
+                "issues": "https://github.com/symfony-cmf/Routing/issues",
+                "source": "https://github.com/symfony-cmf/Routing/tree/3.0.4"
+            },
+            "time": "2024-12-02T22:52:12+00:00"
+        },
+        {
+            "name": "symfony-cmf/routing-bundle",
+            "version": "3.1.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/symfony-cmf/routing-bundle.git",
+                "reference": "4a3d31d27050d5f4fd808dc68377050f72b99979"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/symfony-cmf/routing-bundle/zipball/4a3d31d27050d5f4fd808dc68377050f72b99979",
+                "reference": "4a3d31d27050d5f4fd808dc68377050f72b99979",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^8.1",
+                "symfony-cmf/routing": "^3.0.3",
+                "symfony/framework-bundle": "^6.4 || ^7.0"
+            },
+            "conflict": {
+                "doctrine/common": "<3.1.1",
+                "doctrine/persistence": "<1.3.0",
+                "doctrine/phpcr-odm": "<2.0",
+                "symfony/doctrine-bridge": "<6.4.0",
+                "symfony/security-core": "<6.4.0"
+            },
+            "require-dev": {
+                "doctrine/data-fixtures": "^1.0.0",
+                "doctrine/doctrine-bundle": "^2.8",
+                "doctrine/orm": "^2.9 || ^3.0",
+                "doctrine/phpcr-bundle": "^3.0",
+                "doctrine/phpcr-odm": "^2.0",
+                "jackalope/jackalope-doctrine-dbal": "^2.0",
+                "matthiasnoback/symfony-config-test": "^4.1.0 || ^5.1.0",
+                "matthiasnoback/symfony-dependency-injection-test": "^4.1.0 || ^5.1.0",
+                "phpstan/phpstan": "^1.10",
+                "phpstan/phpstan-doctrine": "^1.3",
+                "phpstan/phpstan-phpunit": "^1.3",
+                "phpstan/phpstan-symfony": "^1.3",
+                "phpunit/phpunit": "^9.5.28",
+                "symfony-cmf/testing": "5.0.2",
+                "symfony/form": "^6.4 || ^7.0",
+                "symfony/monolog-bundle": "^3.5",
+                "symfony/phpunit-bridge": "^7.0.3",
+                "symfony/security-bundle": "^6.4 || ^7.0",
+                "symfony/serializer": "^6.4 || ^7.0",
+                "symfony/translation": "^6.4 || ^7.0",
+                "symfony/twig-bundle": "^6.4 || ^7.0",
+                "symfony/validator": "^6.4 || ^7.0",
+                "twig/twig": "^2.4.4 || ^3.0"
+            },
+            "suggest": {
+                "doctrine/orm": "To enable support for the ORM entities",
+                "doctrine/phpcr-bundle": "To enable support for the PHPCR ODM documents",
+                "doctrine/phpcr-odm": "To enable support for the PHPCR ODM documents"
+            },
+            "type": "symfony-bundle",
+            "autoload": {
+                "psr-4": {
+                    "Symfony\\Cmf\\Bundle\\RoutingBundle\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Symfony CMF Community",
+                    "homepage": "https://github.com/symfony-cmf/RoutingBundle/contributors"
+                }
+            ],
+            "description": "Symfony RoutingBundle",
+            "homepage": "http://cmf.symfony.com",
+            "keywords": [
+                "database",
+                "routing"
+            ],
+            "support": {
+                "issues": "https://github.com/symfony-cmf/routing-bundle/issues",
+                "source": "https://github.com/symfony-cmf/routing-bundle/tree/3.1.0"
+            },
+            "time": "2024-04-07T08:17:51+00:00"
         },
         {
             "name": "symfony/asset",
@@ -8450,6 +8648,56 @@
                 }
             ],
             "time": "2024-10-23T06:56:12+00:00"
+        },
+        {
+            "name": "symfonycasts/micro-mapper",
+            "version": "v0.2.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/SymfonyCasts/micro-mapper.git",
+                "reference": "8a5f53221babfc010fa8f2e11f149be277aa28cf"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/SymfonyCasts/micro-mapper/zipball/8a5f53221babfc010fa8f2e11f149be277aa28cf",
+                "reference": "8a5f53221babfc010fa8f2e11f149be277aa28cf",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^1.10.39",
+                "phpunit/phpunit": "^9.6",
+                "symfony/filesystem": "^6.3|^7.0",
+                "symfony/framework-bundle": "^6.3|^7.0",
+                "symfony/phpunit-bridge": "^6.3.9|^7.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Symfonycasts\\MicroMapper\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Ryan Weaver",
+                    "homepage": "https://symfonycasts.com"
+                }
+            ],
+            "description": "A tiny, underwhelming data mapper to map one object to another!",
+            "keywords": [
+                "data-mapper"
+            ],
+            "support": {
+                "issues": "https://github.com/SymfonyCasts/micro-mapper/issues",
+                "source": "https://github.com/SymfonyCasts/micro-mapper/tree/v0.2.1"
+            },
+            "time": "2024-10-22T16:58:40+00:00"
         },
         {
             "name": "tijsverkoyen/css-to-inline-styles",

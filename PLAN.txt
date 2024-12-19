@@ -1974,19 +1974,41 @@ SYMFONY TEST BUNDLE
 			Транзакция тупо отменялась, по этой причине я не вижу смысла использовать DAMA Extension
 			Если есть ZENSTRUCK BROWSER
 		)
-***
 SYMFONY Dotenv class
-SYMFONY VARDUMPER https://symfony.com/doc/current/components/var_dumper.html#components-var-dumper-dump
+SYMFONY VARDUMPER
 doctrine-test-bundle
-	Все заметки
-	https://github.com/dmaicher/doctrine-test-bundle
 SYMFONY сопостовитель полей в DTO
-	https://github.com/SymfonyCasts/micro-mapper
-	C:\Workspace\1_PROJECTS\SYMFONY\SYMFONY VIDEOS\VARIOUS\API\API Platform 3\API Platform 3 Part 3 Custom Resources\25-micro-mapper (1080p).mp4
+***
 SYMFONY ROUTE
 	CMF Routing Bundle
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/dynamic.html
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/dynamic.html#components-routing-events
+	
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/dynamic_customize.html
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/configuration.html
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/introduction.html
+		
 		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/index.html
+		
 		https://symfony.com/bundles/CMFRoutingBundle/current/index.html
+		
+		
+		#?
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/configuration.html#generic-controller
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/configuration.html#controllers-by-type
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/configuration.html#controllers-by-class
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/dynamic.html#bundles-routing-entity
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/dynamic.html#configuring-the-controller-for-a-route
+		
+		#last
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/dynamic.html
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/chain.html
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/introduction.html
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/nested_matcher.html
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/dynamic.html
+		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/chain.html
+CMF CoreBundle
+	https://symfony.com/bundles/CMFRoutingBundle/current/bundles/core/introduction.html
 Cache with Memcached
 	https://habr.com/ru/articles/14939/
 	https://habr.com/ru/articles/42607/

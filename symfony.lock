@@ -88,6 +88,9 @@
             "./config/packages/ansi_to_html.yaml"
         ]
     },
+    "symfony-cmf/routing-bundle": {
+        "version": "3.1.0"
+    },
     "symfony/console": {
         "version": "7.2",
         "recipe": {
@@ -398,6 +401,9 @@
             "./package.json",
             "./webpack.config.js"
         ]
+    },
+    "symfonycasts/micro-mapper": {
+        "version": "v0.2.1"
     },
     "twig/extra-bundle": {
         "version": "v3.16.0"

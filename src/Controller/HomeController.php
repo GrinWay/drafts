@@ -2,14 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\Movie;
 use Doctrine\ORM\EntityManagerInterface;
-use SensioLabs\AnsiConverter\AnsiToHtmlConverter;
-use SensioLabs\AnsiConverter\Theme\SolarizedTheme;
-use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,10 +12,8 @@ use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\Cache\ItemInterface;
-use Symfony\Contracts\Cache\TagAwareCacheInterface;
 use Symfony\UX\Turbo\TurboBundle;
-use function Zenstruck\Foundry\faker;
+use Symfonycasts\MicroMapper\MicroMapperInterface;
 
 class HomeController extends AbstractController
 {
@@ -40,6 +32,8 @@ class HomeController extends AbstractController
         Request                                $request,
         KernelInterface                        $kernel,
         EntityManagerInterface                 $em,
+        string                                 $projectDir,
+        MicroMapperInterface                   $microMapper,
     ): Response
     {
         $template = 'home/index.html.twig';

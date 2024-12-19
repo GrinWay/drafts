@@ -7,6 +7,8 @@ services:
             $appTestEmail: '%env(APP_TEST_EMAIL)%'
             ###< EMAIL ###
 
+            $projectDir: '%kernel.project_dir%'
+
     App\:
         resource: '../src/'
         exclude:

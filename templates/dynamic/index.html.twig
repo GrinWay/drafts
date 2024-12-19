@@ -1,0 +1,8 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello DynamicController!{% endblock %}
+
+{% block body %}
+    <div class="">DYNAMIC CONTROLLER IN ACTION</div>
+    {{ dump(content|default(null)) }}
+{% endblock %}
