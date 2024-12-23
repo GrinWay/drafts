@@ -2,8 +2,12 @@
 
 namespace App\DataFixtures;
 
+use App\Controller\DynamicController;
+use App\Factory\FoundryFactory;
 use App\Factory\TodoFactory;
 use App\Factory\UserFactory;
+use App\Router\RouteContent\DefaultRouteContent;
+use App\Router\RouteObject\DefaultRoute;
 use App\Story\FoundryStory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\ORM\EntityManagerInterface;
@@ -25,24 +29,51 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $this->loadDynamicRoutes();
-
         FoundryStory::load();
 
         TodoFactory::createMany(10);
 
         UserFactory::createMany(3);
+
+        $this->loadDynamicRoutes();
     }
 
+    /**
+     * https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/dynamic.html
+     *
+     * @return void
+     */
     private function loadDynamicRoutes()
     {
-        $route = new Route();
-        $route->setName('HARDCODED_ROUTE_KEY');
-        $route->setStaticPrefix('/dynamic');
-        $route->setDefault(RouteObjectInterface::CONTENT_ID, $this->contentRepository->getContentId(null));
-        $route->setContent(new \StdClass());
+        $idx = 0;
 
-        $this->em->persist($route);
+        foreach ([
+                     [
+                         'static_prefix' => '/first',
+                         'content' => FoundryFactory::first()->_real(),
+                         'controller_name' => null,
+                         'route_name' => null,
+                     ],
+                     [
+                         'static_prefix' => '/last',
+                         'content' => FoundryFactory::last()->_real(),
+                         'controller_name' => null,
+                         'route_name' => null,
+                     ],
+                 ] as ['content' => $content, 'controller_name' => $controllerName, 'route_name' => $routeName, 'static_prefix' => $staticPrefix]) {
+            $controllerName ??= DynamicController::class . '::__invoke';
+            $routeName ??= 'dynamic_route_name_'.$idx++;
+
+            $route = new Route();
+            $route->setName($routeName);
+            $route->setStaticPrefix($staticPrefix);
+            $route->setDefault(RouteObjectInterface::CONTROLLER_NAME, $controllerName);
+            $route->setDefault(RouteObjectInterface::CONTENT_ID, $this->contentRepository->getContentId($content));
+            $route->setContent($content);
+//            $route->setOption('add_locale_pattern', true);
+
+            $this->em->persist($route);
+        }
         $this->em->flush();
     }
 }

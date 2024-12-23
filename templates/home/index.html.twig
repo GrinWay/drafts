@@ -3,12 +3,5 @@
 {% block title %}Home{% endblock %}
 
 {% block body %}
-    <div
-            {{ turbo_stream_listen('test') }}
-            class="test"
-    >
-        <div class="">
-            {{ databaseUrl|default('null') }}
-        </div>
-    </div>
+    <div class="" {{ stimulus_controller('listen-event-source') }}>LISTENING EVENT SOURCE</div>
 {% endblock %}

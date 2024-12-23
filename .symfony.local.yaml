@@ -1,9 +1,9 @@
 proxy:
-    domains: [ ]
-#    - 'app'
+    domains:
+    - 'app'
 
 http:
-    no_tls: false # todo: when changed also change "--server-type"
+    no_tls: true # todo: when changed also change "--server-type"
     ###> Uncomment when no_tls: false
     #p12: 'C:/Users/son5-/.symfony5/certs/default.p12'
     ###< Uncomment when no_tls: false

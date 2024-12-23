@@ -1,7 +1,21 @@
 framework:
     http_client:
+        scoped_clients:
+            this.client:
+                base_uri: '%env(resolve:APP_URL)%'
+
         default_options:
+#            rate_limiter: 'http_example_limiter'
+            http_version: '2.0'
+            vars:
+                secret: '%env(resolve:APP_SECRET)%'
+            extra:
+                trace_content: false
+#            timeout: 3
+            retry_failed:
+                max_retries: 5
             verify_peer: false
+            max_redirects: 7
 
 when@prod: &when_prod
     framework:

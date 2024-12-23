@@ -1,6 +1,6 @@
 framework:
     mailer:
-        message_bus: default #command.bus
+#        message_bus: default #command.bus
 
         dsn: '%env(APP_MAILER_DSN)%'
 

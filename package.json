@@ -8,6 +8,7 @@
         "@symfony/ux-turbo": "file:vendor/symfony/ux-turbo/assets",
         "@symfony/webpack-encore": "^5.0.1",
         "core-js": "^3.38.0",
+        "file-loader": "6.0.0",
         "regenerator-runtime": "^0.13.9",
         "sass": "^1.82.0",
         "sass-loader": "16.0.1",
@@ -27,8 +28,10 @@
     "dependencies": {
         "@babel/runtime": "^7.26.0",
         "@popperjs/core": "^2.11.8",
+        "@videojs/themes": "^1.0.1",
         "babel": "^6.23.0",
         "bootstrap": "^5.3.3",
-        "stimulus": "^3.2.2"
+        "stimulus": "^3.2.2",
+        "video.js": "^8.21.0"
     }
 }

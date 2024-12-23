@@ -5,6 +5,8 @@ cmf_routing:
             cmf_routing.dynamic_router: 100
     dynamic:
         enabled: true
+        route_collection_limit: 0
+#        add_locale_pattern: true
 
         persistence:
             orm:

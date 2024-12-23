@@ -1978,79 +1978,50 @@ SYMFONY Dotenv class
 SYMFONY VARDUMPER
 doctrine-test-bundle
 SYMFONY сопостовитель полей в DTO
-***
 SYMFONY ROUTE
 	CMF Routing Bundle
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/dynamic.html
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/dynamic.html#components-routing-events
-	
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/dynamic_customize.html
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/configuration.html
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/introduction.html
-		
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/index.html
-		
-		https://symfony.com/bundles/CMFRoutingBundle/current/index.html
-		
-		
-		#?
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/configuration.html#generic-controller
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/configuration.html#controllers-by-type
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/configuration.html#controllers-by-class
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/dynamic.html#bundles-routing-entity
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/dynamic.html#configuring-the-controller-for-a-route
-		
-		#last
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/dynamic.html
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/chain.html
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-bundle/introduction.html
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/nested_matcher.html
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/dynamic.html
-		https://symfony.com/bundles/CMFRoutingBundle/current/routing-component/chain.html
-CMF CoreBundle
-	https://symfony.com/bundles/CMFRoutingBundle/current/bundles/core/introduction.html
 Cache with Memcached
-	https://habr.com/ru/articles/14939/
-	https://habr.com/ru/articles/42607/
-	https://stackoverflow.com/questions/59476616/install-memcached-on-windows
-	создай сервис в services.ymal на основе фабричного метода MemcachedAdapter::createConnection
-		https://symfony.com/doc/current/components/cache/adapters/memcached_adapter.html
 	?
-	https://symfony.com/doc/current/components/cache/adapters/chain_adapter.html
-		Если сделать ChainAdapter то можно ли решить проблему отказоустойчивоости
-		допустим использовать MemcachedAdapter
-		но если произошёл сбой использовать FilesystemAdapter
-The Runtime Component https://symfony.com/doc/current/components/runtime.html
-EMAIL MESSENGES INKY https://get.foundation/emails/docs/inky.html
+	?? Никак не коннектится memcached 
+		"Memcached > 3.1.5 is required"
+		Запустил на docker container с открытым портом 11211
+EMAIL MESSENGES INKY
 VIDEO.JS
-	https://videojs.com/
-	(после изучения библиотеки)
-		реализовать свой grinway/video stimulus controller
-		И не забывать использовать асинхронные import предоставленные webpack
-			import('<>').then(({ default: <> }) => { /**/ }).catch(error => console.error(error))
-Endroid\QrCode QR Code for Symfony https://github.com/endroid/qr-code-bundle
+	?
+	? videojs.options.controls = true не срабатывает
+(create QR Code)
+	ENDROID QR CODE GENERATOR
 	?
 	выдаёт исключение imagettfbbox(): Could not find/open font (label)
-PNG WRITER https://github.com/endroid/qr-code
-(QR Code)
-	GENERATE QR CODE: https://github.com/Bacon/BaconQrCode
-	DETECT AND READ QR CODE: https://github.com/khanamiryan/php-qrcode-detector-decoder
-PHP CREATE PICTURES https://github.com/moust/Paint
-	https://github.com/Gregwar/Image
-	https://www.youtube.com/watch?v=ek1TCYqAvbg&ab_channel=CodeWithDary
-SYMFONY HTTP CLIENT [DIFFICULT ONE MORE and answer the questions]
-	https://symfony.com/doc/current/http_client.html
+(read QR Code)
+	PHP QR CODE DETECTOR DECODER
+PHP CREATE PICTURES GREGWAR IMAGE
 	?
-	? Как же загадочно, что используя ngrok я не могу используя HttpClientInterface service запросить содержимое своей страницы, проблем с сертификатом ssl нет, но запрос просто виснет... Но ПОЧЕМУ
-	?? Декорировать клиента и возвращать chunk каким-то образом изменённым
+	+ Не получилось merge картинок
+	(
+		Для watermark нужна определённо другая библиотека PHP GD
+	)
+***
+SYMFONY HTTP CLIENT
+	
+	Заметки
+	Декорировать клиента и возвращать chunk каким-то образом изменённым
 		https://symfony.com/doc/current/http_client.html#extensibility
-	? когда отключен verify_peer, verify_host сначала выдаёт ошибку что вышло время подключения
-		а затем ПРОХОДИТ по ссылке
-		что-то задерживает приём ответа с сервера
-	? Retry Failed Requests https://symfony.com/doc/current/http_client.html#retry-failed-requests
+	Retry Failed Requests https://symfony.com/doc/current/http_client.html#retry-failed-requests
 		когда решишь проблему с проверкой SSL
 		сделай запрос на свой API, закончи неудачей, посмотри куда будет сделан 2, 3... попытки при
 		base_uri => [ПОСЛЕДНИЙ ЭЛЕМЕНТ МАССИВ, значит по идее каждый запрос должен быть случайным [url_1, url_2, ...]]
+	...
+	
+	?
+	? Странно что не вызывается HttpOptions::setOnProgress при запросе, ведь я его установил!
+		Даже для stream не вызывается
+		https://symfony.com/doc/current/http_client.html#progress-callback
+	? Как же загадочно, что используя ngrok я не могу используя HttpClientInterface service запросить содержимое своей страницы, проблем с сертификатом ssl нет, но запрос просто виснет... Но ПОЧЕМУ
+		при этом в тестах я даже без ngrok могу обращаться к своему же сайту
+	? когда отключен verify_peer, verify_host сначала выдаёт ошибку что вышло время подключения
+		а затем ПРОХОДИТ по ссылке
+		что-то задерживает приём ответа с сервера
 	? в каких случаях можно при httpClient::request использовать options.body как closure
 	+ ?? не получилось по scoped_clients.scope установить заголовки запроса при httpClient::request (для scope автоматисески создаётся новый именованный client service, и он был виден через debug:auto просто искать нужно было аккуратней с твоим grep)
 	? как из ответа сервера узнать отправлялись ли куки в запросе
@@ -2063,6 +2034,7 @@ SYMFONY DOCTRINE
 	https://github.com/KnpLabs/DoctrineBehaviors
 	https://github.com/doctrine-extensions/DoctrineExtensions
 	https://github.com/stof/StofDoctrineExtensionsBundle
+	R: сделать резервную копию БД
 	?
 	+? Оказывается при выполнении "symfony console"
 		есть env DATABASE_URL определённая когда есть docker
@@ -2080,6 +2052,8 @@ PHP УПРАВЛЕНИЕ ПРОЦЕССАМИ (не работает в windows)
 JWT lcobucci
 	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/index.html
 PHP FPDF
+	https://github.com/endroid/pdf
+	
 	https://www.youtube.com/watch?v=aSTLAjLjJqk
 	__TOGETHER WITH__
 	http://www.fpdf.org/en/doc/index.php
@@ -2222,6 +2196,7 @@ Cache with Couchbase
 	https://symfony.com/doc/current/components/cache/adapters/couchbasecollection_adapter.html
 https://docs.github.com/en/actions
 RRR Оч слоно: Telegram Bot Api: https://core.telegram.org/bots/api#available-types
+* Basic Authentication can also be set by including the credentials in the URL, such as: http://the-username:the-password@example.com
 
 
 
@@ -2266,8 +2241,11 @@ TODO
 	Ещё разок перед созданием своих бандлов: https://symfony.com/doc/current/bundles/best_practices.html
 	
 	take clear bundle realization from: https://github.com/symfony/ux/tree/2.x/src/Typed/src
+	
 	git pull --tags
 	git checkout before-pure-docker
+	
+	https://github.com/endroid/installer#configuration
 	WebApp
 		Add Yaml::PARSE_CONSTANT to allow !const 'GrinWay\WebApp\Type\Messenger\BusTypes::QUERY_BUS' into web-app-bundle\config\services.yaml
 		Создать Stimulus controllers (короче сделать этот пакет UX)
@@ -2374,6 +2352,7 @@ TODO
 			данные о всевозможных темах должны быть доступны как component так и js controller
 			так что просто перетащи данные с компонента в контроллер
 		// TODO: lazy-image -> grinway--lazy-image
+		реализовать свой grinway/video stimulus controller
 	GsEnvProcessor
 		fix abstractions (only with functions)
 		// TODO: HttpsToStringEnvVarProcessor
