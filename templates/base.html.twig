@@ -5,6 +5,8 @@
         <title>{% block title %}{{- app_text_logo -}}{% endblock %}</title>
         <link rel="icon" href="/favicon.ico">
 
+        {% block head_inner %}{% endblock %}
+
         {% block metas %}
             <meta name="turbo-prefetch" content="false">
         {% endblock %}

@@ -1,2 +1,4 @@
 parameters:
+    app.database.backup_abs_path: '%kernel.project_dir%/var/backups/database'
+
     env(APP_DATABASE_URL): "mysql://%env(APP_DB_USER)%:%env(APP_DB_PASS)%@%env(APP_DB_HOST_IP)%%env(APP_DB_PORT_WITH_DOTS)%/%env(APP_DB_NAME)%?charset=utf8mb4"

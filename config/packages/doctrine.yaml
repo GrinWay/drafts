@@ -1,7 +1,7 @@
 doctrine:
     dbal:
         url: '%env(APP_DATABASE_URL)%'
-#        url: '%env(DATABASE_URL)%' # defined by SYMFONY with docker
+        #        url: '%env(DATABASE_URL)%' # defined by SYMFONY with docker
 
         # IMPORTANT
         server_version: '8.0.40'
@@ -9,6 +9,9 @@ doctrine:
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
     orm:
+        query_cache_driver:
+            type: pool
+            pool: app.cache.redis
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
         report_fields_where_declared: true
@@ -24,6 +27,30 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Entity'
                 prefix: 'App\Entity'
                 alias: App
+#            gedmo_translatable:
+#                type: annotation
+#                prefix: Gedmo\Translatable\Entity
+#                dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Translatable/Entity"
+#                alias: GedmoTranslatable # (optional) it will default to the name set for the mapping
+#                is_bundle: false
+#            gedmo_translator:
+#                type: annotation
+#                prefix: Gedmo\Translator\Entity
+#                dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Translator/Entity"
+#                alias: GedmoTranslator # (optional) it will default to the name set for the mapping
+#                is_bundle: false
+#            gedmo_loggable:
+#                type: annotation
+#                prefix: Gedmo\Loggable\Entity
+#                dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Loggable/Entity"
+#                alias: GedmoLoggable # (optional) it will default to the name set for the mapping
+#                is_bundle: false
+#            gedmo_tree:
+#                type: annotation
+#                prefix: Gedmo\Tree\Entity
+#                dir: "%kernel.project_dir%/vendor/gedmo/doctrine-extensions/src/Tree/Entity"
+#                alias: GedmoTree # (optional) it will default to the name set for the mapping
+#                is_bundle: false
         controller_resolver:
             auto_mapping: false
 

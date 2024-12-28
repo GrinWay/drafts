@@ -23,4 +23,10 @@ return [
     Symfonycasts\MicroMapper\SymfonycastsMicroMapperBundle::class => ['all' => true],
     Symfony\Cmf\Bundle\RoutingBundle\CmfRoutingBundle::class => ['all' => true],
     Endroid\QrCodeBundle\EndroidQrCodeBundle::class => ['all' => true],
+    Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle::class => ['all' => true],
+    MakinaCorpus\DbToolsBundle\DbToolsBundle::class => ['all' => true],
+    Lexik\Bundle\JWTAuthenticationBundle\LexikJWTAuthenticationBundle::class => ['all' => true],
+    Knp\Bundle\SnappyBundle\KnpSnappyBundle::class => ['all' => true],
+    Knp\Bundle\PaginatorBundle\KnpPaginatorBundle::class => ['all' => true],
+    Symfony\UX\Icons\UXIconsBundle::class => ['all' => true],
 ];

@@ -2,24 +2,30 @@
 
 namespace App\Controller;
 
-use Ajaxray\PHPWatermark\Watermark;
-use Gregwar\Image\Adapter\Adapter;
-use Gregwar\Image\Adapter\GD;
-use Gregwar\Image\Image;
+use App\Entity\Todo;
+use Doctrine\ORM\EntityManagerInterface;
+use ElGigi\CommonMarkEmoji\EmojiExtension;
+use Facebook\WebDriver\Chrome\ChromeOptions;
+use Facebook\WebDriver\Remote\DesiredCapabilities;
+use Facebook\WebDriver\Remote\RemoteWebDriver;
+use Knp\Component\Pager\PaginatorInterface;
+use League\CommonMark\CommonMarkConverter;
+use League\HTMLToMarkdown\HtmlConverter;
+use parallel\Channel;
+use parallel\Runtime;
+use Parsedown;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpClient\HttpClient;
-use Symfony\Component\HttpClient\HttpOptions;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
-use Symfony\Component\Mime\Part\Multipart\FormDataPart;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\Turbo\TurboBundle;
+use function Symfony\Component\Translation\t;
 
 class HomeController extends AbstractController
 {
@@ -36,7 +42,7 @@ class HomeController extends AbstractController
             \ob_end_clean();
             $idx = 0;
 
-            while(true) {
+            while (true) {
                 echo \sprintf('event: mess%1$sdata: random data%2$s%1$sid: %3$s%1$s%1$s', \PHP_EOL, \random_int(0, 100), ++$idx);
                 \flush();
                 \sleep(1);
@@ -48,6 +54,22 @@ class HomeController extends AbstractController
         ]);
     }
 
+    #[Route('/custom-pagination', name: 'app_custom_paginator')]
+    public function customPagination(
+        PaginatorInterface $paginator,
+                           $projectDir,
+        Request            $request,
+    )
+    {
+        $pagination = $paginator->paginate($projectDir, $request->query->getInt('page', 1), 10);
+
+        $template = 'home/custom_pagination.html.twig';
+        $parameters = [
+            'pagination' => $pagination,
+        ];
+        return $this->render($template, $parameters);
+    }
+
     /**
      * ### HOME ###
      * @param Request $request
@@ -56,22 +78,61 @@ class HomeController extends AbstractController
      */
     #[Route('/', name: 'app_home')]
     public function home(
-        Request             $request,
-        string              $projectDir,
-        HttpClientInterface $client,
+        Request                       $request,
+        string                        $projectDir,
+        PaginatorInterface            $paginator,
+        EntityManagerInterface        $em,
+        #[Autowire('%env(APP_URL)%')] $appUrl,
+        TranslatorInterface           $trans,
     ): Response
     {
-        $clientResponse = $client->request('GET', 'https://windows.php.net/downloads/releases/php-8.4.2-nts-Win32-vs17-x64.zip', [
-//            'user_data' => 'some data from user',
+        $converter = new CommonMarkConverter([
+            'html_input' => 'strip',
+            'allow_unsafe_links' => false,
+        ]);
+        $converter->getEnvironment()->addExtension(new EmojiExtension());
+        $html = $converter->convert($trans->trans('test_parsedown'));
+
+        $direction = $request->query->get('direction', $defaultDirection = 'DESC');
+        $direction = \strtoupper($direction);
+        if ('ASC' !== $direction && 'DESC' !== $direction) {
+            $direction = $defaultDirection;
+        }
+
+        $orderBy = $request->query->get('sort', $defaultOrderBy = 'o.id');
+        if (!\str_starts_with($orderBy, 'o.')) {
+            $orderBy = $defaultOrderBy;
+        }
+
+        $dql = \sprintf('SELECT o FROM %s o ORDER BY %s %s', Todo::class, $orderBy, $direction);
+        $query = $em->createQuery($dql);
+
+        $pagination = $paginator->paginate(
+            $query,
+            $request->query->get('page', 1),
+            5,
+        );
+
+        $pagination->setParam('direction', $direction);
+        $pagination->setParam('sort', $orderBy);
+        $pagination->setCustomParameters([
+            'align' => 'left',
+            'size' => 'small',
         ]);
 
-//        foreach($client->stream($clientResponse) as $r => $chunk) {
-//        }
+        $pagination->setPageRange(10);
+
+//        $pagination->setUsedRoute('app_custom_paginator');
+
+//        \dump($pagination->getPaginatorOptions());
 
         $template = 'home/index.html.twig';
         $parameters = [
+            'pagination' => $pagination,
+            'html' => $html,
         ];
-        return $this->render($template, $parameters);
+        $response = $this->render($template, $parameters);
+        return $response;
     }
 
     /**

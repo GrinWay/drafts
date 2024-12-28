@@ -11,7 +11,7 @@ framework:
                 secret: '%env(resolve:APP_SECRET)%'
             extra:
                 trace_content: false
-#            timeout: 3
+            timeout: 5
             retry_failed:
                 max_retries: 5
             verify_peer: false

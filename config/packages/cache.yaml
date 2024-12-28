@@ -15,8 +15,8 @@ framework:
         default_memcached_provider: '%env(APP_MEMCACHED_DSN)%'
 
         system: cache.adapter.redis
-#        system: app.cache.fast_and_slow_chain_adapter
-#        system: cache.adapter.memcached
+        #        system: app.cache.fast_and_slow_chain_adapter
+        #        system: cache.adapter.memcached
 
         # APCu (not recommended with heavy random-write workloads as memory fragmentation can cause perf issues)
         #app: cache.adapter.apcu
@@ -27,6 +27,11 @@ framework:
                 adapters:
                 - 'cache.adapter.redis'
                 default_lifetime: 300 # 300 === 5min
+
+            app.cache.test:
+                adapters:
+                - 'cache.adapter.array'
+                default_lifetime: !php/const PHP_INT_MAX
 
 #            app.cache.memcached:
 #                adapters:

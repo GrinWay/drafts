@@ -2001,97 +2001,74 @@ PHP CREATE PICTURES GREGWAR IMAGE
 	(
 		Для watermark нужна определённо другая библиотека PHP GD
 	)
-***
 SYMFONY HTTP CLIENT
-	
-	Заметки
-	Декорировать клиента и возвращать chunk каким-то образом изменённым
-		https://symfony.com/doc/current/http_client.html#extensibility
-	Retry Failed Requests https://symfony.com/doc/current/http_client.html#retry-failed-requests
-		когда решишь проблему с проверкой SSL
-		сделай запрос на свой API, закончи неудачей, посмотри куда будет сделан 2, 3... попытки при
-		base_uri => [ПОСЛЕДНИЙ ЭЛЕМЕНТ МАССИВ, значит по идее каждый запрос должен быть случайным [url_1, url_2, ...]]
-	...
-	
 	?
-	? Странно что не вызывается HttpOptions::setOnProgress при запросе, ведь я его установил!
+	- + ? Странно что не вызывается HttpOptions::setOnProgress при запросе, ведь я его установил!
 		Даже для stream не вызывается
 		https://symfony.com/doc/current/http_client.html#progress-callback
+		(
+			Не знаю почему, но теперь вызывается... хз
+			Просто теперь вызывается on_progress, а затем HttpClient::stream(Response)
+		)
 	? Как же загадочно, что используя ngrok я не могу используя HttpClientInterface service запросить содержимое своей страницы, проблем с сертификатом ssl нет, но запрос просто виснет... Но ПОЧЕМУ
 		при этом в тестах я даже без ngrok могу обращаться к своему же сайту
 	? когда отключен verify_peer, verify_host сначала выдаёт ошибку что вышло время подключения
 		а затем ПРОХОДИТ по ссылке
 		что-то задерживает приём ответа с сервера
-	? в каких случаях можно при httpClient::request использовать options.body как closure
 	+ ?? не получилось по scoped_clients.scope установить заголовки запроса при httpClient::request (для scope автоматисески создаётся новый именованный client service, и он был виден через debug:auto просто искать нужно было аккуратней с твоим grep)
 	? как из ответа сервера узнать отправлялись ли куки в запросе
 	? verify_peer не работает, SSL ошибка продолжает выдаваться
 	? как указать самоподписанный SSL сертификат, при обращении к другим сайтам: CAfile: C:/OSPanel/data/ssl/cacert.pem
-	? не понятно куда скачивается файл
+	+ ? не понятно куда скачивается файл
+	(
+		При использовании HttpClient::stream(Response) в php://temp
+		Но конечно обрабатывать скачивание нужно вручную из $chunk
+	)
 	+ нет вызова callback на прогресс HttpClient(HttpOptions::setOnProgress) (используя сервисный HttpClientInterface on_progress действительно не вызывается, но если создать вручную то вызывается)
 SYMFONY DOCTRINE
-	https://symfony.com/doc/current/reference/configuration/doctrine.html
-	https://github.com/KnpLabs/DoctrineBehaviors
-	https://github.com/doctrine-extensions/DoctrineExtensions
-	https://github.com/stof/StofDoctrineExtensionsBundle
-	R: сделать резервную копию БД
 	?
-	+? Оказывается при выполнении "symfony console"
-		есть env DATABASE_URL определённая когда есть docker
-		то есть используя docker можно вообще не определять DATABASE_URL
-		так как symfony определит переменную автоматически
+	+ - Как сделать резервную копию БД
+	(
+		Через mysqldump бинарник
+		
+		Но на windows вылезает ошибка что консоль не поддерживает tty
+	)
 	? По какой-то непонятной причине если есть папка src/Bundle Doctrine выдаёт исключение что нет src/Bundle/Entity
-	как найти имя сущности в Repository
-	реализовать (MappedSuperClass)Authentication и её сущность UserAuthentication(сущность CustomAuth[access_token], сущность Auth2FA[totp, google code, email, backup codes], сущность OAuth[github, telegram, google])
-browser-driver-installer https://github.com/dbrekelmans/browser-driver-installer
-PHP PARALLEL https://habr.com/ru/companies/oleg-bunin/articles/715844/
-	https://www.php.net/manual/ru/book.parallel.php
+	+ как найти имя сущности в Repository
+		(
+			getClassName
+		)
+	~ реализовать сущность UserAuthentication extends AuthenticationMappedSuperClass:
+		relation сущность AccessTokenAuth[
+			access_token
+		]
+		relation сущность Auth2FA[
+			totp,
+			google code,
+			email,
+			backup codes
+		]
+		relation сущность OAuth[
+			github,
+			telegram,
+			google
+		]
+browser-driver-installer
+PHP PARALLEL
 PHP TOTP LIB
-	https://github.com/Spomky-Labs/otphp/blob/11.4.x/doc/index.md#advanced-features
-PHP УПРАВЛЕНИЕ ПРОЦЕССАМИ (не работает в windows) https://www.php.net/manual/ru/book.pcntl.php
-JWT lcobucci
-	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/index.html
 PHP FPDF
-	https://github.com/endroid/pdf
-	
-	https://www.youtube.com/watch?v=aSTLAjLjJqk
-	__TOGETHER WITH__
-	http://www.fpdf.org/en/doc/index.php
-JS
-	LIB https://lodash.com/docs/4.17.15#cloneDeep
-SYMFONY BUNDLE FOSJsRoutingBundle (route -> uri in js) ~
-SYMFONY BUNDLE FOSHttpCacheBundle (invalidate cache) ~
-EmojiTransliterator::create('text-emoji')->transliterate() used it https://github.com/unicode-org/cldr?tab=readme-ov-file
-security через передачу заголовка impersonator не сработал https://symfony.com/doc/current/security/impersonating_user.html
-SYMFONY PROFILER https://symfony.com/doc/current/profiler.html
-SYMFONY RESPONSE сохранить куки
-	зависящую от параметра Entity чтобы можно было инвалидировать
-PHPUnit assertEqualsWithDelta
-	https://docs.oracle.com/cd/E19957-01/806-3568/ncg_goldberg.html
-php-webdriver (зачем если можно $client->click(HttpBrowser::request()->filter()->link())
-	https://github.com/php-webdriver/php-webdriver
-HTML-TO-MARKDOWN
-	https://github.com/erusev/parsedown
-	https://github.com/thephpleague/html-to-markdown?tab=readme-ov-file
-COMMONMARK https://github.com/thephpleague/commonmark
-SYMFONY SERVER https://symfony.com/doc/current/setup/symfony_server.html
-php GD installation for PngWriter(label)
-проверить что postcss (autoprefixer) работает
-	https://symfony.com/doc/current/frontend/encore/postcss.html
-SYMFONY SECURITY
-	LDAP
-		https://www.youtube.com/watch?v=0FwOcZNjjQA&t=55s&ab_channel=TalentedDeveloper
-		https://www.youtube.com/watch?v=Xj6FtOvlRCg&ab_channel=AFIDistribution
-		https://symfony.com/doc/current/security/ldap.html
-		https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
+KNP PAGINATION
+JS LODASH LIB
+php-webdriver
+FROM MARKDOWN to html (php parsedown, commonmark)
+from html TO MARKDOWN (html-to-markdown)
+***
+SYMFONY SECURITY LDAP
+	~ https://www.youtube.com/watch?v=Xj6FtOvlRCg&ab_channel=AFIDistribution
+	https://symfony.com/doc/current/security/ldap.html
+	https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
 TESTS
 	R: использовать кэш в тестах используя ArrayAdapter
-	GitHub Actions https://help.github.com/en/actions
-		https://www.youtube.com/watch?v=WW6ZUw9IExA
-		https://symfony.com/doc/current/bundles/best_practices.html#continuous-integration
-	Travis CI https://www.travis-ci.com/
-		https://symfony.com/doc/current/setup/bundles.html#update-the-travis-ci-configuration
-	Gitlab CI https://docs.gitlab.com/ee/ci/
 	?
 	+ ? Почему title несуществует в E2E
 		(
@@ -2100,18 +2077,13 @@ TESTS
 			
 			Просто не используй реальный браузер для таких вещей
 		)
-Beanstalkd Transport https://habr.com/ru/companies/shopozzcom/articles/240483/
 SYMFONY TRANSLATION
 	RRR: Определиться раз и навсегда как переводить ($this->t->trans() | t())
 		чтобы была возможность отслеживать состояния переводов (переведено, не переведено, не используется)
 		с помощью команды (посмотреть)
-	Использовать провайдера Loco зарегайся с VPN: https://symfony.com/doc/current/translation.html#installing-and-configuring-a-third-party-provider
-AMQP
-	?
-	https://habr.com/ru/articles/62502/
-	https://www.rabbitmq.com/tutorials/tutorial-one-php
-	https://symfony.com/doc/current/messenger.html#amqp-transport
-	https://github.com/cloudamqp/amqproxy
+	Использовать провайдера Loco зарегайся с VPN:
+		https://localise.biz/about
+		https://symfony.com/doc/current/translation.html#installing-and-configuring-a-third-party-provider
 SYMFONY MESSENGER
 	https://symfony.com/doc/current/messenger.html#transactional-messages-handle-new-messages-after-handling-is-done
 	https://symfony.com/doc/current/components/messenger.html#transports
@@ -2131,42 +2103,28 @@ TWIG
 		)
 SYMFONY SESSION
 	не получилось https://symfony.com/doc/current/session.html#encryption-of-session-data
-SYMFONY FORMATS/STANDARDS
-	https://symfony.com/doc/current/contributing/documentation/format.html
-	https://symfony.com/doc/current/contributing/documentation/standards.html
-+ ? Php texteditor lib for websites
-	(TRIX)
-PUSH (Firebase) реализовать на https хостинге (по сути на реальном сайте)
-	https://firebase.google.com/docs/cloud-messaging/js/client?authuser=0#next_steps
-Enable APC and then use this cache to save something on local server
-	https://stackoverflow.com/questions/24448261/how-to-install-apcu-in-windows
-Очисти OPcache на развёрнутом сервере
-	\opcache_reset()
-https://www.youtube.com/watch?v=n_21ya2MoKg&list=PLqVeG_R3qMSzYe_s3-q7TZeawXxTyltGC
-	mcHost исполнить php --ini
-		и выяснить есть ли opcache
-	mcHost есть ли у них docker
-https://symfony.com/doc/current/contributing/community/releases.html
-https://symfony.com/doc/current/page_creation.html
-https://symfony.com/doc/current/setup/web_server_configuration.html#nginx
-RECTOR
-	detect Symfony deprications https://getrector.com/documentation/
-UPGRADING TO A NEW MAJOR
-	https://symfony.com/doc/current/setup/upgrade_major.html
+SYMFONY MAKER BUNDLE https://symfony.com/bundles/SymfonyMakerBundle/current/index.html
+AMQP
+	https://habr.com/ru/articles/62502/
+	https://www.rabbitmq.com/tutorials/tutorial-one-php
+	https://symfony.com/doc/current/messenger.html#amqp-transport
+	https://github.com/cloudamqp/amqproxy
 OpenSSL:
 	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.
 	Как создать самоподписанные сертификаты
 	Куда класть самоподписанные сертификаты
 	Как разрешить самоподписанные сертификаты
-https://habr.com/ru/articles/784660/
-REDIS если захочешь
-	https://www.youtube.com/watch?v=C03dRFEUQq8
-Переключиться на prod и понять почему 500 ошибка
-LiipFunctionalTestBundle https://github.com/liip/LiipFunctionalTestBundle
-Реализуй с помощюь mercure + turbo stream смену title favicon для: (основываясь на turbo:<events>)
-	default favicon (/assets/images/favicon/favicon.svg)
-	чего-то нового (/assets/images/favicon/favicon_new.svg)
-	загрузки (иммитация загрузки анимацией svg, иммитация потому что turbo drive работает) (/assets/images/favicon/favicon_loading.svg)
+COMMONMARK
+	https://commonmark.thephpleague.com/2.6/
+	
+	extensions
+	https://github.com/ElGigi/CommonMarkEmoji
+	https://github.com/OWS/commonmark-sup-sub-extensions
+	https://github.com/zoonru/commonmark-ext-youtube-iframe
+	https://github.com/simonvomeyser/commonmark-ext-lazy-image
+	https://github.com/noah1400/commonmark-marker-extension
+Beanstalkd Transport https://habr.com/ru/companies/shopozzcom/articles/240483/
+SYMFONY BEST PRACTIES https://symfony.com/doc/current/best_practices.html
 Настроить Varnish HTTP Cache
 	https://symfony.com/doc/current/http_cache/varnish.html
 	https://symfony.com/doc/current/deployment/proxies.html
@@ -2174,12 +2132,45 @@ LiipFunctionalTestBundle https://github.com/liip/LiipFunctionalTestBundle
 SYMFONY UX-MAP LEAFMAP GET STARTED
 	настроить карту под себя
 	https://leafmap.org/get-started/#use-ipyleaflet-plotting-backend
+GitHub actions
+	https://help.github.com/en/actions
+	https://www.youtube.com/watch?v=WW6ZUw9IExA
+	https://symfony.com/doc/current/bundles/best_practices.html#continuous-integration
+Travis CI https://www.travis-ci.com/
+	https://symfony.com/doc/current/setup/bundles.html#update-the-travis-ci-configuration
+Gitlab CI https://docs.gitlab.com/ee/ci/
+
+#
+Lexic JWT Auth (аутентификация через Header Authentication Bearer {JWT}
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/2-data-customization.html
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/3-functional-testing.html
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/4-cors-requests.html
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/5-encoder-service.html
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/6-extending-jwt-authenticator.html
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/7-manual-token-creation.html
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/8-jwt-user-provider.html
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/9-access-authenticated-jwt-token.html
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/10-web-token.html
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/11-invalidate-token.html
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/1-configuration-reference.html
+
+	https://symfony.com/doc/current/security/impersonating_user.html
+	https://symfony.com/bundles/LexikJWTAuthenticationBundle/current/10-web-token.html
+Refresh JWT Tokens
+	https://github.com/markitosgv/JWTRefreshTokenBundle
+Telegram Bot Api: https://core.telegram.org/bots/api#available-types
+* Basic Authentication can also be set by including the credentials in the URL, such as: http://the-username:the-password@example.com
+GitLab
+	https://www.youtube.com/watch?v=n_21ya2MoKg&list=PLqVeG_R3qMSzYe_s3-q7TZeawXxTyltGC
+SYMFONY BUNDLE FOSJsRoutingBundle (route -> uri in js)
+SYMFONY BUNDLE FOSHttpCacheBundle (invalidate cache)
 PRODUCTION
 	cache: https://symfony.com/doc/current/components/cache/adapters/apcu_adapter.html
 	cache: будет полезно поставить Shedule для выполнения php bin/console cache:pool:prune раз в неделю
 	как сделать скриншот монитора
 	как сделать pdf
 	https://symfony.com/doc/current/reference/configuration/kernel.html
+	https://symfony.com/doc/current/setup/web_server_configuration.html#nginx
 	?
 	process manager Supervisor or systemd for messenger	
 	проверить timezone у messenger doctrine
@@ -2188,20 +2179,21 @@ PRODUCTION
 	https://symfony.com/doc/current/contributing/code/conventions.html
 	SYMFONY DEPLOYMENT https://symfony.com/doc/current/deployment.html
 	??? запустить "php bin/console lint:twig --format=github" GitHub Actions
-SYMFONY MAKER BUNDLE https://symfony.com/bundles/SymfonyMakerBundle/current/index.html
-SYMFONY BEST PRACTIES https://symfony.com/doc/current/best_practices.html
-Cache with Couchbase
-	https://www.couchbase.com/
-	https://docs.couchbase.com/sdk-api/couchbase-php-client/namespaces/couchbase.html
-	https://symfony.com/doc/current/components/cache/adapters/couchbasecollection_adapter.html
-https://docs.github.com/en/actions
-RRR Оч слоно: Telegram Bot Api: https://core.telegram.org/bots/api#available-types
-* Basic Authentication can also be set by including the credentials in the URL, such as: http://the-username:the-password@example.com
-
-
-
-
-
+	PUSH (Firebase) реализовать на https хостинге (по сути на реальном сайте)
+		https://firebase.google.com/docs/cloud-messaging/js/client?authuser=0#next_steps
+	https://symfony.com/doc/current/contributing/community/releases.html
+	Enable APC and then use this cache to save something on local server
+	UPGRADING TO A NEW MAJOR
+		https://symfony.com/doc/current/setup/upgrade_major.html
+	https://stackoverflow.com/questions/24448261/how-to-install-apcu-in-windows
+	Очисти OPcache на развёрнутом сервере
+		\opcache_reset()
+	mcHost исполнить php --ini
+		и выяснить есть ли opcache
+	mcHost есть ли у них docker
+	SYMFONY FORMATS/STANDARDS
+		https://symfony.com/doc/current/contributing/documentation/format.html
+		https://symfony.com/doc/current/contributing/documentation/standards.html
 
 
 
@@ -2220,6 +2212,11 @@ RRR Оч слоно: Telegram Bot Api: https://core.telegram.org/bots/api#availa
 
 RRR?: WATCH ALL RAYAN WAVER VIDEOS
 RRR: READ БАНДА ЧЕТЫРЁХ
+
+Реализуй с помощюь mercure + turbo stream смену title favicon для: (основываясь на turbo:<events>)
+	default favicon (/assets/images/favicon/favicon.svg)
+	чего-то нового (/assets/images/favicon/favicon_new.svg)
+	загрузки (иммитация загрузки анимацией svg, иммитация потому что turbo drive работает) (/assets/images/favicon/favicon_loading.svg)
 
 TODO
 	регайся https://packagist.org/
@@ -2353,9 +2350,19 @@ TODO
 			так что просто перетащи данные с компонента в контроллер
 		// TODO: lazy-image -> grinway--lazy-image
 		реализовать свой grinway/video stimulus controller
+		
+		checkout main
 	GsEnvProcessor
 		fix abstractions (only with functions)
 		// TODO: HttpsToStringEnvVarProcessor
+		
+		checkout main
+		заменить _ на: Aware либо TraitAware либо *AwareTrait
+			EntityManager_
+			MessageBus_
+			CurrentUser_
+			PropertyAccessor_
+			Session_
 	Command
 		убрать из конструктора все symfony зависимости (добавить их через #[Required])
 		добавить аргумент ioDump(startFromPrevLine: false)
@@ -2380,6 +2387,8 @@ TODO
 			по имени класса, трейтаTrait, интерфейсаInterface если с большой буквы
 			по имени метода если с маленькой
 		// TODO: ErrorEventListener
+		
+		checkout main
 	Services
 		для serviceLocator ServiceMethodsSubscriberTrait отложенная автопроводка .\src\Trait\ServiceLocator\Aware
 		позаимствовать App\CompillerPass\AbstractCompillerPass
@@ -2413,8 +2422,14 @@ TODO
 			(использовать serializer.encoder.csv service)
 		//TODO: attributesAsArray
 		https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#faker
+		
+		checkout main
+		
+		// TODO: MySqlUtils to backup and restore
 	Extensions
 		может перейти от OptionsResolver к Processor+TreeBuilder в global instance of
+		
+		checkout main
 	film
 		remove .exe from repository
 			$ffmpegAbsPath = (new ExecutableFinder())->find('ffmpeg', null, [$dopBasePath]);
@@ -2428,6 +2443,7 @@ TODO
 	Создай рецепты для бандлов
 		https://symfony.com/doc/current/setup/flex_private_recipes.html
 	
+Переключиться на prod и понять почему 500 ошибка
 SYMFONY TRANSLATION
 	phrase https://phrase.com/
 		bundle for it https://github.com/wickedOne/phrase-tag-bundle
@@ -2458,3 +2474,5 @@ https://symfony.com/doc/current/reference/index.html
 	https://symfony.com/doc/current/reference/dic_tags.html#kernel-fragment-renderer
 BLACKFIRE
 	https://docs.blackfire.io/introduction
+RECTOR
+	detect Symfony deprications https://getrector.com/documentation/
