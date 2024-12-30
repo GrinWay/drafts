@@ -2062,13 +2062,8 @@ JS LODASH LIB
 php-webdriver
 FROM MARKDOWN to html (php parsedown, commonmark)
 from html TO MARKDOWN (html-to-markdown)
-***
-SYMFONY SECURITY LDAP
-	~ https://www.youtube.com/watch?v=Xj6FtOvlRCg&ab_channel=AFIDistribution
-	https://symfony.com/doc/current/security/ldap.html
-	https://symfony.com/doc/current/reference/configuration/security.html#ldap-authentication
+- SYMFONY SECURITY LDAP
 TESTS
-	R: использовать кэш в тестах используя ArrayAdapter
 	?
 	+ ? Почему title несуществует в E2E
 		(
@@ -2078,24 +2073,15 @@ TESTS
 			Просто не используй реальный браузер для таких вещей
 		)
 SYMFONY TRANSLATION
-	RRR: Определиться раз и навсегда как переводить ($this->t->trans() | t())
-		чтобы была возможность отслеживать состояния переводов (переведено, не переведено, не используется)
-		с помощью команды (посмотреть)
-	Использовать провайдера Loco зарегайся с VPN:
-		https://localise.biz/about
-		https://symfony.com/doc/current/translation.html#installing-and-configuring-a-third-party-provider
-SYMFONY MESSENGER
-	https://symfony.com/doc/current/messenger.html#transactional-messages-handle-new-messages-after-handling-is-done
-	https://symfony.com/doc/current/components/messenger.html#transports
-	https://symfony.com/doc/current/messenger/custom-transport.html
-	https://github.com/symfony/symfony/blob/7.1/src/Symfony/Component/Messenger/Handler/RedispatchMessageHandler.php
 TWIG
-	https://symfony.com/doc/current/reference/twig_reference.html
-	https://symfony.com/doc/current/reference/configuration/twig.html
 	?
-	Я так пологаю переопределить шаблон не бандла не получиться
+	+ Я так пологаю переопределить шаблон не бандла не получиться
 		так как нет twig.yaml где определяются paths: ...
-		Но можно пойти ублюдским способом и задать namespace в своём проете (будет много одноимённых ключей)
+		(
+			Это не так.
+			
+			Можно определить namespace в своём проекте на путь папки с шаблонами библиотеки
+		)
 	+ Если есть несколько twig namespace и первый инвалидный, а второй валидный то всё будет работать ок?
 		предпологаю что да
 		(
@@ -2103,17 +2089,10 @@ TWIG
 		)
 SYMFONY SESSION
 	не получилось https://symfony.com/doc/current/session.html#encryption-of-session-data
-SYMFONY MAKER BUNDLE https://symfony.com/bundles/SymfonyMakerBundle/current/index.html
-AMQP
-	https://habr.com/ru/articles/62502/
-	https://www.rabbitmq.com/tutorials/tutorial-one-php
-	https://symfony.com/doc/current/messenger.html#amqp-transport
-	https://github.com/cloudamqp/amqproxy
-OpenSSL:
-	When using OpenSSL to generate certificates, make sure to add the -addtrust emailProtection command option.
-	Как создать самоподписанные сертификаты
-	Куда класть самоподписанные сертификаты
-	Как разрешить самоподписанные сертификаты
+		Circular reference detected for service
+SYMFONY MAKER BUNDLE
+***
+MESSENGER TILL 34
 COMMONMARK
 	https://commonmark.thephpleague.com/2.6/
 	
@@ -2123,8 +2102,14 @@ COMMONMARK
 	https://github.com/zoonru/commonmark-ext-youtube-iframe
 	https://github.com/simonvomeyser/commonmark-ext-lazy-image
 	https://github.com/noah1400/commonmark-marker-extension
-Beanstalkd Transport https://habr.com/ru/companies/shopozzcom/articles/240483/
 SYMFONY BEST PRACTIES https://symfony.com/doc/current/best_practices.html
+AMQP
+	C:\Workspace\1_PROJECTS\SYMFONY\SYMFONY VIDEOS\SYMFONY 5\Messenger! Queue work for Later (Особенно начиная с 35)
+	https://habr.com/ru/articles/62502/
+	https://www.rabbitmq.com/tutorials/tutorial-one-php
+	https://symfony.com/doc/current/messenger.html#amqp-transport
+	https://github.com/cloudamqp/amqproxy
+Beanstalkd Transport https://habr.com/ru/companies/shopozzcom/articles/240483/
 Настроить Varnish HTTP Cache
 	https://symfony.com/doc/current/http_cache/varnish.html
 	https://symfony.com/doc/current/deployment/proxies.html
@@ -2139,6 +2124,15 @@ GitHub actions
 Travis CI https://www.travis-ci.com/
 	https://symfony.com/doc/current/setup/bundles.html#update-the-travis-ci-configuration
 Gitlab CI https://docs.gitlab.com/ee/ci/
+Composer
+	https://getcomposer.org/doc/articles/custom-installers.md#the-custom-installer-class
+	https://getcomposer.org/doc/articles/scripts.md#event-classes
+	?
+	Есть ли разница между package::getName и package::getPrettyName
+	Что за команда status
+	Что за команда archive
+	Что за команда upgrade
+
 
 #
 Lexic JWT Auth (аутентификация через Header Authentication Bearer {JWT}
@@ -2171,6 +2165,8 @@ PRODUCTION
 	как сделать pdf
 	https://symfony.com/doc/current/reference/configuration/kernel.html
 	https://symfony.com/doc/current/setup/web_server_configuration.html#nginx
+		Протестируй отправку email with "ZENSTRUCK MAILER TEST"
+			https://github.com/zenstruck/mailer-test
 	?
 	process manager Supervisor or systemd for messenger	
 	проверить timezone у messenger doctrine
@@ -2194,19 +2190,12 @@ PRODUCTION
 	SYMFONY FORMATS/STANDARDS
 		https://symfony.com/doc/current/contributing/documentation/format.html
 		https://symfony.com/doc/current/contributing/documentation/standards.html
-
-
-
-
-
-
-
-
-
-
-
-
-
+Оптимизировать готовый сайт
+	для каждой страницы определить <link rel="preload"> с использованием компонента https://symfony.com/doc/current/web_link.html
+		на каждую картинку, чтобы сайт считался более быстрым с точки зрения LCP https://symfony.com/bundles/ux-lazy-image/current/index.html#largest-contentful-paint-lcp-and-web-performance-considerations
+		$this->addLink($request, (new Link('preload', $publicImgFilename))->withAttribute('as', 'image'));
+		
+		это будет + к поисковым запросам
 
 
 
@@ -2444,35 +2433,22 @@ TODO
 		https://symfony.com/doc/current/setup/flex_private_recipes.html
 	
 Переключиться на prod и понять почему 500 ошибка
-SYMFONY TRANSLATION
-	phrase https://phrase.com/
-		bundle for it https://github.com/wickedOne/phrase-tag-bundle
-Банда 4-х
-https://symfony.com/doc/current/create_framework/index.html
-! https://github.com/search?q=topic%3Asymfony-bundle&type=repositories
-https://github.com/symfony/recipes
-Composer https://getcomposer.org/doc/articles/custom-installers.md#the-custom-installer-class
-	https://getcomposer.org/doc/articles/scripts.md#event-classes
-	?
-	Есть ли разница между package::getName и package::getPrettyName
-	Что за команда status
-	Что за команда archive
-	Что за команда upgrade
-Оптимизировать готовый сайт
-	для каждой страницы определить <link rel="preload"> с использованием компонента https://symfony.com/doc/current/web_link.html
-		на каждую картинку, чтобы сайт считался более быстрым с точки зрения LCP https://symfony.com/bundles/ux-lazy-image/current/index.html#largest-contentful-paint-lcp-and-web-performance-considerations
-		$this->addLink($request, (new Link('preload', $publicImgFilename))->withAttribute('as', 'image'));
-		
-		это будет + к поисковым запросам
-PRODUCTION:
-	Протестируй отправку email with "ZENSTRUCK MAILER TEST"
-		https://github.com/zenstruck/mailer-test
-Framework Configuration Reference https://symfony.com/doc/current/reference/configuration/framework.html#reference-cache-prefix-seed
-SYMFONY COMPONENTS: https://symfony.com/components
-https://symfony.com/doc/current/reference/index.html
 Придумать ситуацию, в которой ты будешь использовать kernel.fragment_renderer
 	https://symfony.com/doc/current/reference/dic_tags.html#kernel-fragment-renderer
+SYMFONY COMPONENTS: https://symfony.com/components
+
+###> probably somewhen
+https://symfony.com/doc/current/reference/index.html
+SYMFONY TRANSLATION
+	https://localise.biz/about
+	https://symfony.com/doc/current/translation.html#installing-and-configuring-a-third-party-provider
+
+	phrase https://phrase.com/
+		bundle for it https://github.com/wickedOne/phrase-tag-bundle
 BLACKFIRE
 	https://docs.blackfire.io/introduction
 RECTOR
 	detect Symfony deprications https://getrector.com/documentation/
+https://github.com/search?q=topic%3Asymfony-bundle&type=repositories
+https://symfony.com/doc/current/create_framework/index.html
+Framework Configuration Reference https://symfony.com/doc/current/reference/configuration/framework.html#reference-cache-prefix-seed

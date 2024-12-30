@@ -10,6 +10,16 @@ security:
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         # used to reload user from session & other features (e.g. switch_user)
+        app_ldap:
+            ldap:
+                service: Symfony\Component\Ldap\Ldap
+                base_dn: 'dc=example,dc=com'
+                search_dn: "cn=read-only-admin,dc=example,dc=com"
+                search_password: password
+                default_roles: ROLE_USER
+                uid_key: uid
+                extra_fields:
+                - 'email'
         app_user_provider:
             entity:
                 class: App\Entity\User
@@ -24,7 +34,7 @@ security:
             form_login:
                 check_path: app_login
                 login_path: app_login
-                enable_csrf:          true
+                enable_csrf: true
             switch_user:
                 role: ROLE_USER
                 parameter: 'X-Switch-User'
@@ -32,7 +42,7 @@ security:
                 path: app_logout
                 # where to redirect after logout
                 # target: app_any_route
-#                target_route: 'app_home'
+            #                target_route: 'app_home'
 
             # activate different ways to authenticate
             # https://symfony.com/doc/current/security.html#the-firewall

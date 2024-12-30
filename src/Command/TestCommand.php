@@ -10,6 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\HttpFoundation\UrlHelper;
 use Symfony\Component\Messenger\MessageBusInterface;
 
 #[AsCommand(
@@ -22,9 +23,7 @@ class TestCommand extends Command
     use LockableTrait;
 
     public function __construct(
-        private readonly MessageBusInterface                  $bus,
-        private readonly LoggerInterface                      $logger,
-        #[Autowire('%env(APP_DATABASE_URL)%')] private readonly string $env,
+        private readonly UrlHelper $urlHelper,
     )
     {
         parent::__construct();
@@ -39,13 +38,8 @@ class TestCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $io->title('Однажды была выполнена команда');
-
-        $io->info('https://google.com');
-
-        $stderr = $io->getErrorStyle();
-
-        $stderr->error($this->env);
+        $message = $this->urlHelper->getAbsoluteUrl('/random-url');
+        $io->title($message);
 
         return Command::SUCCESS;
     }

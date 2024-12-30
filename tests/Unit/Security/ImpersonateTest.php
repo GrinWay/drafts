@@ -40,7 +40,7 @@ class ImpersonateTest extends WebTestCase
             ->assertAuthenticated($user)
             ->get($appUrl . '?X-Switch-User=' . $antherUserIdentifier, options: [
                 'headers' => [
-                    'X-Switch-User' => $antherUserIdentifier,
+//                    'X-Switch-User' => $antherUserIdentifier,
                 ],
             ])
             ->assertSuccessful()

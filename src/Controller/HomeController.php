@@ -86,6 +86,12 @@ class HomeController extends AbstractController
         TranslatorInterface           $trans,
     ): Response
     {
+        $a = [
+            'v',
+            1,
+            1.,
+        ];
+
         $converter = new CommonMarkConverter([
             'html_input' => 'strip',
             'allow_unsafe_links' => false,
@@ -130,6 +136,7 @@ class HomeController extends AbstractController
         $parameters = [
             'pagination' => $pagination,
             'html' => $html,
+            'path' => $projectDir.'/.env',
         ];
         $response = $this->render($template, $parameters);
         return $response;
@@ -159,5 +166,10 @@ class HomeController extends AbstractController
 
         return $this->redirectToRoute('app_home', [
         ]);
+    }
+
+    public function noRouteMethod()
+    {
+        return $this->render('home/test_escaping_strategy_as_first_ext.js.twig');
     }
 }

@@ -12,11 +12,18 @@
 
 {% block body %}
 
+    {{ path|file_excerpt(5) }}
+
+{#    {{ include('home/test_escaping_strategy_as_first_ext.js.twig') }}#}
+
+    <a href="{{ fragment_uri(controller('App\\Controller\\HomeController::noRouteMethod'), absolute=true) }}">ссылка</a>
+
     {{ html|default('null')|raw }}
 
     <div class="font-monospace fs-1 text-center my-3"
-         {{ stimulus_controller('lodash') }}
-    >Lodash js lib</div>
+            {{ stimulus_controller('lodash') }}
+    >Lodash js lib
+    </div>
 
     {% if pagination_exists %}
         {{ knp_pagination_filter(pagination, {
