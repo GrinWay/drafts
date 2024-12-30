@@ -1,4 +1,5 @@
 *.exe
+/bundles
 
 ###> symfony/framework-bundle ###
 .idea/
