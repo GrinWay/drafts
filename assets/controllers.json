@@ -1,5 +1,14 @@
 {
     "controllers": {
+        "@grinway/pure-bundle": {
+            "pure-bundle": {
+                "enabled": true,
+                "fetch": "eager",
+                "autoimport": {
+                    "@grinway/pure-bundle/dist/style/main.scss": false
+                }
+            }
+        },
         "@symfony/ux-turbo": {
             "turbo-core": {
                 "enabled": true,

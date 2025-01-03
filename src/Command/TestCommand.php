@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\Repository\TodoRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
@@ -24,6 +25,7 @@ class TestCommand extends Command
 
     public function __construct(
         private readonly UrlHelper $urlHelper,
+        private readonly TodoRepository $todoRepo,
     )
     {
         parent::__construct();
@@ -38,8 +40,11 @@ class TestCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $message = $this->urlHelper->getAbsoluteUrl('/random-url');
-        $io->title($message);
+        $list = $this->todoRepo->findBy([]);
+
+        $io->success(\array_map(static function ($el) {
+            return $el->getTitle();
+        }, $list));
 
         return Command::SUCCESS;
     }

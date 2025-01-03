@@ -1,28 +1,28 @@
 networks:
     default:
-        name: pure_docker_app_net
+        name: app
         driver: bridge
 
 services:
 
-    memcached:
-#        image: memcached:alpine3.21
-        image: memcached
-        container_name: memcached_container
-        restart: unless-stopped
-        command:
-        - '--conn-limit=1024'
-        - '--memory-limit=64'
-        - '--threads=4'
-        ports:
-        - '11211:11211'
+#    memcached:
+        #        image: memcached:alpine3.21
+#        image: memcached
+#        container_name: memcached_container
+#        restart: unless-stopped
+#        command:
+#        - '--conn-limit=1024'
+#        - '--memory-limit=64'
+#        - '--threads=4'
+#        ports:
+#        - '11211:11211'
 
-    redis:
-        image: redis:latest
-        container_name: redis_container
-        restart: unless-stopped
-        ports:
-        - '6379:6379'
+#    redis:
+#        image: redis:latest
+#        container_name: redis_container
+#        restart: unless-stopped
+#        ports:
+#        - '6379:6379'
 
     # docker rm app && docker rmi drafts-app && docker compose up
     # for testing, including E2E
@@ -40,19 +40,11 @@ services:
     database:
         image: 'mysql:8.0-debian'
         restart: always
-        container_name: app_pure_db
+        container_name: drafts_db
         ports:
         - '3306:3306'
         environment:
             MYSQL_ROOT_PASSWORD: 'root'
-
-#    phpmyadmin:
-#        image: phpmyadmin:5.2.1-apache
-#        restart: always
-#        ports:
-#        - '8080:80'
-#        environment:
-#        - PMA_ARBITRARY=1
 
     ###> symfony/mercure-bundle ###
     mercure:

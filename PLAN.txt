@@ -1795,6 +1795,10 @@ SYMFONY LOCAL WEB SERVER
 	? Почему-то не получается создать локальное доменное имя за счёт proxy
 DOCKER
 	?
+	? Если попробовать выполнить "docker compose up -d" без "database" в compose.yarn
+		почему-то будет ошибка, что неправильная конфигурация compose.yaml без database
+		НО кто за эту ошибку ответственен, это получается я не могу запустить сторонний контейнер с БД
+		и лишь затем запустить приложение
 	? Я до сих пор не понял о каком email catcher они говорят: https://symfony.com/doc/current/mailer.html#enabling-an-email-catcher
 	? Хочу открыть сайт на 127.0.0.1:8000, почему описывая в Dockerfile ENTRYPOINT ["php", "-S", "0.0.0.0:80"]
 		-p 8000:80
@@ -2091,48 +2095,26 @@ SYMFONY SESSION
 	не получилось https://symfony.com/doc/current/session.html#encryption-of-session-data
 		Circular reference detected for service
 SYMFONY MAKER BUNDLE
-***
-MESSENGER TILL 34
 COMMONMARK
-	https://commonmark.thephpleague.com/2.6/
-	
-	extensions
-	https://github.com/ElGigi/CommonMarkEmoji
-	https://github.com/OWS/commonmark-sup-sub-extensions
-	https://github.com/zoonru/commonmark-ext-youtube-iframe
-	https://github.com/simonvomeyser/commonmark-ext-lazy-image
-	https://github.com/noah1400/commonmark-marker-extension
-SYMFONY BEST PRACTIES https://symfony.com/doc/current/best_practices.html
-AMQP
-	C:\Workspace\1_PROJECTS\SYMFONY\SYMFONY VIDEOS\SYMFONY 5\Messenger! Queue work for Later (Особенно начиная с 35)
-	https://habr.com/ru/articles/62502/
-	https://www.rabbitmq.com/tutorials/tutorial-one-php
-	https://symfony.com/doc/current/messenger.html#amqp-transport
-	https://github.com/cloudamqp/amqproxy
-Beanstalkd Transport https://habr.com/ru/companies/shopozzcom/articles/240483/
+SYMFONY BEST PRACTIES
+MAILER Beanstalkd Transport
+MESSENGER WITH AMQP (HIGHLY HARD ON WINDOWS)
+***
+Gitlab CI
+	https://docs.gitlab.com/ee/ci/
+GitHub actions
+	https://www.youtube.com/watch?v=WW6ZUw9IExA
+	https://symfony.com/doc/current/bundles/best_practices.html#continuous-integration
+	https://help.github.com/en/actions
+Travis CI https://www.travis-ci.com/
+	https://symfony.com/doc/current/setup/bundles.html#update-the-travis-ci-configuration
+SYMFONY UX-MAP LEAFMAP GET STARTED
+	настроить карту под себя
+	https://leafmap.org/get-started/#use-ipyleaflet-plotting-backend
 Настроить Varnish HTTP Cache
 	https://symfony.com/doc/current/http_cache/varnish.html
 	https://symfony.com/doc/current/deployment/proxies.html
 	https://varnish-cache.org/docs/index.html
-SYMFONY UX-MAP LEAFMAP GET STARTED
-	настроить карту под себя
-	https://leafmap.org/get-started/#use-ipyleaflet-plotting-backend
-GitHub actions
-	https://help.github.com/en/actions
-	https://www.youtube.com/watch?v=WW6ZUw9IExA
-	https://symfony.com/doc/current/bundles/best_practices.html#continuous-integration
-Travis CI https://www.travis-ci.com/
-	https://symfony.com/doc/current/setup/bundles.html#update-the-travis-ci-configuration
-Gitlab CI https://docs.gitlab.com/ee/ci/
-Composer
-	https://getcomposer.org/doc/articles/custom-installers.md#the-custom-installer-class
-	https://getcomposer.org/doc/articles/scripts.md#event-classes
-	?
-	Есть ли разница между package::getName и package::getPrettyName
-	Что за команда status
-	Что за команда archive
-	Что за команда upgrade
-
 
 #
 Lexic JWT Auth (аутентификация через Header Authentication Bearer {JWT}
@@ -2190,6 +2172,10 @@ PRODUCTION
 	SYMFONY FORMATS/STANDARDS
 		https://symfony.com/doc/current/contributing/documentation/format.html
 		https://symfony.com/doc/current/contributing/documentation/standards.html
+	один docker container пытается получить доступ к БД, которая работает на другом docker container
+		НО выдаётся SQLSTATE[HY000] [2002] Operation timed out
+		подозреваю что дело в том как Symfony парсит dsn
+		потому что phpmyadmin работает на другом docker container и прекрасно читает БД
 Оптимизировать готовый сайт
 	для каждой страницы определить <link rel="preload"> с использованием компонента https://symfony.com/doc/current/web_link.html
 		на каждую картинку, чтобы сайт считался более быстрым с точки зрения LCP https://symfony.com/bundles/ux-lazy-image/current/index.html#largest-contentful-paint-lcp-and-web-performance-considerations
@@ -2201,6 +2187,7 @@ PRODUCTION
 
 RRR?: WATCH ALL RAYAN WAVER VIDEOS
 RRR: READ БАНДА ЧЕТЫРЁХ
+RRR: SYMFONY DEMO посмотреть как реализованы лучшие подходы
 
 Реализуй с помощюь mercure + turbo stream смену title favicon для: (основываясь на turbo:<events>)
 	default favicon (/assets/images/favicon/favicon.svg)

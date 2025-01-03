@@ -14,17 +14,19 @@
     "doctrine/doctrine-migrations-bundle": "^3.3",
     "doctrine/orm": "*",
     "elgigi/commonmark-emoji": "^2.0",
+    "embed/embed": "*",
     "endroid/installer": "^1.5",
     "endroid/pdf": "^1.6",
     "endroid/qr-code-bundle": "^6.0",
     "erusev/parsedown": "^1.7",
     "gedmo/doctrine-extensions": "*",
     "gregwar/image": "2",
+    "grinway/pure-bundle": "^0.0.0",
     "khanamiryan/qrcode-detector-decoder": "^2.0",
     "knplabs/knp-paginator-bundle": "^6.6",
     "knplabs/knp-snappy": "^1.5",
     "knplabs/knp-snappy-bundle": "^1.10",
-    "league/commonmark": "^2.6",
+    "league/commonmark": "*",
     "league/html-to-markdown": "^5.1",
     "league/uri": "^7.5",
     "lexik/jwt-authentication-bundle": "^3.1",
@@ -92,6 +94,10 @@
     {
       "type": "vcs",
       "url": "https://github.com/moust/Paint.git"
+    },
+    {
+      "type": "path",
+      "url": "bundles/GrinWay/pure-bundle"
     }
   ],
   "config": {

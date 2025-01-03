@@ -2,6 +2,7 @@
     "devDependencies": {
         "@babel/core": "^7.17.0",
         "@babel/preset-env": "^7.16.0",
+        "@grinway/pure-bundle": "file:vendor/grinway/pure-bundle/assets",
         "@hotwired/stimulus": "^3.2.2",
         "@hotwired/turbo": "^8.0.12",
         "@symfony/stimulus-bridge": "^3.2.2",

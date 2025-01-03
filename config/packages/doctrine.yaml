@@ -9,9 +9,9 @@ doctrine:
         profiling_collect_backtrace: '%kernel.debug%'
         use_savepoints: true
     orm:
-        query_cache_driver:
-            type: pool
-            pool: app.cache.redis
+        #query_cache_driver:
+        #    type: pool
+        #    pool: app.cache.redis
         auto_generate_proxy_classes: true
         enable_lazy_ghost_objects: true
         report_fields_where_declared: true

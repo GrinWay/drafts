@@ -23,17 +23,8 @@
         <!-- ... -->
     </coverage>
     <testsuites>
-        <testsuite name="unit">
-            <directory>tests/Unit</directory>
-        </testsuite>
-        <testsuite name="com">
-            <directory>tests/Command</directory>
-        </testsuite>
-        <testsuite name="fcon">
-            <directory>tests/Functional/Controller</directory>
-        </testsuite>
-        <testsuite name="econ">
-            <directory>tests/E2E/Controller</directory>
+        <testsuite name="func">
+            <directory>tests/Functional</directory>
         </testsuite>
         <testsuite name="all">
             <directory>tests</directory>

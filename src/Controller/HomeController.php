@@ -3,17 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Todo;
+use App\Messenger\Command\ProcessSomething\ProcessSomethingMessage;
 use Doctrine\ORM\EntityManagerInterface;
-use ElGigi\CommonMarkEmoji\EmojiExtension;
-use Facebook\WebDriver\Chrome\ChromeOptions;
-use Facebook\WebDriver\Remote\DesiredCapabilities;
-use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Knp\Component\Pager\PaginatorInterface;
-use League\CommonMark\CommonMarkConverter;
-use League\HTMLToMarkdown\HtmlConverter;
 use parallel\Channel;
 use parallel\Runtime;
-use Parsedown;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\Request;
@@ -21,11 +15,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
 use Symfony\Component\Mercure\HubInterface;
 use Symfony\Component\Mercure\Update;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\UX\Turbo\TurboBundle;
-use function Symfony\Component\Translation\t;
 
 class HomeController extends AbstractController
 {
@@ -84,20 +78,10 @@ class HomeController extends AbstractController
         EntityManagerInterface        $em,
         #[Autowire('%env(APP_URL)%')] $appUrl,
         TranslatorInterface           $trans,
+        MessageBusInterface           $bus,
     ): Response
     {
-        $a = [
-            'v',
-            1,
-            1.,
-        ];
-
-        $converter = new CommonMarkConverter([
-            'html_input' => 'strip',
-            'allow_unsafe_links' => false,
-        ]);
-        $converter->getEnvironment()->addExtension(new EmojiExtension());
-        $html = $converter->convert($trans->trans('test_parsedown'));
+        $bus->dispatch(new ProcessSomethingMessage());
 
         $direction = $request->query->get('direction', $defaultDirection = 'DESC');
         $direction = \strtoupper($direction);
@@ -135,8 +119,7 @@ class HomeController extends AbstractController
         $template = 'home/index.html.twig';
         $parameters = [
             'pagination' => $pagination,
-            'html' => $html,
-            'path' => $projectDir.'/.env',
+            'path' => $projectDir . '/.env',
         ];
         $response = $this->render($template, $parameters);
         return $response;

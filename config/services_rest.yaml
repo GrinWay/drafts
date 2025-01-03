@@ -9,9 +9,14 @@ services:
 
             $projectDir: '%kernel.project_dir%'
 
+    # APP
     App\:
         resource: '../src/'
         exclude:
-            - '../src/DependencyInjection/'
-            - '../src/Entity/'
-            - '../src/Kernel.php'
+        - '../src/DependencyInjection/'
+        - '../src/Entity/'
+        - '../src/Kernel.php'
+        - '../src/Messenger/Command/*/Handler/'
+        - '../src/Messenger/Event/PriorityHigh/*/Handler/'
+        - '../src/Messenger/Event/PriorityMiddle/*/Handler/'
+        - '../src/Messenger/Event/PriorityLow/*/Handler/'
