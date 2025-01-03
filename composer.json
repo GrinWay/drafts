@@ -21,7 +21,6 @@
     "erusev/parsedown": "^1.7",
     "gedmo/doctrine-extensions": "*",
     "gregwar/image": "2",
-    "grinway/pure-bundle": "^0.0.0",
     "khanamiryan/qrcode-detector-decoder": "^2.0",
     "knplabs/knp-paginator-bundle": "^6.6",
     "knplabs/knp-snappy": "^1.5",
