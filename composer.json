@@ -96,8 +96,8 @@
       "url": "https://github.com/moust/Paint.git"
     },
     {
-      "type": "path",
-      "url": "bundles/GrinWay/pure-bundle"
+      "type": "vcs",
+      "url": "https://github.com/grinway/pure-bundle.git"
     }
   ],
   "config": {
